@@ -14,9 +14,16 @@ A web interface that carries the instructions, with a game/story layer:
   work.
 - Served as a static site (GitHub Pages) from `web/` so it versions with the firmware
   it describes.
-- Open questions: the story's frame and characters; how progress is tracked (none,
-  per-device, or accounts); whether the site ever talks to the robot (Web Serial /
-  BLE) or stays instructions-only.
+- Progression: V1, V2a/b, V3a/b, potential field, subsumption. State machines and
+  ANNs to be placed. Draft chapter outline in `web/OUTLINE.md`.
+- Frame: the evolution of perception and action in living things, told alongside
+  Val's; simple design giving rich behaviour. Tone (stranger in a strange land /
+  lab notebook / expedition) still open.
+- Progress must travel between machines (child moves between households, tutors,
+  clubs), so per-browser storage alone is not enough. Proposed: save file + short
+  save code, no accounts at first.
+- Instructions only: the site does not talk to the robot (no Web Serial / BLE) for
+  now.
 
 ## Firmware
 
@@ -40,6 +47,8 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Records
 
+- 2026-10: progress kept only in one browser rejected for the web guide (lost when a
+  child moves between machines).
 - 2026-10: DFRobot Gravity sensors explored and dropped (see `docs/hardware.md`).
 - 2026-10: setup now opens with 0.5 s of white static and tunes back into the face
   afterwards (`Static.h`, `Face::tuneIn`). Mock-ups were made on a design canvas
