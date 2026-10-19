@@ -1,0 +1,35 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Distance sensor found on Port A (SDA=G32, SCL=G26)
+[  0.00s] Distance sensor found on Port C (SDA=G22, SCL=G19)
+[  0.50s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  1.00s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  1.50s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  2.00s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  2.50s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  3.00s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  3.48s] Full setup: 2 sensor(s)
+[  3.48s] Face: Neutral
+   >> t=3.48s setup STARTS
+[ 26.41s] Wheels: S1 forward = left, S2 forward = right
+[ 26.41s]   Port A: Distance, push at +45 deg, low 1000, high 100
+[ 26.41s]   Port C: Distance, push at -45 deg, low 1000, high 100
+   >> t=26.41s setup ends
+[ 26.41s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
+[ 26.41s] Face: Happy
+[ 26.91s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
+[ 27.41s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
+[ 27.91s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
+[ 28.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
+[ 28.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
+[ 29.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
+[ 29.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
+[ 30.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
+   >> t=30.8s  S1 (left) 117 deg, S2 (right) 162 deg
+[ 30.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
+[ 31.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 31.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 32.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 32.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 33.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+   >> t=33.8s  S1 (left) 117 deg, S2 (right) 63 deg
+[ 33.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy

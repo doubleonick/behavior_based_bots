@@ -1,0 +1,109 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Light sensor found on Port A (SDA=G32, SCL=G26)
+[  0.50s] Port A C 10200 (0.16 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] Port A C 10200 (0.16 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] Port A C 10200 (0.16 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] Port A C 10200 (0.16 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] Port A C 10200 (0.16 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] Port A C 10200 (0.16 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.48s] Full setup: 1 sensor(s)
+[  3.48s] Face: Neutral
+   >> t=3.48s setup STARTS
+[ 13.10s] Mount: left
+[ 13.10s]   Port A: Light, weight +1, low 400, high 20000
+   >> t=13.10s setup ends
+[ 13.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 90 deg | Happy
+[ 13.11s] Face: Happy
+[ 13.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 134 deg | Happy
+[ 14.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 14.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 15.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 15.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 16.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 16.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 17.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 17.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 18.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 18.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 19.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 19.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 20.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 20.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 21.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 21.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 22.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 22.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 23.11s] Distance sensor found on Port C (SDA=G22, SCL=G19)
+[ 23.11s] [ 23.11s] New sensor found!
+[ 23.11s] Port A C 10200 (0.50 x +1)  Port C D     0 (1.00 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 23.11s] Face: Surprised
+[ 23.61s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.56 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 24.11s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.56 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 24.61s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.56 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 25.11s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.56 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 25.61s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.56 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 26.11s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.56 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 26.41s] Setup for 1 new sensor(s)
+   >> t=26.41s setup STARTS
+[ 34.10s] Mount: left
+[ 34.10s]   Port A: Light, weight +1, low 400, high 20000
+[ 34.10s]   Port C: Distance, weight +1, low 1000, high 100
+   >> t=34.10s setup ends
+[ 34.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 90 deg | Happy
+[ 34.10s] Face: Happy
+[ 34.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 178 deg | Happy
+[ 35.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 35.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 36.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 36.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 37.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 37.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 38.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 38.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 39.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 39.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 40.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 40.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 41.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 41.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 42.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 42.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 43.10s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 43.60s] Port A C 10200 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 44.00s] Light sensor on Port A stopped answering
+[ 44.10s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 152 deg | Happy
+[ 44.60s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 45.10s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 45.60s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 46.10s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 46.60s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 47.10s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 47.60s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 48.10s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 48.60s] Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Happy
+[ 49.10s] Distance sensor found on Port A (SDA=G32, SCL=G26)
+[ 49.10s] [ 49.10s] New sensor found!
+[ 49.10s] Port A D     0 (1.00 x +1)  Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 49.10s] Face: Surprised
+[ 49.60s] Port A D   550 (0.56 x +1)  Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 50.10s] Port A D   550 (0.56 x +1)  Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 50.60s] Port A D   550 (0.56 x +1)  Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 51.10s] Port A D   550 (0.56 x +1)  Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 51.60s] Port A D   550 (0.56 x +1)  Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 52.10s] Port A D   550 (0.56 x +1)  Port C D   550 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Surprised
+[ 52.41s] Setup for 1 new sensor(s)
+   >> t=52.40s setup STARTS
+[ 59.60s] Mount: left
+[ 59.60s]   Port A: Distance, weight +1, low 1000, high 100
+[ 59.60s]   Port C: Distance, weight +1, low 1000, high 100
+   >> t=59.60s setup ends
+[ 59.60s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 90 deg | Happy
+[ 59.60s] Face: Happy
+[ 60.10s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 178 deg | Happy
+[ 60.60s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 61.10s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 61.60s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 62.10s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 62.60s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 63.10s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy
+[ 63.60s] Port A D   550 (0.50 x +1)  Port C D   550 (0.50 x +1)  | sum +1.00 -> servo 180 deg | Happy

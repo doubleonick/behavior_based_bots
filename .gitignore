@@ -1,0 +1,23 @@
+# Host test output (expected.txt IS committed; actual.txt is a failed run's output)
+tests/host/*/actual.txt
+
+# Packaged handoffs: transport, not source
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+
+# Arduino / PlatformIO build output
+build/
+.pio/
+
+# Web build output (when web/ gets a build step)
+web/dist/
+web/node_modules/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
