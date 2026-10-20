@@ -36,6 +36,14 @@ A web interface that carries the instructions, with a game/story layer:
   displays mocked up (level, spikes, trace, ripple, wire), none chosen yet. The web
   Val has to match: since the site doesn't talk to the robot, the guide asks which
   colour has the face and saves the answer with the child's progress.
+- Face vs spikes (2026-10, built in Val_Vehicle): the face is for interactions (hello,
+  setup, surprise at a new sensor); while the wheel turns the matrix shows Type B
+  spikes in lanes. When the wheel has been still for 1.5 s the run is over and a face
+  comes back: Love if only - wires stopped it, Neutral otherwise. Open: each vehicle
+  should end on its own emotion (fear, aggression, love, explorer), but one module
+  can't tell crossed from straight wiring, so it can't yet tell 2a from 2b or 3a
+  from 3b. Val_Field still shows the face while driving; its two-wheel spikes are
+  next after the vehicles.
 
 ## Firmware
 
@@ -59,6 +67,8 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Records
 
+- 2026-10: spike "branches" (paths merging toward the wheel) dropped for "lanes"
+  (one column per sensor): the 5x5 matrix is too coarse for branches to read.
 - 2026-10: progress kept only in one browser rejected for the web guide (lost when a
   child moves between machines).
 - 2026-10: DFRobot Gravity sensors explored and dropped (see `docs/hardware.md`).

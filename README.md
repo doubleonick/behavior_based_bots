@@ -42,7 +42,11 @@ Open `firmware/Val_Vehicle/Val_Vehicle.ino` or `firmware/Val_Field/Val_Field.ino
 1. Power on. Val says "Hello, my name is, Val" (the mouth animates).
 2. The first time, setup starts by itself; later, **hold the button for 2 seconds**.
    Short press changes a choice, long press confirms it.
-3. After setup, Val drives, and its face reacts to what its sensors notice.
+3. After setup, Val drives. While the wheel turns, the matrix shows **spikes**: one lane
+   per sensor (green for a + wire, red for a −), faster the more it feels, and the wheel
+   firing along the bottom row. When the wheel stops, the run is over and a face comes
+   back (the heart if only − wires stopped it). *(Val_Vehicle; Val_Field still shows the
+   face while driving.)*
 
 Plugging in a new sensor while Val is running makes it look surprised and then
 set up just that sensor.

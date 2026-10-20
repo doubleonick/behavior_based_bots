@@ -24,7 +24,8 @@ make sense to them; everything an adult needs should be written down for them.
 | `web/` | the planned web guide |
 | `FUTURE_WORK.md` | plans, open questions, and records of things dropped or corrected |
 
-Shared classes: `Face` (expressions, talking, `tuneIn`), `Static` (white static),
+Shared classes: `Face` (expressions, talking, `tuneIn`), `Spikes` (the wiring's activity
+while driving), `Static` (white static),
 `MotionServo`, `Port`, `I2CBus`, `Sensor` (parent; 0..1 stimulus from two calibration
 points), `ColorSensor`, `DistanceSensor`, `Button` (short / long / hold).
 

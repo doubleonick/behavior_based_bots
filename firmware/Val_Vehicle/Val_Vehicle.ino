@@ -10,6 +10,7 @@
   Keep all these files together in a folder named Val_Vehicle:
     Val_Vehicle.ino                        this file: wiring + behaviour
     Face.h / Face.cpp                      Val's face
+    Spikes.h / Spikes.cpp                  the wiring's spikes, shown while driving
     Static.h                               white static (into setup, and tuning back in)
     MotionServo.h / MotionServo.cpp        the servo
     Port.h                                 the three Grove ports
@@ -30,7 +31,12 @@
     that was set up before): Val looks surprised, then only that sensor's wire is
     set up. The other wires are kept.
   - Then the vehicle runs: the servo's speed is the sum of what every wire delivers.
-  - The face reacts as before: Unsure after 30 s with no activity, Asleep after 60 s,
+  - The face is for talking to people: hello, setup, surprise at a new sensor.
+    While the wheel turns, the matrix shows spikes instead: one lane per sensor
+    (green +, red -), and the wheel firing along the bottom row.
+  - When the wheel has been still for a moment, the run is over and a face comes back:
+    the heart if only - wires stopped it (it stays by what it loves), otherwise a
+    neutral face. Then Unsure after 30 s with no activity, Asleep after 60 s,
     Happy or Neutral when something happens.
 
   Libraries needed: FastLED, and VL53L0X by Pololu.
@@ -41,6 +47,7 @@
 #include <FastLED.h>
 #include <Preferences.h>
 #include "Face.h"
+#include "Spikes.h"
 #include "Button.h"
 #include "MotionServo.h"
 #include "ColorSensor.h"
@@ -56,10 +63,13 @@ const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
 const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> Asleep
 const unsigned long SURPRISE_MS     = 3300;    // how long Val looks surprised at a new sensor
+const unsigned long REST_AFTER_MS   = 1500;    // wheel still this long -> the run is over, face comes back
+const float MOVING_SPEED = 0.05f;              // below this the wheel counts as still
 
 // ---------- Hardware ----------
 CRGB leds[25];
 Face face(leds);
+Spikes spikes(leds);                  // shown instead of the face while the wheel turns
 Button button(39);                    // the Matrix screen is the button
 MotionServo servo(1);                 // servo in S1
 
@@ -93,6 +103,8 @@ bool greetingDone = false;
 bool surprisePending = false;         // a new sensor was found; setup starts after the surprise
 unsigned long surpriseStartMs = 0;
 Face::Expression lastPrinted = Face::TALKING;
+bool showingSpikes = false;           // the matrix shows spikes, not the face
+unsigned long lastMovingMs = 0;
 
 // Functions defined further down
 void saveSetup();
@@ -205,6 +217,7 @@ void searchForSensors() {
 // full = false: only the wires that have not been set up (new sensors)
 void startSetup(bool full) {
   surprisePending = false;
+  showingSpikes = false;               // setup owns the matrix now
   Connection* toSetUp[PORT_COUNT];
   int count = 0;
   for (int i = 0; i < PORT_COUNT; i++) {
@@ -329,7 +342,7 @@ void noteActivity(const char* source) {
 }
 
 void updateIdle() {
-  if (face.isTalking()) {
+  if (face.isTalking() || showingSpikes) {
     lastActivityMs = millis();
     return;
   }
@@ -346,6 +359,84 @@ void updateIdle() {
   }
 }
 
+// =====================================================================
+//  The matrix: face or spikes
+// =====================================================================
+// The face that ends a run. One module only knows the signs of its own wires,
+// not whether they are crossed, so this is as much as it can tell:
+//   only - wires, and stopped: it slowed right down next to what it feels -> Love
+//   anything else, and stopped: nothing left to react to -> Neutral
+Face::Expression restingFace() {
+  bool anyExcitatory = false;
+  bool anyInhibitory = false;
+  for (int i = 0; i < PORT_COUNT; i++) {
+    if (!isSetUp(i) || !wires[i].isActive()) {
+      continue;
+    }
+    if (wires[i].weight > 0) {
+      anyExcitatory = true;
+    }
+    if (wires[i].weight < 0) {
+      anyInhibitory = true;
+    }
+  }
+  if (anyInhibitory && !anyExcitatory) {
+    return Face::LOVE;
+  }
+  return Face::NEUTRAL;
+}
+
+// Hand the spikes what every set-up wire feels, and how fast the wheel goes
+void feedSpikes(float sum) {
+  int lane = 0;
+  for (int i = 0; i < PORT_COUNT; i++) {
+    if (!isSetUp(i) || !wires[i].isActive()) {
+      continue;
+    }
+    spikes.setLane(lane, wires[i].sensor->value(), wires[i].weight);
+    lane++;
+  }
+  spikes.setLanes(lane);
+  float speed = sum;
+  if (ALLOW_REVERSE && speed < 0) {
+    speed = -speed;                    // backwards still fires the wheel
+  }
+  spikes.setWheel(speed);
+}
+
+// Spikes while the wheel turns; the face for everything else
+void updateDisplay(float sum) {
+  bool talkingToPeople = face.isTalking() || surprisePending || !greetingDone;
+  float speed = ALLOW_REVERSE ? fabsf(sum) : sum;
+  bool moving = speed > MOVING_SPEED;
+  unsigned long now = millis();
+
+  if (!talkingToPeople && moving) {
+    lastMovingMs = now;
+    if (!showingSpikes) {
+      showingSpikes = true;
+      spikes.start();
+      Serial.println("Matrix: spikes");
+    }
+  }
+  if (showingSpikes && (talkingToPeople || now - lastMovingMs >= REST_AFTER_MS)) {
+    showingSpikes = false;
+    lastActivityMs = now;
+    if (!talkingToPeople) {
+      face.tuneIn(restingFace());     // the run is over: static settles into its face
+    }
+    Serial.println("Matrix: face");
+  }
+
+  if (showingSpikes) {
+    lastActivityMs = now;              // driving counts as activity
+    feedSpikes(sum);
+    spikes.update();
+  } else {
+    face.update();
+  }
+}
+
 void printStatus(float sum) {
   if (millis() - lastPrintMs < 500) {
     return;
@@ -359,7 +450,7 @@ void printStatus(float sum) {
     }
   }
   Serial.printf("| sum %+.2f -> servo %d deg | %s\n", sum, servo.angle(),
-                Face::name(face.expression()));
+                showingSpikes ? "Spikes" : Face::name(face.expression()));
 }
 
 // =====================================================================
@@ -408,8 +499,6 @@ void loop() {
     }
   } else {
     // ---- Normal running ----
-    face.update();
-
     if (!greetingDone && !face.isTalking()) {
       greetingDone = true;
       if (!anyWireSetUp()) {
@@ -446,10 +535,11 @@ void loop() {
       servo.drive(0);                  // stay stopped during the greeting
     }
 
+    updateDisplay(sum);
     updateIdle();
     printStatus(sum);
 
-    if (face.expression() != lastPrinted) {
+    if (!showingSpikes && face.expression() != lastPrinted) {
       lastPrinted = face.expression();
       Serial.printf("Face: %s\n", Face::name(lastPrinted));
     }

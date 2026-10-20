@@ -1,7 +1,9 @@
 // Host test for Val_Vehicle: runs the real sketch against fake hardware (stub/).
-// Story: light sensor in Port A; full setup by button presses; a distance sensor is
-// plugged into Port C at 20 s (surprise, then setup for just that wire); at 44-45 s
-// Port A's light sensor is swapped for a distance sensor (treated as new).
+// Story: light sensor in Port A; full setup by button presses; the wheel turns, so the
+// matrix shows spikes. A distance sensor is plugged into Port C at 20 s (surprise, then
+// setup for just that wire, made a - wire); + and - now cancel, the wheel stops, and the
+// Neutral face comes back. At 44-45 s Port A's light sensor is swapped for a distance
+// sensor (treated as new, also made -); with only - wires it stops and shows Love.
 #include <Arduino.h>
 #include <Wire.h>
 #include <FastLED.h>
@@ -15,20 +17,23 @@ struct Press { float at, len; };
 int main(){
   Press presses[] = {
     {6.0,1.0},{7.5,1.0},{9.0,1.0},{10.5,1.0},       // full setup: mount, A +, A low, A high
-    {28.5,1.0},{30.0,1.0},{31.5,1.0},              // C (distance): +, far, near
-    {54.0,1.0},{55.5,1.0},{57.0,1.0} };            // A now distance: +, far, near
+    {27.5,0.2},{28.5,1.0},{30.0,1.0},{31.5,1.0},   // C (distance): short press makes it -, far, near
+    {53.2,0.2},{54.0,1.0},{55.5,1.0},{57.0,1.0} }; // A now distance: short press makes it -, far, near
   setup(); bool lastSetup=false;
-  for(fakeMillis=5; fakeMillis<64000; fakeMillis+=5){
+  for(fakeMillis=5; fakeMillis<66000; fakeMillis+=5){
     float t=fakeMillis/1000.0f; fakeButtonDown=false;
     for(auto&p:presses){ if(t>=p.at && t<p.at+p.len) fakeButtonDown=true; }
     // light on A for its calibration: dark during low press, bright during high press, then middling
     if(t<44){ if(t>8.5 && t<10.1){ fakeSensors[0].value=400; } else if(t>10.1 && t<11.6){ fakeSensors[0].value=20000; } else { fakeSensors[0].value=10200; } }
     if(t>=20.0){ fakeSensors[2].present=true; }
     // distance on C: far (1000) during low press, near (100) during high press, then 550
-    if(t>29.5 && t<31.1){ fakeSensors[2].value=1000; } else if(t>31.1 && t<32.6){ fakeSensors[2].value=100; } else { fakeSensors[2].value=550; }
+    // ... and far again at 36-38 s (C's - wire lets go, the wheel turns, then stops again)
+    if(t>29.5 && t<31.1){ fakeSensors[2].value=1000; } else if(t>31.1 && t<32.6){ fakeSensors[2].value=100; } else if(t>36 && t<38){ fakeSensors[2].value=1000; } else { fakeSensors[2].value=550; }
     // at 44 s pull the light sensor out of A; at 45 s put a distance sensor in A
     if(t>=44 && t<45){ fakeSensors[0].present=false; }
     if(t>=45){ fakeSensors[0].present=true; fakeSensors[0].type='D'; if(t>55.5 && t<57.1){ fakeSensors[0].value=1000; } else if(t>57.1 && t<58.6){ fakeSensors[0].value=100; } else { fakeSensors[0].value=550; } }
+    // after the last setup: both far at 60.5-62 s (full speed), then both near (stops: Love)
+    if(t>=60.5){ float v = t<62 ? 1000 : 100; fakeSensors[0].value=v; fakeSensors[2].value=v; }
     loop();
     if(setupMode.active()!=lastSetup){ lastSetup=setupMode.active(); ::printf("   >> t=%.2fs setup %s\n", t, lastSetup?"STARTS":"ends"); }
   }
