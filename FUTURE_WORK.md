@@ -24,6 +24,18 @@ A web interface that carries the instructions, with a game/story layer:
   save code, no accounts at first.
 - Instructions only: the site does not talk to the robot (no Web Serial / BLE) for
   now.
+- Art: Val drawn as 16-bit pixel art rendered from the chassis STL files
+  (`vechicle_one_unibody_v3` / `v3a`, mirrored). Matrix case light grey, Motion base
+  dark grey, blue battery at the front, grey wheel with a thin red tyre centred in the
+  rear fork. Two-module Val: joined counterweight to counterweight, grey spacer beams
+  in the gap. Chassis colours still open (one per side: yellow/purple, orange/blue,
+  red/champagne, black/white). The web Val reuses Amazed Kingdoms' voice (browser
+  speech, so it varies by device).
+- Two-module Val, which one has the face: chosen on the robot (both Matrices ask,
+  the child presses one). The other Matrix shows its sensor's signal instead; five
+  displays mocked up (level, spikes, trace, ripple, wire), none chosen yet. The web
+  Val has to match: since the site doesn't talk to the robot, the guide asks which
+  colour has the face and saves the answer with the child's progress.
 
 ## Firmware
 
