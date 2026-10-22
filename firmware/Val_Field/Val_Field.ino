@@ -8,9 +8,12 @@
 
   Hardware: M5 Atom Matrix on an Atom Motion base
             two continuous-rotation servos: S1 = LEFT wheel, S2 = RIGHT wheel
-            up to 3 sensors, one each in Port A, B and C, any mix of:
+            up to 3 sensors, any mix of:
               M5 Color Unit (TCS3472)  light: brighter = stronger
               M5 ToF Unit   (VL53L0X)  distance: nearer = stronger
+            in Port A, B and C, or on an M5 PaHub (PCA9548A) plugged into one
+            of the ports. On a hub, two sensors of the same kind can share one
+            port (for example two distance sensors pointing left and right).
 
   Keep all these files together in a folder named Val_Field. The shared ones
   (Face, Static, MotionServo, Port, I2CBus, Sensor, ColorSensor, DistanceSensor, Button)
@@ -23,6 +26,8 @@
       pull / push / off, which way it points, and its low/high calibration.
   - A newly plugged sensor (or a different kind on a port): Val looks surprised,
     then only that sensor is set up.
+  - A PaHub is found the same way as a sensor: if one answers on a port, its six
+    channels are searched instead of the port itself.
   - Then the robot drives: each sensor adds a vector, the vectors are summed,
     and the sum sets the two wheel speeds.
   - The face reacts as before: Unsure after 30 s with no activity, Asleep after 60 s.
@@ -39,6 +44,7 @@
 #include "MotionServo.h"
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
+#include "I2CBus.h"
 #include "PotentialField.h"
 #include "FieldSetup.h"
 
@@ -61,18 +67,42 @@ Button button(39);                    // the Matrix screen is the button
 MotionServo leftWheel(1);             // S1
 MotionServo rightWheel(2);            // S2
 
-// ---------- Ports and the sensors that can go in them ----------
-// Each port can hold either kind of sensor; whichever answers is used.
+// ---------- Places a sensor can be, and the sensors that can go in them ----------
+// Places 0-2 are Ports A, B and C. Places 3-8 are the six channels of a PaHub,
+// if one is plugged into a port (that port then holds the hub, not a sensor).
+// Each place can hold either kind of sensor; whichever answers is used.
 // To stop using a port, set its entry in USE_PORT to false.
 const int PORT_COUNT = 3;
 const bool USE_PORT[PORT_COUNT] = {true, true, true};
-ColorSensor    colorSensor[PORT_COUNT]    = {ColorSensor(PORT_A), ColorSensor(PORT_B), ColorSensor(PORT_C)};
-DistanceSensor distanceSensor[PORT_COUNT] = {DistanceSensor(PORT_A), DistanceSensor(PORT_B), DistanceSensor(PORT_C)};
+const Port PORTS[PORT_COUNT] = {PORT_A, PORT_B, PORT_C};
+const int FIRST_HUB_PLACE = PORT_COUNT;
+const int PLACE_COUNT = PORT_COUNT + I2CBus::HUB_CHANNELS;
+const int MAX_SENSORS = 3;            // the setup screens have room for 3 sensors
 
-// The field. field.source[i] belongs to port i.
+// The hub's channels get their pins when the hub is found. They are named by
+// channel number, 0 to 5.
+Port place[PLACE_COUNT] = {
+  PORT_A, PORT_B, PORT_C,
+  {"Hub 0", -1, -1, 0}, {"Hub 1", -1, -1, 1}, {"Hub 2", -1, -1, 2},
+  {"Hub 3", -1, -1, 3}, {"Hub 4", -1, -1, 4}, {"Hub 5", -1, -1, 5}
+};
+int hubPort = -1;                     // which port the PaHub is in (-1 = no hub)
+
+ColorSensor colorSensor[PLACE_COUNT] = {
+  ColorSensor(place[0]), ColorSensor(place[1]), ColorSensor(place[2]),
+  ColorSensor(place[3]), ColorSensor(place[4]), ColorSensor(place[5]),
+  ColorSensor(place[6]), ColorSensor(place[7]), ColorSensor(place[8])
+};
+DistanceSensor distanceSensor[PLACE_COUNT] = {
+  DistanceSensor(place[0]), DistanceSensor(place[1]), DistanceSensor(place[2]),
+  DistanceSensor(place[3]), DistanceSensor(place[4]), DistanceSensor(place[5]),
+  DistanceSensor(place[6]), DistanceSensor(place[7]), DistanceSensor(place[8])
+};
+
+// The field. field.source[i] belongs to place i.
 PotentialField field;
 
-// What each port was last set up with. A sensor of a different kind counts as new.
+// What each place was last set up with. A sensor of a different kind counts as new.
 struct PortRecord {
   char type = 0;                      // 0 = never set up, 'C' = light, 'D' = distance
   uint8_t policy = PotentialField::PULL;
@@ -80,7 +110,7 @@ struct PortRecord {
   long low = 0;
   long high = 0;
 };
-PortRecord record[PORT_COUNT];
+PortRecord record[PLACE_COUNT];
 
 FieldSetup setupMode(leds, leftWheel, rightWheel);
 Preferences saved;
@@ -112,13 +142,75 @@ void setDefaults(int i) {
   s.angle = 0;
 }
 
-// Look in port i for a sensor of either kind. Returns true if one was found.
-// If the port was set up before with the same kind of sensor, its setup comes back.
+bool isPlugged(int i);
+
+// Is there a PaHub in a port? Look in each port (both wire orders). When one is
+// found, its six channels become places to look for sensors.
+void findHub() {
+  for (int p = 0; p < PORT_COUNT; p++) {
+    if (!USE_PORT[p]) {
+      continue;
+    }
+    const int orders[2][2] = {{PORTS[p].pin1, PORTS[p].pin2}, {PORTS[p].pin2, PORTS[p].pin1}};
+    for (int n = 0; n < 2; n++) {
+      I2CBus::use(orders[n][0], orders[n][1]);
+      if (!I2CBus::hubAnswers()) {
+        continue;
+      }
+      I2CBus::hubAllOff();
+      hubPort = p;
+      field.source[p].sensor = nullptr;          // the port holds the hub now
+      for (int i = FIRST_HUB_PLACE; i < PLACE_COUNT; i++) {
+        place[i].pin1 = PORTS[p].pin1;
+        place[i].pin2 = PORTS[p].pin2;
+        colorSensor[i].setPort(place[i]);
+        distanceSensor[i].setPort(place[i]);
+      }
+      Serial.printf("PaHub found on %s\n", PORTS[p].name);
+      return;
+    }
+  }
+}
+
+// Is the hub still there? (Unplugged: its port becomes an ordinary port again.)
+void checkHub() {
+  if (hubPort < 0) {
+    return;
+  }
+  const int orders[2][2] = {{PORTS[hubPort].pin1, PORTS[hubPort].pin2}, {PORTS[hubPort].pin2, PORTS[hubPort].pin1}};
+  for (int n = 0; n < 2; n++) {
+    I2CBus::use(orders[n][0], orders[n][1]);
+    if (I2CBus::hubAnswers()) {
+      return;
+    }
+  }
+  Serial.printf("PaHub on %s is gone\n", PORTS[hubPort].name);
+  hubPort = -1;
+}
+
+int sensorsInUse() {
+  int count = 0;
+  for (int i = 0; i < PLACE_COUNT; i++) {
+    if (isPlugged(i)) {
+      count++;
+    }
+  }
+  return count;
+}
+
+// Look in place i for a sensor of either kind. Returns true if one was found.
+// If the place was set up before with the same kind of sensor, its setup comes back.
 bool detectPort(int i) {
   PotentialField::Source& s = field.source[i];
   s.sensor = nullptr;
-  if (!USE_PORT[i]) {
-    return false;
+  if (i < PORT_COUNT && (!USE_PORT[i] || i == hubPort)) {
+    return false;                      // port not used, or it holds the hub
+  }
+  if (i >= FIRST_HUB_PLACE && hubPort < 0) {
+    return false;                      // no hub, so no hub channels
+  }
+  if (sensorsInUse() >= MAX_SENSORS) {
+    return false;                      // no room on the setup screens for another
   }
   if (colorSensor[i].begin()) {
     s.sensor = &colorSensor[i];
@@ -146,7 +238,7 @@ bool isSetUp(int i) {
 }
 
 bool anySensorSetUp() {
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     if (isSetUp(i)) {
       return true;
     }
@@ -155,7 +247,7 @@ bool anySensorSetUp() {
 }
 
 bool anySensorNeedsSetup() {
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     if (isPlugged(i) && !isSetUp(i)) {
       return true;
     }
@@ -163,13 +255,17 @@ bool anySensorNeedsSetup() {
   return false;
 }
 
-// Every 5 seconds, look in ports that have nothing working in them
+// Every 5 seconds, look for a hub, and in places that have nothing working in them
 void searchForSensors() {
   if (millis() - lastSearchMs < 5000) {
     return;
   }
   lastSearchMs = millis();
-  for (int i = 0; i < PORT_COUNT; i++) {
+  checkHub();
+  if (hubPort < 0) {
+    findHub();
+  }
+  for (int i = 0; i < PLACE_COUNT; i++) {
     if (!isPlugged(i)) {
       detectPort(i);
     }
@@ -183,9 +279,9 @@ void searchForSensors() {
 // full = false: only sensors that have not been set up (new ones)
 void startSetup(bool full) {
   surprisePending = false;
-  PotentialField::Source* toSetUp[PORT_COUNT];
+  PotentialField::Source* toSetUp[PLACE_COUNT];
   int count = 0;
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     if (!isPlugged(i)) {
       continue;
     }
@@ -212,7 +308,7 @@ void reactToNewSensor() {
 }
 
 void finishSetup() {
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     if (isPlugged(i)) {
       PotentialField::Source& s = field.source[i];
       record[i].type = s.sensor->typeCode();
@@ -231,7 +327,7 @@ void finishSetup() {
 void printSetup() {
   Serial.printf("Wheels: S1 forward = %s, S2 forward = %s\n",
                 MotionServo::mountName(leftWheel.mount()), MotionServo::mountName(rightWheel.mount()));
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     if (!isPlugged(i)) {
       continue;
     }
@@ -252,7 +348,7 @@ void saveSetup() {
   saved.begin("valfield", false);
   saved.putUChar("left", (uint8_t)leftWheel.mount());
   saved.putUChar("right", (uint8_t)rightWheel.mount());
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     if (record[i].type == 0) {
       continue;
     }
@@ -278,7 +374,7 @@ void loadSetup() {
   saved.begin("valfield", true);
   leftWheel.setMount((MotionServo::Mount)saved.getUChar("left", MotionServo::LEFT));
   rightWheel.setMount((MotionServo::Mount)saved.getUChar("right", MotionServo::RIGHT));
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     char key[8];
     snprintf(key, sizeof(key), "t%d", i);
     if (!saved.isKey(key)) {
@@ -339,7 +435,7 @@ void printStatus(float left, float right) {
     return;
   }
   lastPrintMs = millis();
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     if (isPlugged(i)) {
       PotentialField::Source& s = field.source[i];
       Serial.printf("%s %c %5ld (%.2f %s %+.0f)  ", s.sensor->portName(), s.sensor->typeCode(),
@@ -373,7 +469,8 @@ void setup() {
   field.turnGain = TURN_GAIN;
 
   loadSetup();
-  for (int i = 0; i < PORT_COUNT; i++) {
+  findHub();
+  for (int i = 0; i < PLACE_COUNT; i++) {
     detectPort(i);
   }
   lastSearchMs = millis();
@@ -384,7 +481,7 @@ void setup() {
 
 void loop() {
   // Sensors keep reading all the time, so the setup meter is live
-  for (int i = 0; i < PORT_COUNT; i++) {
+  for (int i = 0; i < PLACE_COUNT; i++) {
     Sensor* s = field.source[i].sensor;
     if (s != nullptr) {
       s->update();
@@ -436,7 +533,7 @@ void loop() {
     }
 
     // Only sensors that are plugged in AND set up take part in the field
-    for (int i = 0; i < PORT_COUNT; i++) {
+    for (int i = 0; i < PLACE_COUNT; i++) {
       field.source[i].enabled = isSetUp(i);
     }
 

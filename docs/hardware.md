@@ -77,5 +77,17 @@ stimulus). For distance, "high" is the *smaller* number (near).
   They need a voltage divider on Grove's 5 V, can't be told apart by the robot, and
   sound needs an ADC pin. Too fiddly for the audience. A tester sketch was written
   and then removed.
-- **M5 Unit PaHub v2.1** (PCA9548A, 0x70, 6 channels) would allow more I2C sensors
-  per port, including duplicates. Not supported yet: see `FUTURE_WORK.md`.
+## M5 Unit PaHub (Val_Field only, for now)
+
+A PCA9548A at address **0x70** with six channels. It connects one channel at a time
+to its input (write one byte: bit n = channel n; 0 = all off), so sensors on
+different channels can share an address: two distance sensors, or two light
+sensors, on one port.
+
+- Val_Field looks for a hub on each port (both wire orders) before looking for
+  sensors. A port with a hub holds only the hub; its six channels are searched
+  instead and named "Hub 0" to "Hub 5" by channel number.
+- Every read switches the hub to that sensor's channel first (`I2CBus::use`).
+- The setup screens have room for 3 sensors, so only the first 3 found are used.
+- Channel numbering 0-5 matches the code; check it against the labels on the unit.
+- Tested only against fake hardware so far.

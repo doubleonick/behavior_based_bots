@@ -7,6 +7,10 @@
 
   It also tells apart the two sensors that share address 0x29, by reading the ID
   each chip reports about itself.
+
+  A PaHub (M5 Unit PaHub, a PCA9548A at 0x70) on a port gives that port six
+  channels. Sensors on different channels can share an address, so two distance
+  sensors (or two light sensors) can go on one port. use() picks the channel too.
 */
 #pragma once
 #include <Arduino.h>
@@ -15,8 +19,14 @@
 namespace I2CBus {
 
 const uint8_t SHARED_ADDRESS = 0x29;   // both the Color Unit and the ToF (distance) Unit use this
+const uint8_t HUB_ADDRESS = 0x70;      // PaHub
+const int HUB_CHANNELS = 6;
 
-void use(int sda, int scl);            // point Wire1 at these pins
+// Point Wire1 at these pins and, for a sensor on a PaHub, switch the hub to its channel.
+// Returns false if there should be a hub and it did not answer.
+bool use(int sda, int scl, int channel = -1);
+bool hubAnswers();                     // is a PaHub on the current pins?
+void hubAllOff();                      // switch off every hub channel
 void release();                        // let go of the pins (so a 3-pin sensor can use them)
 bool answers(uint8_t address);         // is anything at this address on the current pins?
 bool readByte(uint8_t address, uint8_t command, uint8_t& value);

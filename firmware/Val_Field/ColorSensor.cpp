@@ -25,7 +25,9 @@ void ColorSensor::writeRegister(uint8_t reg, uint8_t value) {
 bool ColorSensor::begin() {
   const int orders[2][2] = {{_port.pin1, _port.pin2}, {_port.pin2, _port.pin1}};
   for (int n = 0; n < 2; n++) {
-    I2CBus::use(orders[n][0], orders[n][1]);
+    if (!I2CBus::use(orders[n][0], orders[n][1], _port.channel)) {
+      continue;                               // should be on a PaHub, and no hub answered
+    }
     if (!I2CBus::answers(ADDRESS)) {
       continue;
     }
@@ -52,7 +54,9 @@ bool ColorSensor::begin() {
 
 // Read all four channels in one go (as the earlier sketches did) and keep "clear"
 bool ColorSensor::readRaw(long& out) {
-  I2CBus::use(_sda, _scl);
+  if (!I2CBus::use(_sda, _scl, _port.channel)) {
+    return false;                             // the PaHub stopped answering
+  }
   Wire1.beginTransmission(ADDRESS);
   Wire1.write(CMD | AUTO_INC | REG_CDATAL);
   if (Wire1.endTransmission() != 0) {

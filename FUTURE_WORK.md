@@ -58,9 +58,9 @@ A web interface that carries the instructions, with a game/story layer:
   None of these are I2C, so they can't be detected; a fixed port layout
   (A = light, B = IR, C = key) avoids a setup step. Port B's analog needs the white
   wire on G33: check on the hardware.
-- **PaHub support**: treat a port answering at 0x70 as a hub; a sensor's location
-  becomes "port + channel". Mostly `Port` and `I2CBus`. The setup screens' dots
-  only fit about 5 sensors.
+- **PaHub support**: done in Val_Field (2026-10): a port answering at 0x70 is a hub,
+  and a sensor's place is "port + channel" (`Port::channel`, `I2CBus::use`). Still
+  capped at 3 sensors, the setup screens' limit. Not yet in Val_Vehicle.
 - **Fixed arbitration** (behaviour layers that suppress each other) and **ANNs**:
   the later paradigms in the program, after vehicles and fields.
 - **Saving**: `SAVE_SETUP` (Preferences/NVS) exists but defaults to off.

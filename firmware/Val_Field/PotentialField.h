@@ -38,7 +38,7 @@ public:
     float   gain = 1;
   };
 
-  static const int MAX_SOURCES = 3;   // one per port
+  static const int MAX_SOURCES = 9;   // one per place: 3 ports + 6 PaHub channels
   Source source[MAX_SOURCES];
 
   // Tuning

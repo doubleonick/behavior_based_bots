@@ -35,6 +35,7 @@ public:
   virtual float meterLevel() const = 0;
 
   const char* portName() const { return _port.name; }
+  void setPort(const Port& port) { _port = port; }   // e.g. once the PaHub has been found
 
   bool  update();                     // call every loop; true when a new reading arrived
   bool  isConnected() const { return _connected; }

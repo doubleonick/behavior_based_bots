@@ -7,15 +7,31 @@ int currentSda = -1;
 int currentScl = -1;
 }
 
-void use(int sda, int scl) {
-  if (sda == currentSda && scl == currentScl) {
-    return;                            // already there
+bool use(int sda, int scl, int channel) {
+  if (sda != currentSda || scl != currentScl) {
+    Wire1.end();
+    Wire1.begin(sda, scl, 100000);
+    delay(5);
+    currentSda = sda;
+    currentScl = scl;
   }
-  Wire1.end();
-  Wire1.begin(sda, scl, 100000);
-  delay(5);
-  currentSda = sda;
-  currentScl = scl;
+  if (channel < 0) {
+    return true;                       // plugged straight in: no hub to talk to
+  }
+  // The hub connects one channel at a time: one bit per channel
+  Wire1.beginTransmission(HUB_ADDRESS);
+  Wire1.write(1 << channel);
+  return Wire1.endTransmission() == 0;
+}
+
+bool hubAnswers() {
+  return answers(HUB_ADDRESS);
+}
+
+void hubAllOff() {
+  Wire1.beginTransmission(HUB_ADDRESS);
+  Wire1.write(0);
+  Wire1.endTransmission();
 }
 
 void release() {

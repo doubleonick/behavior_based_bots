@@ -1,0 +1,22 @@
+#pragma once
+#include <stdint.h>
+#include <stddef.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
+#include <algorithm>
+using std::min; using std::max;
+#define constrain(x,a,b) ((x)<(a)?(a):((x)>(b)?(b):(x)))
+#define PI 3.14159265f
+#define LOW 0
+#define HIGH 1
+#define INPUT 0
+extern uint32_t fakeMillis; inline uint32_t millis(){ return fakeMillis; }
+inline void delay(int){}
+inline void pinMode(int,int){}
+extern bool fakeButtonDown; inline int digitalRead(int){ return fakeButtonDown ? LOW : HIGH; }
+inline uint32_t esp_random(){ return 4; }
+struct FakeSerial { void begin(int){} void println(const char* s){ printf("[%6.2fs] %s\n", fakeMillis/1000.0, s);} void println(){ puts(""); } void print(const char* s){ fputs(s,stdout);} 
+  void printf(const char* f,...){ static bool lineStart=true; if(lineStart) ::printf("[%6.2fs] ", fakeMillis/1000.0); va_list a; va_start(a,f); vprintf(f,a); va_end(a); lineStart = f[strlen(f)-1]=='\n'; } };
+extern FakeSerial Serial;

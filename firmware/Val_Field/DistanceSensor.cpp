@@ -5,7 +5,9 @@
 bool DistanceSensor::begin() {
   const int orders[2][2] = {{_port.pin1, _port.pin2}, {_port.pin2, _port.pin1}};
   for (int n = 0; n < 2; n++) {
-    I2CBus::use(orders[n][0], orders[n][1]);
+    if (!I2CBus::use(orders[n][0], orders[n][1], _port.channel)) {
+      continue;                               // should be on a PaHub, and no hub answered
+    }
     if (!I2CBus::answers(I2CBus::SHARED_ADDRESS)) {
       continue;
     }
@@ -30,7 +32,9 @@ bool DistanceSensor::begin() {
 }
 
 bool DistanceSensor::readRaw(long& out) {
-  I2CBus::use(_sda, _scl);
+  if (!I2CBus::use(_sda, _scl, _port.channel)) {
+    return false;                             // the PaHub stopped answering
+  }
   long mm = _chip.readRangeContinuousMillimeters();
   if (_chip.timeoutOccurred()) {
     return false;                             // no answer: probably unplugged

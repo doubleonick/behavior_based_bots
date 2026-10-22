@@ -28,6 +28,8 @@ for the grown-ups, is planned in `web/`. See `FUTURE_WORK.md`.
 - Sensors, one per Grove port (Atom Port A, Motion Ports B and C), found automatically:
   - M5 Color Unit (TCS3472), used as a light sensor
   - M5 ToF Unit (VL53L0X), used as a distance sensor
+- Optional, Val_Field only: an M5 PaHub in one port, so two sensors of the same kind
+  can share it (up to 3 sensors in all)
 
 Pins, registers and known quirks: `docs/hardware.md`.
 
