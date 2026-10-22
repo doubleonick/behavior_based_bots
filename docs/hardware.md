@@ -92,5 +92,8 @@ sensors, on one port.
   instead and named "Hub 0" to "Hub 5" by channel number.
 - Every read switches the hub to that sensor's channel first (`I2CBus::use`).
 - The setup screens have room for 3 sensors, so only the first 3 found are used.
-- Channel numbering 0-5 matches the code; check it against the labels on the unit.
-- Tested only against fake hardware so far.
+- Channel numbering 0-5 matches the code and the robot: Hub 0 and Hub 1 are the
+  channels the unit calls 0 and 1. *(tested)*
+- Two ToF Units on one hub (right on channel 0, left on channel 1): found, set up,
+  push/pull and the mounting angles all behave as expected in Val_Field, spikes
+  included. *(tested)* Two light sensors on a hub: not tried on the robot yet.
