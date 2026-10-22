@@ -7,29 +7,30 @@
 [  2.00s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
 [  2.50s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
 [  3.00s] Port A D  1000 (0.17 push +0)  Port C D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
-[  3.48s] Full setup: 2 sensor(s)
 [  3.48s] Face: Neutral
-   >> t=3.48s setup STARTS
+[  3.49s] Full setup: 2 sensor(s)
+   >> t=3.49s setup STARTS
 [ 26.41s] Wheels: S1 forward = left, S2 forward = right
 [ 26.41s]   Port A: Distance, push at +45 deg, low 1000, high 100
 [ 26.41s]   Port C: Distance, push at -45 deg, low 1000, high 100
    >> t=26.41s setup ends
-[ 26.41s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
-[ 26.41s] Face: Happy
-[ 26.91s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
-[ 27.41s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
-[ 27.91s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
-[ 28.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 28.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 29.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 29.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 30.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
+[ 26.41s] [ 26.41s] Matrix: spikes
+[ 26.41s] Lanes, left to right: Port A Port C
+[ 26.41s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Spikes
+[ 26.91s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Spikes
+[ 27.41s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Spikes
+[ 27.91s] Port A D   100 (1.00 push +45)  Port C D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Spikes
+[ 28.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 28.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 29.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 29.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 30.41s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
    >> t=30.8s  S1 (left) 117 deg, S2 (right) 162 deg
-[ 30.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 31.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 31.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 32.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 32.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 33.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 30.91s] Port A D   300 (0.78 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 31.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 31.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 32.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 32.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 33.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
    >> t=33.8s  S1 (left) 117 deg, S2 (right) 63 deg
-[ 33.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 33.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes

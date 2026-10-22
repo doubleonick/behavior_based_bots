@@ -47,8 +47,9 @@ Open `firmware/Val_Vehicle/Val_Vehicle.ino` or `firmware/Val_Field/Val_Field.ino
 3. After setup, Val drives. While the wheel turns, the matrix shows **spikes**: one lane
    per sensor (green for a + wire, red for a −), faster the more it feels, and the wheel
    firing along the bottom row. When the wheel stops, the run is over and a face comes
-   back (the heart if only − wires stopped it). *(Val_Vehicle; Val_Field still shows the
-   face while driving.)*
+   back (the heart if only − wires stopped it). In Val_Field, green lanes pull and red
+   lanes push, the lanes are placed left to right by where each sensor points, and the
+   bottom row is split into the left and right wheel (white forwards, amber backwards).
 
 Plugging in a new sensor while Val is running makes it look surprised and then
 set up just that sensor.

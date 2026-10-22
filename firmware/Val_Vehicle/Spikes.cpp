@@ -6,6 +6,7 @@ namespace {
 const float GREEN[3] = {0, 255, 60};
 const float RED[3]   = {255, 0, 0};
 const float WHITE[3] = {180, 180, 200};
+const float AMBER[3] = {255, 110, 0};
 
 const uint32_t FRAME_MS = 40;         // 25 frames per second, like Face
 const float    SECONDS_PER_FRAME = FRAME_MS / 1000.0f;
@@ -71,8 +72,10 @@ void Spikes::start() {
     _lane[j].phase = 0.3f * j;          // lanes start out of step with each other
     clearAges(_lane[j].ages);
   }
-  _wheelPhase = 0.5f;
-  clearAges(_wheelAges);
+  for (int w = 0; w < 2; w++) {
+    _wheel[w].phase = 0.5f + 0.25f * w;
+    clearAges(_wheel[w].ages);
+  }
   _lastDrawMs = 0;
 }
 
@@ -95,7 +98,51 @@ void Spikes::setLane(int lane, float level, float weight) {
 }
 
 void Spikes::setWheel(float speed) {
-  _wheel = clamp01(speed);
+  _twoWheels = false;
+  _wheel[0].speed = clamp01(speed);
+}
+
+void Spikes::setWheels(float left, float right) {
+  _twoWheels = true;
+  _wheel[0].speed = max(-1.0f, min(1.0f, left));
+  _wheel[1].speed = max(-1.0f, min(1.0f, right));
+}
+
+// Move a wheel's spikes along, and send a new one when it is due (faster = more often)
+void Spikes::fireWheel(Wheel& wheel) {
+  ageAll(wheel.ages, WHEEL_MAX_AGE);
+  float speed = fabsf(wheel.speed);
+  if (speed <= 0.01f) {
+    return;
+  }
+  float before = wheel.phase;
+  wheel.phase += WHEEL_MAX_RATE * speed * SECONDS_PER_FRAME;
+  if ((int)wheel.phase > (int)before) {
+    addAge(wheel.ages);
+  }
+  if (wheel.phase > 1000) {
+    wheel.phase -= 1000;
+  }
+}
+
+// A wheel's spikes start at startCol and spread one LED per frame, within fromCol..toCol
+void Spikes::drawWheel(const Wheel& wheel, int fromCol, int toCol, int startCol) {
+  const float* rgb = (wheel.speed >= 0) ? WHITE : AMBER;
+  for (int k = 0; k < MAX_AGES; k++) {
+    if (wheel.ages[k] < 0) {
+      continue;
+    }
+    for (int col = fromCol; col <= toCol; col++) {
+      int distance = col - startCol;
+      if (distance < 0) {
+        distance = -distance;
+      }
+      float behind = wheel.ages[k] - distance;
+      if (behind >= 0 && behind < WHEEL_FADE) {
+        add(4, col, rgb, 1.0f - behind / WHEEL_FADE);
+      }
+    }
+  }
 }
 
 void Spikes::clearAges(int* ages) {
@@ -174,32 +221,15 @@ bool Spikes::update() {
     }
   }
 
-  // ---- The wheel: the bottom row fires at the wheel's speed ----
-  ageAll(_wheelAges, WHEEL_MAX_AGE);
-  if (_wheel > 0.01f) {
-    float before = _wheelPhase;
-    _wheelPhase += WHEEL_MAX_RATE * _wheel * SECONDS_PER_FRAME;
-    if ((int)_wheelPhase > (int)before) {
-      addAge(_wheelAges);
-    }
-    if (_wheelPhase > 1000) {
-      _wheelPhase -= 1000;
-    }
-  }
-  for (int k = 0; k < MAX_AGES; k++) {
-    if (_wheelAges[k] < 0) {
-      continue;
-    }
-    for (int col = 0; col < 5; col++) {
-      int fromMiddle = col - 2;
-      if (fromMiddle < 0) {
-        fromMiddle = -fromMiddle;
-      }
-      float behind = _wheelAges[k] - fromMiddle;   // spreads one LED each way per frame
-      if (behind >= 0 && behind < WHEEL_FADE) {
-        add(4, col, WHITE, 1.0f - behind / WHEEL_FADE);
-      }
-    }
+  // ---- The wheels: the bottom row fires at the wheels' speed ----
+  if (_twoWheels) {
+    fireWheel(_wheel[0]);
+    fireWheel(_wheel[1]);
+    drawWheel(_wheel[0], 0, 1, 1);     // left wheel: starts next to the middle, spreads left
+    drawWheel(_wheel[1], 3, 4, 3);     // right wheel: spreads right
+  } else {
+    fireWheel(_wheel[0]);
+    drawWheel(_wheel[0], 0, 4, 2);     // one wheel: spreads both ways from the middle
   }
 
   for (int n = 0; n < 25; n++) {

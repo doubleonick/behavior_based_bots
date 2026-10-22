@@ -42,8 +42,9 @@ A web interface that carries the instructions, with a game/story layer:
   comes back: Love if only - wires stopped it, Neutral otherwise. Open: each vehicle
   should end on its own emotion (fear, aggression, love, explorer), but one module
   can't tell crossed from straight wiring, so it can't yet tell 2a from 2b or 3a
-  from 3b. Val_Field still shows the face while driving; its two-wheel spikes are
-  next after the vehicles.
+  from 3b. Val_Field has spikes too (2026-10): green = pull, red = push, lanes
+  ordered left to right by where each sensor points, the bottom row split into the
+  two wheels (white forwards, amber backwards); its resting face is Neutral.
 
 ## Firmware
 

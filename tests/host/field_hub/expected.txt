@@ -8,41 +8,43 @@
 [  2.00s] Hub 0 D  1000 (0.17 push +0)  Hub 1 D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
 [  2.50s] Hub 0 D  1000 (0.17 push +0)  Hub 1 D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
 [  3.00s] Hub 0 D  1000 (0.17 push +0)  Hub 1 D  1000 (0.17 push +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
-[  3.48s] Full setup: 2 sensor(s)
 [  3.48s] Face: Neutral
-   >> t=3.48s setup STARTS
+[  3.49s] Full setup: 2 sensor(s)
+   >> t=3.49s setup STARTS
 [ 26.41s] Wheels: S1 forward = left, S2 forward = right
-[ 26.41s]   Hub 0: Distance, push at +45 deg, low 1000, high 100
-[ 26.41s]   Hub 1: Distance, push at -45 deg, low 1000, high 100
+[ 26.41s]   Hub 0: Distance, push at -45 deg, low 1000, high 100
+[ 26.41s]   Hub 1: Distance, push at +45 deg, low 1000, high 100
    >> t=26.41s setup ends
-[ 26.41s] Hub 0 D   100 (1.00 push +45)  Hub 1 D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
-[ 26.41s] Face: Happy
-[ 26.91s] Hub 0 D   100 (1.00 push +45)  Hub 1 D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
-[ 27.41s] Hub 0 D   100 (1.00 push +45)  Hub 1 D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
-[ 27.91s] Hub 0 D   100 (1.00 push +45)  Hub 1 D   100 (1.00 push -45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Happy
-[ 28.41s] Hub 0 D   300 (0.78 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 28.91s] Hub 0 D   300 (0.78 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 29.41s] Hub 0 D   300 (0.78 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 29.91s] Hub 0 D   300 (0.78 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 30.41s] Hub 0 D   300 (0.78 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
+[ 26.41s] [ 26.41s] Matrix: spikes
+[ 26.41s] Lanes, left to right: Hub 1 Hub 0
+[ 26.41s] Hub 0 D   100 (1.00 push -45)  Hub 1 D   100 (1.00 push +45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Spikes
+[ 26.91s] Hub 0 D   100 (1.00 push -45)  Hub 1 D   100 (1.00 push +45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Spikes
+[ 27.41s] Hub 0 D   100 (1.00 push -45)  Hub 1 D   100 (1.00 push +45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Spikes
+[ 27.91s] Hub 0 D   100 (1.00 push -45)  Hub 1 D   100 (1.00 push +45)  | field (-0.00, -1.41) -> L -1.00 R -1.00 | Spikes
+[ 28.41s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D   300 (0.78 push +45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 28.91s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D   300 (0.78 push +45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 29.41s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D   300 (0.78 push +45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 29.91s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D   300 (0.78 push +45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 30.41s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D   300 (0.78 push +45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
    >> t=30.8s  S1 (left) 117 deg, S2 (right) 162 deg
-[ 30.91s] Hub 0 D   300 (0.78 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Happy
-[ 31.41s] Hub 0 D  1000 (0.00 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 31.91s] Hub 0 D  1000 (0.00 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 32.41s] Hub 0 D  1000 (0.00 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 32.91s] Hub 0 D  1000 (0.00 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 33.41s] Hub 0 D  1000 (0.00 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 30.91s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D   300 (0.78 push +45)  | field (+0.55, -0.55) -> L +0.30 R -0.80 | Spikes
+[ 31.41s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D  1000 (0.00 push +45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 31.91s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D  1000 (0.00 push +45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 32.41s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D  1000 (0.00 push +45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 32.91s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D  1000 (0.00 push +45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 33.41s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D  1000 (0.00 push +45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
    >> t=33.8s  S1 (left) 117 deg, S2 (right) 63 deg
-[ 33.91s] Hub 0 D  1000 (0.00 push +45)  Hub 1 D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 33.91s] Hub 0 D  1000 (0.00 push -45)  Hub 1 D  1000 (0.00 push +45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
 [ 34.35s] Distance sensor on Hub 0 stopped answering
 [ 34.35s] Distance sensor on Hub 1 stopped answering
-[ 34.41s] | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 34.91s] | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 35.41s] | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
-[ 35.91s] | field (+0.00, +0.00) -> L +0.30 R +0.30 | Happy
+[ 34.41s] | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 34.91s] | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 35.41s] | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 35.91s] | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
 [ 36.41s] Light sensor found on Hub 0 (SDA=G32, SCL=G26)
 [ 36.41s] Light sensor found on Hub 1 (SDA=G32, SCL=G26)
 [ 36.41s] [ 36.41s] New sensor found!
+[ 36.41s] [ 36.41s] Matrix: face
 [ 36.41s] Hub 0 C     0 (0.00 pull +0)  Hub 1 C     0 (0.00 pull +0)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Surprised
 [ 36.41s] Face: Surprised
 [ 36.91s] Hub 0 C  3000 (0.05 pull +0)  Hub 1 C  3000 (0.05 pull +0)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Surprised
@@ -54,17 +56,18 @@
 [ 39.71s] Setup for 2 new sensor(s)
    >> t=39.71s setup STARTS
 [ 58.41s] Wheels: S1 forward = left, S2 forward = right
-[ 58.41s]   Hub 0: Light, pull at +45 deg, low 400, high 20000
-[ 58.41s]   Hub 1: Light, pull at -45 deg, low 400, high 20000
+[ 58.41s]   Hub 0: Light, pull at -45 deg, low 400, high 20000
+[ 58.41s]   Hub 1: Light, pull at +45 deg, low 400, high 20000
    >> t=58.41s setup ends
-[ 58.41s] Hub 0 C  3000 (0.13 pull +45)  Hub 1 C  3000 (0.13 pull -45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Happy
-[ 58.41s] Face: Happy
-[ 58.91s] Hub 0 C  3000 (0.13 pull +45)  Hub 1 C  3000 (0.13 pull -45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Happy
-[ 59.41s] Hub 0 C  3000 (0.13 pull +45)  Hub 1 C  3000 (0.13 pull -45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Happy
-[ 59.91s] Hub 0 C 15000 (0.74 pull +45)  Hub 1 C  2000 (0.08 pull -45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Happy
-[ 60.41s] Hub 0 C 15000 (0.74 pull +45)  Hub 1 C  2000 (0.08 pull -45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Happy
-[ 60.91s] Hub 0 C 15000 (0.74 pull +45)  Hub 1 C  2000 (0.08 pull -45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Happy
-[ 61.41s] Hub 0 C 15000 (0.74 pull +45)  Hub 1 C  2000 (0.08 pull -45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Happy
+[ 58.41s] [ 58.41s] Matrix: spikes
+[ 58.41s] Lanes, left to right: Hub 1 Hub 0
+[ 58.41s] Hub 0 C  3000 (0.13 pull -45)  Hub 1 C  3000 (0.13 pull +45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Spikes
+[ 58.91s] Hub 0 C  3000 (0.13 pull -45)  Hub 1 C  3000 (0.13 pull +45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Spikes
+[ 59.41s] Hub 0 C  3000 (0.13 pull -45)  Hub 1 C  3000 (0.13 pull +45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Spikes
+[ 59.91s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 60.41s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 60.91s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 61.41s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
    >> t=61.9s  S1 (left) 127 deg, S2 (right) 0 deg
-[ 61.91s] Hub 0 C 15000 (0.74 pull +45)  Hub 1 C  2000 (0.08 pull -45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Happy
-[ 62.41s] Hub 0 C 15000 (0.74 pull +45)  Hub 1 C  2000 (0.08 pull -45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Happy
+[ 61.91s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 62.41s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes

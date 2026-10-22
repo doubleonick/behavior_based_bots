@@ -16,7 +16,7 @@
             port (for example two distance sensors pointing left and right).
 
   Keep all these files together in a folder named Val_Field. The shared ones
-  (Face, Static, MotionServo, Port, I2CBus, Sensor, ColorSensor, DistanceSensor, Button)
+  (Face, Spikes, Static, MotionServo, Port, I2CBus, Sensor, ColorSensor, DistanceSensor, Button)
   are copies of Val/shared/ - edit them there and run sync_shared.py.
 
   What it does
@@ -30,7 +30,13 @@
     channels are searched instead of the port itself.
   - Then the robot drives: each sensor adds a vector, the vectors are summed,
     and the sum sets the two wheel speeds.
-  - The face reacts as before: Unsure after 30 s with no activity, Asleep after 60 s.
+  - The face is for talking to people: hello, setup, surprise at a new sensor.
+    While the wheels turn, the matrix shows spikes instead: one lane per sensor
+    (green = pull, red = push), placed left to right by where the sensor points,
+    and the two wheels firing along the bottom row (left two LEDs = left wheel,
+    right two = right wheel; white = forwards, amber = backwards).
+  - When both wheels have been still for a moment, the Neutral face comes back.
+    Then Unsure after 30 s with no activity, Asleep after 60 s.
 
   Libraries needed: FastLED, and VL53L0X by Pololu.
   Readings print on Serial at 115200 baud.
@@ -40,6 +46,7 @@
 #include <FastLED.h>
 #include <Preferences.h>
 #include "Face.h"
+#include "Spikes.h"
 #include "Button.h"
 #include "MotionServo.h"
 #include "ColorSensor.h"
@@ -59,10 +66,13 @@ const float TURN_GAIN    = 1.0f;      // how strongly the field steers
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
 const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> Asleep
 const unsigned long SURPRISE_MS     = 3300;    // how long Val looks surprised at a new sensor
+const unsigned long REST_AFTER_MS   = 1500;    // wheels still this long -> the run is over, face comes back
+const float MOVING_SPEED = 0.05f;              // below this a wheel counts as still
 
 // ---------- Hardware ----------
 CRGB leds[25];
 Face face(leds);
+Spikes spikes(leds);                  // shown instead of the face while the wheels turn
 Button button(39);                    // the Matrix screen is the button
 MotionServo leftWheel(1);             // S1
 MotionServo rightWheel(2);            // S2
@@ -122,6 +132,9 @@ bool greetingDone = false;
 bool surprisePending = false;         // a new sensor was found; setup starts after the surprise
 unsigned long surpriseStartMs = 0;
 Face::Expression lastPrinted = Face::TALKING;
+bool showingSpikes = false;           // the matrix shows spikes, not the face
+bool printLanes = false;              // say which sensor is in which lane, once
+unsigned long lastMovingMs = 0;
 
 // Functions defined further down
 void saveSetup();
@@ -279,6 +292,7 @@ void searchForSensors() {
 // full = false: only sensors that have not been set up (new ones)
 void startSetup(bool full) {
   surprisePending = false;
+  showingSpikes = false;               // setup owns the matrix now
   PotentialField::Source* toSetUp[PLACE_COUNT];
   int count = 0;
   for (int i = 0; i < PLACE_COUNT; i++) {
@@ -413,7 +427,7 @@ void noteActivity(const char* source) {
 }
 
 void updateIdle() {
-  if (face.isTalking()) {
+  if (face.isTalking() || showingSpikes) {
     lastActivityMs = millis();
     return;
   }
@@ -430,6 +444,86 @@ void updateIdle() {
   }
 }
 
+// =====================================================================
+//  The matrix: face or spikes
+// =====================================================================
+// How far to the left a sensor points: +1 = straight left, -1 = straight right
+float leftness(float angle) {
+  return sinf(angle * PI / 180.0f);
+}
+
+// Hand the spikes what every sensor in the field feels, in lanes from left to right
+// (by where each sensor points, so the matrix matches the robot when seen from behind)
+void feedSpikes(float left, float right) {
+  int order[PLACE_COUNT];
+  int count = 0;
+  for (int i = 0; i < PLACE_COUNT; i++) {
+    PotentialField::Source& s = field.source[i];
+    if (!s.enabled || s.policy == PotentialField::OFF) {
+      continue;
+    }
+    // insert in order: most left-pointing first
+    int k = count;
+    while (k > 0 && leftness(field.source[order[k - 1]].angle) < leftness(s.angle)) {
+      order[k] = order[k - 1];
+      k--;
+    }
+    order[k] = i;
+    count++;
+  }
+  if (count > Spikes::MAX_LANES) {
+    count = Spikes::MAX_LANES;
+  }
+  for (int lane = 0; lane < count; lane++) {
+    PotentialField::Source& s = field.source[order[lane]];
+    float weight = (s.policy == PotentialField::PULL) ? 1 : -1;   // pull green, push red
+    spikes.setLane(lane, s.sensor->value(), weight);
+  }
+  if (printLanes) {
+    printLanes = false;
+    Serial.printf("Lanes, left to right:");
+    for (int lane = 0; lane < count; lane++) {
+      Serial.printf(" %s", field.source[order[lane]].sensor->portName());
+    }
+    Serial.printf("\n");
+  }
+  spikes.setLanes(count);
+  spikes.setWheels(left, right);
+}
+
+// Spikes while the wheels turn; the face for everything else
+void updateDisplay(float left, float right) {
+  bool talkingToPeople = face.isTalking() || surprisePending || !greetingDone;
+  bool moving = fabsf(left) > MOVING_SPEED || fabsf(right) > MOVING_SPEED;
+  unsigned long now = millis();
+
+  if (!talkingToPeople && moving) {
+    lastMovingMs = now;
+    if (!showingSpikes) {
+      showingSpikes = true;
+      spikes.start();
+      printLanes = true;
+      Serial.println("Matrix: spikes");
+    }
+  }
+  if (showingSpikes && (talkingToPeople || now - lastMovingMs >= REST_AFTER_MS)) {
+    showingSpikes = false;
+    lastActivityMs = now;
+    if (!talkingToPeople) {
+      face.tuneIn(Face::NEUTRAL);     // the run is over: static settles into the face
+    }
+    Serial.println("Matrix: face");
+  }
+
+  if (showingSpikes) {
+    lastActivityMs = now;              // driving counts as activity
+    feedSpikes(left, right);
+    spikes.update();
+  } else {
+    face.update();
+  }
+}
+
 void printStatus(float left, float right) {
   if (millis() - lastPrintMs < 500) {
     return;
@@ -443,7 +537,7 @@ void printStatus(float left, float right) {
     }
   }
   Serial.printf("| field (%+.2f, %+.2f) -> L %+.2f R %+.2f | %s\n", field.vx(), field.vy(),
-                left, right, Face::name(face.expression()));
+                left, right, showingSpikes ? "Spikes" : Face::name(face.expression()));
 }
 
 // =====================================================================
@@ -502,8 +596,6 @@ void loop() {
     }
   } else {
     // ---- Normal running ----
-    face.update();
-
     if (!greetingDone && !face.isTalking()) {
       greetingDone = true;
       if (!anySensorSetUp()) {
@@ -548,10 +640,11 @@ void loop() {
       rightWheel.drive(right);
     }
 
+    updateDisplay(left, right);
     updateIdle();
     printStatus(left, right);
 
-    if (face.expression() != lastPrinted) {
+    if (!showingSpikes && face.expression() != lastPrinted) {
       lastPrinted = face.expression();
       Serial.printf("Face: %s\n", Face::name(lastPrinted));
     }
