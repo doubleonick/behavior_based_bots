@@ -37,6 +37,9 @@ direct connection to the servo signal pins.
 - **The servo headers can't be used as inputs.** Their signal pins belong to the STM32,
   and the register map has nothing to read back.
 - Grove Port B: G23, G33. Grove Port C: G19, G22.
+- Two-wheel body: with the servos at the rear of the chassis, Val_Field arced right
+  when driving straight with no sensors; moving them to the middle of the chassis
+  fixed it, with no change to the code. *(tested)*
 - Power quirk: after the Motion has been off for a long time, its power switch
   sometimes has to be toggled twice before it starts. There is no software fix.
   *(tested)*

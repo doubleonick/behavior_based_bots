@@ -68,6 +68,10 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Records
 
+- 2026-10: correction. Val_Field arcing right with no sensors looked like mismatched
+  servos (trim in code, or a "drive straight" setup step, was proposed). It was the
+  wheel position: servos moved from the rear to the middle of the chassis and it drove
+  straight. Trim not needed for now.
 - 2026-10: spike "branches" (paths merging toward the wheel) dropped for "lanes"
   (one column per sensor): the 5x5 matrix is too coarse for branches to read.
 - 2026-10: progress kept only in one browser rejected for the web guide (lost when a
