@@ -1,0 +1,113 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Light sensor found on Port A (SDA=G32, SCL=G26)
+[  0.50s] Port A C  8240 (0.13 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] Port A C  8240 (0.13 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] Port A C  8240 (0.13 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] Port A C  8240 (0.13 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] Port A C  8240 (0.13 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] Port A C  8240 (0.13 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 1 sensor(s)
+   >> t=3.49s setup STARTS
+[ 13.10s] Mount: left
+[ 13.10s]   Port A: Light, weight +1, low 400, high 20000
+   >> t=13.10s setup ends
+[ 13.11s] [ 13.11s] Matrix: spikes
+[ 13.11s] Port A C  8240 (0.40 x +1)  | sum +0.40 -> servo 90 deg | Spikes
+[ 13.61s] Port A C  8240 (0.40 x +1)  | sum +0.40 -> servo 125 deg | Spikes
+[ 14.11s] Port A C 19020 (0.95 x +1)  | sum +0.95 -> servo 140 deg | Spikes
+[ 14.61s] Port A C 19020 (0.95 x +1)  | sum +0.95 -> servo 175 deg | Spikes
+[ 15.08s] Matrix: face (Angry, during the run)
+[ 15.08s] Face: Angry
+[ 15.11s] Port A C 19020 (0.95 x +1)  | sum +0.95 -> servo 175 deg | Angry
+[ 15.61s] Port A C 19020 (0.95 x +1)  | sum +0.95 -> servo 175 deg | Angry
+[ 16.11s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 156 deg | Angry
+[ 16.61s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Angry
+[ 17.11s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Angry
+[ 17.61s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Angry
+[ 18.08s] [ 18.08s] Matrix: spikes
+[ 18.11s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Spikes
+[ 18.61s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Spikes
+[ 19.11s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Spikes
+[ 19.61s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Spikes
+[ 20.11s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Spikes
+[ 20.61s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Spikes
+[ 21.11s] Port A C 12160 (0.60 x +1)  | sum +0.60 -> servo 144 deg | Spikes
+[ 21.61s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 91 deg | Spikes
+[ 22.11s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Spikes
+[ 22.61s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Spikes
+[ 22.61s] [ 22.61s] Matrix: face
+[ 22.61s] Face: Scared
+[ 23.11s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 23.61s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 24.11s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 24.61s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 25.11s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 25.61s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 26.11s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 26.61s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 27.11s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 27.61s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 28.11s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 28.61s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 29.11s] Port A C   400 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 29.12s] [ 29.12s] Matrix: spikes
+[ 29.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 134 deg | Spikes
+[ 30.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 30.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 31.11s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 31.61s] Port A C 10200 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 32.00s] Full setup: 1 sensor(s)
+   >> t=32.00s setup STARTS
+[ 42.80s] Mount: left
+[ 42.80s]   Port A: Light, weight -1, low 400, high 20000
+   >> t=42.80s setup ends
+[ 42.80s] [ 42.80s] Matrix: spikes
+[ 42.80s] Port A C 10200 (0.50 x -1)  | sum +0.50 -> servo 90 deg | Spikes
+[ 43.30s] Port A C 10200 (0.50 x -1)  | sum +0.50 -> servo 134 deg | Spikes
+[ 43.80s] Port A C 10200 (0.50 x -1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 44.30s] Port A C 16080 (0.80 x -1)  | sum +0.20 -> servo 110 deg | Spikes
+[ 44.80s] Port A C 16080 (0.80 x -1)  | sum +0.20 -> servo 108 deg | Spikes
+[ 45.30s] Port A C 16080 (0.80 x -1)  | sum +0.20 -> servo 108 deg | Spikes
+[ 45.80s] Port A C 16080 (0.80 x -1)  | sum +0.20 -> servo 108 deg | Spikes
+[ 46.30s] Port A C 16080 (0.80 x -1)  | sum +0.20 -> servo 108 deg | Spikes
+[ 46.80s] Port A C 16080 (0.80 x -1)  | sum +0.20 -> servo 108 deg | Spikes
+[ 47.04s] Matrix: face (Curious, during the run)
+[ 47.04s] Face: Curious
+[ 47.30s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 148 deg | Curious
+[ 47.80s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Curious
+[ 48.30s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Curious
+[ 48.80s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Curious
+[ 49.30s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Curious
+[ 49.80s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Curious
+[ 50.04s] [ 50.04s] Matrix: spikes
+[ 50.30s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Spikes
+[ 50.80s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Spikes
+[ 51.30s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Spikes
+[ 51.80s] Port A C  6280 (0.30 x -1)  | sum +0.70 -> servo 153 deg | Spikes
+[ 52.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 95 deg | Spikes
+[ 52.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Spikes
+[ 53.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Spikes
+[ 53.49s] [ 53.49s] Matrix: face
+[ 53.49s] Face: Love
+[ 53.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 54.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 54.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 55.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 55.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 56.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 56.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 57.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 57.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 58.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 58.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 59.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 59.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 60.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 60.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 61.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 61.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 62.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 62.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 63.30s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love
+[ 63.80s] Port A C 20000 (1.00 x -1)  | sum +0.00 -> servo 90 deg | Love

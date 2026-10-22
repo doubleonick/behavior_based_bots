@@ -39,10 +39,16 @@ A web interface that carries the instructions, with a game/story layer:
 - Face vs spikes (2026-10, built in Val_Vehicle): the face is for interactions (hello,
   setup, surprise at a new sensor); while the wheel turns the matrix shows Type B
   spikes in lanes. When the wheel has been still for 1.5 s the run is over and a face
-  comes back: Love if only - wires stopped it, Neutral otherwise. Open: each vehicle
-  should end on its own emotion (fear, aggression, love, explorer), but one module
-  can't tell crossed from straight wiring, so it can't yet tell 2a from 2b or 3a
-  from 3b. Val_Field has spikes too (2026-10): green = pull, red = push, lanes
+  comes back.
+- Vehicle emotions (2026-10, built in Val_Vehicle): one module can't tell crossed
+  from straight wiring, so it reads the emotion from the run itself. + wires: Angry
+  for 3 s when it feels a lot at full speed for 1 s (charging, 2b); Scared when the
+  wheel stops (it got away, 2a; Vehicle 1 ends the same way, by choice). - wires:
+  Curious for 3 s when the feeling fades by 0.3 from a peak of 0.6+ while the wheel
+  speeds up by 0.2 (moving on, 3b); Love when the wheel stops (3a). Mixed wires:
+  Neutral. New faces: Scared (trembling tall eyes, wobbly zigzag mouth) and Curious
+  (eyes glance up and off to the side, smiling). Thresholds are first guesses, to be
+  tuned on the robot. Val_Field has spikes too (2026-10): green = pull, red = push, lanes
   ordered left to right by where each sensor points, the bottom row split into the
   two wheels (white forwards, amber backwards); its resting face is Neutral.
 

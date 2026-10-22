@@ -18,7 +18,8 @@
 class Face {
 public:
   enum Expression : uint8_t {
-    NEUTRAL, HAPPY, SAD, SURPRISED, ANGRY, LAUGHING, WINK, UNSURE, ASLEEP, LOVE, TALKING
+    NEUTRAL, HAPPY, SAD, SURPRISED, ANGRY, LAUGHING, WINK, UNSURE, ASLEEP, LOVE, SCARED, CURIOUS,
+    TALKING
   };
 
   // Mouth shapes used for talking
@@ -44,6 +45,8 @@ public:
   void unsure();     // crooked mouth, sideways glance
   void asleep();     // face slowly rises and falls, snores at the top
   void love();       // pulsing heart
+  void scared();     // tall eyes that tremble, wobbly zigzag mouth
+  void curious();    // eyes glance up and off to one side, smiling, as if spotting something
   void show(Expression e);
 
   // ---- Tune in ----
@@ -95,6 +98,8 @@ private:
   void drawUnsure(float t);
   void drawAsleep(float t);
   void drawLove(float t);
+  void drawScared(float t);
+  void drawCurious(float t);
   void drawTalking(uint32_t elapsedMs);
 
   void drawEyesAndMouth(const char* const mouthRows[5], float drift, float eyelids);

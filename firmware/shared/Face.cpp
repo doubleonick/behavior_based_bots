@@ -186,6 +186,8 @@ void Face::wink()      { show(WINK); }
 void Face::unsure()    { show(UNSURE); }
 void Face::asleep()    { show(ASLEEP); }
 void Face::love()      { show(LOVE); }
+void Face::scared()    { show(SCARED); }
+void Face::curious()   { show(CURIOUS); }
 
 void Face::say(const Mouth* shapes, uint8_t count, uint16_t frameMs, Expression then) {
   _sayShapes = shapes;
@@ -211,6 +213,8 @@ const char* Face::name(Expression e) {
     case UNSURE:    return "Unsure";
     case ASLEEP:    return "Asleep";
     case LOVE:      return "Love";
+    case SCARED:    return "Scared";
+    case CURIOUS:   return "Curious";
     case TALKING:   return "Talking";
   }
   return "?";
@@ -263,6 +267,8 @@ void Face::drawExpression(Expression e, float t, uint32_t elapsedMs) {
     case UNSURE:    drawUnsure(t);    break;
     case ASLEEP:    drawAsleep(t);    break;
     case LOVE:      drawLove(t);      break;
+    case SCARED:    drawScared(t);    break;
+    case CURIOUS:   drawCurious(t);   break;
     case TALKING:   drawTalking(elapsedMs); break;
   }
 }
@@ -425,6 +431,36 @@ void Face::drawLove(float t) {
       put(_frame, r, c, HEART, 0.3f + 0.7f * lit);
     }
   }
+}
+
+// Tall eyes (two pixels each) that tremble from side to side, and a zigzag mouth
+// that wobbles, flipping between its two shapes
+void Face::drawScared(float t) {
+  float shake = 0.25f * sinf(t * TAU * 5);           // small, fast tremble
+  for (int r = 0; r <= 1; r++) {
+    putSoft(_frame, r, 1 + shake, EYE, BASE);
+    putSoft(_frame, r, 3 + shake, EYE, BASE);
+  }
+  bool flip = ((int)(t / 0.3f)) % 2 == 1;
+  for (int c = 0; c < 5; c++) {
+    bool high = (c % 2 == 0);                         // columns 0, 2, 4 on the upper row
+    if (flip) {
+      high = !high;
+    }
+    put(_frame, high ? 3 : 4, c, MOUTH, BASE);
+  }
+}
+
+// Eyes slide up and off to the right, stay there a while (spotting something),
+// blink, and come back; a smile the whole time (6 second cycle)
+void Face::drawCurious(float t) {
+  float x = fmodf(t, 6.0f);
+  float k = ramp(x, 0.6f, 1.2f) - ramp(x, 4.6f, 5.2f);  // 0 = looking ahead, 1 = looking off
+  const float blinks[] = {3.4f};
+  float eyelids = blink(x, blinks, 1);
+  addRows(_frame, MOUTH_HAPPY);
+  putSoft(_frame, 1 - k, 1 + k, EYE, BASE * eyelids);
+  putSoft(_frame, 1 - k, 3 + k, EYE, BASE * eyelids);
 }
 
 // One mouth shape per frame from the sequence given to say()

@@ -34,10 +34,17 @@
   - The face is for talking to people: hello, setup, surprise at a new sensor.
     While the wheel turns, the matrix shows spikes instead: one lane per sensor
     (green +, red -), and the wheel firing along the bottom row.
-  - When the wheel has been still for a moment, the run is over and a face comes back:
-    the heart if only - wires stopped it (it stays by what it loves), otherwise a
-    neutral face. Then Unsure after 30 s with no activity, Asleep after 60 s,
-    Happy or Neutral when something happens.
+  - When it becomes clear which "emotion" the run is playing out, Val shows it.
+    This module only knows its own wires and what its sensors feel (not whether
+    the wires are crossed), so it reads the emotion from how the run goes:
+      + wires, feeling it strongly at full speed (charging at it)  -> Angry, 3 s
+      - wires, felt it, then it faded while speeding up (moving on) -> Curious, 3 s
+      + wires, wheel stopped (it got away, into the dark)           -> Scared
+      - wires, wheel stopped (it stays by what it loves)            -> Love
+      both kinds, wheel stopped                                     -> Neutral
+    The 3 s faces come and go during a run; the others come when the wheel has
+    been still for a moment. Then Unsure after 30 s with no activity, Asleep
+    after 60 s, Happy or Neutral when something happens.
 
   Libraries needed: FastLED, and VL53L0X by Pololu.
   Readings print on Serial at 115200 baud.
@@ -65,6 +72,15 @@ const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> 
 const unsigned long SURPRISE_MS     = 3300;    // how long Val looks surprised at a new sensor
 const unsigned long REST_AFTER_MS   = 1500;    // wheel still this long -> the run is over, face comes back
 const float MOVING_SPEED = 0.05f;              // below this the wheel counts as still
+const unsigned long MOMENT_MS = 3000;          // how long a face shows during a run
+// Charging (Angry): feeling at least this much, wheel at least this fast, for this long
+const float CHARGE_FEELING = 0.85f;
+const float CHARGE_SPEED   = 0.8f;
+const unsigned long CHARGE_MS = 1000;
+// Moving on (Curious): felt at least this much, then this much less, while this much faster
+const float NOTICE_FEELING = 0.6f;
+const float FADE_BY        = 0.3f;
+const float SPEED_UP_BY    = 0.2f;
 
 // ---------- Hardware ----------
 CRGB leds[25];
@@ -105,6 +121,13 @@ unsigned long surpriseStartMs = 0;
 Face::Expression lastPrinted = Face::TALKING;
 bool showingSpikes = false;           // the matrix shows spikes, not the face
 unsigned long lastMovingMs = 0;
+bool inMoment = false;                // a face shown for a few seconds during a run
+unsigned long momentEndsMs = 0;
+// What this run has been like, for reading its emotion
+float peakFeeling = 0;                // strongest feeling since it last moved on
+float speedAtPeak = 0;
+unsigned long chargingSinceMs = 0;    // 0 = not charging
+bool canCharge = true;                // false after Angry, until the feeling drops
 
 // Functions defined further down
 void saveSetup();
@@ -218,6 +241,7 @@ void searchForSensors() {
 void startSetup(bool full) {
   surprisePending = false;
   showingSpikes = false;               // setup owns the matrix now
+  inMoment = false;
   Connection* toSetUp[PORT_COUNT];
   int count = 0;
   for (int i = 0; i < PORT_COUNT; i++) {
@@ -342,7 +366,7 @@ void noteActivity(const char* source) {
 }
 
 void updateIdle() {
-  if (face.isTalking() || showingSpikes) {
+  if (face.isTalking() || showingSpikes || inMoment) {
     lastActivityMs = millis();
     return;
   }
@@ -362,11 +386,10 @@ void updateIdle() {
 // =====================================================================
 //  The matrix: face or spikes
 // =====================================================================
-// The face that ends a run. One module only knows the signs of its own wires,
-// not whether they are crossed, so this is as much as it can tell:
-//   only - wires, and stopped: it slowed right down next to what it feels -> Love
-//   anything else, and stopped: nothing left to react to -> Neutral
-Face::Expression restingFace() {
+// Which kinds of wire this module has (only wires that are set up and active)
+enum Wiring { NO_WIRES, EXCITATORY_ONLY, INHIBITORY_ONLY, MIXED };
+
+Wiring wiringKind() {
   bool anyExcitatory = false;
   bool anyInhibitory = false;
   for (int i = 0; i < PORT_COUNT; i++) {
@@ -380,8 +403,88 @@ Face::Expression restingFace() {
       anyInhibitory = true;
     }
   }
-  if (anyInhibitory && !anyExcitatory) {
+  if (anyExcitatory && anyInhibitory) {
+    return MIXED;
+  }
+  if (anyExcitatory) {
+    return EXCITATORY_ONLY;
+  }
+  if (anyInhibitory) {
+    return INHIBITORY_ONLY;
+  }
+  return NO_WIRES;
+}
+
+// How strongly this module feels its stimulus right now: its strongest wire, 0..1
+float feeling() {
+  float strongest = 0;
+  for (int i = 0; i < PORT_COUNT; i++) {
+    if (!isSetUp(i) || !wires[i].isActive()) {
+      continue;
+    }
+    strongest = max(strongest, wires[i].sensor->value());
+  }
+  return strongest;
+}
+
+// The face that ends a run (when the wheel has been still for a moment).
+// One module only knows the signs of its own wires, not whether they are crossed:
+//   only + wires, stopped: nothing left to drive it, it got away -> Scared
+//     (Vehicle 1 and Vehicle 2a end like this)
+//   only - wires, stopped: it slowed right down next to what it feels -> Love
+//   both, stopped: nothing to tell -> Neutral
+Face::Expression restingFace() {
+  Wiring w = wiringKind();
+  if (w == EXCITATORY_ONLY) {
+    return Face::SCARED;
+  }
+  if (w == INHIBITORY_ONLY) {
     return Face::LOVE;
+  }
+  return Face::NEUTRAL;
+}
+
+// A new run starts: forget what the last one was like
+void startRunMemory(float feel, float speed) {
+  peakFeeling = feel;
+  speedAtPeak = speed;
+  chargingSinceMs = 0;
+  canCharge = true;
+}
+
+// Is the run showing an emotion right now? Returns the face, or NEUTRAL for "not yet".
+//   + wires: feeling it strongly at full speed for a second -> charging at it -> Angry
+//   - wires: felt it, then it faded while the wheel sped up  -> moving on -> Curious
+Face::Expression emotionDuringRun(float feel, float speed, unsigned long now) {
+  Wiring w = wiringKind();
+  if (w == EXCITATORY_ONLY) {
+    if (feel < 0.5f) {
+      canCharge = true;                // it backed off: it can charge again
+    }
+    if (feel >= CHARGE_FEELING && speed >= CHARGE_SPEED) {
+      if (chargingSinceMs == 0) {
+        chargingSinceMs = now;
+      }
+      if (canCharge && now - chargingSinceMs >= CHARGE_MS) {
+        canCharge = false;
+        return Face::ANGRY;
+      }
+    } else {
+      chargingSinceMs = 0;
+    }
+  }
+  if (w == INHIBITORY_ONLY) {
+    if (feel > peakFeeling) {
+      peakFeeling = feel;
+      speedAtPeak = speed;
+    }
+    bool fadedAway = feel <= peakFeeling - FADE_BY;
+    bool spedUp = speed >= speedAtPeak + SPEED_UP_BY;
+    if (peakFeeling >= NOTICE_FEELING && fadedAway && spedUp) {
+      peakFeeling = feel;              // start watching for the next thing
+      speedAtPeak = speed;
+      return Face::CURIOUS;
+    }
   }
   return Face::NEUTRAL;
 }
@@ -409,27 +512,62 @@ void updateDisplay(float sum) {
   bool talkingToPeople = face.isTalking() || surprisePending || !greetingDone;
   float speed = ALLOW_REVERSE ? fabsf(sum) : sum;
   bool moving = speed > MOVING_SPEED;
+  float feel = feeling();
   unsigned long now = millis();
 
-  if (!talkingToPeople && moving) {
-    lastMovingMs = now;
-    if (!showingSpikes) {
+  if (talkingToPeople) {
+    if (showingSpikes || inMoment) {
+      showingSpikes = false;
+      inMoment = false;
+      Serial.println("Matrix: face");
+    }
+    face.update();
+    return;
+  }
+
+  // A face shown during a run: when its time is up, back to spikes (or, if the
+  // wheel has stopped meanwhile, the face that ends the run)
+  if (inMoment && now >= momentEndsMs) {
+    inMoment = false;
+    if (moving) {
       showingSpikes = true;
       spikes.start();
       Serial.println("Matrix: spikes");
+    } else {
+      face.tuneIn(restingFace());
+      Serial.println("Matrix: face");
     }
   }
-  if (showingSpikes && (talkingToPeople || now - lastMovingMs >= REST_AFTER_MS)) {
-    showingSpikes = false;
-    lastActivityMs = now;
-    if (!talkingToPeople) {
-      face.tuneIn(restingFace());     // the run is over: static settles into its face
+
+  if (moving) {
+    lastMovingMs = now;
+    if (!showingSpikes && !inMoment) {
+      showingSpikes = true;            // a new run
+      spikes.start();
+      startRunMemory(feel, speed);
+      Serial.println("Matrix: spikes");
     }
-    Serial.println("Matrix: face");
   }
 
   if (showingSpikes) {
+    Face::Expression e = emotionDuringRun(feel, speed, now);
+    if (e != Face::NEUTRAL) {
+      showingSpikes = false;
+      inMoment = true;
+      momentEndsMs = now + MOMENT_MS;
+      face.tuneIn(e);
+      Serial.printf("Matrix: face (%s, during the run)\n", Face::name(e));
+    } else if (now - lastMovingMs >= REST_AFTER_MS) {
+      showingSpikes = false;           // the run is over: static settles into its face
+      face.tuneIn(restingFace());
+      Serial.println("Matrix: face");
+    }
+  }
+
+  if (showingSpikes || inMoment) {
     lastActivityMs = now;              // driving counts as activity
+  }
+  if (showingSpikes) {
     feedSpikes(sum);
     spikes.update();
   } else {
