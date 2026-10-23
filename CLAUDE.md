@@ -22,6 +22,7 @@ make sense to them; everything an adult needs should be written down for them.
 | `firmware/sync_shared.py` | copies `shared/` into the sketches |
 | `tests/host/` | runs the real sketches against fake hardware |
 | `docs/hardware.md` | pins, Motion registers, sensor chip IDs, port limits, quirks |
+| `docs/code-survey.md` | where the firmware's lines go, duplication, and a proposed tidy-up plan |
 | `web/` | the planned web guide |
 | `FUTURE_WORK.md` | plans, open questions, and records of things dropped or corrected |
 
