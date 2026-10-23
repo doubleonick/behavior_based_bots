@@ -28,6 +28,10 @@
     Rows not in control stay steady. The row in control sends spikes left to right,
     as often as the wheels' average speed says.
   - Short press on the matrix: pause (wheels stop, Neutral face) / carry on.
+  - Long press on the matrix: the behaviour display off (the matrix goes dark) / on.
+    With it off, the robot gives nothing away: for watching what it does and
+    working out its hierarchy from behaviour alone. SHOW_LAYERS_AT_START sets how
+    it begins.
 
   Keep all these files together in a folder named Val_Brooks. The shared ones
   (Face, Static, MotionServo, Port, I2CBus, Sensor, ColorSensor, DistanceSensor, Button)
@@ -65,6 +69,7 @@
 
 // ---------- Settings ----------
 const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and gets warm
+const bool SHOW_LAYERS_AT_START = true;   // false: start with the behaviour display off (dark)
 
 // Bump switches: pressed = LOW (they use the pin's pull-up). Port C is G19 / G22.
 const int LEFT_BUMPER_PIN  = 19;
@@ -164,6 +169,8 @@ float wheelLeft = 0;                  // what the behaviour in control asked for
 float wheelRight = 0;
 int inControl = -1;                   // index into HIERARCHY
 bool paused = false;
+bool showLayers = SHOW_LAYERS_AT_START;   // long press turns the behaviour display on / off
+bool matrixDark = false;              // the display is off and the matrix has been cleared
 bool greetingDone = false;
 unsigned long lastPrintMs = 0;
 
@@ -660,6 +667,12 @@ void loop() {
   updateImu();
 
   Button::Event press = button.update(false);
+  if (greetingDone && press == Button::LONG_PRESS) {
+    showLayers = !showLayers;
+    matrixDark = false;
+    layers.start();
+    Serial.println(showLayers ? "Display: on" : "Display: off");
+  }
   if (greetingDone && press == Button::SHORT_PRESS) {
     paused = !paused;
     Serial.println(paused ? "Paused" : "Carrying on");
@@ -680,6 +693,7 @@ void loop() {
     rightWheel.drive(0);
   } else if (paused) {
     face.update();
+    matrixDark = false;
     leftWheel.drive(0);
     rightWheel.drive(0);
   } else {
@@ -690,7 +704,12 @@ void loop() {
     }
     leftWheel.drive(wheelLeft);
     rightWheel.drive(wheelRight);
-    drawLayers();
+    if (showLayers) {
+      drawLayers();
+    } else if (!matrixDark) {
+      FastLED.clear(true);             // display off: dark, and nothing more to draw
+      matrixDark = true;
+    }
   }
 
   printStatus();

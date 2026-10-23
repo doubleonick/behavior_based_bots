@@ -22,6 +22,7 @@ distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left 
 [  6.50s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
 [  7.00s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
 [  7.50s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[  8.00s] [  8.00s] Display: off
 [  8.00s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
 [  8.50s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
 [  9.00s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
@@ -45,3 +46,6 @@ distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left 
 [ 15.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.50 R +0.50
 [ 16.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.55 R +0.25
 [ 16.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.50 R +0.50
+[ 17.00s] [ 17.00s] Display: on
+[ 17.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L -0.25 R -0.55
+[ 17.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.25 R +0.55

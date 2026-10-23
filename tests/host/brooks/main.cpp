@@ -8,6 +8,7 @@
 //   10-13 s     something close on the right: avoid object (turns left), above approach light
 //   13.0 s      the left bumper is pressed for 0.1 s: escape (back up, then nose turns right)
 //   15 s on     all clear: wander again
+// The Matrix button is held 1 s at 7 s (long press: display off) and at 16 s (on again).
 #include <Arduino.h>
 #include <Wire.h>
 #include <FastLED.h>
@@ -21,11 +22,12 @@ TwoWire& TwoWire::wireMain(){ return Wire; }
 #include "Val_Brooks.ino"
 int main(){
   setup();
-  for(fakeMillis=5; fakeMillis<17000; fakeMillis+=5){
+  for(fakeMillis=5; fakeMillis<18000; fakeMillis+=5){
     float t=fakeMillis/1000.0f;
     fakeSensors[3].value = (t>=6 && t<15) ? 9000 : 3000;   // left light
     fakeSensors[0].value = (t>=10 && t<15) ? 150 : 1500;   // right distance
     fakePinLow[LEFT_BUMPER_PIN] = (t>=13.0f && t<13.1f);
+    fakeButtonDown = (t>=7.0f && t<8.0f) || (t>=16.0f && t<17.0f);
     loop();
   }
 }

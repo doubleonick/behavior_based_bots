@@ -86,6 +86,9 @@ A web interface that carries the instructions, with a game/story layer:
   (escape front collision -> avoid object -> approach light -> wander). Collisions
   from bump switches or the IMU (INERTIAL_COLLISION flag). No setup screens yet:
   thresholds and pins are settings in the sketch. Not yet run on the robot.
+  The behaviour display can be switched off (long press; SHOW_LAYERS_AT_START for
+  how it begins) for an ethology exercise: watch the robot and work out its
+  hierarchy from behaviour alone.
 - **ANNs**: a later paradigm, after vehicles, fields and subsumption.
 - **Saving**: `SAVE_SETUP` (Preferences/NVS) exists but defaults to off.
 
