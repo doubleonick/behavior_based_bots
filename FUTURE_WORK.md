@@ -68,8 +68,20 @@ A web interface that carries the instructions, with a game/story layer:
 - **PaHub support**: done in Val_Field (2026-10): a port answering at 0x70 is a hub,
   and a sensor's place is "port + channel" (`Port::channel`, `I2CBus::use`). Still
   capped at 3 sensors, the setup screens' limit. Not yet in Val_Vehicle.
-- **Fixed arbitration** (behaviour layers that suppress each other) and **ANNs**:
-  the later paradigms in the program, after vehicles and fields.
+- **Fixed arbitration / subsumption ("Val Brooks")**: behaviour layers in a fixed
+  hierarchy; the highest one that wants control drives the wheels. Display (mocked
+  up 2026-10, not built): one row per behaviour, top row = top of the hierarchy.
+  Left pixel: red = push/avoid, green = pull/approach; a dark gap; then 3 pixels in
+  the behaviour's colour: light = yellow, distance = purple, collision = white,
+  cruise/wander = blue. Rows not in control are steady; the row in control sends
+  spikes left to right at the average wheel rate (|L| and |R| averaged, x 10 per
+  second). No wheel information otherwise (decided: not needed).
+  Wander: every 200 ms roll a D6 for one primitive: straight forward, straight
+  backward, arc forward left, arc forward right, arc back left, arc back right (no
+  rotations). Its left pixel is green when the primitive goes forward, red when
+  backward, and keeps showing its current roll even when another layer has control.
+  Open: which behaviours the first Val Brooks has, and what triggers each.
+- **ANNs**: a later paradigm, after vehicles, fields and subsumption.
 - **Saving**: `SAVE_SETUP` (Preferences/NVS) exists but defaults to off.
 
 ## Records
