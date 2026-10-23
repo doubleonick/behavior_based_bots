@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SHARED = ROOT / "shared"
-SKETCHES = ["Val_Vehicle", "Val_Field"]
+SKETCHES = ["Val_Vehicle", "Val_Field", "Val_Brooks"]
 
 
 def main():

@@ -80,7 +80,12 @@ A web interface that carries the instructions, with a game/story layer:
   backward, arc forward left, arc forward right, arc back left, arc back right (no
   rotations). Its left pixel is green when the primitive goes forward, red when
   backward, and keeps showing its current roll even when another layer has control.
-  Open: which behaviours the first Val Brooks has, and what triggers each.
+  Built (2026-10) as `firmware/Val_Brooks/`, a test bench: uncomment one TEST_ line
+  for one of six two-behaviour hierarchies (escape left / escape right collision,
+  avoid / approach object, avoid / approach light, each over wander) or the full one
+  (escape front collision -> avoid object -> approach light -> wander). Collisions
+  from bump switches or the IMU (INERTIAL_COLLISION flag). No setup screens yet:
+  thresholds and pins are settings in the sketch. Not yet run on the robot.
 - **ANNs**: a later paradigm, after vehicles, fields and subsumption.
 - **Saving**: `SAVE_SETUP` (Preferences/NVS) exists but defaults to off.
 

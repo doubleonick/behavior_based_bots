@@ -12,6 +12,7 @@ for kids (roughly 8 and up) with a parent, tutor or club leader alongside:
 |---|---|
 | `firmware/Val_Vehicle/` | **Braitenberg vehicles.** Every sensor is wired (+ excitatory, − inhibitory, or off) to one wheel. |
 | `firmware/Val_Field/` | **Potential fields.** Every sensor pushes or pulls in the direction it points; the sum steers two wheels. |
+| `firmware/Val_Brooks/` | **Subsumption** (test bench). Behaviours in a fixed hierarchy; the highest one that wants the wheels gets them. Pick a hierarchy by uncommenting one line. |
 
 Both share one set of classes (the face, sensors, servos, button) in `firmware/shared/`.
 Setup happens on the robot itself with its one button, so no computer is needed once

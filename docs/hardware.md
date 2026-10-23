@@ -44,6 +44,18 @@ direct connection to the servo signal pins.
   sometimes has to be toggled twice before it starts. There is no software fix.
   *(tested)*
 
+## Val_Brooks extras (not yet tried on the robot)
+
+- **Bump switches:** two switches to ground, read with the pin's pull-up (pressed =
+  LOW). Default pins G19 (left) and G22 (right), i.e. Port C; change
+  `LEFT_BUMPER_PIN` / `RIGHT_BUMPER_PIN` to match the wiring. Keep them off the PaHub's
+  port.
+- **IMU:** the Atom Matrix v1.1 has a BMI270 on the internal bus (G25 / G21, with the
+  Motion). Val_Brooks reads it with the "SparkFun BMI270 Arduino Library", only when
+  `INERTIAL_COLLISION` is 1. Which axis is the robot's front depends on how the Atom is
+  mounted: set `IMU_FORWARD_AXIS` / `IMU_LEFT_AXIS` and their signs from the Serial
+  readings. The v1.0 Atom Matrix has an MPU6886 instead, which this code does not read.
+
 ## Grove ports and what they can do
 
 All three ports supply **5 V** on the red wire. ESP32 pins are **3.3 V only**.

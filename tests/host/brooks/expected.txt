@@ -1,0 +1,47 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] PaHub found on Port A
+[  0.00s] Distance sensor found on Hub 0 (SDA=G32, SCL=G26)
+[  0.00s] Distance sensor found on Hub 1 (SDA=G32, SCL=G26)
+[  0.00s] Light sensor found on Hub 2 (SDA=G32, SCL=G26)
+[  0.00s] Light sensor found on Hub 3 (SDA=G32, SCL=G26)
+[  0.00s] Hierarchy (top first): Escape front collision -> Avoid object -> Approach light -> Wander
+distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left collision -> L +0.00 R +0.00
+[  1.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left collision -> L +0.00 R +0.00
+[  1.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left collision -> L +0.00 R +0.00
+[  2.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left collision -> L +0.00 R +0.00
+[  2.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left collision -> L +0.00 R +0.00
+[  3.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left collision -> L +0.00 R +0.00
+[  3.49s] Control: Wander
+[  3.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.25 R +0.55
+[  4.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.55 R +0.25
+[  4.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L -0.50 R -0.50
+[  5.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L -0.25 R -0.55
+[  5.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L -0.25 R -0.55
+[  6.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.25 R +0.55
+[  6.08s] Control: Approach light
+[  6.50s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[  7.00s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[  7.50s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[  8.00s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[  8.50s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[  9.00s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[  9.50s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[ 10.00s] Control: Avoid object
+[ 10.00s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Avoid object -> L +0.15 R +0.65
+[ 10.50s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Avoid object -> L +0.15 R +0.65
+[ 11.00s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Avoid object -> L +0.15 R +0.65
+[ 11.50s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Avoid object -> L +0.15 R +0.65
+[ 12.00s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Avoid object -> L +0.15 R +0.65
+[ 12.50s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Avoid object -> L +0.15 R +0.65
+[ 13.00s] Control: Escape front collision
+[ 13.00s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers L-  | Escape front collision -> L -0.50 R -0.50
+[ 13.50s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Escape front collision -> L -0.25 R -0.55
+[ 14.00s] Control: Avoid object
+[ 14.00s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Avoid object -> L +0.15 R +0.65
+[ 14.50s] distL  1500  distR   150  lightL  9000  lightR  3000  bumpers --  | Avoid object -> L +0.15 R +0.65
+[ 15.00s] Control: Approach light
+[ 15.00s] distL  1500  distR  1500  lightL  9000  lightR  3000  bumpers --  | Approach light -> L +0.15 R +0.65
+[ 15.04s] Control: Wander
+[ 15.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.50 R +0.50
+[ 16.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.55 R +0.25
+[ 16.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.50 R +0.50
