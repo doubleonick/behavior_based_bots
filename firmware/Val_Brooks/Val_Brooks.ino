@@ -557,34 +557,34 @@ void arbitrate() {
 // =====================================================================
 //  The matrix
 // =====================================================================
-const uint8_t* signFor(Behaviour b) {
+const Canvas::Color* signFor(Behaviour b) {
   switch (b) {
     case APPROACH_OBJECT:
     case APPROACH_LIGHT:
-      return Layers::GREEN;
+      return &Palette::GREEN;
     case WANDER:
-      return wander_goes_forward() ? Layers::GREEN : Layers::RED;
+      return wander_goes_forward() ? &Palette::GREEN : &Palette::RED;
     default:
-      return Layers::RED;              // escapes and avoids push away
+      return &Palette::RED;              // escapes and avoids push away
   }
 }
 
-const uint8_t* colourFor(Behaviour b) {
+const Canvas::Color* colourFor(Behaviour b) {
   switch (b) {
     case ESCAPE_LEFT_COLLISION:
     case ESCAPE_RIGHT_COLLISION:
     case ESCAPE_FRONT_COLLISION:
-      return Layers::WHITE;
+      return &Palette::WHITE;
     case AVOID_OBJECT:
     case APPROACH_OBJECT:
-      return Layers::PURPLE;
+      return &Palette::PURPLE;
     case AVOID_LIGHT:
     case APPROACH_LIGHT:
-      return Layers::YELLOW;
+      return &Palette::YELLOW;
     case WANDER:
-      return Layers::BLUE;
+      return &Palette::BLUE;
   }
-  return Layers::WHITE;
+  return &Palette::WHITE;
 }
 
 void drawLayers() {

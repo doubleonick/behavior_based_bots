@@ -120,3 +120,4 @@
 [ 64.61s] Port A D   100 (1.00 x -1)  Port C D   100 (1.00 x -1)  | sum -1.00 -> servo 90 deg | Love
 [ 65.11s] Port A D   100 (1.00 x -1)  Port C D   100 (1.00 x -1)  | sum -1.00 -> servo 90 deg | Love
 [ 65.61s] Port A D   100 (1.00 x -1)  Port C D   100 (1.00 x -1)  | sum -1.00 -> servo 90 deg | Love
+LED frames shown: 1662, checksum f6ca6284

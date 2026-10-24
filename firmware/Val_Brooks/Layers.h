@@ -13,8 +13,8 @@
     CRGB leds[25];
     Layers layers(leds);
     layers.setRows(2);
-    layers.setRow(0, Layers::RED, Layers::WHITE);   // escape collision
-    layers.setRow(1, Layers::GREEN, Layers::BLUE);  // wander, going forward
+    layers.setRow(0, &Palette::RED, &Palette::WHITE);   // escape collision
+    layers.setRow(1, &Palette::GREEN, &Palette::BLUE);  // wander, going forward
     layers.setInControl(1);
     layers.setWheels(0.5f, 0.5f);
     void loop() { layers.update(); }                // call as often as possible
@@ -25,24 +25,18 @@
 #pragma once
 #include <Arduino.h>
 #include <FastLED.h>
+#include "Canvas.h"
+#include "Palette.h"
 
 class Layers {
 public:
   static const int MAX_ROWS = 5;
 
-  // Colours, as on the setup screens where they exist
-  static const uint8_t RED[3];
-  static const uint8_t GREEN[3];
-  static const uint8_t WHITE[3];
-  static const uint8_t PURPLE[3];
-  static const uint8_t YELLOW[3];
-  static const uint8_t BLUE[3];
-
   explicit Layers(CRGB* leds);
 
   void start();                                   // forget old spikes and start drawing afresh
   void setRows(int count);                        // 0..5 behaviours
-  void setRow(int row, const uint8_t* sign, const uint8_t* colour);
+  void setRow(int row, const Canvas::Color* sign, const Canvas::Color* colour);   // sign may be nullptr
   void setInControl(int row);                     // -1 = none
   void setWheels(float left, float right);        // -1..1 each; sets the spike rate
 
@@ -53,11 +47,12 @@ private:
 
   CRGB*          _leds;
   int            _count = 0;
-  const uint8_t* _sign[MAX_ROWS];
-  const uint8_t* _colour[MAX_ROWS];
+  const Canvas::Color* _sign[MAX_ROWS];
+  const Canvas::Color* _colour[MAX_ROWS];
   int            _inControl = -1;
   float          _rate = 0;                        // spikes per second
   float          _phase = 0;
   int            _ages[MAX_AGES];                  // frames since each spike left (-1 = none)
-  uint32_t       _lastDrawMs = 0;
+  FrameTimer     _timer;
+  Canvas         _canvas;
 };

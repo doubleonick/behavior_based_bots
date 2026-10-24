@@ -111,7 +111,9 @@ refactor that leaves the output identical hasn't changed behaviour (for the logi
 how the LEDs look still needs checking on the robot). Suggested order, keeping the
 tests unchanged at each step:
 
-1. `Canvas` + `Palette` + `Icons` (display only, lowest risk)
+1. `Canvas` + `Palette` + `Icons` (display only, lowest risk). **Done:** every LED
+   frame of every host story is identical before and after (the tests now checksum
+   the LED frames, so later steps are checked the same way).
 2. `SetupScreens`
 3. `SensorRack` (hub support for everything)
 4. `Settings` (and saving on by default)

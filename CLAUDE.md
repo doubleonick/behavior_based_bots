@@ -26,8 +26,9 @@ make sense to them; everything an adult needs should be written down for them.
 | `web/` | the planned web guide |
 | `FUTURE_WORK.md` | plans, open questions, and records of things dropped or corrected |
 
-Shared classes: `Face` (expressions, talking, `tuneIn`), `Spikes` (the wiring's activity
-while driving), `Static` (white static),
+Shared classes: `Canvas` (the 5x5 picture every display draws on, and `FrameTimer`),
+`Palette` (every colour), `Icons` (every setup picture), `Face` (expressions, talking,
+`tuneIn`), `Spikes` (the wiring's activity while driving), `Static` (white static),
 `MotionServo`, `Port`, `I2CBus`, `Sensor` (parent; 0..1 stimulus from two calibration
 points), `ColorSensor`, `DistanceSensor`, `Button` (short / long / hold).
 
@@ -104,6 +105,9 @@ sensor readings over time) run against stub Arduino libraries (`stub/`). A faili
 test writes `actual.txt` beside `expected.txt`. If a change is meant to alter
 behaviour, check the diff makes sense before running `--update`, and mention it.
 The stubs only model what the sketches use; extend them when a sketch needs more.
+Each test's fake FastLED also checksums every frame the matrix shows and prints it at
+the end (`LED frames shown: ..., checksum ...`), so a change to what the LEDs show
+fails the test too, not just a change to Serial.
 
 Building for the robot: Arduino IDE or arduino-cli, M5Stack board package (M5Atom),
 libraries FastLED and VL53L0X (Pololu).

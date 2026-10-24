@@ -34,3 +34,4 @@
 [ 33.41s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
    >> t=33.8s  S1 (left) 117 deg, S2 (right) 63 deg
 [ 33.91s] Port A D  1000 (0.00 push +45)  Port C D  1000 (0.00 push -45)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+LED frames shown: 865, checksum f8a24875

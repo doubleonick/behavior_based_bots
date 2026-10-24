@@ -30,6 +30,7 @@
 #pragma once
 #include <Arduino.h>
 #include <FastLED.h>
+#include "Canvas.h"
 
 class Spikes {
 public:
@@ -66,7 +67,8 @@ private:
   int      _count = 0;
   bool     _twoWheels = false;
   Wheel    _wheel[2];                            // one wheel uses _wheel[0]
-  uint32_t _lastDrawMs = 0;
+  FrameTimer _timer;
+  Canvas   _canvas;
 
   void clearAges(int* ages);
   void addAge(int* ages);

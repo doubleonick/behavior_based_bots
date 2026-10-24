@@ -71,3 +71,4 @@
    >> t=61.9s  S1 (left) 127 deg, S2 (right) 0 deg
 [ 61.91s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
 [ 62.41s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+LED frames shown: 1573, checksum de8aa665

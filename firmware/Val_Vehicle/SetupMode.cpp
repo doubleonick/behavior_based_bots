@@ -1,52 +1,26 @@
 #include "SetupMode.h"
 #include "Static.h"
+#include "Palette.h"
+#include "Icons.h"
 
 namespace {
-// LED colours
-const uint8_t WHITE[3]  = {180, 180, 200};
-const uint8_t GREEN[3]  = {0, 255, 60};
-const uint8_t RED[3]    = {255, 0, 0};
-const uint8_t GREY[3]   = {70, 70, 80};
-const uint8_t BLUE[3]   = {0, 150, 255};
-const uint8_t AMBER[3]  = {255, 110, 0};
-const uint8_t MOON[3]   = {40, 60, 255};
-const uint8_t SUN[3]    = {255, 160, 0};
-const uint8_t TEAL[3]   = {0, 200, 160};
 
-const char* const PLUS[5]  = {".....", ".....", "..#..", ".###.", "..#.."};
-const char* const MINUS[5] = {".....", ".....", ".....", ".###.", "....."};
-const char* const CROSS[5] = {".....", ".....", ".#.#.", "..#..", ".#.#."};
-const char* const MOON_ROWS[5]  = {".....", ".##..", "#....", "#....", ".##.."};
-const char* const SUN_ROWS[5]   = {".....", "#..#.", ".##..", ".##..", "#..#."};
-const char* const FAR_ROWS[5]   = {".....", ".....", ".##..", ".##..", "....."};   // small = far away
-const char* const NEAR_ROWS[5]  = {".....", "####.", "#..#.", "#..#.", "####."};   // big = close
-const char* const CHECK[5] = {".....", "....#", "...#.", "#.#..", ".#..."};
-
-// The "forward" arrow (row, col)
-const int8_t ARROW[9][2] = {{0, 2}, {1, 1}, {1, 2}, {1, 3}, {2, 0}, {2, 2}, {2, 4}, {3, 2}, {4, 2}};
-
-// Where the wire dots go on the top row, for 1, 2 or 3 wires
-const int8_t DOT_COLS[4][3] = {{0, 0, 0}, {2, 0, 0}, {1, 3, 0}, {0, 2, 4}};
-
-const uint32_t FRAME_MS     = 40;
 const uint32_t ENTER_MS     = 500;    // half a second of static
 const uint32_t DONE_MS      = 1600;
 const float    MOUNT_SPEED  = 0.3f;   // how fast the wheel turns while choosing the mount
 
-const uint8_t* colorForWeight(float w) {
+const Canvas::Color& colorForWeight(float w) {
   if (w > 0) {
-    return GREEN;
+    return Palette::GREEN;
   }
   if (w < 0) {
-    return RED;
+    return Palette::RED;
   }
-  return GREY;
+  return Palette::GREY;
 }
 }
 
-SetupMode::SetupMode(CRGB* leds, MotionServo& servo) : _leds(leds), _servo(servo) {
-  clear();
-}
+SetupMode::SetupMode(CRGB* leds, MotionServo& servo) : _leds(leds), _servo(servo) {}
 
 void SetupMode::start(Connection** wires, int count, bool withMount) {
   _count = min(count, 3);
@@ -63,7 +37,7 @@ void SetupMode::start(Connection** wires, int count, bool withMount) {
 void SetupMode::goTo(Phase p) {
   _phase = p;
   _phaseMs = millis();
-  _lastDrawMs = 0;
+  _timer.restart();
   if (p == MOUNT) {
     _servo.drive(MOUNT_SPEED);           // turn slowly "forward" so you can check it
   } else {
@@ -154,65 +128,35 @@ void SetupMode::update() {
     _finished = true;
     return;
   }
-  if (_lastDrawMs != 0 && now - _lastDrawMs < FRAME_MS) {
+  if (!_timer.due()) {
     return;
   }
-  _lastDrawMs = now;
   draw();
-  push();
+  _canvas.push(_leds);
 }
 
 // ---------------------------------------------------------------------
 //  Drawing
 // ---------------------------------------------------------------------
-void SetupMode::clear() {
-  for (int n = 0; n < 25; n++) {
-    _frame[n] = {0, 0, 0, 0};
-  }
-}
-
-void SetupMode::put(int row, int col, const uint8_t* rgb, float intensity) {
-  if (row < 0 || row > 4 || col < 0 || col > 4 || intensity <= 0) {
-    return;
-  }
-  Px& p = _frame[row * 5 + col];
-  if (intensity > p.i) {
-    p.r = rgb[0];
-    p.g = rgb[1];
-    p.b = rgb[2];
-    p.i = min(intensity, 1.0f);
-  }
-}
-
-void SetupMode::drawRows(const char* const rows[5], const uint8_t* rgb, float intensity) {
-  for (int r = 0; r < 5; r++) {
-    for (int c = 0; c < 5; c++) {
-      if (rows[r][c] == '#') {
-        put(r, c, rgb, intensity);
-      }
-    }
-  }
-}
-
 // Top row: one dot per wire
 void SetupMode::drawDots(float t) {
   for (int j = 0; j < _count; j++) {
-    int col = DOT_COLS[_count][j];
+    int col = Icons::DOT_COLS[_count][j];
     if (_phase == DONE || j < _wire) {
       float w = _wires[j]->weight;
       float level = 0.7f;
       if (w == 0) {
         level = 0.35f;
       }
-      put(0, col, colorForWeight(w), level);
+      _canvas.put(0, col, colorForWeight(w), level);
     } else if (j == _wire) {
       float level = 0.15f;
       if (sinf(t * PI * 3) > -0.3f) {
         level = 0.9f;
       }
-      put(0, col, WHITE, level);
+      _canvas.put(0, col, Palette::WHITE, level);
     } else {
-      put(0, col, WHITE, 0.22f);
+      _canvas.put(0, col, Palette::WHITE, 0.22f);
     }
   }
 }
@@ -221,12 +165,12 @@ void SetupMode::drawDots(float t) {
 void SetupMode::drawMeter(float level) {
   for (int k = 0; k < 4; k++) {
     float fill = constrain(level * 4 - k, 0.0f, 1.0f);
-    put(4 - k, 4, WHITE, 0.15f + 0.75f * fill);
+    _canvas.put(4 - k, 4, Palette::WHITE, 0.15f + 0.75f * fill);
   }
 }
 
 void SetupMode::draw() {
-  clear();
+  _canvas.clear();
   float t = (millis() - _phaseMs) / 1000.0f;
   float pulse = 0.6f + 0.3f * sinf(t * PI * 2);
 
@@ -234,28 +178,28 @@ void SetupMode::draw() {
     // white static: a new random pattern every frame
     uint32_t frame = (millis() - _phaseMs) / Static::FRAME_MS;
     for (int k = 0; k < 25; k++) {
-      put(k / 5, k % 5, Static::COLOR, Static::level(frame, k));
+      _canvas.put(k / 5, k % 5, Palette::STATIC, Static::level(frame, k));
     }
   } else if (_phase == MOUNT) {
     // "forward" arrow with brightness running up it, plus a corner dot for the side
     for (int k = 0; k < 9; k++) {
-      float wave = 0.5f + 0.5f * sinf((ARROW[k][0] + t * 4) * 1.6f);
-      put(ARROW[k][0], ARROW[k][1], BLUE, 0.35f + 0.55f * wave);
+      float wave = 0.5f + 0.5f * sinf((Icons::ARROW[k][0] + t * 4) * 1.6f);
+      _canvas.put(Icons::ARROW[k][0], Icons::ARROW[k][1], Palette::BLUE, 0.35f + 0.55f * wave);
     }
     if (_servo.mount() == MotionServo::LEFT) {
-      put(4, 0, AMBER, 0.9f);
+      _canvas.put(4, 0, Palette::AMBER, 0.9f);
     } else {
-      put(4, 4, AMBER, 0.9f);
+      _canvas.put(4, 4, Palette::AMBER, 0.9f);
     }
   } else if (_phase == SIGN) {
     drawDots(t);
     float w = _wires[_wire]->weight;
     if (w > 0) {
-      drawRows(PLUS, GREEN, pulse);
+      _canvas.putRows(Icons::PLUS, '#', Palette::GREEN, pulse);
     } else if (w < 0) {
-      drawRows(MINUS, RED, pulse);
+      _canvas.putRows(Icons::MINUS, '#', Palette::RED, pulse);
     } else {
-      drawRows(CROSS, GREY, pulse);
+      _canvas.putRows(Icons::CROSS, '#', Palette::GREY, pulse);
     }
   } else if (_phase == LOW_POINT || _phase == HIGH_POINT) {
     // Icons depend on the kind of sensor: moon/sun for light, small/big square for distance
@@ -264,34 +208,21 @@ void SetupMode::draw() {
     bool low = (_phase == LOW_POINT);
     if (s->typeCode() == 'D') {
       if (low) {
-        drawRows(FAR_ROWS, TEAL, pulse * 0.7f);
+        _canvas.putRows(Icons::FAR, '#', Palette::TEAL, pulse * 0.7f);
       } else {
-        drawRows(NEAR_ROWS, TEAL, pulse);
+        _canvas.putRows(Icons::NEAR, '#', Palette::TEAL, pulse);
       }
     } else {
       if (low) {
-        drawRows(MOON_ROWS, MOON, pulse);
+        _canvas.putRows(Icons::MOON, '#', Palette::MOON, pulse);
       } else {
-        drawRows(SUN_ROWS, SUN, pulse);
+        _canvas.putRows(Icons::SUN, '#', Palette::SUN, pulse);
       }
     }
     drawMeter(s->meterLevel());
   } else if (_phase == DONE) {
     drawDots(t);
-    drawRows(CHECK, GREEN, 0.9f);
+    _canvas.putRows(Icons::CHECK, '#', Palette::GREEN, 0.9f);
   }
 }
 
-// Copy to the LEDs. Intensity is squared so fades look even to the eye.
-void SetupMode::push() {
-  for (int n = 0; n < 25; n++) {
-    const Px& p = _frame[n];
-    if (p.i <= 0.02f) {
-      _leds[n] = CRGB::Black;
-    } else {
-      float s = p.i * p.i;
-      _leds[n] = CRGB((uint8_t)(p.r * s), (uint8_t)(p.g * s), (uint8_t)(p.b * s));
-    }
-  }
-  FastLED.show();
-}

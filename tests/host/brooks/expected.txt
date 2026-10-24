@@ -49,3 +49,4 @@ distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Escape left 
 [ 17.00s] [ 17.00s] Display: on
 [ 17.00s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L -0.25 R -0.55
 [ 17.50s] distL  1500  distR  1500  lightL  3000  lightR  3000  bumpers --  | Wander -> L +0.25 R +0.55
+LED frames shown: 228, checksum eddd48a5

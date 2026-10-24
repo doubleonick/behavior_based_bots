@@ -23,6 +23,7 @@
 #pragma once
 #include <Arduino.h>
 #include <FastLED.h>
+#include "Canvas.h"
 #include "Button.h"
 #include "MotionServo.h"
 #include "PotentialField.h"
@@ -46,31 +47,26 @@ public:
 
 private:
   enum Phase : uint8_t { OFF, ENTER, WHEEL_LEFT, WHEEL_RIGHT, POLICY, ANGLE, LOW_POINT, HIGH_POINT, DONE };
-  struct Px { uint8_t r, g, b; float i; };
 
   CRGB*        _leds;
   MotionServo& _left;
   MotionServo& _right;
   Phase        _phase = OFF;
   uint32_t     _phaseMs = 0;
-  uint32_t     _lastDrawMs = 0;
+  FrameTimer   _timer;
   PotentialField::Source* _sources[3];
   int          _count = 0;
   int          _current = 0;
   bool         _finished = false;
   bool         _withWheels = true;
-  Px           _frame[25];
+  Canvas       _canvas;
 
   void goTo(Phase p);
   void nextSource();
   void flip(MotionServo& servo);
 
-  void clear();
-  void put(int row, int col, const uint8_t* rgb, float intensity);
-  void drawRows(const char* const rows[5], const uint8_t* rgb, float intensity);   // '#' = lit
   void drawDots(float t);
   void drawMeter(float level);
-  void drawArrow(int step, const uint8_t* rgb, float intensity);
+  void drawArrow(int step, const Canvas::Color& rgb, float intensity);
   void draw();
-  void push();
 };

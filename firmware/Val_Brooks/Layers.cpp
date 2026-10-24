@@ -1,16 +1,8 @@
 #include "Layers.h"
 
-const uint8_t Layers::RED[3]    = {255, 0, 0};
-const uint8_t Layers::GREEN[3]  = {0, 255, 60};
-const uint8_t Layers::WHITE[3]  = {180, 180, 200};
-const uint8_t Layers::PURPLE[3] = {150, 0, 255};
-const uint8_t Layers::YELLOW[3] = {255, 200, 0};
-const uint8_t Layers::BLUE[3]   = {0, 150, 255};
-
 namespace {
 
-const uint32_t FRAME_MS = 40;         // 25 frames per second, like Face and Spikes
-const float    SECONDS_PER_FRAME = FRAME_MS / 1000.0f;
+const float    SECONDS_PER_FRAME = FrameTimer::FRAME_MS / 1000.0f;
 const float    MAX_RATE = 10.0f;      // spikes per second at full speed
 const float    STEADY = 0.6f;         // a row not in control (the face's normal brightness)
 const float    UNDER_SPIKES = 0.35f;  // the row in control, between spikes
@@ -32,7 +24,7 @@ void Layers::start() {
     _ages[k] = -1;
   }
   _phase = 0.5f;
-  _lastDrawMs = 0;
+  _timer.restart();
 }
 
 void Layers::setRows(int count) {
@@ -45,7 +37,7 @@ void Layers::setRows(int count) {
   _count = count;
 }
 
-void Layers::setRow(int row, const uint8_t* sign, const uint8_t* colour) {
+void Layers::setRow(int row, const Canvas::Color* sign, const Canvas::Color* colour) {
   if (row < 0 || row >= MAX_ROWS) {
     return;
   }
@@ -67,11 +59,9 @@ void Layers::setWheels(float left, float right) {
 }
 
 bool Layers::update() {
-  uint32_t now = millis();
-  if (_lastDrawMs != 0 && now - _lastDrawMs < FRAME_MS) {
+  if (!_timer.due()) {
     return false;
   }
-  _lastDrawMs = now ? now : 1;
 
   // Move the spikes along, and send a new one when it is due
   for (int k = 0; k < MAX_AGES; k++) {
@@ -101,12 +91,10 @@ bool Layers::update() {
     _phase -= 1000;
   }
 
-  for (int n = 0; n < 25; n++) {
-    _leds[n] = CRGB(0, 0, 0);
-  }
+  _canvas.clear();
   for (int row = 0; row < _count; row++) {
     for (int col = 0; col < 5; col++) {
-      const uint8_t* rgb = nullptr;
+      const Canvas::Color* rgb = nullptr;
       if (col == 0) {
         rgb = _sign[row];
       } else if (col >= 2) {
@@ -132,11 +120,9 @@ bool Layers::update() {
           }
         }
       }
-      // Squared, like Face::push(), so dim and bright look as different as they should
-      float s = intensity * intensity;
-      _leds[row * 5 + col] = CRGB((uint8_t)(rgb[0] * s), (uint8_t)(rgb[1] * s), (uint8_t)(rgb[2] * s));
+      _canvas.put(row, col, *rgb, intensity);
     }
   }
-  FastLED.show();
+  _canvas.push(_leds);
   return true;
 }

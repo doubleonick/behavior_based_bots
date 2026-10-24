@@ -4,6 +4,8 @@
   Going into setup, the screen shows half a second of static. Coming out, Face's
   tuneIn() starts with static that settles LED by LED into the face.
 
+  Its colour is Palette::STATIC.
+
   The static is "random" but repeatable: frame 7 always looks the same. That keeps
   it cheap (no random generator to look after) and lets the tune-in decide in
   advance when each LED settles.
@@ -15,7 +17,6 @@ namespace Static {
 
 const uint32_t FRAME_MS = 40;          // a new pattern every 40 ms
 const float DENSITY = 0.55f;           // about how many LEDs are lit in each frame (0..1)
-const uint8_t COLOR[3] = {200, 200, 220};   // white, a touch blue like the setup screens
 
 // A number from 0 to 1 that looks random but is always the same for the same a and b
 inline float random01(uint32_t a, uint32_t b) {

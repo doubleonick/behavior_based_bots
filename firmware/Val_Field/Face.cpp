@@ -1,5 +1,6 @@
 #include "Face.h"
 #include "Static.h"
+#include "Palette.h"
 #include <math.h>
 
 // =====================================================================
@@ -7,19 +8,17 @@
 // =====================================================================
 namespace {
 
-typedef Face::Color Color;
-typedef Face::Pixel Pixel;
+typedef Canvas::Color Color;
 
-// Colours, chosen for LEDs (more saturated than you would use on a screen)
-const Color EYE       = {  0, 150, 255};   // blue
-const Color MOUTH     = {255, 110,   0};   // amber
-const Color BROW      = {255,  30,  10};   // angry eyebrows
-const Color ANGRY_EYE = {255,   0,   0};
-const Color HEART     = {255,   0,  60};
-const Color SLEEP_EYE = { 40,  60, 255};   // closed eyes when asleep
+// Colours: see Palette.h
+using Palette::EYE;
+using Palette::MOUTH;
+using Palette::BROW;
+using Palette::ANGRY_EYE;
+using Palette::HEART;
+using Palette::SLEEP_EYE;
 
 const float BASE = 0.6f;            // normal intensity; 1.0 is kept for "max intensity" moments
-const uint32_t FRAME_MS = 40;       // redraw period (25 frames per second)
 const uint32_t TUNE_IN_MS = 600;    // static settling into the face
 const float TAU = 6.2831853f;
 
@@ -69,39 +68,8 @@ const Face::Mouth HELLO_VAL[] = {
 };
 
 // =====================================================================
-//  Drawing helpers. A frame is 25 pixels, index = row * 5 + col.
+//  Drawing helpers (pixels, soft pixels and blends are Canvas's)
 // =====================================================================
-void clearFrame(Pixel* g) {
-  for (int n = 0; n < 25; n++) {
-    g[n].c = {0, 0, 0};
-    g[n].i = 0;
-  }
-}
-
-// Light one pixel. If two things land on the same pixel, the brighter one wins.
-void put(Pixel* g, int row, int col, const Color& c, float i) {
-  if (row < 0 || row > 4 || col < 0 || col > 4 || i <= 0) {
-    return;
-  }
-  Pixel& p = g[row * 5 + col];
-  if (i > p.i) {
-    p.i = i > 1 ? 1 : i;
-    p.c = c;
-  }
-}
-
-// Light a "pixel" at a fractional position by sharing its brightness between
-// the neighbouring LEDs. This is what makes eyes slide instead of jump.
-void putSoft(Pixel* g, float rowF, float colF, const Color& c, float i) {
-  int r0 = (int)floorf(rowF), c0 = (int)floorf(colF);
-  for (int r = r0; r <= r0 + 1; r++) {
-    for (int col = c0; col <= c0 + 1; col++) {
-      float w = fmaxf(0, 1 - fabsf(r - rowF)) * fmaxf(0, 1 - fabsf(col - colF));
-      put(g, r, col, c, i * w);
-    }
-  }
-}
-
 const Color* colorFor(char ch) {
   switch (ch) {
     case 'E': return &EYE;
@@ -113,24 +81,15 @@ const Color* colorFor(char ch) {
   }
 }
 
-// Fill a frame from a 5-row layout (adds to whatever is already in the frame)
-void addRows(Pixel* g, const char* const rows[5], float i = BASE) {
+// Draw a 5-row face layout (adds to whatever is already on the canvas)
+void addRows(Canvas& g, const char* const rows[5], float i = BASE) {
   for (int r = 0; r < 5; r++) {
     for (int c = 0; c < 5; c++) {
       const Color* col = colorFor(rows[r][c]);
       if (col) {
-        put(g, r, c, *col, i);
+        g.put(r, c, *col, i);
       }
     }
-  }
-}
-
-// Cross-fade: k = 0 gives frame a, k = 1 gives frame b
-void blend(Pixel* out, const Pixel* a, const Pixel* b, float k) {
-  for (int n = 0; n < 25; n++) {
-    float ia = a[n].i * (1 - k), ib = b[n].i * k;
-    out[n].c = (ib > ia) ? b[n].c : a[n].c;
-    out[n].i = ia + ib;
   }
 }
 
@@ -162,13 +121,13 @@ float shimmer(float t, int c) {
 // =====================================================================
 //  Face
 // =====================================================================
-Face::Face(CRGB* leds) : _leds(leds) { clearFrame(_frame); }
+Face::Face(CRGB* leds) : _leds(leds) {}
 
 void Face::show(Expression e) {
   _expr = e;
   _tuning = false;
   _startMs = millis();
-  _lastDrawMs = 0;   // draw the first frame straight away
+  _timer.restart();   // draw the first frame straight away
 }
 
 void Face::tuneIn(Expression e) {
@@ -221,11 +180,10 @@ const char* Face::name(Expression e) {
 }
 
 bool Face::update() {
-  uint32_t now = millis();
-  if (_lastDrawMs != 0 && now - _lastDrawMs < FRAME_MS) {
+  if (!_timer.due()) {
     return false;
   }
-  _lastDrawMs = now ? now : 1;
+  uint32_t now = millis();
 
   // Finished talking? Move on to the follow-up expression.
   if (_expr == TALKING && (now - _startMs) / _sayFrameMs >= _sayCount) {
@@ -241,17 +199,17 @@ bool Face::update() {
       _tuning = false;
       _startMs = now;
     } else {
-      clearFrame(_frame);
+      _canvas.clear();
       drawExpression(_expr, 0, 0);
       addStatic((float)elapsed / TUNE_IN_MS, elapsed);
-      push();
+      _canvas.push(_leds);
       return true;
     }
   }
 
-  clearFrame(_frame);
+  _canvas.clear();
   drawExpression(_expr, (now - _startMs) / 1000.0f, now - _startMs);
-  push();
+  _canvas.push(_leds);
   return true;
 }
 
@@ -277,36 +235,20 @@ void Face::drawExpression(Expression e, float t, uint32_t elapsedMs) {
 // (its face colour, or dark if it isn't part of the face).
 void Face::addStatic(float progress, uint32_t elapsedMs) {
   uint32_t frame = 100 + elapsedMs / Static::FRAME_MS;   // a different run of static from setup's
-  const Color white = {(float)Static::COLOR[0], (float)Static::COLOR[1], (float)Static::COLOR[2]};
   for (int k = 0; k < 25; k++) {
     if (progress >= Static::settleAt(k)) {
       continue;                          // settled: keep the face's pixel
     }
-    _frame[k].c = white;
-    _frame[k].i = Static::level(frame, k);
+    _canvas.px[k].c = Palette::STATIC;
+    _canvas.px[k].i = Static::level(frame, k);
   }
-}
-
-// Copy the frame to the LEDs. Intensity is squared so that the difference
-// between normal (0.6) and max (1.0) is clearly visible on real LEDs.
-void Face::push() {
-  for (int n = 0; n < 25; n++) {
-    const Pixel& p = _frame[n];
-    if (p.i <= 0.02f) {
-      _leds[n] = CRGB::Black;
-      continue;
-    }
-    float s = p.i * p.i;
-    _leds[n] = CRGB((uint8_t)(p.c.r * s), (uint8_t)(p.c.g * s), (uint8_t)(p.c.b * s));
-  }
-  FastLED.show();
 }
 
 // Eyes on the second row (columns 1 and 3) that can slide sideways and blink, plus a mouth
 void Face::drawEyesAndMouth(const char* const mouthRows[5], float drift, float eyelids) {
-  addRows(_frame, mouthRows);
-  putSoft(_frame, 1, 1 + drift, EYE, BASE * eyelids);
-  putSoft(_frame, 1, 3 + drift, EYE, BASE * eyelids);
+  addRows(_canvas, mouthRows);
+  _canvas.putSoft(1, 1 + drift, EYE, BASE * eyelids);
+  _canvas.putSoft(1, 3 + drift, EYE, BASE * eyelids);
 }
 
 // ---------------------------------------------------------------------
@@ -342,13 +284,13 @@ void Face::drawUnsure(float t) {
 // Happy -> Laughing, with the three upper-middle mouth pixels shimmering
 void Face::drawLaughing(float t) {
   float x = fmodf(t, 5.5f);
-  Pixel a[25], b[25];
-  clearFrame(a); addRows(a, ROWS_HAPPY);
-  clearFrame(b); addRows(b, ROWS_LAUGHING);
+  Canvas a, b;
+  a.clear(); addRows(a, ROWS_HAPPY);
+  b.clear(); addRows(b, ROWS_LAUGHING);
   for (int c = 1; c <= 3; c++) {
-    b[3 * 5 + c].i = shimmer(t, c);
+    b.px[3 * 5 + c].i = shimmer(t, c);
   }
-  blend(_frame, a, b, ramp(x, 1.2f, 1.6f) - ramp(x, 4.2f, 4.6f));
+  _canvas.blend(a, b, ramp(x, 1.2f, 1.6f) - ramp(x, 4.2f, 4.6f));
 }
 
 // Neutral -> "O" mouth. One bright pixel laps the O, then every mouth pixel
@@ -360,9 +302,9 @@ void Face::drawSurprised(float t) {
   const float lapEnd = start + 9 * step, holdEnd = lapEnd + 0.75f;
   int pos = (int)floorf((x - start) / step);
 
-  Pixel a[25], b[25];
-  clearFrame(a); addRows(a, ROWS_NEUTRAL);
-  clearFrame(b); addRows(b, ROWS_SURPRISED_EYES);
+  Canvas a, b;
+  a.clear(); addRows(a, ROWS_NEUTRAL);
+  b.clear(); addRows(b, ROWS_SURPRISED_EYES);
   for (int j = 0; j < 8; j++) {
     float i = 0.4f;
     if (x >= lapEnd) {
@@ -374,31 +316,31 @@ void Face::drawSurprised(float t) {
         i = 0.65f;                            // short trail behind it
       }
     }
-    put(b, ring[j][0], ring[j][1], MOUTH, i);
+    b.put(ring[j][0], ring[j][1], MOUTH, i);
   }
-  blend(_frame, a, b, ramp(x, 0.8f, 1.1f) - ramp(x, holdEnd, holdEnd + 0.4f));
+  _canvas.blend(a, b, ramp(x, 0.8f, 1.1f) - ramp(x, holdEnd, holdEnd + 0.4f));
 }
 
 // Eyes go from blue to red and brighten; the mouth shimmer builds with the anger
 void Face::drawAngry(float t) {
   float x = fmodf(t, 6.0f);
   float k = ramp(x, 0.8f, 2.4f) - ramp(x, 5.2f, 5.8f);
-  addRows(_frame, ROWS_ANGRY_BASE);
+  addRows(_canvas, ROWS_ANGRY_BASE);
   Color eye = mix(EYE, ANGRY_EYE, k);
-  put(_frame, 1, 1, eye, BASE + 0.4f * k);
-  put(_frame, 1, 3, eye, BASE + 0.4f * k);
+  _canvas.put(1, 1, eye, BASE + 0.4f * k);
+  _canvas.put(1, 3, eye, BASE + 0.4f * k);
   for (int c = 1; c <= 3; c++) {
-    put(_frame, 3, c, MOUTH, BASE + k * (shimmer(t, c) - BASE));
+    _canvas.put(3, c, MOUTH, BASE + k * (shimmer(t, c) - BASE));
   }
 }
 
 // Neutral, then one eye closes and the mouth pulls into a one-sided smirk
 void Face::drawWink(float t) {
   float x = fmodf(t, 5.0f);
-  Pixel a[25], b[25];
-  clearFrame(a); addRows(a, ROWS_NEUTRAL);
-  clearFrame(b); addRows(b, ROWS_WINK);
-  blend(_frame, a, b, ramp(x, 1.2f, 1.5f) - ramp(x, 3.6f, 3.9f));
+  Canvas a, b;
+  a.clear(); addRows(a, ROWS_NEUTRAL);
+  b.clear(); addRows(b, ROWS_WINK);
+  _canvas.blend(a, b, ramp(x, 1.2f, 1.5f) - ramp(x, 3.6f, 3.9f));
 }
 
 // The whole face rises and falls one row either side of centre, keeping the
@@ -406,15 +348,15 @@ void Face::drawWink(float t) {
 // shape and closes again: a snore.
 void Face::drawAsleep(float t) {
   float y = sinf(t * TAU / 6.0f);          // -1 = top, +1 = bottom, 6 second cycle
-  putSoft(_frame, 1 + y, 0, SLEEP_EYE, BASE);
-  putSoft(_frame, 1 + y, 1, SLEEP_EYE, BASE);
-  putSoft(_frame, 1 + y, 3, SLEEP_EYE, BASE);
-  putSoft(_frame, 1 + y, 4, SLEEP_EYE, BASE);
-  putSoft(_frame, 3 + y, 2, MOUTH, BASE);
+  _canvas.putSoft(1 + y, 0, SLEEP_EYE, BASE);
+  _canvas.putSoft(1 + y, 1, SLEEP_EYE, BASE);
+  _canvas.putSoft(1 + y, 3, SLEEP_EYE, BASE);
+  _canvas.putSoft(1 + y, 4, SLEEP_EYE, BASE);
+  _canvas.putSoft(3 + y, 2, MOUTH, BASE);
   float snore = smooth((-y - 0.6f) / 0.35f);
-  putSoft(_frame, 4 + y, 1, MOUTH, BASE * snore);
-  putSoft(_frame, 4 + y, 3, MOUTH, BASE * snore);
-  putSoft(_frame, 5 + y, 2, MOUTH, BASE * snore);
+  _canvas.putSoft(4 + y, 1, MOUTH, BASE * snore);
+  _canvas.putSoft(4 + y, 3, MOUTH, BASE * snore);
+  _canvas.putSoft(5 + y, 2, MOUTH, BASE * snore);
 }
 
 // Brightness spreads out from the centre of the heart and draws back in
@@ -428,7 +370,7 @@ void Face::drawLove(float t) {
       float d = sqrtf((r - 1.8f) * (r - 1.8f) + (c - 2.0f) * (c - 2.0f));
       float lit = reach - d + 0.6f;
       lit = lit < 0 ? 0 : (lit > 1 ? 1 : lit);
-      put(_frame, r, c, HEART, 0.3f + 0.7f * lit);
+      _canvas.put(r, c, HEART, 0.3f + 0.7f * lit);
     }
   }
 }
@@ -438,8 +380,8 @@ void Face::drawLove(float t) {
 void Face::drawScared(float t) {
   float shake = 0.25f * sinf(t * TAU * 5);           // small, fast tremble
   for (int r = 0; r <= 1; r++) {
-    putSoft(_frame, r, 1 + shake, EYE, BASE);
-    putSoft(_frame, r, 3 + shake, EYE, BASE);
+    _canvas.putSoft(r, 1 + shake, EYE, BASE);
+    _canvas.putSoft(r, 3 + shake, EYE, BASE);
   }
   bool flip = ((int)(t / 0.3f)) % 2 == 1;
   for (int c = 0; c < 5; c++) {
@@ -447,7 +389,7 @@ void Face::drawScared(float t) {
     if (flip) {
       high = !high;
     }
-    put(_frame, high ? 3 : 4, c, MOUTH, BASE);
+    _canvas.put(high ? 3 : 4, c, MOUTH, BASE);
   }
 }
 
@@ -458,20 +400,20 @@ void Face::drawCurious(float t) {
   float k = ramp(x, 0.6f, 1.2f) - ramp(x, 4.6f, 5.2f);  // 0 = looking ahead, 1 = looking off
   const float blinks[] = {3.4f};
   float eyelids = blink(x, blinks, 1);
-  addRows(_frame, MOUTH_HAPPY);
-  putSoft(_frame, 1 - k, 1 + k, EYE, BASE * eyelids);
-  putSoft(_frame, 1 - k, 3 + k, EYE, BASE * eyelids);
+  addRows(_canvas, MOUTH_HAPPY);
+  _canvas.putSoft(1 - k, 1 + k, EYE, BASE * eyelids);
+  _canvas.putSoft(1 - k, 3 + k, EYE, BASE * eyelids);
 }
 
 // One mouth shape per frame from the sequence given to say()
 void Face::drawTalking(uint32_t elapsedMs) {
   if (!_sayShapes || _sayCount == 0) {
-    addRows(_frame, TALK_ROWS[MOUTH_CLOSED]);
+    addRows(_canvas, TALK_ROWS[MOUTH_CLOSED]);
     return;
   }
   uint32_t n = elapsedMs / _sayFrameMs;
   if (n >= _sayCount) {
     n = _sayCount - 1;
   }
-  addRows(_frame, TALK_ROWS[_sayShapes[n]]);
+  addRows(_canvas, TALK_ROWS[_sayShapes[n]]);
 }

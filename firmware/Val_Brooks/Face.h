@@ -14,6 +14,7 @@
 #pragma once
 #include <Arduino.h>
 #include <FastLED.h>
+#include "Canvas.h"
 
 class Face {
 public:
@@ -68,15 +69,12 @@ public:
   Expression expression() const { return _expr; }
   static const char* name(Expression e);
 
-  struct Color { float r, g, b; };
-  struct Pixel { Color c; float i; };   // i = intensity 0..1 (0 = off)
-
 private:
   CRGB*      _leds;
   Expression _expr = NEUTRAL;
   uint32_t   _startMs = 0;      // when the current expression began
-  uint32_t   _lastDrawMs = 0;
-  Pixel      _frame[25];
+  FrameTimer _timer;
+  Canvas     _canvas;           // the picture being drawn
   bool       _tuning = false;   // tuning in to _expr
 
   const Mouth* _sayShapes = nullptr;
@@ -103,5 +101,4 @@ private:
   void drawTalking(uint32_t elapsedMs);
 
   void drawEyesAndMouth(const char* const mouthRows[5], float drift, float eyelids);
-  void push();   // copy _frame to the LEDs
 };
