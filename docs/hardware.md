@@ -58,6 +58,11 @@ direct connection to the servo signal pins.
 
 ## Units that can't say what they are (not yet tried on the robot)
 
+`firmware/Unit_Tester/` is for finding out what these units really do, pin by pin,
+before the Val sketches rely on them: it shows each port pin's reading and whether
+anything drives it (read with the weak pull-up, then the weak pull-down: an empty pin
+follows them), and can drive a Key's LED once the Key has been pressed.
+
 - **M5 Reflective IR Unit** (`ReflectiveIRSensor`): read as analog on **G33**, so only
   in Port B, and only if the unit's analog wire lands on G33.
   **On the robot (Port B), G33 read binary and inverted** (a strong reflection read as

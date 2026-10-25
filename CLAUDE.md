@@ -19,6 +19,7 @@ make sense to them; everything an adult needs should be written down for them.
 | `firmware/Val_Vehicle/` | Braitenberg vehicle: sensors wired +/−/off to one servo (S1) |
 | `firmware/Val_Field/` | potential field: sensors push/pull by direction; two wheels (S1 left, S2 right) |
 | `firmware/Val_Brooks/` | subsumption test bench: behaviours in a fixed hierarchy, picked by uncommenting one `TEST_` line; two wheels, sensors on a PaHub |
+| `firmware/Unit_Tester/` | diagnostics: every port pin's reading and "is anything driving it?" on the matrix and Serial; a key LED test. Uses no shared files |
 | `firmware/sync_shared.py` | copies `shared/` into the sketches |
 | `tests/host/` | runs the real sketches against fake hardware |
 | `docs/hardware.md` | pins, Motion registers, sensor chip IDs, port limits, quirks |
