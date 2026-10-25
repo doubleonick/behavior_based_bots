@@ -94,6 +94,10 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Records
 
+- 2026-10: correction. Val_Vehicle (the emotions change) compiled in the host tests but
+  not in the Arduino IDE: `enum Wiring` was declared below the first function, and the
+  IDE's automatic function declarations go above the first function. Fixed by moving
+  it up; `tests/host/run.py` now checks every sketch for this.
 - 2026-10: correction. Val_Field arcing right with no sensors looked like mismatched
   servos (trim in code, or a "drive straight" setup step, was proposed). It was the
   wheel position: servos moved from the rear to the middle of the chassis and it drove

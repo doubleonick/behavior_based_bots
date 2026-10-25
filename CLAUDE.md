@@ -109,5 +109,11 @@ Each test's fake FastLED also checksums every frame the matrix shows and prints 
 the end (`LED frames shown: ..., checksum ...`), so a change to what the LEDs show
 fails the test too, not just a change to Serial.
 
+The tests compile with g++, not the Arduino IDE, which differs in one known way: the IDE
+writes a declaration for every function in a `.ino` above the first function. So a
+type (`enum` / `struct` / `class`) that any function's return type or parameters use
+must be declared above every function. `run.py` checks this before each test. Other
+IDE-only problems are not caught here; a real build for the robot is still the final check.
+
 Building for the robot: Arduino IDE or arduino-cli, M5Stack board package (M5Atom),
 libraries FastLED and VL53L0X (Pololu).

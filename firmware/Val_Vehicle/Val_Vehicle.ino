@@ -109,6 +109,11 @@ struct PortRecord {
 };
 PortRecord record[PORT_COUNT];
 
+// Which kinds of wire this module has (only wires that are set up and active).
+// (Up here, before any function: the Arduino IDE writes a declaration for every
+// function above the first one, and they need this type to exist already.)
+enum Wiring { NO_WIRES, EXCITATORY_ONLY, INHIBITORY_ONLY, MIXED };
+
 SetupMode setupMode(leds, servo);
 Preferences saved;
 
@@ -386,9 +391,7 @@ void updateIdle() {
 // =====================================================================
 //  The matrix: face or spikes
 // =====================================================================
-// Which kinds of wire this module has (only wires that are set up and active)
-enum Wiring { NO_WIRES, EXCITATORY_ONLY, INHIBITORY_ONLY, MIXED };
-
+// Which kinds of wire this module has
 Wiring wiringKind() {
   bool anyExcitatory = false;
   bool anyInhibitory = false;

@@ -13,6 +13,7 @@ Needs a C++17 compiler (g++ or clang++). This checks LOGIC (setup flow, detectio
 calibration, wiring sums, potential field); it cannot check timing on the real
 ESP32, LED colours, or anything electrical. Say so when reporting results.
 """
+import re
 import shutil
 import subprocess
 import sys
@@ -37,9 +38,47 @@ def compiler():
     sys.exit("No C++ compiler found (need g++ or clang++)")
 
 
+def prototype_problems(sketch_dir):
+    """The Arduino IDE writes a declaration for every function in a .ino above the first
+    function it finds. A function whose return type or parameters use a type the .ino
+    declares further down then fails to compile on the robot, though it compiles here.
+    Report every such function."""
+    problems = []
+    for ino in sorted(sketch_dir.glob("*.ino")):
+        lines = ino.read_text().split("\n")
+        types = {}                        # type name -> line it is declared on
+        first_function = None
+        signature = re.compile(r"^([A-Za-z_][\w:<>\*& ]*?)\b([A-Za-z_]\w*)\s*\(([^;{]*)\)\s*(const)?\s*\{")
+        for n, line in enumerate(lines):
+            m = re.match(r"^(?:enum|struct|class)\s+(\w+)", line)
+            if m:
+                types[m.group(1)] = n
+            if first_function is None and not line.startswith((" ", "\t", "#", "//")):
+                if signature.match(line) and not re.match(r"^(if|for|while|switch|else|return)\b", line):
+                    first_function = n
+        if first_function is None:
+            continue
+        for n, line in enumerate(lines):
+            m = signature.match(line)
+            if not m or line.startswith((" ", "\t")):
+                continue
+            used = set(re.findall(r"\w+", m.group(1) + " " + m.group(3)))
+            for t in used:
+                if t in types and types[t] > first_function:
+                    problems.append(f"{ino.name}:{n + 1}: {m.group(2)}() uses {t}, declared on line "
+                                    f"{types[t] + 1}, after the first function (line {first_function + 1})")
+    return problems
+
+
 def run(test, sketch, update):
     folder = HERE / test
     sketch_dir = FIRMWARE / sketch
+    problems = prototype_problems(sketch_dir)
+    if problems:
+        print(f"FAIL {test}: would not compile in the Arduino IDE (move the type up, above every function)")
+        for p in problems:
+            print("  " + p)
+        return False
     sources = [str(p) for p in sorted(sketch_dir.glob("*.cpp"))]
     with tempfile.TemporaryDirectory() as tmp:
         exe = Path(tmp) / "test"
