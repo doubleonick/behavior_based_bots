@@ -43,6 +43,12 @@ void release() {
   currentScl = -1;
 }
 
+void releaseIfUsing(int pin) {
+  if (pin == currentSda || pin == currentScl) {
+    release();
+  }
+}
+
 bool answers(uint8_t address) {
   Wire1.beginTransmission(address);
   return Wire1.endTransmission() == 0;

@@ -56,6 +56,21 @@ direct connection to the servo signal pins.
   mounted: set `IMU_FORWARD_AXIS` / `IMU_LEFT_AXIS` and their signs from the Serial
   readings. The v1.0 Atom Matrix has an MPU6886 instead, which this code does not read.
 
+## Units that can't say what they are (not yet tried on the robot)
+
+- **M5 Reflective IR Unit** (`ReflectiveIRSensor`): read as analog on **G33**, so only
+  in Port B, and only if the unit's analog wire lands on G33 (medium confidence;
+  check with the live meter in setup). 0..4095; calibration decides which way is
+  "more". The unit's digital (threshold) output is not used.
+- **M5 Key Unit** (`KeySensor`): a button and one SK6812 LED. Both pins start as
+  inputs with pull-ups; the first pin to go LOW is the button and the other becomes
+  the LED (added to FastLED then). That assumes the button pulls its line LOW when
+  pressed (medium confidence). The LED shows the wire / policy colour, dim, and
+  bright while pressed; it shares the matrix's `FastLED.setBrightness`.
+- Neither can be detected, so a sketch assumes them in Port B / C when no I2C sensor
+  answers there. While only assumed (and for a key, until it is first pressed), Val
+  keeps looking for an I2C sensor in that port every 5 s and uses one if it appears.
+
 ## Grove ports and what they can do
 
 All three ports supply **5 V** on the red wire. ESP32 pins are **3.3 V only**.

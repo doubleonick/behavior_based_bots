@@ -4,6 +4,9 @@
 // setup for just that wire, made a - wire); + and - now cancel, the wheel stops, and the
 // Neutral face comes back. At 44-45 s Port A's light sensor is swapped for a distance
 // sensor (treated as new, also made -); with only - wires it stops and shows Love.
+// This story has no Reflective IR or Key Unit: don't assume them in empty ports
+#define ASSUME_IR_ON_PORT_B 0
+#define ASSUME_KEY_ON_PORT_C 0
 #include <Arduino.h>
 #include <Wire.h>
 #include <FastLED.h>

@@ -14,9 +14,15 @@
             in Port A, B and C, or on an M5 PaHub (PCA9548A) plugged into one
             of the ports. On a hub, two sensors of the same kind can share one
             port (for example two distance sensors pointing left and right).
+            And, in ports where no I2C sensor (or hub) answers, if there is room:
+              M5 Reflective IR Unit    Port B only (analog, on G33)
+              M5 Key Unit              Port C (a button; its LED shows push / pull)
+            These two can't say what they are, so Val assumes them; switch one
+            "off" (x) in setup if it isn't there. Real I2C sensors always come first.
 
   Keep all these files together in a folder named Val_Field. The shared ones
-  (Face, Spikes, Static, MotionServo, Port, I2CBus, Sensor, ColorSensor, DistanceSensor, Button)
+  (Face, Spikes, Static, Canvas, Palette, Icons, MotionServo, Port, I2CBus, Sensor,
+  ColorSensor, DistanceSensor, ReflectiveIRSensor, KeySensor, Button)
   are copies of Val/shared/ - edit them there and run sync_shared.py.
 
   What it does
@@ -51,6 +57,9 @@
 #include "MotionServo.h"
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
+#include "ReflectiveIRSensor.h"
+#include "KeySensor.h"
+#include "Palette.h"
 #include "I2CBus.h"
 #include "PotentialField.h"
 #include "FieldSetup.h"
@@ -68,6 +77,15 @@ const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> 
 const unsigned long SURPRISE_MS     = 3300;    // how long Val looks surprised at a new sensor
 const unsigned long REST_AFTER_MS   = 1500;    // wheels still this long -> the run is over, face comes back
 const float MOVING_SPEED = 0.05f;              // below this a wheel counts as still
+
+// Units that can't say what they are (not I2C). Val assumes one is there when no I2C
+// sensor answers in its port. 0 = never assume it (for example, nothing ever goes there).
+#ifndef ASSUME_IR_ON_PORT_B
+#define ASSUME_IR_ON_PORT_B 1         // M5 Reflective IR Unit, analog on G33
+#endif
+#ifndef ASSUME_KEY_ON_PORT_C
+#define ASSUME_KEY_ON_PORT_C 1        // M5 Key Unit
+#endif
 
 // ---------- Hardware ----------
 CRGB leds[25];
@@ -109,6 +127,11 @@ DistanceSensor distanceSensor[PLACE_COUNT] = {
   DistanceSensor(place[6]), DistanceSensor(place[7]), DistanceSensor(place[8])
 };
 
+ReflectiveIRSensor reflectiveIR(PORT_B);   // assumed in Port B when nothing else answers
+KeySensor key(PORT_C);                     // assumed in Port C when nothing else answers
+const int PORT_B_INDEX = 1;
+const int PORT_C_INDEX = 2;
+
 // The field. field.source[i] belongs to place i.
 PotentialField field;
 
@@ -143,14 +166,14 @@ void printSetup();
 // =====================================================================
 //  Finding sensors
 // =====================================================================
-// A new sensor's starting setup: distance pushes (avoid things),
-// light pulls (seek light), both pointing straight ahead.
+// A new sensor's starting setup: distance, reflective IR and the key push (avoid
+// things); light pulls (seek light); all pointing straight ahead.
 void setDefaults(int i) {
   PotentialField::Source& s = field.source[i];
-  if (s.sensor->typeCode() == 'D') {
-    s.policy = PotentialField::PUSH;
-  } else {
+  if (s.sensor->typeCode() == 'C') {
     s.policy = PotentialField::PULL;
+  } else {
+    s.policy = PotentialField::PUSH;
   }
   s.angle = 0;
 }
@@ -213,7 +236,8 @@ int sensorsInUse() {
 
 // Look in place i for a sensor of either kind. Returns true if one was found.
 // If the place was set up before with the same kind of sensor, its setup comes back.
-bool detectPort(int i) {
+// allowAssumed: if nothing answers in Port B or C, assume the reflective IR / key there.
+bool detectPort(int i, bool allowAssumed) {
   PotentialField::Source& s = field.source[i];
   s.sensor = nullptr;
   if (i < PORT_COUNT && (!USE_PORT[i] || i == hubPort)) {
@@ -229,6 +253,10 @@ bool detectPort(int i) {
     s.sensor = &colorSensor[i];
   } else if (distanceSensor[i].begin()) {
     s.sensor = &distanceSensor[i];
+  } else if (allowAssumed && i == PORT_B_INDEX && ASSUME_IR_ON_PORT_B && reflectiveIR.begin()) {
+    s.sensor = &reflectiveIR;          // nothing answered: assume the reflective IR
+  } else if (allowAssumed && i == PORT_C_INDEX && ASSUME_KEY_ON_PORT_C && key.begin()) {
+    s.sensor = &key;                   // nothing answered: assume the key
   } else {
     return false;
   }
@@ -268,6 +296,41 @@ bool anySensorNeedsSetup() {
   return false;
 }
 
+// Is place i holding a unit Val only assumed (and might really be empty)?
+// A key that has been pressed has proved it is there.
+bool isAssumedUnit(int i) {
+  if (field.source[i].sensor == &reflectiveIR) {
+    return true;
+  }
+  return field.source[i].sensor == &key && !key.pinsKnown();
+}
+
+// Look everywhere: real I2C sensors first (ports and hub), then, if there is still
+// room, the units that can only be assumed. An assumed unit gives way to an I2C
+// sensor if one turns up in its port.
+void detectAll() {
+  for (int i = 0; i < PLACE_COUNT; i++) {
+    if (isAssumedUnit(i)) {
+      Sensor* assumed = field.source[i].sensor;
+      if (!detectPort(i, false)) {
+        field.source[i].sensor = assumed;        // still nothing else: keep the assumed unit
+        if (assumed == &reflectiveIR) {
+          reflectiveIR.reclaimPins();            // the search borrowed the pins: give them back
+        } else {
+          key.reclaimPins();
+        }
+      }
+    } else if (!isPlugged(i)) {
+      detectPort(i, false);
+    }
+  }
+  for (int i = 0; i < PLACE_COUNT; i++) {
+    if (!isPlugged(i)) {
+      detectPort(i, true);
+    }
+  }
+}
+
 // Every 5 seconds, look for a hub, and in places that have nothing working in them
 void searchForSensors() {
   if (millis() - lastSearchMs < 5000) {
@@ -278,10 +341,21 @@ void searchForSensors() {
   if (hubPort < 0) {
     findHub();
   }
-  for (int i = 0; i < PLACE_COUNT; i++) {
-    if (!isPlugged(i)) {
-      detectPort(i);
-    }
+  detectAll();
+}
+
+// The key's LED shows its policy: green pull, red push, off when off
+void updateKeyLed() {
+  PotentialField::Source& s = field.source[PORT_C_INDEX];
+  if (s.sensor != &key) {
+    return;
+  }
+  if (s.policy == PotentialField::PULL) {
+    key.showColour(&Palette::GREEN);
+  } else if (s.policy == PotentialField::PUSH) {
+    key.showColour(&Palette::RED);
+  } else {
+    key.showColour(nullptr);
   }
 }
 
@@ -564,9 +638,7 @@ void setup() {
 
   loadSetup();
   findHub();
-  for (int i = 0; i < PLACE_COUNT; i++) {
-    detectPort(i);
-  }
+  detectAll();
   lastSearchMs = millis();
 
   face.sayHello();
@@ -650,6 +722,7 @@ void loop() {
     }
   }
 
+  updateKeyLed();
   leftWheel.update();
   rightWheel.update();
 }

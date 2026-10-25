@@ -28,6 +28,7 @@ bool use(int sda, int scl, int channel = -1);
 bool hubAnswers();                     // is a PaHub on the current pins?
 void hubAllOff();                      // switch off every hub channel
 void release();                        // let go of the pins (so a 3-pin sensor can use them)
+void releaseIfUsing(int pin);          // let go only if the bus is on this pin right now
 bool answers(uint8_t address);         // is anything at this address on the current pins?
 bool readByte(uint8_t address, uint8_t command, uint8_t& value);
 

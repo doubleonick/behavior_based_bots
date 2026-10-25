@@ -13,7 +13,8 @@
                  Short press turns it 45 degrees anticlockwise, long press confirms.
          low:    no stimulus, long press.    light: moon (cover it)   distance: small square (far)
          high:   full stimulus, long press.  light: sun (light it)    distance: big square (near)
-         (angle, low and high are skipped when the policy is "off")
+         (angle, low and high are skipped when the policy is "off"; reflective IR uses
+          the distance squares; a key skips low and high: it is only pressed or not)
        The top row has one dot per sensor; confirmed sensors show their colour.
     3. A check mark, then setup ends (the sketch then tunes the face back in).
 

@@ -6,10 +6,18 @@
             up to 3 sensors, one each in Port A, B and C, any mix of:
               M5 Color Unit (TCS3472)  used as a light sensor
               M5 ToF Unit   (VL53L0X)  used as a distance sensor
+            and, in ports where no I2C sensor answers:
+              M5 Reflective IR Unit    Port B only (analog, on G33)
+              M5 Key Unit              Port C (a button; its LED shows the wire's colour)
+            These two can't say what they are, so Val assumes them; switch one
+            "off" (x) in setup if it isn't there.
 
   Keep all these files together in a folder named Val_Vehicle:
     Val_Vehicle.ino                        this file: wiring + behaviour
     Face.h / Face.cpp                      Val's face
+    Canvas, Palette.h, Icons.h             drawing on the matrix: the picture, colours, setup icons
+    ReflectiveIRSensor.h / .cpp            reflective IR (Port B)
+    KeySensor.h / .cpp                     key (Port C)
     Spikes.h / Spikes.cpp                  the wiring's spikes, shown while driving
     Static.h                               white static (into setup, and tuning back in)
     MotionServo.h / MotionServo.cpp        the servo
@@ -59,6 +67,9 @@
 #include "MotionServo.h"
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
+#include "ReflectiveIRSensor.h"
+#include "KeySensor.h"
+#include "Palette.h"
 #include "Connection.h"
 #include "SetupMode.h"
 
@@ -66,6 +77,15 @@
 const bool SAVE_SETUP = false;        // true: remember mount, wiring and calibration after power-off
 const bool ALLOW_REVERSE = false;     // true: a negative sum drives the wheel backwards
 const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and gets warm
+
+// Units that can't say what they are (not I2C). Val assumes one is there when no I2C
+// sensor answers in its port. 0 = never assume it (for example, nothing ever goes there).
+#ifndef ASSUME_IR_ON_PORT_B
+#define ASSUME_IR_ON_PORT_B 1         // M5 Reflective IR Unit, analog on G33
+#endif
+#ifndef ASSUME_KEY_ON_PORT_C
+#define ASSUME_KEY_ON_PORT_C 1        // M5 Key Unit
+#endif
 
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
 const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> Asleep
@@ -96,6 +116,10 @@ const int PORT_COUNT = 3;
 const bool USE_PORT[PORT_COUNT] = {true, true, true};
 ColorSensor    colorSensor[PORT_COUNT]    = {ColorSensor(PORT_A), ColorSensor(PORT_B), ColorSensor(PORT_C)};
 DistanceSensor distanceSensor[PORT_COUNT] = {DistanceSensor(PORT_A), DistanceSensor(PORT_B), DistanceSensor(PORT_C)};
+ReflectiveIRSensor reflectiveIR(PORT_B);   // assumed in Port B when no I2C sensor answers
+KeySensor key(PORT_C);                     // assumed in Port C when no I2C sensor answers
+const int PORT_B_INDEX = 1;
+const int PORT_C_INDEX = 2;
 
 // One wire per port. wires[i].sensor points at whichever sensor is in port i (or nothing).
 Connection wires[PORT_COUNT];
@@ -187,6 +211,10 @@ bool detectPort(int i) {
     wires[i].sensor = &colorSensor[i];
   } else if (distanceSensor[i].begin()) {
     wires[i].sensor = &distanceSensor[i];
+  } else if (i == PORT_B_INDEX && ASSUME_IR_ON_PORT_B && reflectiveIR.begin()) {
+    wires[i].sensor = &reflectiveIR;    // nothing answered: assume the reflective IR
+  } else if (i == PORT_C_INDEX && ASSUME_KEY_ON_PORT_C && key.begin()) {
+    wires[i].sensor = &key;             // nothing answered: assume the key
   } else {
     return false;
   }
@@ -225,7 +253,41 @@ bool anyWireNeedsSetup() {
   return false;
 }
 
-// Every 5 seconds, look in ports that have nothing working in them
+// Is port i holding a unit Val only assumed (and might really be empty)?
+// A key that has been pressed has proved it is there.
+bool isAssumedUnit(int i) {
+  if (wires[i].sensor == &reflectiveIR) {
+    return true;
+  }
+  return wires[i].sensor == &key && !key.pinsKnown();
+}
+
+// An assumed unit's port might get an I2C sensor plugged in: if one answers, use it
+void lookForI2CInstead(int i) {
+  Sensor* found = nullptr;
+  if (colorSensor[i].begin()) {
+    found = &colorSensor[i];
+  } else if (distanceSensor[i].begin()) {
+    found = &distanceSensor[i];
+  }
+  if (found == nullptr) {
+    if (wires[i].sensor == &reflectiveIR) {
+      reflectiveIR.reclaimPins();       // the search borrowed the pins: give them back
+    } else {
+      key.reclaimPins();
+    }
+    return;
+  }
+  wires[i].sensor = found;
+  wires[i].weight = 1;                  // new here: starts as + until set up
+  if (record[i].type == found->typeCode()) {
+    wires[i].weight = record[i].weight;
+    found->setCalibration(record[i].low, record[i].high);
+  }
+}
+
+// Every 5 seconds, look in ports that have nothing working in them (or only an
+// assumed unit, in case an I2C sensor has been plugged in instead)
 void searchForSensors() {
   if (millis() - lastSearchMs < 5000) {
     return;
@@ -234,7 +296,24 @@ void searchForSensors() {
   for (int i = 0; i < PORT_COUNT; i++) {
     if (!isPlugged(i)) {
       detectPort(i);
+    } else if (isAssumedUnit(i)) {
+      lookForI2CInstead(i);
     }
+  }
+}
+
+// The key's LED shows its wire: green +, red -, off when not connected
+void updateKeyLed() {
+  if (wires[PORT_C_INDEX].sensor != &key) {
+    return;
+  }
+  float w = wires[PORT_C_INDEX].weight;
+  if (w > 0) {
+    key.showColour(&Palette::GREEN);
+  } else if (w < 0) {
+    key.showColour(&Palette::RED);
+  } else {
+    key.showColour(nullptr);
   }
 }
 
@@ -686,5 +765,6 @@ void loop() {
     }
   }
 
+  updateKeyLed();
   servo.update();
 }

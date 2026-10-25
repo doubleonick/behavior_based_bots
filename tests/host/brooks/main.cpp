@@ -9,10 +9,14 @@
 //   13.0 s      the left bumper is pressed for 0.1 s: escape (back up, then nose turns right)
 //   15 s on     all clear: wander again
 // The Matrix button is held 1 s at 7 s (long press: display off) and at 16 s (on again).
+// This story has no Reflective IR or Key Unit: don't assume them in empty ports
+#define ASSUME_IR_ON_PORT_B 0
+#define ASSUME_KEY_ON_PORT_C 0
+#define BUMPERS 2   // two bump switches on Port C
 #include <Arduino.h>
 #include <Wire.h>
 #include <FastLED.h>
-uint32_t fakeMillis=1; bool fakeButtonDown=false; bool fakePinLow[40]={}; int servoAngles[4]={-1,-1,-1,-1};
+uint32_t fakeMillis=1; bool fakeButtonDown=false; int servoAngles[4]={-1,-1,-1,-1};
 FakeHub fakeHub = {32,26,true,0};
 FakeSensor fakeSensors[FAKE_SENSOR_COUNT] = {
   {-9,-9,true,'D',1500,0}, {-9,-9,true,'D',1500,1},     // distance: right on 0, left on 1

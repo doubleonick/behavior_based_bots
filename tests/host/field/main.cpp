@@ -2,6 +2,9 @@
 // Story: distance sensors in Ports A and C; full setup (wheels, push policy, angles
 // +45 and -45, calibration); then an obstacle on the left, then clear. The printed
 // servo angles show the robot turning away from the obstacle.
+// This story has no Reflective IR or Key Unit: don't assume them in empty ports
+#define ASSUME_IR_ON_PORT_B 0
+#define ASSUME_KEY_ON_PORT_C 0
 #include <Arduino.h>
 #include <Wire.h>
 #include <FastLED.h>

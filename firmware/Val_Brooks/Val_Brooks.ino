@@ -12,7 +12,10 @@
               M5 ToF Unit (VL53L0X)    distance
               M5 Color Unit (TCS3472)  light
               (for example: right ToF on 0, left ToF on 1, right light on 2, left light on 3)
-            for button collisions: a left and a right bump switch (see BUMPER pins below)
+            for button collisions: an M5 Key Unit in Port C (a front bumper), or a
+              left and a right bump switch (see BUMPERS below)
+            optionally an M5 Reflective IR Unit in Port B (analog on G33): "something
+              just ahead" for the object behaviours
             for inertial collisions: the Atom Matrix's own IMU (BMI270, see INERTIAL_COLLISION)
 
   Pick the hierarchy to test in the TEST HIERARCHY section below, by leaving exactly
@@ -34,7 +37,8 @@
     it begins.
 
   Keep all these files together in a folder named Val_Brooks. The shared ones
-  (Face, Static, MotionServo, Port, I2CBus, Sensor, ColorSensor, DistanceSensor, Button)
+  (Face, Static, Canvas, Palette, Icons, MotionServo, Port, I2CBus, Sensor, ColorSensor,
+  DistanceSensor, ReflectiveIRSensor, KeySensor, Button)
   are copies of firmware/shared/ - edit them there and run sync_shared.py.
 
   Libraries needed: FastLED, VL53L0X by Pololu, and only for INERTIAL_COLLISION 1:
@@ -49,6 +53,8 @@
 #include "MotionServo.h"
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
+#include "ReflectiveIRSensor.h"
+#include "KeySensor.h"
 #include "I2CBus.h"
 #include "Layers.h"
 
@@ -71,9 +77,24 @@
 const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and gets warm
 const bool SHOW_LAYERS_AT_START = true;   // false: start with the behaviour display off (dark)
 
-// Bump switches: pressed = LOW (they use the pin's pull-up). Port C is G19 / G22.
+// Bumpers: 1 = an M5 Key Unit in Port C, a front bumper (it counts as left AND right,
+//              so the escapes back off and turn either way; its LED shows red, "push")
+//           2 = two bump switches on Port C: left on G19, right on G22, pressed = LOW
+//              (they use the pin's pull-up)
+#ifndef BUMPERS
+#define BUMPERS 1
+#endif
 const int LEFT_BUMPER_PIN  = 19;
 const int RIGHT_BUMPER_PIN = 22;
+
+// Reflective IR in Port B: 1 = use one if no PaHub is there, 0 = don't
+#ifndef ASSUME_IR_ON_PORT_B
+#define ASSUME_IR_ON_PORT_B 1
+#endif
+// A raw reading (0..4095) past this means "something just ahead". Which way "past" is
+// depends on the unit: watch the "ir" number on Serial with and without something there.
+const long IR_NEAR_RAW = 2000;
+const bool IR_NEAR_IS_HIGH = true;    // true: something near gives a BIGGER reading
 
 // Distance: an object nearer than this (mm) on either side is "there"
 const long DISTANCE_THRESHOLD_MM = 300;
@@ -132,6 +153,9 @@ DistanceSensor distanceSensor[CHANNELS] = {
   DistanceSensor(hubPlace[3]), DistanceSensor(hubPlace[4]), DistanceSensor(hubPlace[5])
 };
 int hubPort = -1;                     // which port the PaHub is in (-1 = none found)
+
+ReflectiveIRSensor reflectiveIR(PORT_B);
+KeySensor key(PORT_C);
 
 // The sensors each behaviour uses (nullptr = not plugged in)
 Sensor* leftDistance  = nullptr;
@@ -241,8 +265,8 @@ bool present(Sensor* s) {
 }
 
 void updateSensors() {
-  Sensor* all[4] = {leftDistance, rightDistance, leftLight, rightLight};
-  for (int k = 0; k < 4; k++) {
+  Sensor* all[6] = {leftDistance, rightDistance, leftLight, rightLight, &reflectiveIR, &key};
+  for (int k = 0; k < 6; k++) {
     if (all[k] != nullptr) {
       all[k]->update();
     }
@@ -253,11 +277,19 @@ void updateSensors() {
 //  Detection: what is out there?
 // =====================================================================
 bool is_left_bumper_pressed() {
+#if BUMPERS == 1
+  return key.pressed();               // one key at the front: it is both sides
+#else
   return digitalRead(LEFT_BUMPER_PIN) == LOW;
+#endif
 }
 
 bool is_right_bumper_pressed() {
+#if BUMPERS == 1
+  return key.pressed();
+#else
   return digitalRead(RIGHT_BUMPER_PIN) == LOW;
+#endif
 }
 
 // A bump switch was pressed (either side)
@@ -340,11 +372,22 @@ bool is_front_collision() {
 #endif
 }
 
-// Is an object nearer than DISTANCE_THRESHOLD_MM on either side?
+// Does the reflective IR see something just ahead?
+bool is_ir_object_ahead() {
+  if (!present(&reflectiveIR)) {
+    return false;
+  }
+  if (IR_NEAR_IS_HIGH) {
+    return reflectiveIR.raw() >= IR_NEAR_RAW;
+  }
+  return reflectiveIR.raw() <= IR_NEAR_RAW;
+}
+
+// Is an object nearer than DISTANCE_THRESHOLD_MM on either side (or just ahead, by IR)?
 bool is_distance_threshold() {
   bool leftNear = present(leftDistance) && leftDistance->raw() < DISTANCE_THRESHOLD_MM;
   bool rightNear = present(rightDistance) && rightDistance->raw() < DISTANCE_THRESHOLD_MM;
-  return leftNear || rightNear;
+  return leftNear || rightNear || is_ir_object_ahead();
 }
 
 // How much brighter the left is than the right: -1 (all right) .. +1 (all left)
@@ -455,8 +498,30 @@ void steer_by_distance(float direction) {
   set_wheels(CRUISE_SPEED + direction * turn, CRUISE_SPEED - direction * turn);
 }
 
-void avoid_object()    { steer_by_distance(+1); }   // nearer on the left: left wheel faster, turn right
-void approach_object() { steer_by_distance(-1); }
+// Only the reflective IR sees it (dead ahead, no side): no side to steer by
+bool only_ir_sees_it() {
+  bool leftNear = present(leftDistance) && leftDistance->raw() < DISTANCE_THRESHOLD_MM;
+  bool rightNear = present(rightDistance) && rightDistance->raw() < DISTANCE_THRESHOLD_MM;
+  return is_ir_object_ahead() && !leftNear && !rightNear;
+}
+
+// Nearer on the left: left wheel faster, turn right. Dead ahead (IR only): back away, turning.
+void avoid_object() {
+  if (only_ir_sees_it()) {
+    arc_backward_left();
+  } else {
+    steer_by_distance(+1);
+  }
+}
+
+// Turn toward the nearer side. Dead ahead (IR only): keep going straight at it.
+void approach_object() {
+  if (only_ir_sees_it()) {
+    straight_forward();
+  } else {
+    steer_by_distance(-1);
+  }
+}
 
 // Steer toward (approach) or away from (avoid) the brighter side
 void steer_by_light(float direction) {
@@ -615,8 +680,11 @@ void printStatus() {
   printLong("distR", rightDistance);
   printLong("lightL", leftLight);
   printLong("lightR", rightLight);
+  printLong("ir", &reflectiveIR);
 #if INERTIAL_COLLISION
   Serial.printf("jolt fwd %+.2f left %+.2f  ", impactForward, impactLeft);
+#elif BUMPERS == 1
+  Serial.printf("key %c  ", key.pressed() ? 'X' : '-');
 #else
   Serial.printf("bumpers %c%c  ", is_left_bumper_pressed() ? 'L' : '-', is_right_bumper_pressed() ? 'R' : '-');
 #endif
@@ -634,8 +702,10 @@ void setup() {
   Serial.begin(115200);
   delay(200);
   button.begin();
+#if BUMPERS == 2
   pinMode(LEFT_BUMPER_PIN, INPUT_PULLUP);
   pinMode(RIGHT_BUMPER_PIN, INPUT_PULLUP);
+#endif
   FastLED.addLeds<WS2812, 27, GRB>(leds, 25);
   FastLED.setBrightness(LED_BRIGHTNESS);
   FastLED.clear(true);
@@ -650,8 +720,13 @@ void setup() {
 
   findHub();
   findSensors();
-  if (hubPort >= 0 && (PORTS[hubPort].pin1 == LEFT_BUMPER_PIN || PORTS[hubPort].pin2 == LEFT_BUMPER_PIN)) {
-    Serial.println("Warning: the PaHub is in the bump switches' port");
+  if (hubPort == 2) {
+    Serial.println("Warning: the PaHub is in Port C, where the bumpers go");
+  } else if (BUMPERS == 1) {
+    key.begin();
+  }
+  if (ASSUME_IR_ON_PORT_B && hubPort != 1) {
+    reflectiveIR.begin();
   }
 
   Serial.printf("Hierarchy (top first):");
@@ -712,6 +787,7 @@ void loop() {
     }
   }
 
+  key.showColour(&Palette::RED);       // a bumper pushes away: red, like the setup screens
   printStatus();
   leftWheel.update();
   rightWheel.update();

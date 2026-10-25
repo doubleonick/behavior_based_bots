@@ -65,6 +65,10 @@ A web interface that carries the instructions, with a game/story layer:
   None of these are I2C, so they can't be detected; a fixed port layout
   (A = light, B = IR, C = key) avoids a setup step. Port B's analog needs the white
   wire on G33: check on the hardware.
+  Built (2026-10) for the Reflective IR (Port B, analog, calibrated) and the Key
+  (Port C, LED shows the wire colour), in all three sketches: assumed when no I2C
+  sensor answers there, confirmed or switched off in setup. The U021 Light Unit is
+  not done yet.
 - **PaHub support**: done in Val_Field (2026-10): a port answering at 0x70 is a hub,
   and a sensor's place is "port + channel" (`Port::channel`, `I2CBus::use`). Still
   capped at 3 sensors, the setup screens' limit. Not yet in Val_Vehicle.

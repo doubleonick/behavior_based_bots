@@ -93,6 +93,8 @@ void SetupMode::handle(Button::Event e) {
     } else if (e == Button::LONG_PRESS) {
       if (w->weight == 0) {
         nextWire();                      // not connected: nothing to calibrate
+      } else if (!w->sensor->needsCalibration()) {
+        nextWire();                      // an on/off sensor (a key): nothing to calibrate
       } else {
         goTo(LOW_POINT);
       }
@@ -202,11 +204,12 @@ void SetupMode::draw() {
       _canvas.putRows(Icons::CROSS, '#', Palette::GREY, pulse);
     }
   } else if (_phase == LOW_POINT || _phase == HIGH_POINT) {
-    // Icons depend on the kind of sensor: moon/sun for light, small/big square for distance
+    // Icons depend on the kind of sensor: moon/sun for light, small/big square for
+    // distance and reflective IR (both are "how close")
     drawDots(t);
     Sensor* s = _wires[_wire]->sensor;
     bool low = (_phase == LOW_POINT);
-    if (s->typeCode() == 'D') {
+    if (s->typeCode() == 'D' || s->typeCode() == 'R') {
       if (low) {
         _canvas.putRows(Icons::FAR, '#', Palette::TEAL, pulse * 0.7f);
       } else {

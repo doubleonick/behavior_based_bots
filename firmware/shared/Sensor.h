@@ -19,6 +19,8 @@
      defaultLow(), defaultHigh()   calibration points to use before setup
      meterLevel()     0..1 for the setup screen's meter (0 = no stimulus)
      typeCode(), typeName()        e.g. 'C' "light", 'D' "distance"
+  and may override:
+     needsCalibration()  false for an on/off sensor (setup then skips low/high)
 */
 #pragma once
 #include <Arduino.h>
@@ -31,6 +33,8 @@ public:
 
   virtual bool begin() = 0;
   virtual char typeCode() const = 0;
+  // false for sensors that are only on or off (a key): setup skips their low/high points
+  virtual bool needsCalibration() const { return true; }
   virtual const char* typeName() const = 0;
   virtual float meterLevel() const = 0;
 

@@ -140,7 +140,11 @@ void FieldSetup::handle(Button::Event e) {
     if (e == Button::SHORT_PRESS) {
       s->angle = angleFromStep(stepFromAngle(s->angle) + 1);   // 45 degrees anticlockwise
     } else if (e == Button::LONG_PRESS) {
-      goTo(LOW_POINT);
+      if (s->sensor->needsCalibration()) {
+        goTo(LOW_POINT);
+      } else {
+        nextSource();                      // an on/off sensor (a key): nothing to calibrate
+      }
     }
   } else if (_phase == LOW_POINT) {
     if (e == Button::LONG_PRESS) {
@@ -267,11 +271,12 @@ void FieldSetup::draw() {
     PotentialField::Source* s = _sources[_current];
     drawArrow(stepFromAngle(s->angle), colorForPolicy(s->policy), pulse);
   } else if (_phase == LOW_POINT || _phase == HIGH_POINT) {
-    // Icons depend on the kind of sensor: moon/sun for light, small/big square for distance
+    // Icons depend on the kind of sensor: moon/sun for light, small/big square for
+    // distance and reflective IR (both are "how close")
     drawDots(t);
     Sensor* sensor = _sources[_current]->sensor;
     bool low = (_phase == LOW_POINT);
-    if (sensor->typeCode() == 'D') {
+    if (sensor->typeCode() == 'D' || sensor->typeCode() == 'R') {
       if (low) {
         _canvas.putRows(Icons::FAR, '#', Palette::TEAL, pulse * 0.7f);
       } else {

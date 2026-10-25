@@ -11,6 +11,8 @@
                                               distance: small square, far   } when the
          high:   full stimulus, long press.   light: sun, shine light       } wire
                                               distance: big square, near    } is "x"
+         (reflective IR uses the distance squares; a key skips low and high: it is
+          only pressed or not)
        The top row has one dot per wire; confirmed wires show their colour.
     3. A check mark, then setup ends (the sketch then tunes the face back in).
   The right-hand column is a live meter of the sensor's stimulus.
