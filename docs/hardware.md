@@ -40,6 +40,15 @@ direct connection to the servo signal pins.
 - Two-wheel body: with the servos at the rear of the chassis, Val_Field arced right
   when driving straight with no sensors; moving them to the middle of the chassis
   fixed it, with no change to the code. *(tested)*
+- **Charging the battery** (from M5Stack's v1.2 docs): put the Motion's power switch to
+  **ON**, then plug USB-C into the Atom (or feed 5 V through a Grove port). The battery
+  is a removable 18350 Li-ion, 900 mAh, with DW01-A protection; charging stops at
+  4.14 V. The docs don't mention a charge light. v1.2 also has an INA226 power monitor
+  (battery voltage and current over I2C), not used yet.
+- **On battery, units on the Motion's ports behaved differently from on USB** (Key
+  Unit: no response on Ports B and C; on Port A, held HIGH / held LOW instead of
+  floating / HIGH). *(seen with Unit_Tester; not yet repeated with a charged battery)*
+  Possible causes: a low battery, or the ports getting less (or no) power on battery.
 - Power quirk: after the Motion has been off for a long time, its power switch
   sometimes has to be toggled twice before it starts. There is no software fix.
   *(tested)*
