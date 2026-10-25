@@ -69,6 +69,13 @@ A web interface that carries the instructions, with a game/story layer:
   (Port C, LED shows the wire colour), in all three sketches: assumed when no I2C
   sensor answers there, confirmed or switched off in setup. The U021 Light Unit is
   not done yet.
+  Correction (2026-10, from the robot): on Port B the IR read binary and inverted
+  (G33 gets the digital output; the analog wire is on G23, no ADC). And assuming
+  units that may not be there made setup ask about them every time, which breaks
+  "setup only asks about what is plugged in". Proposed instead (waiting for a
+  decision): detect the IR by testing its pin (an empty pin follows the ESP32's weak
+  pull-up / pull-down, a unit holds it), on any port, analog where possible, digital
+  otherwise; the Key joins when it is first pressed.
 - **PaHub support**: done in Val_Field (2026-10): a port answering at 0x70 is a hub,
   and a sensor's place is "port + channel" (`Port::channel`, `I2CBus::use`). Still
   capped at 3 sensors, the setup screens' limit. Not yet in Val_Vehicle.

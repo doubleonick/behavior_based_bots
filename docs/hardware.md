@@ -59,8 +59,12 @@ direct connection to the servo signal pins.
 ## Units that can't say what they are (not yet tried on the robot)
 
 - **M5 Reflective IR Unit** (`ReflectiveIRSensor`): read as analog on **G33**, so only
-  in Port B, and only if the unit's analog wire lands on G33 (medium confidence;
-  check with the live meter in setup). 0..4095; calibration decides which way is
+  in Port B, and only if the unit's analog wire lands on G33.
+  **On the robot (Port B), G33 read binary and inverted** (a strong reflection read as
+  "nothing"): so G33 gets the unit's *digital* output, which goes LOW when it sees
+  something, and the analog wire lands on G23, which has no ADC. *(tested, reading;
+  the digital-vs-analog explanation is the likely cause, not yet confirmed)* Analog
+  IR therefore needs Port A (G26 / G32 both have an ADC). 0..4095; calibration decides which way is
   "more". The unit's digital (threshold) output is not used.
 - **M5 Key Unit** (`KeySensor`): a button and one SK6812 LED. Both pins start as
   inputs with pull-ups; the first pin to go LOW is the button and the other becomes
