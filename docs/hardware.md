@@ -69,7 +69,19 @@ follows them), and can drive a Key's LED once the Key has been pressed.
   "nothing"): so G33 gets the unit's *digital* output, which goes LOW when it sees
   something, and the analog wire lands on G23, which has no ADC. *(tested, reading;
   the digital-vs-analog explanation is the likely cause, not yet confirmed)* Analog
-  IR therefore needs Port A (G26 / G32 both have an ADC). 0..4095; calibration decides which way is
+  IR therefore needs Port A (G26 / G32 both have an ADC).
+  **Unit_Tester, on the robot:** the unit's two wires land the same way round in every
+  port: its digital output on the port's *first* pin, its analog output on the
+  *second*. *(tested)*
+  - Port A: G26 = digital (on/off), **G32 = analog with a real range: this is where
+    analog IR works.** *(tested)*
+  - Port B: G23 = digital, clearly on/off. *(tested)* G33 (analog) reads only low or
+    high, set by the unit's pot, with a real range only at one tiny spot of the pot.
+    *(tested)* Likely cause (not yet confirmed): pull-up resistors on Port B's lines
+    (for I2C) dragging the weak analog signal toward 3.3 V. Check: with nothing
+    plugged in, does Unit_Tester show Port B's pins as driven?
+  - The pot seems to change how strongly the IR LED shines (it moves the analog
+    output too), not only the digital threshold. *(inferred from the above)* 0..4095; calibration decides which way is
   "more". The unit's digital (threshold) output is not used.
 - **M5 Key Unit** (`KeySensor`): a button and one SK6812 LED. Both pins start as
   inputs with pull-ups; the first pin to go LOW is the button and the other becomes
