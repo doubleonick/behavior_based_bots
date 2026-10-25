@@ -1,7 +1,7 @@
 // Host test for Unit_Tester: runs the real sketch against fake pins (stub/).
 // Story: a Reflective IR in Port B (G23 its digital output, driven HIGH; G33 its analog
 // output, 1900) and a Key in Port C (G22 its button: floating until pressed, then
-// driven LOW; G19 its LED's data line: floating). Port A empty.
+// held HIGH, as on the real Key Unit; G19 its LED's data line: floating). Port A empty.
 //   1 s: short press, show Port B.  2 s: short press, show Port C.
 //   3-4 s: long press, arm the key LED test.  5.0-5.5 s: the key is pressed.
 #include <Arduino.h>
@@ -17,7 +17,7 @@ int main(){
     float t=fakeMillis/1000.0f;
     fakeButtonDown = (t>=1.0f && t<1.2f) || (t>=2.0f && t<2.2f) || (t>=3.0f && t<4.0f);
     bool keyDown = (t>=5.0f && t<5.5f);
-    fakeDriven[22]=keyDown; fakeHigh[22]=false;
+    fakeDriven[22]=keyDown; fakeHigh[22]=true;
     loop();
   }
 }
