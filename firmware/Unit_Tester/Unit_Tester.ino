@@ -26,8 +26,12 @@
     short press: show the next port
     long press:  arm the KEY LED TEST on the port shown. Then press the Key: the pin
                  whose state CHANGES (either way) is the button, and the other pin is
-                 driven as an SK6812 LED, cycling through colours. (Only after the
-                 press, so a pin is never driven by accident.) Long press again to stop.
+                 driven as an SK6812 LED. (Only after the press, so a pin is never
+                 driven by accident.) Long press again to stop.
+    During the key LED test, a short press sends the LED the next colour instead:
+                 red, green, blue, white, off, ... (full brightness; Serial says which).
+                 If the LED changes every time, it works; if it is stuck on its first
+                 colour, it only took the first update.
 
   "What is holding the pin?": the pin is read once with the ESP32's weak pull-up and
   once with its weak pull-down. Floating = it follows them (HIGH, then LOW). Held HIGH
@@ -41,7 +45,7 @@
 #include <FastLED.h>
 
 // ---------- Settings ----------
-const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and gets warm
+const uint8_t LED_BRIGHTNESS = 20;    // the matrix, out of 255: keep low, it is very bright and gets warm
 const int MATRIX_PIN = 27;
 const int BUTTON_PIN = 39;            // the matrix is the button (LOW when pressed)
 
@@ -78,7 +82,13 @@ struct KeyTest {
   int buttonPin = -1;                 // index into PINS, once found
   int ledPin = -1;
   bool ledAdded = false;
+  int colourStep = 0;                 // which test colour the LED is showing
 };
+
+// The colours the key LED test steps through, sent at full brightness
+const int TEST_COLOURS = 5;
+const char* const TEST_COLOUR_NAMES[TEST_COLOURS] = {"red", "green", "blue", "white", "off"};
+const uint8_t TEST_COLOUR_RGB[TEST_COLOURS][3] = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}, {255, 255, 255}, {0, 0, 0}};
 KeyTest keyTest;
 
 CRGB leds[25];
@@ -149,7 +159,9 @@ void readPin(int k) {
 
 void updatePins() {
   unsigned long now = millis();
-  if (now - lastTestMs >= 250) {
+  // While the key test waits for a press, look often, so a quick press isn't missed
+  unsigned long testEvery = (keyTest.armed && keyTest.buttonPin < 0) ? 20 : 250;
+  if (now - lastTestMs >= testEvery) {
     lastTestMs = now;
     for (int k = 0; k < PIN_COUNT; k++) {
       if (isDrivenByUs(k)) {
@@ -190,6 +202,21 @@ void addKeyLed(int pin) {
   }
 }
 
+// Set the key LED's test colour (shown with the next frame). FastLED runs at full
+// brightness in this sketch, and only the matrix's own pixels are dimmed (in draw()),
+// so the key LED gets the colour at full brightness.
+void sendTestColour() {
+  const uint8_t* rgb = TEST_COLOUR_RGB[keyTest.colourStep];
+  keyLed[0] = CRGB(rgb[0], rgb[1], rgb[2]);
+  Serial.printf("Key LED: sent %s (%d, %d, %d)\n", TEST_COLOUR_NAMES[keyTest.colourStep],
+                rgb[0], rgb[1], rgb[2]);
+}
+
+void nextTestColour() {
+  keyTest.colourStep = (keyTest.colourStep + 1) % TEST_COLOURS;
+  sendTestColour();
+}
+
 void updateKeyTest() {
   if (!keyTest.armed || keyTest.buttonPin >= 0) {
     return;
@@ -201,10 +228,12 @@ void updateKeyTest() {
     if (state[k].hold != keyTest.before[j]) {
       keyTest.buttonPin = k;
       keyTest.ledPin = other;
-      Serial.printf("Key test: button on G%d (%s -> %s), LED on G%d. The LED should now cycle colours.\n",
+      Serial.printf("Key test: button on G%d (%s -> %s), LED on G%d. Short press: next LED colour.\n",
                     PINS[k].pin, holdName(keyTest.before[j]), holdName(state[k].hold), PINS[other].pin);
       addKeyLed(PINS[other].pin);
       keyTest.ledAdded = true;
+      keyTest.colourStep = 0;
+      sendTestColour();
       return;
     }
   }
@@ -279,8 +308,9 @@ void draw() {
   // which port: a dot in the middle column, top = A, middle = B, bottom = C
   CRGB marker = keyTest.armed ? CRGB(255, 110, 0) : CRGB(180, 180, 200);   // amber while the key test is armed
   putLed(shownPort * 2, 2, marker);
-  if (keyTest.ledAdded) {
-    keyLed[0] = CHSV((now / 10) % 256, 255, 255);   // cycle through colours
+  // Dim only the matrix (the key LED stays at full brightness)
+  for (int n = 0; n < 25; n++) {
+    leds[n].nscale8_video(LED_BRIGHTNESS);
   }
   FastLED.show();
 }
@@ -323,8 +353,12 @@ void updateButton() {
       return;                         // a bounce
     }
     if (now - buttonDownMs < 700) {
-      shownPort = (shownPort + 1) % 3;
-      Serial.printf("Showing Port %s\n", PORT_NAMES[shownPort]);
+      if (keyTest.armed && keyTest.ledAdded) {
+        nextTestColour();               // during the key LED test: the next colour
+      } else {
+        shownPort = (shownPort + 1) % 3;
+        Serial.printf("Showing Port %s\n", PORT_NAMES[shownPort]);
+      }
     } else {
       armOrStopKeyTest();
     }
@@ -339,7 +373,7 @@ void setup() {
   delay(200);
   pinMode(BUTTON_PIN, INPUT);
   FastLED.addLeds<WS2812, MATRIX_PIN, GRB>(leds, 25);
-  FastLED.setBrightness(LED_BRIGHTNESS);
+  FastLED.setBrightness(255);         // full: draw() dims the matrix itself, so the key LED can be bright
   FastLED.clear(true);
   for (int k = 0; k < PIN_COUNT; k++) {
     prepareForReading(k);

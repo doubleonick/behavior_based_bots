@@ -12,9 +12,12 @@
 [  4.00s] Key test armed on Port C: press the key
 [  4.00s] A G26    0 floating   A G32    0 floating   | B G23 4095 held HIGH  B G33 1900 held LOW   | C G19    0 floating   C G22    0 floating   | 
 [  4.50s] A G26    0 floating   A G32    0 floating   | B G23 4095 held HIGH  B G33 1900 held LOW   | C G19    0 floating   C G22    0 floating   | 
-[  5.00s] Key test: button on G22 (floating  -> held HIGH), LED on G19. The LED should now cycle colours.
+[  5.00s] Key test: button on G22 (floating  -> held HIGH), LED on G19. Short press: next LED colour.
+[  5.00s] Key LED: sent red (255, 0, 0)
 [  5.00s] A G26    0 floating   A G32    0 floating   | B G23 4095 held HIGH  B G33 1900 held LOW   | C G19  key LED   C G22 4095 held HIGH  | 
 [  5.50s] A G26    0 floating   A G32    0 floating   | B G23 4095 held HIGH  B G33 1900 held LOW   | C G19  key LED   C G22    0 floating   | 
 [  6.00s] A G26    0 floating   A G32    0 floating   | B G23 4095 held HIGH  B G33 1900 held LOW   | C G19  key LED   C G22    0 floating   | 
+[  6.20s] Key LED: sent green (0, 255, 0)
 [  6.50s] A G26    0 floating   A G32    0 floating   | B G23 4095 held HIGH  B G33 1900 held LOW   | C G19  key LED   C G22    0 floating   | 
-LED frames shown: 175, checksum aefa7298
+[  6.70s] Key LED: sent blue (0, 0, 255)
+LED frames shown: 175, checksum e14377a5
