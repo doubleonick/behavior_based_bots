@@ -101,11 +101,9 @@ follows them), and can drive a Key's LED once the Key has been pressed.
   So `KeySensor`'s pull-up / LOW-when-pressed reading is right after all. Unit_Tester's
   earlier "floating, HIGH when pressed" reading was wrong; its pull-up/pull-down test
   doesn't suit this unit. *(corrected)*
-  **Ports B and C (the Motion's ports), same sketch with LED on the first pin and
-  button on the second:** Port B: LED stays dark. Port C: LED green whatever is sent or
-  pressed, on USB; dark on battery. *(tested)* Not yet known why. Next check: the same
-  sketch with the two pins swapped (Port B: LED G33, button G23; Port C: LED G22,
-  button G19), in case the Motion's ports are wired the other way round from Port A.
+  **Ports B and C:** not yet tested with this sketch (the first try left the pins set
+  for Port A, so the results don't count). Pins to try: Port B LED G23, button G33;
+  Port C LED G19, button G22; and if those fail, the same with the two swapped.
   The LED shows the wire / policy colour, dim, and
   bright while pressed; it shares the matrix's `FastLED.setBrightness`.
 - Neither can be detected, so a sketch assumes them in Port B / C when no I2C sensor
