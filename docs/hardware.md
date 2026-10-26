@@ -36,7 +36,8 @@ direct connection to the servo signal pins.
   (LEFT: forward is toward 180; RIGHT: forward is toward 0).
 - **The servo headers can't be used as inputs.** Their signal pins belong to the STM32,
   and the register map has nothing to read back.
-- Grove Port B: G23, G33. Grove Port C: G19, G22.
+- Grove Port B: G23, G33, **but a unit's first wire lands on G33** (the other way round
+  from Ports A and C; see the Key Unit). Grove Port C: G19, G22. *(tested)*
 - Two-wheel body: with the servos at the rear of the chassis, Val_Field arced right
   when driving straight with no sensors; moving them to the middle of the chassis
   fixed it, with no change to the code. *(tested)*
@@ -101,9 +102,21 @@ follows them), and can drive a Key's LED once the Key has been pressed.
   So `KeySensor`'s pull-up / LOW-when-pressed reading is right after all. Unit_Tester's
   earlier "floating, HIGH when pressed" reading was wrong; its pull-up/pull-down test
   doesn't suit this unit. *(corrected)*
-  **Ports B and C:** not yet tested with this sketch (the first try left the pins set
-  for Port A, so the results don't count). Pins to try: Port B LED G23, button G33;
-  Port C LED G19, button G22; and if those fail, the same with the two swapped.
+  **All three ports, same sketch, pins set for each port:** *(tested)*
+
+  | port | LED (unit's first wire) | button (second wire) |
+  |---|---|---|
+  | A | G26 | G32 |
+  | B | **G33** | **G23** |
+  | C | G19 | G22 |
+
+  **Port B is wired the other way round** from A and C: a unit's first wire lands on
+  G33, its second on G23. `KeySensor` already copes (the pin that goes LOW first is
+  the button, whichever it is).
+  This also explains the Reflective IR on Port B: its digital output (first wire)
+  lands on G33, which is why G33 read on/off and inverted, and its analog output lands
+  on G23, which has no ADC. So analog IR can only work on Port A. *(inferred from the
+  Key result, high confidence)*
   The LED shows the wire / policy colour, dim, and
   bright while pressed; it shares the matrix's `FastLED.setBrightness`.
 - Neither can be detected, so a sketch assumes them in Port B / C when no I2C sensor
