@@ -113,6 +113,8 @@ follows them), and can drive a Key's LED once the Key has been pressed.
   **Port B is wired the other way round** from A and C: a unit's first wire lands on
   G33, its second on G23. `KeySensor` already copes (the pin that goes LOW first is
   the button, whichever it is).
+  **On battery all three ports work** (blue, red while pressed). **On USB the LED
+  shows blue but does not turn red when pressed.** *(tested)* Not yet explained.
   This also explains the Reflective IR on Port B: its digital output (first wire)
   lands on G33, which is why G33 read on/off and inverted, and its analog output lands
   on G23, which has no ADC. So analog IR can only work on Port A. *(inferred from the
