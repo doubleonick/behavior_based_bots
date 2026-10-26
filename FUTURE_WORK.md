@@ -68,6 +68,11 @@ A web interface that carries the instructions, with a game/story layer:
   - U021 Light (photoresistor): analog on the white wire, on/off on the yellow
   - U175 Reflective IR: analog on the white wire, on/off on the yellow
   - U144 Key: button on the white wire, one SK6812 LED on the yellow
+  - **PbHub (U041) to look into:** an I2C hub (STM32, 0x61) with six ports that reads
+    on/off and analog pins for the ESP32. If it works as described, the Light Unit,
+    Reflective IR and Key could join many sensors on one robot (it could even sit on
+    a PaHub channel). Unverified: which channels read analog, and whether it can drive
+    the Key's SK6812 LED. Would need its own class.
   None of these are I2C, so they can't be detected; a fixed port layout
   (A = light, B = IR, C = key) avoids a setup step. Port B's analog needs the white
   wire on G33: check on the hardware.
