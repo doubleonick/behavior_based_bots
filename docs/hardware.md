@@ -94,14 +94,19 @@ follows them), and can drive a Key's LED once the Key has been pressed.
   "more". The unit's digital (threshold) output is not used.
 - **M5 Key Unit** (`KeySensor`): a button and one SK6812 LED. Both pins start as
   inputs with pull-ups; the first pin to go LOW is the button and the other becomes
-  the LED (added to FastLED then). That assumes the button pulls its line LOW when
-  pressed, **which Unit_Tester shows is wrong:** on Port A the button's pin (G32, the
-  port's second pin) sat empty and grey (floating) while not pressed, and jumped to a
-  full bar (4095, driven) when pressed; on Port C its pin (G22, again the second)
-  showed "driven" when pressed. *(tested)* So the button drives its line HIGH when
-  pressed and leaves it floating otherwise, and the LED's data line is the port's
-  first pin (G26 / G23 / G19). `KeySensor` needs changing to match (read the button
-  with the pull-down, pressed = HIGH) before Val's sketches can use the key. The LED shows the wire / policy colour, dim, and
+  the LED (added to FastLED then).
+  **Port A, with a plain test sketch** (button read with `INPUT_PULLUP`, LED driven with
+  FastLED): LED on G26 (the first pin), button on G32 (the second); the button reads
+  **LOW when pressed**, HIGH when not; the LED follows the colour sent. *(tested)*
+  So `KeySensor`'s pull-up / LOW-when-pressed reading is right after all. Unit_Tester's
+  earlier "floating, HIGH when pressed" reading was wrong; its pull-up/pull-down test
+  doesn't suit this unit. *(corrected)*
+  **Ports B and C (the Motion's ports), same sketch with LED on the first pin and
+  button on the second:** Port B: LED stays dark. Port C: LED green whatever is sent or
+  pressed, on USB; dark on battery. *(tested)* Not yet known why. Next check: the same
+  sketch with the two pins swapped (Port B: LED G33, button G23; Port C: LED G22,
+  button G19), in case the Motion's ports are wired the other way round from Port A.
+  The LED shows the wire / policy colour, dim, and
   bright while pressed; it shares the matrix's `FastLED.setBrightness`.
 - Neither can be detected, so a sketch assumes them in Port B / C when no I2C sensor
   answers there. While only assumed (and for a key, until it is first pressed), Val
