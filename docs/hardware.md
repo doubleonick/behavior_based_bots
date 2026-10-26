@@ -143,6 +143,22 @@ port's pins just before each read (`I2CBus::use`). That lets one sketch serve th
 ports, and lets two sensors with the same address work at once, one per port. It also
 tries both wire orders, so SDA/SCL orientation never matters.
 
+### Which units fit where (one Atom + Motion, no PaHub)
+
+| unit | how it talks | ports | Val can recognise it? |
+|---|---|---|---|
+| Color Unit (light/colour, TCS3472) | I2C | any | yes (chip ID) |
+| 90° ToF (VL53L0X) | I2C | any | yes (chip ID) |
+| Light Unit (analog light level) | analog + on/off | **A** for a level; B / C on/off only | no |
+| Reflective IR | analog + on/off | **A** for a level; B / C on/off only *(tested A, B)* | no |
+| Key | on/off + LED | any *(tested A, B, C)* | no |
+
+Three ports, so three units at most, and only **one** analog level (Port A). I2C units
+in any port are supported by the firmware (both wire orders are tried); not every
+unit has been tried in every port on the robot.
+A PaHub in Port B or C takes up to 6 I2C units (ToF, Color), but not analog units or
+the Key: those still need a port of their own.
+
 ## Sensors the firmware recognises
 
 Both answer at I2C address **0x29**, so the firmware asks each chip for its ID:

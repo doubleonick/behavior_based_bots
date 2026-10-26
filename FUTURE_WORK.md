@@ -12,6 +12,12 @@ A web interface that carries the instructions, with a game/story layer:
 - **For parents, tutors and club leaders:** notes alongside each step on what to
   set up, what to ask, what the child is learning, and what to do when it doesn't
   work.
+- **Must explain which sensors fit together** (for the adult; too much for matrix
+  icons): one robot has three ports and only Port A reads a level, so analog units
+  (Light Unit, Reflective IR) share one slot; a Vehicle needs one sensor per robot,
+  so this rarely matters there; Field and Brooks can do a little on one robot, but
+  multi-sensor work goes through the PaHub (I2C units only). Table in
+  `docs/hardware.md`, "Which units fit where".
 - Served as a static site (GitHub Pages) from `web/` so it versions with the firmware
   it describes.
 - Progression: V1, V2a/b, V3a/b, potential field, subsumption. State machines and
