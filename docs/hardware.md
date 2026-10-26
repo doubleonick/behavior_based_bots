@@ -90,6 +90,9 @@ follows them), and can drive a Key's LED once the Key has been pressed.
     *(tested)* Likely cause (not yet confirmed): pull-up resistors on Port B's lines
     (for I2C) dragging the weak analog signal toward 3.3 V. Check: with nothing
     plugged in, does Unit_Tester show Port B's pins as driven?
+  - **IR_Test, on the robot:** Port A gives a usable analog reading (G32) on USB and on
+    battery; Port B gives on/off only (its analog output lands on G23, no ADC). Where
+    to set the pot depends on the use. *(tested)*
   - The pot seems to change how strongly the IR LED shines (it moves the analog
     output too), not only the digital threshold. *(inferred from the above)* 0..4095; calibration decides which way is
   "more". The unit's digital (threshold) output is not used.
