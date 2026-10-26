@@ -1,90 +1,91 @@
 [  0.00s] Atom Motion found (SDA=G25, SCL=G21)
-[  0.00s] Reflective IR assumed on Port B (analog on G33)
+[  0.00s] Reflective IR assumed on Port B (on/off on G33)
 [  0.00s] Key assumed on Port C (press it once so Val knows which pin is the button)
-[  0.50s] Port B R   300 (0.07 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
-[  1.00s] Port B R   300 (0.07 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
-[  1.50s] Port B R   300 (0.07 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
-[  2.00s] Port B R   300 (0.07 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
-[  2.50s] Port B R   300 (0.07 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
-[  3.00s] Port B R   300 (0.07 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  0.50s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
 [  3.48s] Face: Neutral
 [  3.49s] Full setup: 2 sensor(s)
    >> t=3.49s setup STARTS
-[ 14.60s] Mount: left
-[ 14.60s]   Port B: Reflective IR, weight +1, low 300, high 3500
-[ 14.60s]   Port C: Key, weight +1, low 0, high 1
-   >> t=14.60s setup ends
-[ 14.61s] Port B R   300 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
-[ 14.61s] Face: Happy
-[ 15.11s] Port B R   300 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
-[ 15.61s] Port B R   300 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
-[ 16.00s] [ 16.00s] Matrix: spikes
-[ 16.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 118 deg | Spikes
-[ 16.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 17.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 17.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 18.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 18.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 19.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 19.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 11.60s] Mount: left
+[ 11.60s]   Port B: Reflective IR, weight +1, low 0, high 4095
+[ 11.60s]   Port C: Key, weight +1, low 0, high 1
+   >> t=11.60s setup ends
+[ 11.61s] [ 11.61s] Matrix: spikes
+[ 11.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 90 deg | Spikes
+[ 12.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 178 deg | Spikes
+[ 12.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 13.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 13.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 14.11s] Port B R  4095 (1.00 x +1)  Port C K     0 (0.00 x +1)  | sum +2.00 -> servo 180 deg | Spikes
+[ 14.61s] Port B R  4095 (1.00 x +1)  Port C K     0 (0.00 x +1)  | sum +2.00 -> servo 180 deg | Spikes
+[ 15.00s] Matrix: face (Angry, during the run)
+[ 15.00s] Face: Angry
+[ 15.11s] Port B R  4095 (1.00 x +1)  Port C K     0 (0.00 x +1)  | sum +2.00 -> servo 180 deg | Angry
+[ 15.61s] Port B R  4095 (1.00 x +1)  Port C K     0 (0.00 x +1)  | sum +2.00 -> servo 180 deg | Angry
+[ 16.11s] Port B R  4095 (1.00 x +1)  Port C K     0 (0.00 x +1)  | sum +2.00 -> servo 180 deg | Angry
+[ 16.61s] Port B R  4095 (1.00 x +1)  Port C K     0 (0.00 x +1)  | sum +2.00 -> servo 180 deg | Angry
+[ 17.11s] Port B R  4095 (1.00 x +1)  Port C K     0 (0.00 x +1)  | sum +2.00 -> servo 180 deg | Angry
+[ 17.61s] Port B R  4095 (1.00 x +1)  Port C K     0 (0.00 x +1)  | sum +2.00 -> servo 180 deg | Angry
+[ 18.00s] [ 18.00s] Matrix: spikes
+[ 18.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 18.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 19.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 19.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
 [ 20.00s] Key on Port C: button on G22, LED on G19
-[ 20.11s] Port B R  1900 (0.50 x +1)  Port C K     1 (1.00 x +1)  | sum +1.50 -> servo 163 deg | Spikes
-[ 20.61s] Port B R  1900 (0.50 x +1)  Port C K     1 (1.00 x +1)  | sum +1.50 -> servo 180 deg | Spikes
+[ 20.11s] Port B R     0 (0.00 x +1)  Port C K     1 (1.00 x +1)  | sum -1.00 -> servo 68 deg | Spikes
+[ 20.61s] Port B R     0 (0.00 x +1)  Port C K     1 (1.00 x +1)  | sum -1.00 -> servo 1 deg | Spikes
 [ 21.00s] Matrix: face (Angry, during the run)
-[ 21.00s] Face: Angry
-[ 21.11s] Port B R  1900 (0.50 x +1)  Port C K     1 (1.00 x +1)  | sum +1.50 -> servo 180 deg | Angry
-[ 21.61s] Port B R  1900 (0.50 x +1)  Port C K     1 (1.00 x +1)  | sum +1.50 -> servo 180 deg | Angry
-[ 22.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 152 deg | Angry
-[ 22.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Angry
-[ 23.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Angry
-[ 23.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Angry
+[ 21.11s] Port B R     0 (0.00 x +1)  Port C K     1 (1.00 x +1)  | sum -1.00 -> servo 0 deg | Angry
+[ 21.61s] Port B R     0 (0.00 x +1)  Port C K     1 (1.00 x +1)  | sum -1.00 -> servo 0 deg | Angry
+[ 22.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 112 deg | Angry
+[ 22.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 179 deg | Angry
+[ 23.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 23.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
 [ 24.00s] [ 24.00s] Matrix: spikes
-[ 24.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 24.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 25.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 25.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 26.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 26.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 27.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 27.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 28.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 28.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 29.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 29.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 30.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 30.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 31.11s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 31.61s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 32.10s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 32.60s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 33.10s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 33.60s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 34.10s] Port B R  1900 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 34.60s] Light sensor found on Port B (SDA=G33, SCL=G23)
-[ 34.60s] [ 34.60s] New sensor found!
-[ 34.60s] [ 34.60s] Matrix: face
-[ 34.60s] Port B C     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 135 deg | Surprised
-[ 34.60s] Face: Surprised
-[ 35.10s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 91 deg | Surprised
-[ 35.60s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Surprised
-[ 36.10s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Surprised
-[ 36.60s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Surprised
-[ 37.10s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Surprised
-[ 37.60s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Surprised
-[ 37.91s] Setup for 1 new sensor(s)
-   >> t=37.90s setup STARTS
+[ 24.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 24.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 25.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 25.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 26.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 26.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 27.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 27.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 28.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 28.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 29.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 29.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 30.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 30.61s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 31.11s] Port B R     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 31.61s] Light sensor found on Port B (SDA=G33, SCL=G23)
+[ 31.61s] [ 31.61s] New sensor found!
+[ 31.61s] [ 31.61s] Matrix: face
+[ 31.61s] Port B C     0 (0.00 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Surprised
+[ 31.61s] Face: Surprised
+[ 32.10s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Surprised
+[ 32.60s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Surprised
+[ 33.10s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Surprised
+[ 33.60s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Surprised
+[ 34.10s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Surprised
+[ 34.60s] Port B C 10200 (0.16 x +1)  Port C K     0 (0.00 x +1)  | sum +1.00 -> servo 180 deg | Surprised
+[ 34.91s] Setup for 1 new sensor(s)
+   >> t=34.90s setup STARTS
 [ 45.60s] Mount: left
 [ 45.60s]   Port B: Light, weight +1, low 400, high 20000
 [ 45.60s]   Port C: Key, weight +1, low 0, high 1
    >> t=45.60s setup ends
 [ 45.60s] [ 45.60s] Matrix: spikes
-[ 45.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 90 deg | Spikes
-[ 46.10s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 134 deg | Spikes
-[ 46.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 47.10s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 47.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 48.10s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 48.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 49.10s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-[ 49.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +0.50 -> servo 135 deg | Spikes
-LED frames shown: 1258, checksum b7dc045c
+[ 45.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 90 deg | Spikes
+[ 46.10s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 178 deg | Spikes
+[ 46.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 180 deg | Spikes
+[ 47.10s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 180 deg | Spikes
+[ 47.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 180 deg | Spikes
+[ 48.10s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 180 deg | Spikes
+[ 48.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 180 deg | Spikes
+[ 49.10s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 180 deg | Spikes
+[ 49.60s] Port B C 10200 (0.50 x +1)  Port C K     0 (0.00 x +1)  | sum +1.50 -> servo 180 deg | Spikes
+LED frames shown: 1257, checksum 61eb0ade

@@ -1,16 +1,20 @@
 /*
-  ReflectiveIRSensor - the M5 Reflective IR Unit, read as an analog value.
+  ReflectiveIRSensor - the M5 Reflective IR Unit, in Port B, read as on/off.
 
   The unit shines infrared and measures how much bounces back: more when something
   pale or shiny is close. It is not an I2C sensor, so it cannot say what it is. Val
-  assumes one is in Port B when no I2C sensor answers there, and the setup screens
-  let you check it (watch the meter) or switch it off.
+  assumes one is in Port B when no I2C sensor answers there (if the sketch says to),
+  and the setup screens let you switch it off.
 
-  Raw reading: 0 to 4095 from the ESP32's ADC on G33 (Port B's only analog pin), so
-  the unit's analog wire must be on G33.
-  Stimulus: calibration decides which way is "more" (low = nothing there, high =
-  something close), so it works whichever way the unit's voltage runs.
-  Setup icons: the small and big squares, like the distance sensor.
+  Port B is wired the other way round from Ports A and C, so the unit's on/off output
+  lands on G33 and its analog output on G23, which cannot read a voltage. So in Port B
+  the unit is only on/off: it "sees something" when the reflection passes the level
+  set by the small knob (pot) on the unit. (For a level, the unit needs Port A; not
+  supported yet.)
+
+  Raw reading: 4095 while it sees something, 0 when it doesn't (the same scale as an
+  analog reading, so thresholds written for one still work).
+  Stimulus: 1 or 0, so setup skips calibration (needsCalibration() is false).
 */
 #pragma once
 #include <Arduino.h>
@@ -18,7 +22,8 @@
 
 class ReflectiveIRSensor : public Sensor {
 public:
-  static const int ANALOG_PIN = 33;   // G33, Port B
+  static const int SIGNAL_PIN = 33;   // G33: the unit's on/off output, in Port B
+  static const bool SEES_WHEN_LOW = true;   // the output goes LOW when it sees something
 
   explicit ReflectiveIRSensor(const Port& port) : Sensor(port) {}
 
@@ -26,6 +31,7 @@ public:
   char typeCode() const override { return 'R'; }
   const char* typeName() const override { return "Reflective IR"; }
   float meterLevel() const override;
+  bool needsCalibration() const override { return false; }
   void reclaimPins();                 // after an I2C search used the port: get the pin back
 
 protected:

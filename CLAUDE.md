@@ -32,7 +32,7 @@ Shared classes: `Canvas` (the 5x5 picture every display draws on, and `FrameTime
 `Palette` (every colour), `Icons` (every setup picture), `Face` (expressions, talking,
 `tuneIn`), `Spikes` (the wiring's activity while driving), `Static` (white static),
 `MotionServo`, `Port`, `I2CBus`, `Sensor` (parent; 0..1 stimulus from two calibration
-points), `ColorSensor`, `DistanceSensor`, `ReflectiveIRSensor` (analog, Port B),
+points), `ColorSensor`, `DistanceSensor`, `ReflectiveIRSensor` (on/off, Port B),
 `KeySensor` (button + LED, Port C), `Button` (short / long / hold).
 
 ---
@@ -71,12 +71,15 @@ real hardware. Continuous servos: 90 = stop. See `docs/hardware.md`.
 Each sketch looks in every port for every sensor type, tries both wire orders, and
 tells sensors sharing address 0x29 apart by chip ID. A new I2C sensor type is a new
 `Sensor` child with its own `begin()` that checks a chip ID. Port C has no ADC, and
-Port B only on G33, so analog sensors are restricted.
+Port B is wired the other way round (a unit's analog wire lands on G23, no ADC), so
+analog units only give a level on Port A.
 
 Units that can't identify themselves (the Reflective IR on Port B, the Key on Port C)
 are the one exception: a sketch *assumes* them when no I2C sensor answers in that
-port (`ASSUME_IR_ON_PORT_B` / `ASSUME_KEY_ON_PORT_C`), setup lets the child switch
-one off, and an I2C sensor plugged in later takes over. Real I2C sensors always get
+port (`ASSUME_IR_ON_PORT_B` / `ASSUME_KEY_ON_PORT_C`; in Val_Vehicle both default to
+0, so you switch one on and reflash), setup lets the child switch one off, and an I2C
+sensor plugged in later takes over. How the sketches should recognise these units is
+still undecided. Real I2C sensors always get
 the setup screens' slots first.
 
 ### 5. The robot is set up on the robot

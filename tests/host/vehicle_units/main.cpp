@@ -1,10 +1,13 @@
 // Host test for Val_Vehicle with units that can't say what they are.
 // Story: nothing answers on I2C, so Val assumes a Reflective IR in Port B and a Key in
-// Port C. Full setup: mount; IR + (low with little reflected, high with a lot); Key +
-// (no calibration: it is only pressed or not). Then the IR sees something (the wheel
-// turns), and the key is pressed (Val learns its button is on G22, the LED on G19).
+// Port C (both switched on below). Full setup: mount; IR +; Key + (neither is
+// calibrated: both are only on or off). The key drives forwards while not pressed.
+// At 14-18 s the IR sees something (adds +1). At 20-22 s the key is pressed (Val learns
+// its button is on G22, the LED on G19) and the wheel goes backwards.
 // At 30 s a light sensor is plugged into Port B: the IR gives way, Val is surprised and
 // sets up just the light sensor.
+#define ASSUME_IR_ON_PORT_B 1
+#define ASSUME_KEY_ON_PORT_C 1
 #include <Arduino.h>
 #include <Wire.h>
 #include <FastLED.h>
@@ -17,15 +20,14 @@ TwoWire& TwoWire::wireMain(){ return Wire; }
 struct Press { float at, len; };
 int main(){
   Press presses[] = {
-    {6.0,1.0},{7.5,1.0},{9.0,1.0},{10.5,1.0},{12.0,1.0},   // mount, IR +, IR low, IR high, key +
+    {6.0,1.0},{7.5,1.0},{9.0,1.0},                         // mount, IR +, key +
     {40.0,1.0},{41.5,1.0},{43.0,1.0} };                   // light on B: +, low, high
   setup(); bool lastSetup=false;
   for(fakeMillis=5; fakeMillis<50000; fakeMillis+=5){
     float t=fakeMillis/1000.0f; fakeButtonDown=false;
     for(auto&p:presses){ if(t>=p.at && t<p.at+p.len) fakeButtonDown=true; }
-    // IR: little reflected for "low", a lot for "high", then nothing, then something halfway
-    if(t>8.5 && t<10.1){ fakeAnalog[33]=300; } else if(t>10.1 && t<11.6){ fakeAnalog[33]=3500; }
-    else if(t<16){ fakeAnalog[33]=300; } else { fakeAnalog[33]=1900; }
+    // IR: its on/off output (G33) goes LOW while it sees something
+    fakePinLow[33] = (t>=14 && t<18);
     // the key: pressed at 20-22 s (its button pin is G22)
     fakePinLow[22] = (t>=20 && t<22);
     // the light sensor in Port B from 30 s: covered for low, lit for high, then middling

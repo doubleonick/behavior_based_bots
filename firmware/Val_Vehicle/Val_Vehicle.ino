@@ -6,17 +6,18 @@
             up to 3 sensors, one each in Port A, B and C, any mix of:
               M5 Color Unit (TCS3472)  used as a light sensor
               M5 ToF Unit   (VL53L0X)  used as a distance sensor
-            and, in ports where no I2C sensor answers:
-              M5 Reflective IR Unit    Port B only (analog, on G33)
+            and, if switched on below, in ports where no I2C sensor answers:
+              M5 Reflective IR Unit    Port B only (on/off)
               M5 Key Unit              Port C (a button; its LED shows the wire's colour)
-            These two can't say what they are, so Val assumes them; switch one
-            "off" (x) in setup if it isn't there.
+            These two can't say what they are, so Val only looks for them if
+            ASSUME_IR_ON_PORT_B / ASSUME_KEY_ON_PORT_C is 1. Switch one "off" (x)
+            in setup if it isn't there.
 
   Keep all these files together in a folder named Val_Vehicle:
     Val_Vehicle.ino                        this file: wiring + behaviour
     Face.h / Face.cpp                      Val's face
     Canvas, Palette.h, Icons.h             drawing on the matrix: the picture, colours, setup icons
-    ReflectiveIRSensor.h / .cpp            reflective IR (Port B)
+    ReflectiveIRSensor.h / .cpp            reflective IR (Port B, on/off)
     KeySensor.h / .cpp                     key (Port C)
     Spikes.h / Spikes.cpp                  the wiring's spikes, shown while driving
     Static.h                               white static (into setup, and tuning back in)
@@ -39,6 +40,8 @@
     that was set up before): Val looks surprised, then only that sensor's wire is
     set up. The other wires are kept.
   - Then the vehicle runs: the servo's speed is the sum of what every wire delivers.
+  - The key is a bumper: on a + wire Val drives forwards until the key is pressed,
+    then backwards; on a - wire, backwards until pressed, then forwards.
   - The face is for talking to people: hello, setup, surprise at a new sensor.
     While the wheel turns, the matrix shows spikes instead: one lane per sensor
     (green +, red -), and the wheel firing along the bottom row.
@@ -78,13 +81,18 @@ const bool SAVE_SETUP = false;        // true: remember mount, wiring and calibr
 const bool ALLOW_REVERSE = false;     // true: a negative sum drives the wheel backwards
 const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and gets warm
 
-// Units that can't say what they are (not I2C). Val assumes one is there when no I2C
-// sensor answers in its port. 0 = never assume it (for example, nothing ever goes there).
+// Which vehicle to build. The ToF and Color Units say what they are, so Val finds them
+// in any port by itself. These two units can't, so Val only looks for one if it is
+// switched on here (1). Change, then upload again.
+//   ToF vehicle:  both 0, ToF Unit in Port A
+//   IR vehicle:   ASSUME_IR_ON_PORT_B 1, Reflective IR Unit in Port B
+//   Key vehicle:  ASSUME_KEY_ON_PORT_C 1, Key Unit in Port C
+// (Both can be 1 at once.) Val still uses an I2C sensor if one answers in that port.
 #ifndef ASSUME_IR_ON_PORT_B
-#define ASSUME_IR_ON_PORT_B 1         // M5 Reflective IR Unit, analog on G33
+#define ASSUME_IR_ON_PORT_B 0         // M5 Reflective IR Unit, on/off on G33
 #endif
 #ifndef ASSUME_KEY_ON_PORT_C
-#define ASSUME_KEY_ON_PORT_C 1        // M5 Key Unit
+#define ASSUME_KEY_ON_PORT_C 0        // M5 Key Unit
 #endif
 
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
@@ -171,6 +179,7 @@ bool isSetUp(int i);
 //   inhibitory (-1): more stimulus -> less speed
 // If there are only inhibitory wires, the motor needs something to slow down
 // FROM, so it starts at full speed (bias = 1). Otherwise it starts at 0.
+// The key is different: it is a bumper, and drives the wheel itself (see below).
 float sumWires() {
   bool anyExcitatory = false;
   bool anyInhibitory = false;
@@ -179,6 +188,12 @@ float sumWires() {
   for (int i = 0; i < PORT_COUNT; i++) {
     if (!isSetUp(i) || !wires[i].isActive()) {
       continue;                        // a new sensor does nothing until it has been set up
+    }
+    if (wires[i].sensor == &key) {
+      // + wire: forwards (+1) until pressed, then backwards (-1). - wire: the opposite.
+      float pressed = wires[i].sensor->value();
+      total += wires[i].weight * (1 - 2 * pressed);
+      continue;                        // not counted for the bias
     }
     total += wires[i].output();
     if (wires[i].weight > 0) {
@@ -300,6 +315,19 @@ void searchForSensors() {
       lookForI2CInstead(i);
     }
   }
+}
+
+// A key wire drives backwards too, so the wheel must be allowed to reverse
+bool reverseAllowed() {
+  if (ALLOW_REVERSE) {
+    return true;
+  }
+  for (int i = 0; i < PORT_COUNT; i++) {
+    if (wires[i].sensor == &key && isSetUp(i) && wires[i].isActive()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 // The key's LED shows its wire: green +, red -, off when not connected
@@ -583,7 +611,7 @@ void feedSpikes(float sum) {
   }
   spikes.setLanes(lane);
   float speed = sum;
-  if (ALLOW_REVERSE && speed < 0) {
+  if (reverseAllowed() && speed < 0) {
     speed = -speed;                    // backwards still fires the wheel
   }
   spikes.setWheel(speed);
@@ -592,7 +620,10 @@ void feedSpikes(float sum) {
 // Spikes while the wheel turns; the face for everything else
 void updateDisplay(float sum) {
   bool talkingToPeople = face.isTalking() || surprisePending || !greetingDone;
-  float speed = ALLOW_REVERSE ? fabsf(sum) : sum;
+  float speed = sum;
+  if (reverseAllowed()) {
+    speed = fabsf(sum);
+  }
   bool moving = speed > MOVING_SPEED;
   float feel = feeling();
   unsigned long now = millis();
@@ -750,6 +781,7 @@ void loop() {
     float sum = 0;
     if (greetingDone && !setupMode.active()) {
       sum = sumWires();
+      servo.setAllowReverse(reverseAllowed());
       servo.drive(sum);
     } else if (!setupMode.active()) {
       servo.drive(0);                  // stay stopped during the greeting

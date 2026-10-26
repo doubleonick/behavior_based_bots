@@ -73,8 +73,9 @@ before the Val sketches rely on them: it shows each port pin's reading and wheth
 anything drives it (read with the weak pull-up, then the weak pull-down: an empty pin
 follows them), and can drive a Key's LED once the Key has been pressed.
 
-- **M5 Reflective IR Unit** (`ReflectiveIRSensor`): read as analog on **G33**, so only
-  in Port B, and only if the unit's analog wire lands on G33.
+- **M5 Reflective IR Unit** (`ReflectiveIRSensor`): now read as **on/off on G33**, Port B
+  only (raw 4095 = sees something, 0 = not; LOW on the pin = sees, *assumed, about 80%*).
+  Earlier it was read as analog on G33, which was wrong (see below).
   **On the robot (Port B), G33 read binary and inverted** (a strong reflection read as
   "nothing"): so G33 gets the unit's *digital* output, which goes LOW when it sees
   something, and the analog wire lands on G23, which has no ADC. *(tested, reading;
