@@ -21,6 +21,7 @@ make sense to them; everything an adult needs should be written down for them.
 | `firmware/Val_Brooks/` | subsumption test bench: behaviours in a fixed hierarchy, picked by uncommenting one `TEST_` line; two wheels, sensors on a PaHub |
 | `firmware/Unit_Tester/` | diagnostics: every port pin's reading and "is anything driving it?" on the matrix and Serial; a key LED test. Uses no shared files |
 | `firmware/IR_Test/` | just the Reflective IR Unit on Port A or B: digital and analog readings on the matrix and Serial. Uses no shared files |
+| `firmware/Light_Test/` | just the Light Unit on Port A, B or C: both pins' readings (level or on/off) on the matrix and Serial. Uses no shared files |
 | `firmware/sync_shared.py` | copies `shared/` into the sketches |
 | `tests/host/` | runs the real sketches against fake hardware |
 | `docs/hardware.md` | pins, Motion registers, sensor chip IDs, port limits, quirks |
