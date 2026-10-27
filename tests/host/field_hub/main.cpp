@@ -7,7 +7,6 @@
 // surprise, setup for just those two (pull, same sides, calibration); a bright light
 // on the left makes the robot turn left.
 // This story has no Reflective IR or Key Unit: don't assume them in empty ports
-#define ASSUME_IR_ON_PORT_B 0
 #define ASSUME_KEY_ON_PORT_C 0
 #include <Arduino.h>
 #include <Wire.h>

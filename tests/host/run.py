@@ -22,7 +22,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 FIRMWARE = HERE.parent.parent / "firmware"
-TESTS = {"vehicle": "Val_Vehicle", "vehicle_emotions": "Val_Vehicle", "vehicle_units": "Val_Vehicle", "vehicle_ir": "Val_Vehicle",
+TESTS = {"vehicle": "Val_Vehicle", "vehicle_emotions": "Val_Vehicle", "vehicle_units": "Val_Vehicle", "vehicle_light": "Val_Vehicle",
          "field": "Val_Field",
          "field_hub": "Val_Field", "brooks": "Val_Brooks", "brooks_keys": "Val_Brooks", "unit_tester": "Unit_Tester"}
 

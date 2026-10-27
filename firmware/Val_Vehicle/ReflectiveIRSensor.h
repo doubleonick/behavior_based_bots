@@ -1,20 +1,21 @@
 /*
-  ReflectiveIRSensor - the M5 Reflective IR Unit, in Port B, read as on/off.
+  ReflectiveIRSensor - the M5 Reflective IR Unit.
 
   The unit shines infrared and measures how much bounces back: more when something
-  pale or shiny is close. It is not an I2C sensor, so it cannot say what it is. Val
-  assumes one is in Port B when no I2C sensor answers there (if the sketch says to),
-  and the setup screens let you switch it off.
+  pale or shiny is close. It is not an I2C sensor, so it cannot say what it is: a
+  sketch only uses one where its settings say one is plugged in.
 
-  Port B is wired the other way round from Ports A and C, so the unit's on/off output
-  lands on G33 and its analog output on G23, which cannot read a voltage. So in Port B
-  the unit is only on/off: it "sees something" when the reflection passes the level
-  set by the small knob (pot) on the unit. (For a level, the unit needs Port A; not
-  supported yet.)
-
-  Raw reading: 4095 while it sees something, 0 when it doesn't (the same scale as an
-  analog reading, so thresholds written for one still work).
-  Stimulus: 1 or 0, so setup skips calibration (needsCalibration() is false).
+  The unit has two outputs: a level (analog) on its second wire, and on/off on its
+  first (flips where the small knob on the unit is set). What Val can read depends on
+  the port:
+    Port A: the level, on G32 (0..4095). Calibrated in setup: "low" with nothing
+            there, "high" with something close, so it works whichever way the
+            voltage runs.
+    Port B: on/off only. Port B is wired the other way round, so the on/off output
+            lands on G33 and the level on G23, which cannot read a voltage.
+            Raw 4095 while it sees something, 0 when it doesn't (the same scale as
+            the level, so thresholds written for one still work); no calibration.
+  Setup icons: the small and big squares, like the distance sensor.
 */
 #pragma once
 #include <Arduino.h>
@@ -22,8 +23,9 @@
 
 class ReflectiveIRSensor : public Sensor {
 public:
-  static const int SIGNAL_PIN = 33;   // G33: the unit's on/off output, in Port B
-  static const bool SEES_WHEN_LOW = true;   // the output goes LOW when it sees something
+  static const int LEVEL_PIN = 32;    // G32: the level, in Port A
+  static const int ON_OFF_PIN = 33;   // G33: on/off, in Port B
+  static const bool SEES_WHEN_LOW = true;   // on/off: the output goes LOW when it sees something
 
   explicit ReflectiveIRSensor(const Port& port) : Sensor(port) {}
 
@@ -31,7 +33,7 @@ public:
   char typeCode() const override { return 'R'; }
   const char* typeName() const override { return "Reflective IR"; }
   float meterLevel() const override;
-  bool needsCalibration() const override { return false; }
+  bool needsCalibration() const override { return _level; }
   void reclaimPins();                 // after an I2C search used the port: get the pin back
 
 protected:
@@ -40,4 +42,8 @@ protected:
   long fullScale() const override { return 4095; }
   long defaultLow() const override { return 0; }
   long defaultHigh() const override { return 4095; }
+
+private:
+  bool _level = false;                // true: reading the level (Port A); false: on/off (Port B)
+  int  _pin = -1;
 };

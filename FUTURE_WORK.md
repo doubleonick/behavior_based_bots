@@ -116,6 +116,17 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Records
 
+- **Port layouts settled (2026-10):** Val_Vehicle: Color or ToF in B, IR or Light Unit
+  in A (a level, `PORT_A_UNIT`), Key in C. Val_Field: the same, no Key (off by
+  default). Val_Brooks: ToF / Color pairs on a PaHub in B, left Key in A, right Key in
+  C (`BUMPERS 3`). **Dropped** with this: the Reflective IR on Port B in Val_Vehicle
+  and Val_Field, and the IR vehicle's "cruise" wiring (0.25 forwards, +/-0.5 when it
+  sees something, so a - wire reverses). The IR on Port A is a plain wire, like the
+  ToF. `ReflectiveIRSensor` still reads on/off on Port B, for Val_Brooks.
+- **Val_Brooks approach / avoid** now turn on the spot (0.2 s, toward / away from the
+  stronger side) instead of steering while driving; escapes arc backwards to the hit
+  side for 1 s (no straight part), or turn on the spot for 1 s when both sides are hit.
+
 - 2026-10: correction. Val_Vehicle (the emotions change) compiled in the host tests but
   not in the Arduino IDE: `enum Wiring` was declared below the first function, and the
   IDE's automatic function declarations go above the first function. Fixed by moving

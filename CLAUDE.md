@@ -18,7 +18,7 @@ make sense to them; everything an adult needs should be written down for them.
 | `firmware/shared/` | **the originals** of every class the sketches share |
 | `firmware/Val_Vehicle/` | Braitenberg vehicle: sensors wired +/−/off to one servo (S1) |
 | `firmware/Val_Field/` | potential field: sensors push/pull by direction; two wheels (S1 left, S2 right) |
-| `firmware/Val_Brooks/` | subsumption test bench: behaviours in a fixed hierarchy, picked by uncommenting one `TEST_` line; two wheels, sensors on a PaHub |
+| `firmware/Val_Brooks/` | subsumption test bench: behaviours in a fixed hierarchy, picked by uncommenting one `TEST_` line (and `BOTTOM`: wander or cruise); two wheels, ToF / Color pairs on a PaHub in Port B, left Key in Port A, right Key in Port C |
 | `firmware/Unit_Tester/` | diagnostics: every port pin's reading and "is anything driving it?" on the matrix and Serial; a key LED test. Uses no shared files |
 | `firmware/IR_Test/` | just the Reflective IR Unit on Port A or B: digital and analog readings on the matrix and Serial. Uses no shared files |
 | `firmware/Light_Test/` | just the Light Unit on Port A, B or C: both pins' readings (level or on/off) on the matrix and Serial. Uses no shared files |
@@ -33,8 +33,13 @@ Shared classes: `Canvas` (the 5x5 picture every display draws on, and `FrameTime
 `Palette` (every colour), `Icons` (every setup picture), `Face` (expressions, talking,
 `tuneIn`), `Spikes` (the wiring's activity while driving), `Static` (white static),
 `MotionServo`, `Port`, `I2CBus`, `Sensor` (parent; 0..1 stimulus from two calibration
-points), `ColorSensor`, `DistanceSensor`, `ReflectiveIRSensor` (on/off, Port B),
-`KeySensor` (button + LED, Port C), `Button` (short / long / hold).
+points), `ColorSensor`, `DistanceSensor`, `ReflectiveIRSensor` (a level on Port A; on/off on
+Port B), `LightUnitSensor` (a level, Port A), `KeySensor` (button + LED, any port),
+`Button` (short / long / hold).
+
+Usual layouts: **Val_Vehicle** Color or ToF in B, IR or Light Unit in A, Key in C.
+**Val_Field** the same without the Key. **Val_Brooks** ToF / Color pairs on a PaHub
+in B, Keys in A (left) and C (right).
 
 ---
 
@@ -75,11 +80,12 @@ tells sensors sharing address 0x29 apart by chip ID. A new I2C sensor type is a 
 Port B is wired the other way round (a unit's analog wire lands on G23, no ADC), so
 analog units only give a level on Port A.
 
-Units that can't identify themselves (the Reflective IR on Port B, the Key on Port C)
-are the one exception: a sketch *assumes* them when no I2C sensor answers in that
-port (`ASSUME_IR_ON_PORT_B` / `ASSUME_KEY_ON_PORT_C`; in Val_Vehicle both default to
-0, so you switch one on and reflash), setup lets the child switch one off, and an I2C
-sensor plugged in later takes over. How the sketches should recognise these units is
+Units that can't identify themselves (the Reflective IR, the Light Unit, the Key) are
+the one exception: a sketch's settings say what is plugged in, and the sketch uses it
+there when no I2C sensor answers in that port (Val_Vehicle / Val_Field: `PORT_A_UNIT`
+= `NO_UNIT` / `IR_UNIT` / `LIGHT_UNIT`, `ASSUME_KEY_ON_PORT_C`; Val_Brooks: `BUMPERS`,
+`ASSUME_IR_ON_PORT_B`). Change a setting, reflash. Setup lets the child switch one
+off, and an I2C sensor plugged in later takes over. How the sketches should recognise these units is
 still undecided. Real I2C sensors always get
 the setup screens' slots first.
 

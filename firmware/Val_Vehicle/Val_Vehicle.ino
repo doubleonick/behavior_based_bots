@@ -7,17 +7,19 @@
               M5 Color Unit (TCS3472)  used as a light sensor
               M5 ToF Unit   (VL53L0X)  used as a distance sensor
             and, if switched on below, in ports where no I2C sensor answers:
-              M5 Reflective IR Unit    Port B only (on/off)
+              M5 Reflective IR Unit or M5 Light Unit   Port A only (a level, on G32)
               M5 Key Unit              Port C (a button; its LED shows the wire's colour)
-            These two can't say what they are, so Val only looks for them if
-            ASSUME_IR_ON_PORT_B / ASSUME_KEY_ON_PORT_C is 1. Switch one "off" (x)
-            in setup if it isn't there.
+            These can't say what they are, so Val only uses them where PORT_A_UNIT /
+            ASSUME_KEY_ON_PORT_C say. Switch one "off" (x) in setup if it isn't there.
+            The usual layout: Color or ToF in Port B, IR or Light Unit in Port A,
+            Key in Port C.
 
   Keep all these files together in a folder named Val_Vehicle:
     Val_Vehicle.ino                        this file: wiring + behaviour
     Face.h / Face.cpp                      Val's face
     Canvas, Palette.h, Icons.h             drawing on the matrix: the picture, colours, setup icons
-    ReflectiveIRSensor.h / .cpp            reflective IR (Port B, on/off)
+    ReflectiveIRSensor.h / .cpp            reflective IR (Port A, a level)
+    LightUnitSensor.h / .cpp               Light Unit (Port A, a level)
     KeySensor.h / .cpp                     key (Port C)
     Spikes.h / Spikes.cpp                  the wiring's spikes, shown while driving
     Static.h                               white static (into setup, and tuning back in)
@@ -40,9 +42,6 @@
     that was set up before): Val looks surprised, then only that sensor's wire is
     set up. The other wires are kept.
   - Then the vehicle runs: the servo's speed is the sum of what every wire delivers.
-  - The reflective IR cruises at a quarter speed forwards. When it sees something, a
-    + wire speeds up to three quarters, a - wire slows past stopping to a quarter
-    speed backwards (IR_CRUISE, IR_CHANGE).
   - The key is a bumper: on a + wire Val drives forwards until the key is pressed,
     then backwards; on a - wire, backwards until pressed, then forwards.
   - The face is for talking to people: hello, setup, surprise at a new sensor.
@@ -74,6 +73,7 @@
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
 #include "ReflectiveIRSensor.h"
+#include "LightUnitSensor.h"
 #include "KeySensor.h"
 #include "Palette.h"
 #include "Connection.h"
@@ -83,23 +83,19 @@
 const bool SAVE_SETUP = false;        // true: remember mount, wiring and calibration after power-off
 const bool ALLOW_REVERSE = false;     // true: a negative sum drives the wheel backwards
 const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and gets warm
-// The reflective IR wire: a slow cruise, sped up (+) or slowed past stopping (-) by
-// the same amount when the IR sees something. 1 = full speed forwards.
-const float IR_CRUISE = 0.25f;        // nothing seen: a quarter speed forwards
-const float IR_CHANGE = 0.5f;         // seen: + gives 0.25 + 0.5 = 0.75, - gives 0.25 - 0.5 = -0.25
 
-// Which vehicle to build. The ToF and Color Units say what they are, so Val finds them
-// in any port by itself. These two units can't, so Val only looks for one if it is
-// switched on here (1). Change, then upload again.
-//   ToF vehicle:  both 0, ToF Unit in Port A
-//   IR vehicle:   ASSUME_IR_ON_PORT_B 1, Reflective IR Unit in Port B
-//   Key vehicle:  ASSUME_KEY_ON_PORT_C 1, Key Unit in Port C
-// (Both can be 1 at once.) Val still uses an I2C sensor if one answers in that port.
-#ifndef ASSUME_IR_ON_PORT_B
-#define ASSUME_IR_ON_PORT_B 0         // M5 Reflective IR Unit, on/off on G33
+// Which units are plugged in. The ToF and Color Units say what they are, so Val finds
+// them in any port by itself (usually Port B). The others can't, so say here which
+// one is there. Change, then upload again. Val still uses an I2C sensor if one
+// answers in that port.
+#define NO_UNIT    0
+#define IR_UNIT    1                  // M5 Reflective IR Unit
+#define LIGHT_UNIT 2                  // M5 Light Unit
+#ifndef PORT_A_UNIT
+#define PORT_A_UNIT NO_UNIT           // NO_UNIT, IR_UNIT or LIGHT_UNIT: read as a level on G32
 #endif
 #ifndef ASSUME_KEY_ON_PORT_C
-#define ASSUME_KEY_ON_PORT_C 0        // M5 Key Unit
+#define ASSUME_KEY_ON_PORT_C 0        // 1 = an M5 Key Unit in Port C
 #endif
 
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
@@ -131,9 +127,10 @@ const int PORT_COUNT = 3;
 const bool USE_PORT[PORT_COUNT] = {true, true, true};
 ColorSensor    colorSensor[PORT_COUNT]    = {ColorSensor(PORT_A), ColorSensor(PORT_B), ColorSensor(PORT_C)};
 DistanceSensor distanceSensor[PORT_COUNT] = {DistanceSensor(PORT_A), DistanceSensor(PORT_B), DistanceSensor(PORT_C)};
-ReflectiveIRSensor reflectiveIR(PORT_B);   // assumed in Port B when no I2C sensor answers
+ReflectiveIRSensor reflectiveIR(PORT_A);   // in Port A if PORT_A_UNIT says so
+LightUnitSensor lightUnit(PORT_A);         // in Port A if PORT_A_UNIT says so
 KeySensor key(PORT_C);                     // assumed in Port C when no I2C sensor answers
-const int PORT_B_INDEX = 1;
+const int PORT_A_INDEX = 0;
 const int PORT_C_INDEX = 2;
 
 // One wire per port. wires[i].sensor points at whichever sensor is in port i (or nothing).
@@ -141,7 +138,7 @@ Connection wires[PORT_COUNT];
 
 // What each port was last set up with. A sensor of a different kind counts as new.
 struct PortRecord {
-  char type = 0;                      // 0 = never set up, 'C' = light, 'D' = distance
+  char type = 0;                      // 0 = never set up, else the sensor's typeCode()
   float weight = 1;
   long low = 0;
   long high = 0;
@@ -186,8 +183,7 @@ bool isSetUp(int i);
 //   inhibitory (-1): more stimulus -> less speed
 // If there are only inhibitory wires, the motor needs something to slow down
 // FROM, so it starts at full speed (bias = 1). Otherwise it starts at 0.
-// The key and the reflective IR are different: each drives the wheel itself (see below),
-// and they don't count for the bias.
+// The key is different: it is a bumper, and drives the wheel itself (see below).
 float sumWires() {
   bool anyExcitatory = false;
   bool anyInhibitory = false;
@@ -201,12 +197,6 @@ float sumWires() {
       // + wire: forwards (+1) until pressed, then backwards (-1). - wire: the opposite.
       float pressed = wires[i].sensor->value();
       total += wires[i].weight * (1 - 2 * pressed);
-      continue;                        // not counted for the bias
-    }
-    if (wires[i].sensor == &reflectiveIR) {
-      // Cruise slowly forwards; seeing something adds (+) or takes away (-) the same amount
-      float seen = wires[i].sensor->value();
-      total += IR_CRUISE + wires[i].weight * IR_CHANGE * seen;
       continue;                        // not counted for the bias
     }
     total += wires[i].output();
@@ -240,8 +230,10 @@ bool detectPort(int i) {
     wires[i].sensor = &colorSensor[i];
   } else if (distanceSensor[i].begin()) {
     wires[i].sensor = &distanceSensor[i];
-  } else if (i == PORT_B_INDEX && ASSUME_IR_ON_PORT_B && reflectiveIR.begin()) {
-    wires[i].sensor = &reflectiveIR;    // nothing answered: assume the reflective IR
+  } else if (i == PORT_A_INDEX && PORT_A_UNIT == IR_UNIT && reflectiveIR.begin()) {
+    wires[i].sensor = &reflectiveIR;    // nothing answered: the reflective IR the settings name
+  } else if (i == PORT_A_INDEX && PORT_A_UNIT == LIGHT_UNIT && lightUnit.begin()) {
+    wires[i].sensor = &lightUnit;       // nothing answered: the Light Unit the settings name
   } else if (i == PORT_C_INDEX && ASSUME_KEY_ON_PORT_C && key.begin()) {
     wires[i].sensor = &key;             // nothing answered: assume the key
   } else {
@@ -285,7 +277,7 @@ bool anyWireNeedsSetup() {
 // Is port i holding a unit Val only assumed (and might really be empty)?
 // A key that has been pressed has proved it is there.
 bool isAssumedUnit(int i) {
-  if (wires[i].sensor == &reflectiveIR) {
+  if (wires[i].sensor == &reflectiveIR || wires[i].sensor == &lightUnit) {
     return true;
   }
   return wires[i].sensor == &key && !key.pinsKnown();
@@ -302,6 +294,8 @@ void lookForI2CInstead(int i) {
   if (found == nullptr) {
     if (wires[i].sensor == &reflectiveIR) {
       reflectiveIR.reclaimPins();       // the search borrowed the pins: give them back
+    } else if (wires[i].sensor == &lightUnit) {
+      lightUnit.reclaimPins();
     } else {
       key.reclaimPins();
     }
@@ -331,14 +325,13 @@ void searchForSensors() {
   }
 }
 
-// Key and reflective IR wires can drive backwards, so the wheel must be allowed to reverse
+// A key wire drives backwards too, so the wheel must be allowed to reverse
 bool reverseAllowed() {
   if (ALLOW_REVERSE) {
     return true;
   }
   for (int i = 0; i < PORT_COUNT; i++) {
-    bool drivesBackwards = (wires[i].sensor == &key || wires[i].sensor == &reflectiveIR);
-    if (drivesBackwards && isSetUp(i) && wires[i].isActive()) {
+    if (wires[i].sensor == &key && isSetUp(i) && wires[i].isActive()) {
       return true;
     }
   }

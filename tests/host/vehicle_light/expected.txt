@@ -1,0 +1,47 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Light Unit assumed on Port A (level on G32)
+[  0.50s] Port A U   200 (0.05 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] Port A U   200 (0.05 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] Port A U   200 (0.05 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] Port A U   200 (0.05 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] Port A U   200 (0.05 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] Port A U   200 (0.05 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 1 sensor(s)
+   >> t=3.49s setup STARTS
+[ 13.10s] Mount: left
+[ 13.10s]   Port A: Light Unit, weight +1, low 200, high 3800
+   >> t=13.10s setup ends
+[ 13.11s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 13.11s] Face: Happy
+[ 13.61s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 14.00s] [ 14.00s] Matrix: spikes
+[ 14.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 -> servo 118 deg | Spikes
+[ 14.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 15.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 15.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 16.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 16.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 17.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 17.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 18.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 -> servo 163 deg | Spikes
+[ 18.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 19.00s] Matrix: face (Angry, during the run)
+[ 19.00s] Face: Angry
+[ 19.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 19.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 20.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 20.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 21.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 21.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 22.00s] [ 22.00s] Matrix: face
+[ 22.00s] Face: Scared
+[ 22.11s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 124 deg | Scared
+[ 22.61s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 91 deg | Scared
+[ 23.11s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 23.61s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 24.11s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 24.61s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 25.11s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 25.61s] Port A U   200 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+LED frames shown: 655, checksum 6bcdc142

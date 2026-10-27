@@ -73,8 +73,9 @@ before the Val sketches rely on them: it shows each port pin's reading and wheth
 anything drives it (read with the weak pull-up, then the weak pull-down: an empty pin
 follows them), and can drive a Key's LED once the Key has been pressed.
 
-- **M5 Reflective IR Unit** (`ReflectiveIRSensor`): now read as **on/off on G33**, Port B
-  only (raw 4095 = sees something, 0 = not; LOW on the pin = sees, *assumed, about 80%*).
+- **M5 Reflective IR Unit** (`ReflectiveIRSensor`): read as a **level on G32 in Port A**
+  (Val_Vehicle, Val_Field: `PORT_A_UNIT IR_UNIT`), or **on/off on G33 in Port B**
+  (Val_Brooks; raw 4095 = sees something, LOW on the pin = sees, *assumed, about 80%*).
   Earlier it was read as analog on G33, which was wrong (see below).
   **On the robot (Port B), G33 read binary and inverted** (a strong reflection read as
   "nothing"): so G33 gets the unit's *digital* output, which goes LOW when it sees
@@ -97,8 +98,8 @@ follows them), and can drive a Key's LED once the Key has been pressed.
   - The pot seems to change how strongly the IR LED shines (it moves the analog
     output too), not only the digital threshold. *(inferred from the above)* 0..4095; calibration decides which way is
   "more". The unit's digital (threshold) output is not used.
-- **M5 Light Unit** (U021, labelled "Port B I/O", black): not supported by the Val
-  sketches yet. **Light_Test, on the robot:** wired like the Reflective IR. Port A:
+- **M5 Light Unit** (U021, labelled "Port B I/O", black; `LightUnitSensor`): read as a
+  level on G32, Port A only (Val_Vehicle, Val_Field: `PORT_A_UNIT LIGHT_UNIT`). **Light_Test, on the robot:** wired like the Reflective IR. Port A:
   G26 = on/off, G32 = light level (smooth). Port B: on/off only. *(tested)* More light
   gave a bigger or smaller reading: not recorded (the owner flipped the bars so more
   light shows more).
@@ -162,9 +163,9 @@ values.
 |---|---|---|---|---|---|---|
 | Color Unit (TCS3472) | level, E | level, E | level, E | level, E | yes (chip ID) | yes, any port |
 | 90° ToF (VL53L0X) | level (mm), E | level (mm), E | level (mm), E | level (mm), **T** (Field, channels 0 and 1) | yes (chip ID) | yes, any port |
-| Reflective IR | **level on G32, T**; on/off on G26, T | **on/off only on G33, T** | on/off only, E | no (not I2C) | no | Port B, on/off |
-| Light Unit (U021) | **level on G32, T**; on/off on G26, T | **on/off only on G33, T** | on/off only, E | no (not I2C) | no | not yet |
-| Key | **button G32, LED G26, T** | **button G23, LED G33, T** | **button G22, LED G19, T** | no (not I2C) | no | Port C |
+| Reflective IR | **level on G32, T**; on/off on G26, T | **on/off only on G33, T** | on/off only, E | no (not I2C) | no | Port A, a level (Brooks: Port B, on/off) |
+| Light Unit (U021) | **level on G32, T**; on/off on G26, T | **on/off only on G33, T** | on/off only, E | no (not I2C) | no | Port A, a level |
+| Key | **button G32, LED G26, T** | **button G23, LED G33, T** | **button G22, LED G19, T** | no (not I2C) | no | Port C (Brooks: A and C) |
 
 Notes:
 - **Port B is wired the other way round:** a unit's first wire lands on G33, its second

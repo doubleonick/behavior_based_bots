@@ -6,7 +6,6 @@
 //   Medium light; brighter (it slows); dimmer again (it speeds up, moving on) -> Curious.
 //   Very bright: the wheel stops -> Love.
 // This story has no Reflective IR or Key Unit: don't assume them in empty ports
-#define ASSUME_IR_ON_PORT_B 0
 #define ASSUME_KEY_ON_PORT_C 0
 #include <Arduino.h>
 #include <Wire.h>

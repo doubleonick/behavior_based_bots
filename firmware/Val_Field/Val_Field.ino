@@ -14,15 +14,19 @@
             in Port A, B and C, or on an M5 PaHub (PCA9548A) plugged into one
             of the ports. On a hub, two sensors of the same kind can share one
             port (for example two distance sensors pointing left and right).
-            And, in ports where no I2C sensor (or hub) answers, if there is room:
-              M5 Reflective IR Unit    Port B only (analog, on G33)
-              M5 Key Unit              Port C (a button; its LED shows push / pull)
-            These two can't say what they are, so Val assumes them; switch one
-            "off" (x) in setup if it isn't there. Real I2C sensors always come first.
+            And, if switched on below, in ports where no I2C sensor (or hub) answers,
+            if there is room:
+              M5 Reflective IR Unit or M5 Light Unit   Port A only (a level, on G32)
+              M5 Key Unit              Port C (off by default: a key is not a field)
+            These can't say what they are, so Val only uses them where PORT_A_UNIT /
+            ASSUME_KEY_ON_PORT_C say; switch one "off" (x) in setup if it isn't there.
+            Real I2C sensors always come first.
+            The usual layout: Color or ToF in Port B (or on a PaHub), IR or Light
+            Unit in Port A.
 
   Keep all these files together in a folder named Val_Field. The shared ones
   (Face, Spikes, Static, Canvas, Palette, Icons, MotionServo, Port, I2CBus, Sensor,
-  ColorSensor, DistanceSensor, ReflectiveIRSensor, KeySensor, Button)
+  ColorSensor, DistanceSensor, ReflectiveIRSensor, LightUnitSensor, KeySensor, Button)
   are copies of Val/shared/ - edit them there and run sync_shared.py.
 
   What it does
@@ -58,6 +62,7 @@
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
 #include "ReflectiveIRSensor.h"
+#include "LightUnitSensor.h"
 #include "KeySensor.h"
 #include "Palette.h"
 #include "I2CBus.h"
@@ -78,13 +83,16 @@ const unsigned long SURPRISE_MS     = 3300;    // how long Val looks surprised a
 const unsigned long REST_AFTER_MS   = 1500;    // wheels still this long -> the run is over, face comes back
 const float MOVING_SPEED = 0.05f;              // below this a wheel counts as still
 
-// Units that can't say what they are (not I2C). Val assumes one is there when no I2C
-// sensor answers in its port. 0 = never assume it (for example, nothing ever goes there).
-#ifndef ASSUME_IR_ON_PORT_B
-#define ASSUME_IR_ON_PORT_B 1         // M5 Reflective IR Unit, analog on G33
+// Units that can't say what they are (not I2C): say here which one is plugged in.
+// Change, then upload again. Val still uses an I2C sensor (or hub) if one answers there.
+#define NO_UNIT    0
+#define IR_UNIT    1                  // M5 Reflective IR Unit
+#define LIGHT_UNIT 2                  // M5 Light Unit
+#ifndef PORT_A_UNIT
+#define PORT_A_UNIT NO_UNIT           // NO_UNIT, IR_UNIT or LIGHT_UNIT: read as a level on G32
 #endif
 #ifndef ASSUME_KEY_ON_PORT_C
-#define ASSUME_KEY_ON_PORT_C 1        // M5 Key Unit
+#define ASSUME_KEY_ON_PORT_C 0        // 1 = an M5 Key Unit in Port C
 #endif
 
 // ---------- Hardware ----------
@@ -127,9 +135,10 @@ DistanceSensor distanceSensor[PLACE_COUNT] = {
   DistanceSensor(place[6]), DistanceSensor(place[7]), DistanceSensor(place[8])
 };
 
-ReflectiveIRSensor reflectiveIR(PORT_B);   // assumed in Port B when nothing else answers
+ReflectiveIRSensor reflectiveIR(PORT_A);   // in Port A if PORT_A_UNIT says so
+LightUnitSensor lightUnit(PORT_A);         // in Port A if PORT_A_UNIT says so
 KeySensor key(PORT_C);                     // assumed in Port C when nothing else answers
-const int PORT_B_INDEX = 1;
+const int PORT_A_INDEX = 0;
 const int PORT_C_INDEX = 2;
 
 // The field. field.source[i] belongs to place i.
@@ -167,10 +176,10 @@ void printSetup();
 //  Finding sensors
 // =====================================================================
 // A new sensor's starting setup: distance, reflective IR and the key push (avoid
-// things); light pulls (seek light); all pointing straight ahead.
+// things); light (Color Unit or Light Unit) pulls (seek light); all pointing straight ahead.
 void setDefaults(int i) {
   PotentialField::Source& s = field.source[i];
-  if (s.sensor->typeCode() == 'C') {
+  if (s.sensor->typeCode() == 'C' || s.sensor->typeCode() == 'U') {
     s.policy = PotentialField::PULL;
   } else {
     s.policy = PotentialField::PUSH;
@@ -253,8 +262,10 @@ bool detectPort(int i, bool allowAssumed) {
     s.sensor = &colorSensor[i];
   } else if (distanceSensor[i].begin()) {
     s.sensor = &distanceSensor[i];
-  } else if (allowAssumed && i == PORT_B_INDEX && ASSUME_IR_ON_PORT_B && reflectiveIR.begin()) {
-    s.sensor = &reflectiveIR;          // nothing answered: assume the reflective IR
+  } else if (allowAssumed && i == PORT_A_INDEX && PORT_A_UNIT == IR_UNIT && reflectiveIR.begin()) {
+    s.sensor = &reflectiveIR;          // nothing answered: the reflective IR the settings name
+  } else if (allowAssumed && i == PORT_A_INDEX && PORT_A_UNIT == LIGHT_UNIT && lightUnit.begin()) {
+    s.sensor = &lightUnit;             // nothing answered: the Light Unit the settings name
   } else if (allowAssumed && i == PORT_C_INDEX && ASSUME_KEY_ON_PORT_C && key.begin()) {
     s.sensor = &key;                   // nothing answered: assume the key
   } else {
@@ -299,7 +310,7 @@ bool anySensorNeedsSetup() {
 // Is place i holding a unit Val only assumed (and might really be empty)?
 // A key that has been pressed has proved it is there.
 bool isAssumedUnit(int i) {
-  if (field.source[i].sensor == &reflectiveIR) {
+  if (field.source[i].sensor == &reflectiveIR || field.source[i].sensor == &lightUnit) {
     return true;
   }
   return field.source[i].sensor == &key && !key.pinsKnown();
@@ -316,6 +327,8 @@ void detectAll() {
         field.source[i].sensor = assumed;        // still nothing else: keep the assumed unit
         if (assumed == &reflectiveIR) {
           reflectiveIR.reclaimPins();            // the search borrowed the pins: give them back
+        } else if (assumed == &lightUnit) {
+          lightUnit.reclaimPins();
         } else {
           key.reclaimPins();
         }

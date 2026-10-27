@@ -1,26 +1,43 @@
 #include "ReflectiveIRSensor.h"
 #include "I2CBus.h"
 
-// Only Port B is supported. Nothing to ask the unit, so this just gets the pin ready.
+// Port A: the level. Port B: on/off. Nothing to ask the unit, so this just gets the pin ready.
 bool ReflectiveIRSensor::begin() {
-  if (_port.pin1 != SIGNAL_PIN && _port.pin2 != SIGNAL_PIN) {
+  if (_port.pin1 == LEVEL_PIN || _port.pin2 == LEVEL_PIN) {
+    _level = true;
+    _pin = LEVEL_PIN;
+  } else if (_port.pin1 == ON_OFF_PIN || _port.pin2 == ON_OFF_PIN) {
+    _level = false;
+    _pin = ON_OFF_PIN;
+  } else {
     _connected = false;
-    return false;                             // not Port B
+    return false;                             // Port C: nothing Val can use
   }
   reclaimPins();
   _connected = true;
-  Serial.printf("Reflective IR assumed on %s (on/off on G%d)\n", _port.name, SIGNAL_PIN);
+  if (_level) {
+    Serial.printf("Reflective IR assumed on %s (level on G%d)\n", _port.name, _pin);
+  } else {
+    Serial.printf("Reflective IR assumed on %s (on/off on G%d)\n", _port.name, _pin);
+  }
   return true;
 }
 
 void ReflectiveIRSensor::reclaimPins() {
-  I2CBus::releaseIfUsing(SIGNAL_PIN);         // the I2C search may have been using it
-  pinMode(SIGNAL_PIN, INPUT);
+  if (_pin < 0) {
+    return;
+  }
+  I2CBus::releaseIfUsing(_pin);               // the I2C search may have been using it
+  pinMode(_pin, INPUT);
 }
 
 bool ReflectiveIRSensor::readRaw(long& out) {
-  I2CBus::releaseIfUsing(SIGNAL_PIN);
-  bool low = (digitalRead(SIGNAL_PIN) == LOW);
+  I2CBus::releaseIfUsing(_pin);
+  if (_level) {
+    out = analogRead(_pin);
+    return true;                              // an analog pin always gives a number
+  }
+  bool low = (digitalRead(_pin) == LOW);
   bool sees = low;
   if (!SEES_WHEN_LOW) {
     sees = !low;
@@ -30,9 +47,10 @@ bool ReflectiveIRSensor::readRaw(long& out) {
   } else {
     out = 0;
   }
-  return true;                                // a pin always gives a reading
+  return true;
 }
 
 float ReflectiveIRSensor::meterLevel() const {
-  return constrain((float)raw() / fullScale(), 0.0f, 1.0f);
+  return constrain((float)raw() / fullScale(), 0.0f, 1.0f);   // the raw reading, so the
+                                                              // meter moves before calibration
 }
