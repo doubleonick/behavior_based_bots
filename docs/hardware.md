@@ -97,6 +97,14 @@ follows them), and can drive a Key's LED once the Key has been pressed.
   - The pot seems to change how strongly the IR LED shines (it moves the analog
     output too), not only the digital threshold. *(inferred from the above)* 0..4095; calibration decides which way is
   "more". The unit's digital (threshold) output is not used.
+- **M5 Light Unit** (U021, labelled "Port B I/O", black): not supported by the Val
+  sketches yet. **Light_Test, on the robot:** wired like the Reflective IR. Port A:
+  G26 = on/off, G32 = light level (smooth). Port B: on/off only. *(tested)* More light
+  gave a bigger or smaller reading: not recorded (the owner flipped the bars so more
+  light shows more).
+  So it fits Port A as a level (where the ToF / Color usually go) or Port B as on/off
+  (where the IR goes). A cable with its two signal wires swapped would put the level
+  on G33, which can read a voltage: untried.
 - **M5 Key Unit** (`KeySensor`): a button and one SK6812 LED. Both pins start as
   inputs with pull-ups; the first pin to go LOW is the button and the other becomes
   the LED (added to FastLED then).
