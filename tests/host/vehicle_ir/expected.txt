@@ -1,0 +1,71 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Reflective IR assumed on Port B (on/off on G33)
+[  0.50s] Port B R     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] Port B R     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] Port B R     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] Port B R     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] Port B R     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] Port B R     0 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 1 sensor(s)
+   >> t=3.49s setup STARTS
+[ 11.10s] Mount: left
+[ 11.10s]   Port B: Reflective IR, weight -1, low 0, high 4095
+   >> t=11.10s setup ends
+[ 11.11s] [ 11.11s] Matrix: spikes
+[ 11.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 90 deg | Spikes
+[ 11.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 112 deg | Spikes
+[ 12.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 112 deg | Spikes
+[ 12.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 112 deg | Spikes
+[ 13.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 13.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 14.11s] Port B R  4095 (1.00 x -1)  | sum -0.25 -> servo 84 deg | Spikes
+[ 14.61s] Port B R  4095 (1.00 x -1)  | sum -0.25 -> servo 68 deg | Spikes
+[ 15.11s] Port B R  4095 (1.00 x -1)  | sum -0.25 -> servo 68 deg | Spikes
+[ 15.61s] Port B R  4095 (1.00 x -1)  | sum -0.25 -> servo 68 deg | Spikes
+[ 16.11s] Port B R  4095 (1.00 x -1)  | sum -0.25 -> servo 68 deg | Spikes
+[ 16.61s] Port B R  4095 (1.00 x -1)  | sum -0.25 -> servo 68 deg | Spikes
+[ 17.11s] Port B R  4095 (1.00 x -1)  | sum -0.25 -> servo 68 deg | Spikes
+[ 17.61s] Port B R  4095 (1.00 x -1)  | sum -0.25 -> servo 68 deg | Spikes
+[ 18.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 96 deg | Spikes
+[ 18.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 112 deg | Spikes
+[ 19.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 112 deg | Spikes
+[ 19.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 112 deg | Spikes
+[ 20.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 20.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 21.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 21.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 22.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 22.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 23.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 23.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 24.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 24.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 25.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 25.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 26.11s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 26.61s] Port B R     0 (0.00 x -1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 27.00s] Full setup: 1 sensor(s)
+[ 27.00s] Face: Happy
+   >> t=27.00s setup STARTS
+[ 34.20s] Mount: left
+[ 34.20s]   Port B: Reflective IR, weight +1, low 0, high 4095
+   >> t=34.20s setup ends
+[ 34.20s] [ 34.20s] Matrix: spikes
+[ 34.20s] Port B R  4095 (1.00 x +1)  | sum +0.75 -> servo 90 deg | Spikes
+[ 34.70s] Port B R  4095 (1.00 x +1)  | sum +0.75 -> servo 156 deg | Spikes
+[ 35.20s] Port B R  4095 (1.00 x +1)  | sum +0.75 -> servo 157 deg | Spikes
+[ 35.70s] Port B R  4095 (1.00 x +1)  | sum +0.75 -> servo 157 deg | Spikes
+[ 36.20s] Port B R  4095 (1.00 x +1)  | sum +0.75 -> servo 157 deg | Spikes
+[ 36.70s] Port B R  4095 (1.00 x +1)  | sum +0.75 -> servo 157 deg | Spikes
+[ 37.20s] Port B R  4095 (1.00 x +1)  | sum +0.75 -> servo 157 deg | Spikes
+[ 37.70s] Port B R  4095 (1.00 x +1)  | sum +0.75 -> servo 157 deg | Spikes
+[ 38.20s] Port B R     0 (0.00 x +1)  | sum +0.25 -> servo 120 deg | Spikes
+[ 38.70s] Port B R     0 (0.00 x +1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 39.20s] Port B R     0 (0.00 x +1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 39.70s] Port B R     0 (0.00 x +1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 40.20s] Port B R     0 (0.00 x +1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 40.70s] Port B R     0 (0.00 x +1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 41.20s] Port B R     0 (0.00 x +1)  | sum +0.25 -> servo 113 deg | Spikes
+[ 41.70s] Port B R     0 (0.00 x +1)  | sum +0.25 -> servo 113 deg | Spikes
+LED frames shown: 1056, checksum 182c7ca5

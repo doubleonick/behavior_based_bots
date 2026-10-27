@@ -40,6 +40,9 @@
     that was set up before): Val looks surprised, then only that sensor's wire is
     set up. The other wires are kept.
   - Then the vehicle runs: the servo's speed is the sum of what every wire delivers.
+  - The reflective IR cruises at a quarter speed forwards. When it sees something, a
+    + wire speeds up to three quarters, a - wire slows past stopping to a quarter
+    speed backwards (IR_CRUISE, IR_CHANGE).
   - The key is a bumper: on a + wire Val drives forwards until the key is pressed,
     then backwards; on a - wire, backwards until pressed, then forwards.
   - The face is for talking to people: hello, setup, surprise at a new sensor.
@@ -80,6 +83,10 @@
 const bool SAVE_SETUP = false;        // true: remember mount, wiring and calibration after power-off
 const bool ALLOW_REVERSE = false;     // true: a negative sum drives the wheel backwards
 const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and gets warm
+// The reflective IR wire: a slow cruise, sped up (+) or slowed past stopping (-) by
+// the same amount when the IR sees something. 1 = full speed forwards.
+const float IR_CRUISE = 0.25f;        // nothing seen: a quarter speed forwards
+const float IR_CHANGE = 0.5f;         // seen: + gives 0.25 + 0.5 = 0.75, - gives 0.25 - 0.5 = -0.25
 
 // Which vehicle to build. The ToF and Color Units say what they are, so Val finds them
 // in any port by itself. These two units can't, so Val only looks for one if it is
@@ -179,7 +186,8 @@ bool isSetUp(int i);
 //   inhibitory (-1): more stimulus -> less speed
 // If there are only inhibitory wires, the motor needs something to slow down
 // FROM, so it starts at full speed (bias = 1). Otherwise it starts at 0.
-// The key is different: it is a bumper, and drives the wheel itself (see below).
+// The key and the reflective IR are different: each drives the wheel itself (see below),
+// and they don't count for the bias.
 float sumWires() {
   bool anyExcitatory = false;
   bool anyInhibitory = false;
@@ -193,6 +201,12 @@ float sumWires() {
       // + wire: forwards (+1) until pressed, then backwards (-1). - wire: the opposite.
       float pressed = wires[i].sensor->value();
       total += wires[i].weight * (1 - 2 * pressed);
+      continue;                        // not counted for the bias
+    }
+    if (wires[i].sensor == &reflectiveIR) {
+      // Cruise slowly forwards; seeing something adds (+) or takes away (-) the same amount
+      float seen = wires[i].sensor->value();
+      total += IR_CRUISE + wires[i].weight * IR_CHANGE * seen;
       continue;                        // not counted for the bias
     }
     total += wires[i].output();
@@ -317,13 +331,14 @@ void searchForSensors() {
   }
 }
 
-// A key wire drives backwards too, so the wheel must be allowed to reverse
+// Key and reflective IR wires can drive backwards, so the wheel must be allowed to reverse
 bool reverseAllowed() {
   if (ALLOW_REVERSE) {
     return true;
   }
   for (int i = 0; i < PORT_COUNT; i++) {
-    if (wires[i].sensor == &key && isSetUp(i) && wires[i].isActive()) {
+    bool drivesBackwards = (wires[i].sensor == &key || wires[i].sensor == &reflectiveIR);
+    if (drivesBackwards && isSetUp(i) && wires[i].isActive()) {
       return true;
     }
   }
