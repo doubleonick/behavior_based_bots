@@ -17,7 +17,7 @@ A web interface that carries the instructions, with a game/story layer:
   (Light Unit, Reflective IR) share one slot; a Vehicle needs one sensor per robot,
   so this rarely matters there; Field and Brooks can do a little on one robot, but
   multi-sensor work goes through the PaHub (I2C units only). Table in
-  `docs/hardware.md`, "Which units fit where".
+  `docs/hardware.md`, "What each unit can do in each port".
 - Served as a static site (GitHub Pages) from `web/` so it versions with the firmware
   it describes.
 - Progression: V1, V2a/b, V3a/b, potential field, subsumption. State machines and
