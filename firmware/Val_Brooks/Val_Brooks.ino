@@ -7,19 +7,19 @@
 
   Hardware: M5 Atom Matrix on an Atom Motion base
             two continuous-rotation servos: S1 = LEFT wheel, S2 = RIGHT wheel
-            an M5 PaHub in one of the ports, with sensors on its channels:
+            an M5 PaHub in Port B (any port the keys don't use), with sensors on its channels:
               even channels (0, 2, 4) = the RIGHT side, odd channels (1, 3, 5) = the LEFT side
               M5 ToF Unit (VL53L0X)    distance
               M5 Color Unit (TCS3472)  light
               (for example: right ToF on 0, left ToF on 1, right light on 2, left light on 3)
-            for button collisions: an M5 Key Unit in Port C (a front bumper), or a
-              left and a right bump switch (see BUMPERS below)
+            for button collisions: two M5 Key Units, the LEFT one in Port A and the
+              RIGHT one in Port C (or one key, or bump switches: see BUMPERS below)
             optionally an M5 Reflective IR Unit in Port B (analog on G33): "something
               just ahead" for the object behaviours
             for inertial collisions: the Atom Matrix's own IMU (BMI270, see INERTIAL_COLLISION)
 
   Pick the hierarchy to test in the TEST HIERARCHY section below, by leaving exactly
-  one line uncommented. This sketch is a test bench: it has no setup screens, and its
+  one line uncommented, and the behaviour at its bottom (BOTTOM: wander or cruise). This sketch is a test bench: it has no setup screens, and its
   settings (thresholds, speeds, pins) are near the top of this file.
 
   The matrix:
@@ -27,7 +27,7 @@
   - While running, one row per behaviour (top = top of the hierarchy):
       column 0: red = push / avoid, green = pull / approach (wander: green going
       forwards, red going backwards); column 1: a gap; columns 2-4: the behaviour's
-      colour: collision white, distance purple, light yellow, wander blue.
+      colour: collision white, distance purple, light yellow, wander / cruise blue.
     Rows not in control stay steady. The row in control sends spikes left to right,
     as often as the wheels' average speed says.
   - Short press on the matrix: pause (wheels stop, Neutral face) / carry on.
@@ -61,13 +61,20 @@
 // =====================================================================
 //  TEST HIERARCHY: uncomment exactly ONE line (top of the hierarchy first)
 // =====================================================================
-// #define TEST_ESCAPE_LEFT      // 1. escape left collision  -> wander
-// #define TEST_ESCAPE_RIGHT     // 2. escape right collision -> wander
-// #define TEST_AVOID_OBJECT     // 3. avoid object           -> wander
-// #define TEST_APPROACH_OBJECT  // 4. approach object        -> wander
-// #define TEST_AVOID_LIGHT      // 5. avoid light            -> wander
-// #define TEST_APPROACH_LIGHT   // 6. approach light         -> wander
-#define TEST_FULL                // escape front collision -> avoid object -> approach light -> wander
+// #define TEST_ESCAPE_LEFT      // 1. escape left collision  -> bottom
+// #define TEST_ESCAPE_RIGHT     // 2. escape right collision -> bottom
+// #define TEST_AVOID_OBJECT     // 3. avoid object           -> bottom
+// #define TEST_APPROACH_OBJECT  // 4. approach object        -> bottom
+// #define TEST_AVOID_LIGHT      // 5. avoid light            -> bottom
+// #define TEST_APPROACH_LIGHT   // 6. approach light         -> bottom
+#define TEST_FULL                // escape front collision -> avoid object -> approach light -> bottom
+
+// The bottom of the hierarchy has no condition: it always wants the wheels, so nothing
+// can go below it. Uncomment exactly ONE:
+#ifndef BOTTOM
+#define BOTTOM WANDER            // roll a die every 0.2 s for one of six moves
+// #define BOTTOM CRUISE_STRAIGHT   // a "forced roll": always straight ahead at half speed
+#endif
 
 // ---------- Collision detection: which kind? ----------
 // 0 = bump switches (is_button_collision), 1 = the IMU (is_inertial_collision)
@@ -77,12 +84,14 @@
 const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and gets warm
 const bool SHOW_LAYERS_AT_START = true;   // false: start with the behaviour display off (dark)
 
-// Bumpers: 1 = an M5 Key Unit in Port C, a front bumper (it counts as left AND right,
-//              so the escapes back off and turn either way; its LED shows red, "push")
+// Bumpers: 1 = one M5 Key Unit in Port C, a front bumper (it counts as left AND right)
 //           2 = two bump switches on Port C: left on G19, right on G22, pressed = LOW
 //              (they use the pin's pull-up)
+//           3 = two M5 Key Units: the LEFT one in Port A, the RIGHT one in Port C
+//              (to swap sides, swap leftKey and rightKey below)
+// Key LEDs show red ("push away"), like the setup screens.
 #ifndef BUMPERS
-#define BUMPERS 1
+#define BUMPERS 3
 #endif
 const int LEFT_BUMPER_PIN  = 19;
 const int RIGHT_BUMPER_PIN = 22;
@@ -115,13 +124,15 @@ const float IMU_LEFT_SIGN    = 1.0f;
 const float STRAIGHT_SPEED = 0.5f;
 const float ARC_FAST = 0.55f;         // the outside wheel of an arc
 const float ARC_SLOW = 0.25f;         // the inside wheel of an arc
-const float CRUISE_SPEED = 0.4f;      // approach / avoid: speed before steering
-const float STEER_GAIN = 0.5f;        // approach / avoid: how hard they steer
+const float ROTATE_SPEED = 0.4f;      // turning on the spot: one wheel forwards, one backwards
+const float CRUISE_SPEED = 0.5f;      // cruise straight
 
 // Timing
-const unsigned long PRIMITIVE_MS = 200;     // wander rolls the die this often
-const unsigned long ESCAPE_BACK_MS = 400;   // escape: back straight up for this long...
-const unsigned long ESCAPE_TURN_MS = 600;   // ... then arc backwards, turning away, for this long
+const unsigned long PRIMITIVE_MS = 200;     // wander rolls the die this often; approach and
+                                            // avoid turn for this long, then look again
+const unsigned long ESCAPE_MS = 1000;       // escape: back away (one side hit) or turn on the
+                                            // spot (both sides hit) for this long
+const unsigned long BOTH_WINDOW_MS = 100;   // the other key pressed within this long counts as both
 
 #if INERTIAL_COLLISION
 #include "SparkFun_BMI270_Arduino_Library.h"
@@ -155,7 +166,10 @@ DistanceSensor distanceSensor[CHANNELS] = {
 int hubPort = -1;                     // which port the PaHub is in (-1 = none found)
 
 ReflectiveIRSensor reflectiveIR(PORT_B);
-KeySensor key(PORT_C);
+KeySensor keyA(PORT_A);
+KeySensor keyC(PORT_C);
+KeySensor* leftKey = &keyA;           // BUMPERS 3: which key is on which side
+KeySensor* rightKey = &keyC;
 
 // The sensors each behaviour uses (nullptr = not plugged in)
 Sensor* leftDistance  = nullptr;
@@ -166,23 +180,24 @@ Sensor* rightLight    = nullptr;
 // ---------- The behaviours ----------
 enum Behaviour : uint8_t {
   ESCAPE_LEFT_COLLISION, ESCAPE_RIGHT_COLLISION, ESCAPE_FRONT_COLLISION,
-  AVOID_OBJECT, APPROACH_OBJECT, AVOID_LIGHT, APPROACH_LIGHT, WANDER
+  AVOID_OBJECT, APPROACH_OBJECT, AVOID_LIGHT, APPROACH_LIGHT, WANDER, CRUISE_STRAIGHT,
+  BEHAVIOUR_COUNT                     // (not a behaviour: how many there are)
 };
 
 #if defined(TEST_ESCAPE_LEFT)
-const Behaviour HIERARCHY[] = {ESCAPE_LEFT_COLLISION, WANDER};
+const Behaviour HIERARCHY[] = {ESCAPE_LEFT_COLLISION, BOTTOM};
 #elif defined(TEST_ESCAPE_RIGHT)
-const Behaviour HIERARCHY[] = {ESCAPE_RIGHT_COLLISION, WANDER};
+const Behaviour HIERARCHY[] = {ESCAPE_RIGHT_COLLISION, BOTTOM};
 #elif defined(TEST_AVOID_OBJECT)
-const Behaviour HIERARCHY[] = {AVOID_OBJECT, WANDER};
+const Behaviour HIERARCHY[] = {AVOID_OBJECT, BOTTOM};
 #elif defined(TEST_APPROACH_OBJECT)
-const Behaviour HIERARCHY[] = {APPROACH_OBJECT, WANDER};
+const Behaviour HIERARCHY[] = {APPROACH_OBJECT, BOTTOM};
 #elif defined(TEST_AVOID_LIGHT)
-const Behaviour HIERARCHY[] = {AVOID_LIGHT, WANDER};
+const Behaviour HIERARCHY[] = {AVOID_LIGHT, BOTTOM};
 #elif defined(TEST_APPROACH_LIGHT)
-const Behaviour HIERARCHY[] = {APPROACH_LIGHT, WANDER};
+const Behaviour HIERARCHY[] = {APPROACH_LIGHT, BOTTOM};
 #elif defined(TEST_FULL)
-const Behaviour HIERARCHY[] = {ESCAPE_FRONT_COLLISION, AVOID_OBJECT, APPROACH_LIGHT, WANDER};
+const Behaviour HIERARCHY[] = {ESCAPE_FRONT_COLLISION, AVOID_OBJECT, APPROACH_LIGHT, BOTTOM};
 #else
 #error "Uncomment one TEST_ line in the TEST HIERARCHY section"
 #endif
@@ -199,12 +214,21 @@ bool greetingDone = false;
 unsigned long lastPrintMs = 0;
 
 // An escape is a fixed move: once it starts, it runs to the end
+enum EscapeMove : uint8_t { BACK_LEFT, BACK_RIGHT, SPIN_LEFT, SPIN_RIGHT };
 struct Escape {
   bool running = false;
   unsigned long startMs = 0;
-  bool turnRight = true;              // which way the nose turns while backing away
+  EscapeMove move = BACK_LEFT;
 };
 Escape escape;
+
+// Approach and avoid: a turn on the spot lasts PRIMITIVE_MS, then the behaviour looks again
+struct Turn {
+  bool running = false;
+  unsigned long startMs = 0;
+  bool right = true;
+};
+Turn turns[BEHAVIOUR_COUNT];
 
 // Wander: the current roll of the die and when it was rolled
 int wanderRoll = 0;                   // 0..5
@@ -265,8 +289,8 @@ bool present(Sensor* s) {
 }
 
 void updateSensors() {
-  Sensor* all[6] = {leftDistance, rightDistance, leftLight, rightLight, &reflectiveIR, &key};
-  for (int k = 0; k < 6; k++) {
+  Sensor* all[7] = {leftDistance, rightDistance, leftLight, rightLight, &reflectiveIR, &keyA, &keyC};
+  for (int k = 0; k < 7; k++) {
     if (all[k] != nullptr) {
       all[k]->update();
     }
@@ -278,17 +302,21 @@ void updateSensors() {
 // =====================================================================
 bool is_left_bumper_pressed() {
 #if BUMPERS == 1
-  return key.pressed();               // one key at the front: it is both sides
-#else
+  return keyC.pressed();              // one key at the front: it is both sides
+#elif BUMPERS == 2
   return digitalRead(LEFT_BUMPER_PIN) == LOW;
+#else
+  return leftKey->pressed();
 #endif
 }
 
 bool is_right_bumper_pressed() {
 #if BUMPERS == 1
-  return key.pressed();
-#else
+  return keyC.pressed();
+#elif BUMPERS == 2
   return digitalRead(RIGHT_BUMPER_PIN) == LOW;
+#else
+  return rightKey->pressed();
 #endif
 }
 
@@ -430,107 +458,152 @@ void arc_forward_left()   { set_wheels(ARC_SLOW, ARC_FAST); }      // the left w
 void arc_forward_right()  { set_wheels(ARC_FAST, ARC_SLOW); }
 void arc_backward_left()  { set_wheels(-ARC_SLOW, -ARC_FAST); }    // the back swings left, the nose turns right
 void arc_backward_right() { set_wheels(-ARC_FAST, -ARC_SLOW); }    // the back swings right, the nose turns left
+void rotate_left()        { set_wheels(-ROTATE_SPEED, ROTATE_SPEED); }   // on the spot
+void rotate_right()       { set_wheels(ROTATE_SPEED, -ROTATE_SPEED); }
+void cruise_straight()    { set_wheels(CRUISE_SPEED, CRUISE_SPEED); }
 
 // =====================================================================
 //  Behaviours: what each one does when it has the wheels
 // =====================================================================
-// Back straight up, then arc backwards so the nose turns away from the hit
-void start_escape(bool turnRight) {
+// ---- Escapes ----
+void start_escape(EscapeMove move) {
   escape.running = true;
   escape.startMs = millis();
-  escape.turnRight = turnRight;
+  escape.move = move;
+}
+
+// Turn on the spot, either way (a coin flip)
+EscapeMove spin_either_way() {
+  if (esp_random() & 1) {
+    return SPIN_LEFT;
+  }
+  return SPIN_RIGHT;
 }
 
 // Is an escape still under way? (It lets go of the wheels once its time is up.)
 bool escape_still_running() {
-  if (escape.running && millis() - escape.startMs >= ESCAPE_BACK_MS + ESCAPE_TURN_MS) {
+  if (escape.running && millis() - escape.startMs >= ESCAPE_MS) {
     escape.running = false;
   }
   return escape.running;
 }
 
 void run_escape() {
-  unsigned long t = millis() - escape.startMs;
-  if (t < ESCAPE_BACK_MS) {
-    straight_backward();
-  } else if (escape.turnRight) {
-    arc_backward_left();               // nose turns right
+  if (escape.move == BACK_LEFT) {
+    arc_backward_left();               // the back swings left, the nose turns right
+  } else if (escape.move == BACK_RIGHT) {
+    arc_backward_right();              // the back swings right, the nose turns left
+  } else if (escape.move == SPIN_LEFT) {
+    rotate_left();
   } else {
-    arc_backward_right();              // nose turns left
+    rotate_right();
   }
 }
 
+// Hit on the left: back up to the left, so the nose turns right, away from the hit
 void escape_left_collision() {
   if (!escape.running) {
-    start_escape(true);                // hit on the left: turn right
+    start_escape(BACK_LEFT);
   }
   run_escape();
 }
 
 void escape_right_collision() {
   if (!escape.running) {
-    start_escape(false);               // hit on the right: turn left
+    start_escape(BACK_RIGHT);
   }
   run_escape();
 }
 
-// Left and right combined: turn away from the side that was hit (a coin flip if unclear)
+// Left and right combined:
+//   both sides hit (within BOTH_WINDOW_MS of each other): turn on the spot
+//   left only: back up to the left.  right only: back up to the right.
 void escape_front_collision() {
+  bool left = is_left_collision();
+  bool right = is_right_collision();
   if (!escape.running) {
-    bool left = is_left_collision();
-    bool right = is_right_collision();
-    bool turnRight;
-    if (left && !right) {
-      turnRight = true;
-    } else if (right && !left) {
-      turnRight = false;
+    if (left && right) {
+      start_escape(spin_either_way());
+    } else if (left) {
+      start_escape(BACK_LEFT);
+    } else if (right) {
+      start_escape(BACK_RIGHT);
     } else {
-      turnRight = (esp_random() & 1);
+      start_escape(spin_either_way());   // a jolt dead ahead (IMU): no side to tell
     }
-    start_escape(turnRight);
+  } else if (millis() - escape.startMs < BOTH_WINDOW_MS && left && right) {
+    bool backing = (escape.move == BACK_LEFT || escape.move == BACK_RIGHT);
+    if (backing) {
+      start_escape(spin_either_way());   // the other side was hit just after: it was both
+    }
   }
   run_escape();
 }
 
-// Steer toward (approach) or away from (avoid) the nearer side
-void steer_by_distance(float direction) {
-  float turn = STEER_GAIN * (nearness(leftDistance) - nearness(rightDistance));   // + = nearer on the left
-  set_wheels(CRUISE_SPEED + direction * turn, CRUISE_SPEED - direction * turn);
+// ---- Approach and avoid: turn on the spot for PRIMITIVE_MS, then look again ----
+bool turn_still_running(Behaviour b) {
+  if (turns[b].running && millis() - turns[b].startMs >= PRIMITIVE_MS) {
+    turns[b].running = false;
+  }
+  return turns[b].running;
 }
 
-// Only the reflective IR sees it (dead ahead, no side): no side to steer by
+// stronger: + = stronger on the left, - = on the right, 0 = the same (a coin flip).
+// towards: true = turn toward the stronger side (approach), false = away (avoid).
+void turn_by(Behaviour b, float stronger, bool towards) {
+  if (!turns[b].running) {
+    bool leftStronger;
+    if (stronger > 0) {
+      leftStronger = true;
+    } else if (stronger < 0) {
+      leftStronger = false;
+    } else {
+      leftStronger = (esp_random() & 1);
+    }
+    turns[b].running = true;
+    turns[b].startMs = millis();
+    if (towards) {
+      turns[b].right = !leftStronger;
+    } else {
+      turns[b].right = leftStronger;
+    }
+  }
+  if (turns[b].right) {
+    rotate_right();
+  } else {
+    rotate_left();
+  }
+}
+
+// Only the reflective IR sees it (dead ahead, no side): no side to turn by
 bool only_ir_sees_it() {
   bool leftNear = present(leftDistance) && leftDistance->raw() < DISTANCE_THRESHOLD_MM;
   bool rightNear = present(rightDistance) && rightDistance->raw() < DISTANCE_THRESHOLD_MM;
   return is_ir_object_ahead() && !leftNear && !rightNear;
 }
 
-// Nearer on the left: left wheel faster, turn right. Dead ahead (IR only): back away, turning.
+// Nearer on the left: turn right, away from it. Dead ahead (IR only): either way.
 void avoid_object() {
+  float stronger = nearness(leftDistance) - nearness(rightDistance);
   if (only_ir_sees_it()) {
-    arc_backward_left();
-  } else {
-    steer_by_distance(+1);
+    stronger = 0;
   }
+  turn_by(AVOID_OBJECT, stronger, false);
 }
 
-// Turn toward the nearer side. Dead ahead (IR only): keep going straight at it.
+// Nearer on the left: turn left, toward it. Dead ahead (IR only): keep going straight at it.
 void approach_object() {
-  if (only_ir_sees_it()) {
+  if (only_ir_sees_it() && !turns[APPROACH_OBJECT].running) {
     straight_forward();
-  } else {
-    steer_by_distance(-1);
+    return;
   }
+  float stronger = nearness(leftDistance) - nearness(rightDistance);
+  turn_by(APPROACH_OBJECT, stronger, true);
 }
 
-// Steer toward (approach) or away from (avoid) the brighter side
-void steer_by_light(float direction) {
-  float turn = STEER_GAIN * light_gradient();        // + = brighter on the left
-  set_wheels(CRUISE_SPEED + direction * turn, CRUISE_SPEED - direction * turn);
-}
-
-void avoid_light()    { steer_by_light(+1); }       // brighter on the left: turn right
-void approach_light() { steer_by_light(-1); }
+// Brighter on the left: avoid turns right, approach turns left
+void avoid_light()    { turn_by(AVOID_LIGHT, light_gradient(), false); }
+void approach_light() { turn_by(APPROACH_LIGHT, light_gradient(), true); }
 
 // Roll a die every PRIMITIVE_MS for one of six moves (no turning on the spot)
 void roll_wander() {
@@ -566,6 +639,8 @@ const char* behaviourName(Behaviour b) {
     case AVOID_LIGHT:            return "Avoid light";
     case APPROACH_LIGHT:         return "Approach light";
     case WANDER:                 return "Wander";
+    case CRUISE_STRAIGHT:        return "Cruise straight";
+    case BEHAVIOUR_COUNT:        break;
   }
   return "?";
 }
@@ -576,11 +651,13 @@ bool wantsControl(Behaviour b) {
     case ESCAPE_LEFT_COLLISION:  return escape_still_running() || is_left_collision();
     case ESCAPE_RIGHT_COLLISION: return escape_still_running() || is_right_collision();
     case ESCAPE_FRONT_COLLISION: return escape_still_running() || is_front_collision();
-    case AVOID_OBJECT:           return is_distance_threshold();
-    case APPROACH_OBJECT:        return is_distance_threshold();
-    case AVOID_LIGHT:            return is_light_gradient_threshold();
-    case APPROACH_LIGHT:         return is_light_gradient_threshold();
+    case AVOID_OBJECT:           return turn_still_running(b) || is_distance_threshold();
+    case APPROACH_OBJECT:        return turn_still_running(b) || is_distance_threshold();
+    case AVOID_LIGHT:            return turn_still_running(b) || is_light_gradient_threshold();
+    case APPROACH_LIGHT:         return turn_still_running(b) || is_light_gradient_threshold();
     case WANDER:                 return true;       // always: the bottom of the hierarchy
+    case CRUISE_STRAIGHT:        return true;       // always: the bottom of the hierarchy
+    case BEHAVIOUR_COUNT:        break;
   }
   return false;
 }
@@ -595,6 +672,8 @@ void act(Behaviour b) {
     case AVOID_LIGHT:            avoid_light();            break;
     case APPROACH_LIGHT:         approach_light();         break;
     case WANDER:                 wander();                 break;
+    case CRUISE_STRAIGHT:        cruise_straight();        break;
+    case BEHAVIOUR_COUNT:        break;
   }
 }
 
@@ -629,6 +708,8 @@ const Canvas::Color* signFor(Behaviour b) {
       return &Palette::GREEN;
     case WANDER:
       return wander_goes_forward() ? &Palette::GREEN : &Palette::RED;
+    case CRUISE_STRAIGHT:
+      return &Palette::GREEN;            // always forwards
     default:
       return &Palette::RED;              // escapes and avoids push away
   }
@@ -647,7 +728,10 @@ const Canvas::Color* colourFor(Behaviour b) {
     case APPROACH_LIGHT:
       return &Palette::YELLOW;
     case WANDER:
+    case CRUISE_STRAIGHT:
       return &Palette::BLUE;
+    case BEHAVIOUR_COUNT:
+      break;
   }
   return &Palette::WHITE;
 }
@@ -684,12 +768,18 @@ void printStatus() {
 #if INERTIAL_COLLISION
   Serial.printf("jolt fwd %+.2f left %+.2f  ", impactForward, impactLeft);
 #elif BUMPERS == 1
-  Serial.printf("key %c  ", key.pressed() ? 'X' : '-');
+  Serial.printf("key %c  ", keyC.pressed() ? 'X' : '-');
+#elif BUMPERS == 3
+  Serial.printf("keys %c%c  ", is_left_bumper_pressed() ? 'L' : '-', is_right_bumper_pressed() ? 'R' : '-');
 #else
   Serial.printf("bumpers %c%c  ", is_left_bumper_pressed() ? 'L' : '-', is_right_bumper_pressed() ? 'R' : '-');
 #endif
   if (paused) {
     Serial.printf("| paused\n");
+    return;
+  }
+  if (inControl < 0) {
+    Serial.printf("| starting\n");     // the greeting: no behaviour has had control yet
     return;
   }
   Serial.printf("| %s -> L %+.2f R %+.2f\n", behaviourName(HIERARCHY[inControl]), wheelLeft, wheelRight);
@@ -720,10 +810,21 @@ void setup() {
 
   findHub();
   findSensors();
-  if (hubPort == 2) {
+  if (BUMPERS != 3 && hubPort == 2) {
     Serial.println("Warning: the PaHub is in Port C, where the bumpers go");
   } else if (BUMPERS == 1) {
-    key.begin();
+    keyC.begin();
+  }
+  if (BUMPERS == 3) {
+    if (hubPort == 0 || hubPort == 2) {
+      Serial.println("Warning: the PaHub is in a key's port (A or C): put it in Port B");
+    }
+    if (hubPort != 0) {
+      keyA.begin();
+    }
+    if (hubPort != 2) {
+      keyC.begin();
+    }
   }
   if (ASSUME_IR_ON_PORT_B && hubPort != 1) {
     reflectiveIR.begin();
@@ -787,7 +888,8 @@ void loop() {
     }
   }
 
-  key.showColour(&Palette::RED);       // a bumper pushes away: red, like the setup screens
+  keyA.showColour(&Palette::RED);      // a bumper pushes away: red, like the setup screens
+  keyC.showColour(&Palette::RED);
   printStatus();
   leftWheel.update();
   rightWheel.update();
