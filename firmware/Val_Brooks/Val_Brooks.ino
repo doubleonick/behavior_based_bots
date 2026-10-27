@@ -12,6 +12,9 @@
               M5 ToF Unit (VL53L0X)    distance
               M5 Color Unit (TCS3472)  light
               (for example: right ToF on 0, left ToF on 1, right light on 2, left light on 3)
+              With only ONE Color Unit (on either side), the light behaviours compare
+              its reading now with 0.2 s ago: getting brighter counts as "brighter on
+              its side", getting darker as "brighter on the other side".
             for button collisions: two M5 Key Units, the LEFT one in Port A and the
               RIGHT one in Port C (or one key, or bump switches: see BUMPERS below)
             optionally an M5 Reflective IR Unit in Port B (analog on G33): "something
@@ -110,6 +113,9 @@ const long DISTANCE_THRESHOLD_MM = 300;
 // Light: (left - right) / (left + right) must be at least this, either way, to count
 const float LIGHT_GRADIENT_THRESHOLD = 0.25f;
 const long  LIGHT_MINIMUM = 50;       // left + right below this: too dark to tell
+// One light sensor only (no pair): it compares now with PRIMITIVE_MS ago instead.
+// A change of at least this fraction (0.15 = 15% brighter or darker) counts.
+const float LIGHT_CHANGE_THRESHOLD = 0.15f;
 
 // IMU (only with INERTIAL_COLLISION 1). A bump is a sudden change in acceleration.
 const float IMPACT_G = 0.6f;          // how big a sudden change counts as a bump (in g)
@@ -229,6 +235,12 @@ struct Turn {
   bool right = true;
 };
 Turn turns[BEHAVIOUR_COUNT];
+
+// One light sensor: its reading now and PRIMITIVE_MS ago
+long lightNow = 0;
+long lightBefore = 0;
+unsigned long lastLightSampleMs = 0;
+bool lightSampled = false;            // false until there are two samples to compare
 
 // Wander: the current roll of the die and when it was rolled
 int wanderRoll = 0;                   // 0..5
@@ -418,9 +430,62 @@ bool is_distance_threshold() {
   return leftNear || rightNear || is_ir_object_ahead();
 }
 
-// How much brighter the left is than the right: -1 (all right) .. +1 (all left)
+// ---- Light: a pair compares left with right; one sensor compares now with before ----
+bool light_pair() {
+  return present(leftLight) && present(rightLight);
+}
+
+// The only light sensor, if there is exactly one (nullptr otherwise)
+Sensor* single_light() {
+  if (light_pair()) {
+    return nullptr;
+  }
+  if (present(leftLight)) {
+    return leftLight;
+  }
+  if (present(rightLight)) {
+    return rightLight;
+  }
+  return nullptr;
+}
+
+// One sensor: take a sample every PRIMITIVE_MS
+void sample_light() {
+  Sensor* s = single_light();
+  if (s == nullptr) {
+    lightSampled = false;
+    return;
+  }
+  if (lastLightSampleMs != 0 && millis() - lastLightSampleMs < PRIMITIVE_MS) {
+    return;
+  }
+  lightSampled = (lastLightSampleMs != 0);
+  lastLightSampleMs = millis();
+  lightBefore = lightNow;
+  lightNow = s->raw();
+}
+
+// One sensor: how much brighter it got since the last sample (0.5 = 50% brighter, - = darker)
+float light_change() {
+  if (single_light() == nullptr || !lightSampled) {
+    return 0;
+  }
+  long before = max(lightBefore, LIGHT_MINIMUM);
+  return (float)(lightNow - lightBefore) / before;
+}
+
+// How much brighter the left is than the right: -1 (all right) .. +1 (all left).
+// One sensor: getting brighter counts as "brighter on its side", darker as the other.
 float light_gradient() {
-  if (!present(leftLight) || !present(rightLight)) {
+  Sensor* one = single_light();
+  if (one != nullptr) {
+    float change = light_change();
+    if (one == rightLight) {
+      change = -change;                // a sensor on the right: brighter means the right
+    }
+    return change;
+  }
+  if (!light_pair()) {
     return 0;
   }
   long total = leftLight->raw() + rightLight->raw();
@@ -430,8 +495,11 @@ float light_gradient() {
   return (float)(leftLight->raw() - rightLight->raw()) / total;
 }
 
-// Is one side clearly brighter than the other?
+// Is one side clearly brighter than the other? (One sensor: did it clearly change?)
 bool is_light_gradient_threshold() {
+  if (single_light() != nullptr) {
+    return fabsf(light_change()) >= LIGHT_CHANGE_THRESHOLD;
+  }
   return fabsf(light_gradient()) >= LIGHT_GRADIENT_THRESHOLD;
 }
 
@@ -840,6 +908,7 @@ void setup() {
 
 void loop() {
   updateSensors();
+  sample_light();
   updateImu();
 
   Button::Event press = button.update(false);

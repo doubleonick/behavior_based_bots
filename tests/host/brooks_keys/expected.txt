@@ -2,43 +2,51 @@
 [  0.00s] PaHub found on Port B
 [  0.00s] Distance sensor found on Hub 0 (SDA=G33, SCL=G23)
 [  0.00s] Distance sensor found on Hub 1 (SDA=G33, SCL=G23)
+[  0.00s] Light sensor found on Hub 3 (SDA=G33, SCL=G23)
 [  0.00s] Key assumed on Port A (press it once so Val knows which pin is the button)
 [  0.00s] Key assumed on Port C (press it once so Val knows which pin is the button)
 [  0.00s] Hierarchy (top first): Escape front collision -> Avoid object -> Approach light -> Cruise straight
-distL  1500  distR  1500  keys --  | starting
-[  1.00s] distL  1500  distR  1500  keys --  | starting
-[  1.50s] distL  1500  distR  1500  keys --  | starting
-[  2.00s] distL  1500  distR  1500  keys --  | starting
-[  2.50s] distL  1500  distR  1500  keys --  | starting
-[  3.00s] distL  1500  distR  1500  keys --  | starting
+distL  1500  distR  1500  lightL  3000  keys --  | starting
+[  1.00s] distL  1500  distR  1500  lightL  3000  keys --  | starting
+[  1.50s] distL  1500  distR  1500  lightL  3000  keys --  | starting
+[  2.00s] distL  1500  distR  1500  lightL  3000  keys --  | starting
+[  2.50s] distL  1500  distR  1500  lightL  3000  keys --  | starting
+[  3.00s] distL  1500  distR  1500  lightL  3000  keys --  | starting
 [  3.49s] Control: Cruise straight
-[  3.50s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
+[  3.50s] distL  1500  distR  1500  lightL  3000  keys --  | Cruise straight -> L +0.50 R +0.50
 [  4.00s] Key on Port A: button on G32, LED on G26
 [  4.00s] Control: Escape front collision
-[  4.00s] distL  1500  distR  1500  keys L-  | Escape front collision -> L -0.25 R -0.55
-[  4.50s] distL  1500  distR  1500  keys --  | Escape front collision -> L -0.25 R -0.55
+[  4.00s] distL  1500  distR  1500  lightL  3000  keys L-  | Escape front collision -> L -0.25 R -0.55
+[  4.50s] distL  1500  distR  1500  lightL  3000  keys --  | Escape front collision -> L -0.25 R -0.55
 [  5.00s] Control: Cruise straight
-[  5.00s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
-[  5.50s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
+[  5.00s] distL  1500  distR  1500  lightL  3000  keys --  | Cruise straight -> L +0.50 R +0.50
+[  5.50s] distL  1500  distR  1500  lightL  3000  keys --  | Cruise straight -> L +0.50 R +0.50
 [  6.00s] Key on Port C: button on G22, LED on G19
 [  6.00s] Control: Escape front collision
-[  6.00s] distL  1500  distR  1500  keys -R  | Escape front collision -> L -0.55 R -0.25
-[  6.50s] distL  1500  distR  1500  keys --  | Escape front collision -> L -0.55 R -0.25
+[  6.00s] distL  1500  distR  1500  lightL  3000  keys -R  | Escape front collision -> L -0.55 R -0.25
+[  6.50s] distL  1500  distR  1500  lightL  3000  keys --  | Escape front collision -> L -0.55 R -0.25
 [  7.00s] Control: Cruise straight
-[  7.00s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
-[  7.50s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
+[  7.00s] distL  1500  distR  1500  lightL  3000  keys --  | Cruise straight -> L +0.50 R +0.50
+[  7.50s] distL  1500  distR  1500  lightL  3000  keys --  | Cruise straight -> L +0.50 R +0.50
 [  8.00s] Control: Escape front collision
-[  8.00s] distL  1500  distR  1500  keys L-  | Escape front collision -> L -0.25 R -0.55
-[  8.50s] distL  1500  distR  1500  keys --  | Escape front collision -> L +0.40 R -0.40
-[  9.00s] distL  1500  distR  1500  keys --  | Escape front collision -> L +0.40 R -0.40
+[  8.00s] distL  1500  distR  1500  lightL  3000  keys L-  | Escape front collision -> L -0.25 R -0.55
+[  8.50s] distL  1500  distR  1500  lightL  3000  keys --  | Escape front collision -> L +0.40 R -0.40
+[  9.00s] distL  1500  distR  1500  lightL  3000  keys --  | Escape front collision -> L +0.40 R -0.40
 [  9.05s] Control: Cruise straight
-[  9.50s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
+[  9.50s] distL  1500  distR  1500  lightL  3000  keys --  | Cruise straight -> L +0.50 R +0.50
 [ 10.00s] Control: Avoid object
-[ 10.00s] distL   150  distR  1500  keys --  | Avoid object -> L +0.40 R -0.40
-[ 10.50s] distL   150  distR  1500  keys --  | Avoid object -> L +0.40 R -0.40
+[ 10.00s] distL   150  distR  1500  lightL  3000  keys --  | Avoid object -> L +0.40 R -0.40
+[ 10.50s] distL   150  distR  1500  lightL  3000  keys --  | Avoid object -> L +0.40 R -0.40
 [ 11.00s] Control: Cruise straight
-[ 11.00s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
-[ 11.50s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
-[ 12.00s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
-[ 12.50s] distL  1500  distR  1500  keys --  | Cruise straight -> L +0.50 R +0.50
-LED frames shown: 328, checksum 5e27ec7e
+[ 11.00s] distL  1500  distR  1500  lightL  3000  keys --  | Cruise straight -> L +0.50 R +0.50
+[ 11.50s] distL  1500  distR  1500  lightL  3000  keys --  | Cruise straight -> L +0.50 R +0.50
+[ 11.61s] Control: Approach light
+[ 11.80s] Control: Cruise straight
+[ 12.00s] distL  1500  distR  1500  lightL  6000  keys --  | Cruise straight -> L +0.50 R +0.50
+[ 12.50s] distL  1500  distR  1500  lightL  6000  keys --  | Cruise straight -> L +0.50 R +0.50
+[ 12.80s] Control: Approach light
+[ 13.00s] distL  1500  distR  1500  lightL  2000  keys --  | Approach light -> L +0.40 R -0.40
+[ 13.01s] Control: Cruise straight
+[ 13.50s] distL  1500  distR  1500  lightL  2000  keys --  | Cruise straight -> L +0.50 R +0.50
+[ 14.00s] distL  1500  distR  1500  lightL  2000  keys --  | Cruise straight -> L +0.50 R +0.50
+LED frames shown: 367, checksum df72bcc4
