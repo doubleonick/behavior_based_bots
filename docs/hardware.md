@@ -152,21 +152,36 @@ port's pins just before each read (`I2CBus::use`). That lets one sketch serve th
 ports, and lets two sensors with the same address work at once, one per port. It also
 tries both wire orders, so SDA/SCL orientation never matters.
 
-### Which units fit where (one Atom + Motion, no PaHub)
+### What each unit can do in each port
 
-| unit | how it talks | ports | Val can recognise it? |
-|---|---|---|---|
-| Color Unit (light/colour, TCS3472) | I2C | any | yes (chip ID) |
-| 90° ToF (VL53L0X) | I2C | any | yes (chip ID) |
-| Light Unit (analog light level) | analog + on/off | **A** for a level; B / C on/off only | no |
-| Reflective IR | analog + on/off | **A** for a level; B / C on/off only *(tested A, B)* | no |
-| Key | on/off + LED | any *(tested A, B, C)* | no |
+**T** = tested on the robot. **E** = expected from the wiring or the firmware, not
+yet tried. "Level" = a smooth reading (0..4095, or millimetres); "on/off" = only two
+values.
 
-Three ports, so three units at most, and only **one** analog level (Port A). I2C units
-in any port are supported by the firmware (both wire orders are tried); not every
-unit has been tried in every port on the robot.
-A PaHub in Port B or C takes up to 6 I2C units (ToF, Color), but not analog units or
-the Key: those still need a port of their own.
+| unit | Port A (G26 / G32) | Port B (G33 / G23) | Port C (G19 / G22) | PaHub channel | Val recognises it? | in Val's sketches |
+|---|---|---|---|---|---|---|
+| Color Unit (TCS3472) | level, E | level, E | level, E | level, E | yes (chip ID) | yes, any port |
+| 90° ToF (VL53L0X) | level (mm), E | level (mm), E | level (mm), E | level (mm), **T** (Field, channels 0 and 1) | yes (chip ID) | yes, any port |
+| Reflective IR | **level on G32, T**; on/off on G26, T | **on/off only on G33, T** | on/off only, E | no (not I2C) | no | Port B, on/off |
+| Light Unit (U021) | **level on G32, T**; on/off on G26, T | **on/off only on G33, T** | on/off only, E | no (not I2C) | no | not yet |
+| Key | **button G32, LED G26, T** | **button G23, LED G33, T** | **button G22, LED G19, T** | no (not I2C) | no | Port C |
+
+Notes:
+- **Port B is wired the other way round:** a unit's first wire lands on G33, its second
+  on G23. G23 can't read a voltage, so the IR's and Light Unit's level is lost there.
+  *(tested with the Key)*
+- Key: works on all three ports on battery; on USB the LED showed but presses were
+  not seen. *(tested, not explained)*
+- IR and Light Unit on Port A: tested on USB and on battery (IR); Light Unit power
+  source not recorded.
+- The I2C units are found in any port by the firmware (both wire orders are tried);
+  which ports each has actually been plugged into on the robot is not recorded.
+
+### Which units fit together (one Atom + Motion)
+
+Three ports, so three units at most, and only **one** level from an analog unit
+(Port A). A PaHub in a port takes up to 6 I2C units (ToF, Color), but not analog
+units or the Key: those still need a port of their own.
 
 ## Sensors the firmware recognises
 
