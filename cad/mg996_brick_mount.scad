@@ -2,19 +2,26 @@
   MG996 brick-compatible servo mount (extrapolated, not M5Stack's own design)
   ===========================================================================
 
-  M5Stack's small servo kits are "LEGO compatible": the servo clips into a frame on
-  the Technic grid, and its output takes Technic axles and pins. This file applies
-  the same idea to a standard-size servo (MG996 / MG996R) using the public Technic
-  dimensions below. It does NOT copy M5Stack's geometry (no drawings were available).
+  M5Stack's small servo kits are "LEGO compatible": a clamp covers one broad face of
+  the servo and has two Technic pin holes, so the servo's broad side pins flat onto a
+  Technic beam (3 holes apart on the micro servo). This file applies the same idea to
+  a standard-size servo (MG996 / MG996R): the holes are HOLE_GAP_PEGS apart (6 = 48
+  mm, about the span of its ears). It uses the public Technic dimensions below and
+  does NOT copy M5Stack's geometry (no drawings were available).
 
-  Two printable parts, plus a dummy servo for the preview:
-    frame         the servo drops through it and rests on its ears (2 screws).
-                  Technic pin holes on the 8 mm grid run sideways through both long
-                  sides and both ends, so beams and pins attach to it.
+  Printable parts, plus a dummy servo for the preview:
+    clamp         a cradle: a plate over one broad face (the face that goes against
+                  the beam), a floor under the servo, and a block at each end that
+                  the ears screw down onto. Two Technic pin holes go through the
+                  end blocks, HOLE_GAP_PEGS apart. Each end has a slot for the cable.
+                  The servo drops in from the top.
     horn_adapter  screws onto the servo's round horn; a Technic cross-axle hole in
                   the middle and four pin holes on the 8 mm grid around it.
+    frame         an earlier idea, kept: a flat frame the servo drops through, with
+                  pin holes through its sides and ends.
 
-  Use:  part = "preview" (everything, assembled), "frame", or "horn_adapter".
+  Use:  part = "preview" (clamp, servo, adapter and a beam, assembled), "clamp",
+        "horn_adapter", "frame", or "preview_frame".
         Export each printable part on its own (F6, then STL).
 
   MEASURE YOUR SERVO before printing: MG996 listings disagree by up to ~1 mm, and
@@ -22,7 +29,7 @@
   All sizes in mm.
 */
 
-part = "preview";          // "preview", "frame", "horn_adapter"
+part = "preview";          // "preview", "clamp", "horn_adapter", "frame", "preview_frame"
 
 // ---------- Technic (brick) standard ----------
 PITCH       = 8.0;         // hole to hole
@@ -48,7 +55,16 @@ HORN_D       = 21.0;       // round horn
 HORN_T       = 2.0;
 HORN_Z       = SERVO_H + 5.0;        // underside of the horn
 
-// ---------- This mount ----------
+// ---------- The clamp ----------
+HOLE_GAP_PEGS = 6;         // pin holes this many holes apart (micro servo: 3)
+FACE_T       = 3.0;        // the plate over the broad face
+FLOOR_T      = 3.0;        // the floor under the servo
+PIN_HOLE_Z   = 12.0;       // height of the pin holes above the bottom of the servo
+CABLE_W      = 6.0;        // the cable slot in each end block: width ...
+CABLE_H      = 8.0;        // ... and height above the bottom of the servo
+SCREW_DEEP   = 9.0;        // pilot holes for the ear screws, this deep
+
+// ---------- The frame and the adapter ----------
 CLEAR        = 0.4;        // gap around the servo body, each side
 FRAME_L      = 7 * PITCH;  // 56: room for the 54.5 ears
 FRAME_W      = 5 * PITCH;  // 40: walls wide enough for pin holes
@@ -111,6 +127,55 @@ module frame() {
         rotate([0, 90, 0]) {
           pin_hole(FRAME_L);
         }
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------
+// The clamp. Origin: the middle of the bottom of the servo, as in servo_dummy().
+// x along the servo, y across it (the face against the beam is at -y), z up.
+module clamp() {
+  in_x = SERVO_L / 2 + CLEAR;          // inside faces of the end blocks
+  in_y = SERVO_W / 2 + CLEAR;          // inside face of the plate, and the open side
+  hole_x = HOLE_GAP_PEGS * PITCH / 2;
+  end_x = max(hole_x + PITCH / 2, EAR_L / 2);   // outer ends: past the holes and the ears
+  face_y = -in_y - FACE_T;             // the outside of the plate (against the beam)
+  difference() {
+    union() {
+      // the plate over the broad face, floor to just under the ears
+      translate([-end_x, face_y, -FLOOR_T]) {
+        cube([2 * end_x, FACE_T, EAR_Z + FLOOR_T]);
+      }
+      // the floor
+      translate([-end_x, face_y, -FLOOR_T]) {
+        cube([2 * end_x, in_y - face_y, FLOOR_T]);
+      }
+      // the end blocks, up to the underside of the ears
+      for (s = [-1, 1]) {
+        translate([s > 0 ? in_x : -end_x, face_y, -FLOOR_T]) {
+          cube([end_x - in_x, in_y - face_y, EAR_Z + FLOOR_T]);
+        }
+      }
+    }
+    // the two Technic pin holes, through the end blocks from the beam side
+    for (s = [-1, 1]) {
+      translate([s * hole_x, (face_y + in_y) / 2, PIN_HOLE_Z]) {
+        rotate([90, 0, 0]) {
+          pin_hole(in_y - face_y);
+        }
+      }
+    }
+    // the ear screws, down into the end blocks
+    for (x = [-EAR_HOLE_X, EAR_HOLE_X], y = [-EAR_HOLE_Y, EAR_HOLE_Y]) {
+      translate([x, y, EAR_Z - SCREW_DEEP]) {
+        cylinder(d = SCREW_D, h = SCREW_DEEP + 0.1);
+      }
+    }
+    // a slot for the cable at each end (the MG996's cable leaves from one end)
+    for (s = [-1, 1]) {
+      translate([s * (in_x + end_x) / 2, 0, (CABLE_H - FLOOR_T) / 2 - 0.1]) {
+        cube([end_x - in_x + 1, CABLE_W, CABLE_H + FLOOR_T + 0.2], center = true);
       }
     }
   }
@@ -202,14 +267,19 @@ module beam(holes) {
 }
 
 // ---------------------------------------------------------------------
-if (part == "frame") {
+if (part == "clamp") {
+  // printed lying on the face that goes against the beam
+  rotate([-90, 0, 0]) {
+    clamp();
+  }
+} else if (part == "frame") {
   // printed upside down (top face on the bed)
   rotate([180, 0, 0]) {
     frame();
   }
 } else if (part == "horn_adapter") {
   horn_adapter();
-} else {
+} else if (part == "preview_frame") {
   servo_dummy();
   translate([0, 0, EAR_Z]) {
     color([0.95, 0.55, 0.1]) {
@@ -221,10 +291,20 @@ if (part == "frame") {
       horn_adapter();
     }
   }
-  // a beam pinned to the frame's side, for scale
-  translate([-2 * PITCH, -FRAME_W / 2 - BEAM_H / 2 - 0.2, EAR_Z - BEAM_H / 2]) {
+} else {
+  servo_dummy();
+  color([0.95, 0.55, 0.1]) {
+    clamp();
+  }
+  translate([SHAFT_X, 0, HORN_Z + HORN_T]) {
+    color([0.2, 0.5, 0.9]) {
+      horn_adapter();
+    }
+  }
+  // a 9-hole beam pinned flat against the clamp's face, for scale
+  translate([-4 * PITCH, -(SERVO_W / 2 + CLEAR + FACE_T) - BEAM_H / 2 - 0.2, PIN_HOLE_Z]) {
     rotate([90, 0, 0]) {
-      beam(5);
+      beam(9);
     }
   }
 }
