@@ -23,6 +23,7 @@ make sense to them; everything an adult needs should be written down for them.
 | `firmware/IR_Test/` | just the Reflective IR Unit on Port A or B: digital and analog readings on the matrix and Serial. Uses no shared files |
 | `firmware/Light_Test/` | just the Light Unit on Port A, B or C: both pins' readings (level or on/off) on the matrix and Serial. Uses no shared files |
 | `firmware/examples/` | standalone beginner examples, one device each (servo, ToF, IR, Light Unit, Key, Color), with hook-up notes. Use no shared files |
+| `cad/` | OpenSCAD models: `mg996_brick_mount.scad` (Technic-grid frame and horn adapter for an MG996 servo, extrapolated from M5's brick-compatible servo kits) and its preview images |
 | `firmware/sync_shared.py` | copies `shared/` into the sketches |
 | `tests/host/` | runs the real sketches against fake hardware |
 | `docs/hardware.md` | pins, Motion registers, sensor chip IDs, port limits, quirks |
