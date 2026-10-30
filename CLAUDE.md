@@ -98,6 +98,39 @@ computer is needed after flashing. New features should keep that true.
 
 ---
 
+## Related project: PAW-Robotics
+
+[doubleonick/PAW-Robotics](https://github.com/doubleonick/PAW-Robotics) is the
+owner's other behaviour-based robotics project, and it is **deliberately kept
+separate** from this one:
+
+| | this repo (BBB) | PAW-Robotics |
+|---|---|---|
+| what it is | a light architecture; the work now centres on game play and narrative | a suite of games that has become lab tools |
+| where it is heading | the web guide: a story that takes kids and their adults through Val | **Novel Behavior**, the end game, which needs the earlier games finished and quality tested |
+| who it's for | kids ~8+ with a parent, tutor or club leader | the owner's robotics labs and students |
+| robot | M5Stack Atom Matrix + Motion | Arduino Giga robots, modelled in a PyBullet simulator |
+
+The two cover the same paradigms: PAW's Valentino's Vehicles, Field Trip and Robot
+Ethology correspond to Braitenberg vehicles (`Val_Vehicle`), potential fields
+(`Val_Field`) and subsumption (`Val_Brooks`) here. So:
+
+- **Cross-reference it during development.** Before solving a problem PAW has
+  probably met (potential-field maths, behaviour hierarchies and arbitration, sensor
+  models, wiring conventions such as `verb_target` behaviour names, challenge
+  design), look at how PAW did it. PAW's own records of corrections and dropped ideas
+  (its `FUTURE_WORK.md`) are the most useful part. Say what you found and where.
+- **Inform, don't merge.** Ideas may move either way informally: PAW's tested
+  mechanics into BBB, or BBB's narrative and predict-before-try habit into PAW later.
+  **Never copy code or files between the repos, or change PAW, without asking the
+  owner.** Where both would naturally describe the same thing (a wiring, a field
+  setup, a hierarchy), point out the chance of a matching format rather than
+  forcing one.
+- **Don't let PAW's constraints become BBB's.** PAW's arena sizes, robot dimensions
+  and solvability numbers belong to its Giga robots and simulator, not to Val.
+
+---
+
 ## Working with the owner
 
 - **Ask before code on design questions.** When behaviour, UI, or the look of an
