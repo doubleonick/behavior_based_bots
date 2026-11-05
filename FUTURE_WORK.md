@@ -37,6 +37,16 @@ A web interface that carries the instructions, with a game/story layer:
   in the gap. Chassis colours still open (one per side: yellow/purple, orange/blue,
   red/champagne, black/white). The web Val reuses Amazed Kingdoms' voice (browser
   speech, so it varies by device).
+- **Art direction chosen (2026-11):** notebook pages (direction B of the art canvas)
+  with the specimen lab's round observation window (from C) for the creature side.
+  Val's avatar is a 16-bit render from the CAD, from above and just behind ("A+":
+  front up the page, face upright), `cad/render/val_v1_above_rear.png`. It follows the
+  physical build chapter by chapter (V1 = one module; later builds = new renders).
+  Build sheets, LEGO style, in the notebook look, for each kit-to-build step: later.
+  *Correction:* earlier art had a grey wheel with a red tyre and the face standing
+  at the rear; the built robot has a black wheel, and the Matrix lies face up at the
+  rear of the Motion base. The V1 sensor sits in front between two grey 2x4 L beams
+  whose feet act as casters.
 - Two-module Val, which one has the face: chosen on the robot (both Matrices ask,
   the child presses one). The other Matrix shows its sensor's signal instead; five
   displays mocked up (level, spikes, trace, ripple, wire), none chosen yet. The web
