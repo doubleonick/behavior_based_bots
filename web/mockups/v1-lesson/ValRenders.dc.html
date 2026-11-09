@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Val V1 from the CAD</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;family=Silkscreen&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1f5fa8}a:hover{color:#123a6b}
+</style>
+</helmet>
+<div style="width: 1280px; height: 900px; box-sizing: border-box; background-color: #f6f8fb; background-image: linear-gradient(#dde7f2 1px, transparent 1px), linear-gradient(90deg, #dde7f2 1px, transparent 1px); background-size: 24px 24px; color: #1d2a44; font-family: 'Atkinson Hyperlegible', sans-serif; padding: 36px 48px; display: flex; flex-direction: column; gap: 24px">
+
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <div style="font-family: 'Silkscreen', monospace; font-size: 14px; color: #4a5875">VAL · V1 · RENDERED FROM VECHICLES_V2.SCAD · SENSOR IN FRONT BETWEEN TWO 2x4 L BEAMS</div>
+    <div style="font-family: 'Kalam', cursive; font-size: 34px; font-weight: 700">Same layout as A, with the CAD's depth</div>
+  </div>
+
+  <div style="display: flex; gap: 32px; flex-grow: 1; align-items: stretch">
+
+    <div style="flex: 0 0 380px; display: flex; flex-direction: column; gap: 12px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 22px; transform: rotate(-0.5deg)">
+      <div style="font-family: 'Kalam', cursive; font-size: 24px; font-weight: 700">A+ · From above, just behind</div>
+      <div style="display: flex; justify-content: center; flex-grow: 1">
+        <img src="/_blob/19b3a2fc5cbbb84389926f3662387cb8" alt="Val V1 from above and just behind: the sensor at the top between two grey L beams, battery, the Matrix face upright, the black wheel in the rear fork, servo bottom left, counterweight bottom right" style="height: 560px; width: auto; image-rendering: pixelated">
+      </div>
+      <div style="font-size: 16px; line-height: 1.45">The face reads upright, front is "up the page", and the parts have depth. Works for the avatar and the overhead simulation.</div>
+    </div>
+
+    <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 24px">
+      <div style="display: flex; flex-direction: column; gap: 10px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 22px; transform: rotate(0.4deg)">
+        <div style="font-family: 'Kalam', cursive; font-size: 24px; font-weight: 700">A · Straight down (front on the left)</div>
+        <img src="/_blob/d47f52a3f0cf1c425d4616f302159923" alt="Val V1 straight from above, front on the left" style="width: 600px; height: auto; image-rendering: pixelated">
+        <div style="font-size: 16px; line-height: 1.45">Flat plan: good for build sheets. Less depth.</div>
+      </div>
+      <div style="display: flex; gap: 20px; align-items: flex-start; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 22px; transform: rotate(-0.3deg)">
+        <img src="/_blob/a79d9e8b38b212828e41daf466088e4c" alt="Val V1 three-quarters from behind and to the right" style="width: 330px; height: auto; image-rendering: pixelated">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="font-family: 'Kalam', cursive; font-size: 24px; font-weight: 700">B · Three-quarters</div>
+          <div style="font-size: 16px; line-height: 1.45">The most "box art" look, for story moments and build-sheet covers. The face is at a slant.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vehicle 1: Val and the woodlouse</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;family=Silkscreen&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1f5fa8}a:hover{color:#123a6b}
+.deckrow{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.deck{position:sticky;top:12px;z-index:2;flex:1 1 300px;max-width:340px;display:flex;flex-direction:column;gap:10px}
+.deck .lens{width:100%;max-width:300px;align-self:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.steps{flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:40px}
+@media (max-width: 760px){
+  .deck{top:0;flex:1 1 100%;max-width:none;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;background:#f6f8fb;padding:8px 0;border-bottom:2px solid #1d2a44}
+  .deck .lens{flex:0 1 150px;max-width:150px}
+  .deck .cap{display:none}
+}
+</style>
+</helmet>
+<div style="background-color: #f6f8fb; background-image: linear-gradient(#dde7f2 1px, transparent 1px), linear-gradient(90deg, #dde7f2 1px, transparent 1px); background-size: 24px 24px; color: #1d2a44; font-family: 'Atkinson Hyperlegible', sans-serif; padding: 36px 20px 72px; box-sizing: border-box">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px">
+    <div style="display: flex; align-items: center; gap: 18px">
+      <img src="/_blob/19b3a2fc5cbbb84389926f3662387cb8" alt="Val, built as Vehicle 1" style="height: 110px; width: auto; image-rendering: pixelated">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="font-family: 'Silkscreen', monospace; font-size: 13px; color: #4a5875">VEHICLE 1 · ONE SENSE, ONE WHEEL</div>
+        <h1 style="margin: 0; font-family: 'Kalam', cursive; font-size: 2.6rem; line-height: 1.05">Val and the woodlouse</h1>
+      </div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+        <div style="{{s.style}}">{{s.label}}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div class="deckrow">
+
+  <aside class="deck" aria-label="Observation deck: Val and the woodlouse under the same light">
+    <div class="lens">
+      <sc-if value="{{drawn}}" hint-placeholder-val="{{true}}">
+        <svg viewBox="0 0 360 360" style="width: 100%; height: auto" role="img" aria-label="{{valAria}}" shape-rendering="crispEdges">
+          <defs><clipPath id="lens-val"><circle cx="180" cy="180" r="160"></circle></clipPath></defs>
+          <g clip-path="url(#lens-val)">
+            <rect x="0" y="0" width="360" height="360" fill="#5c6676"></rect>
+            <sc-for list="{{bands}}" as="b" hint-placeholder-count="10">
+              <circle cx="{{b.cx}}" cy="{{b.cy}}" r="{{b.r}}" fill="{{b.fill}}"></circle>
+            </sc-for>
+            <sc-for list="{{valCells}}" as="c" hint-placeholder-count="0">
+              <rect x="{{c.x}}" y="{{c.y}}" width="12" height="12" fill="#E07A2E" fill-opacity="{{c.o}}"></rect>
+            </sc-for>
+            <g transform="{{valTransform}}">
+              <image href="/_blob/19b3a2fc5cbbb84389926f3662387cb8" x="-17" y="-29" width="34" height="84" preserveAspectRatio="xMidYMid meet" style="image-rendering: pixelated"></image>
+            </g>
+          </g>
+          <circle cx="180" cy="180" r="166" fill="none" stroke="#1d2a44" stroke-width="12"></circle>
+        </svg>
+      </sc-if>
+      <sc-if value="{{real}}" hint-placeholder-val="{{false}}">
+        <div style="width: 100%; aspect-ratio: 1 / 1; box-sizing: border-box; border-radius: 50%; border: 10px solid #1d2a44; overflow: hidden; background: #1d2a44">
+          <video ref="{{setVideo}}" src="{{realSrc}}" autoPlay="{{true}}" muted="{{true}}" loop="{{true}}" playsInline="{{true}}" aria-label="{{realAria}}" style="{{videoStyle}}"></video>
+        </div>
+      </sc-if>
+      <div class="cap" style="display: flex; align-items: baseline; gap: 8px"><span style="font-family: 'Silkscreen', monospace; font-size: 11px; color: #B85A14">VAL</span><span style="font-size: 15px">{{valCaption}}</span></div>
+      <button class="cap" onClick="{{toggleReal}}" style="min-height: 40px; background: rgba(243,210,122,0.75); border: 2px solid #1d2a44; color: #1d2a44; font: 700 15px 'Atkinson Hyperlegible', sans-serif; padding: 0 12px">{{realLabel}}</button>
+    </div>
+    <div class="lens">
+      <svg viewBox="0 0 360 360" style="width: 100%; height: auto" role="img" aria-label="Observation window: a woodlouse wandering under the same pool of light" shape-rendering="crispEdges">
+        <defs><clipPath id="lens-bug"><circle cx="180" cy="180" r="160"></circle></clipPath></defs>
+        <g clip-path="url(#lens-bug)">
+          <rect x="0" y="0" width="360" height="360" fill="#5c6676"></rect>
+          <sc-for list="{{bands}}" as="b" hint-placeholder-count="10">
+            <circle cx="{{b.cx}}" cy="{{b.cy}}" r="{{b.r}}" fill="{{b.fill}}"></circle>
+          </sc-for>
+          <sc-for list="{{bugCells}}" as="c" hint-placeholder-count="0">
+            <rect x="{{c.x}}" y="{{c.y}}" width="12" height="12" fill="#E07A2E" fill-opacity="{{c.o}}"></rect>
+          </sc-for>
+          <g transform="{{bugTransform}}">
+            <ellipse cx="0" cy="0" rx="15" ry="9" fill="#6f7782" stroke="#2f343b" stroke-width="2"></ellipse>
+            <rect x="-8" y="-8" width="2" height="16" fill="#3d434c"></rect>
+            <rect x="-1" y="-9" width="2" height="18" fill="#3d434c"></rect>
+            <rect x="6" y="-8" width="2" height="16" fill="#3d434c"></rect>
+            <line x1="14" y1="-3" x2="23" y2="-9" stroke="#2f343b" stroke-width="2"></line>
+            <line x1="14" y1="3" x2="23" y2="9" stroke="#2f343b" stroke-width="2"></line>
+          </g>
+        </g>
+        <circle cx="180" cy="180" r="166" fill="none" stroke="#1d2a44" stroke-width="12"></circle>
+      </svg>
+      <div class="cap" style="display: flex; align-items: baseline; gap: 8px"><span style="font-family: 'Silkscreen', monospace; font-size: 11px; color: #1f5fa8">SPECIMEN · WOODLOUSE</span><span style="font-size: 15px">simulated, same rule</span></div>
+    </div>
+    <button onClick="{{togglePlay}}" style="min-height: 52px; background: #E07A2E; border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.25); color: #1d2a44; font: 700 19px 'Atkinson Hyperlegible', sans-serif; padding: 0 20px">{{playLabel}}</button>
+  </aside>
+
+  <div class="steps">
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <h2 style="margin: 0; font-family: 'Kalam', cursive; font-size: 2rem">1 · Watch</h2>
+    <div style="font-size: 19px; line-height: 1.55">Val and a woodlouse both sense <b>light</b>, under the same pool of it. Val is redrawn from a real run, frame by frame; the woodlouse is simulated. Press <b>Play both</b> and watch where each one spends its time.</div>
+    <div style="font-family: 'Kalam', cursive; font-size: 20px; color: #4a5875">Want proof? "Show the real clip" swaps in the actual video of Val.</div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start">
+    <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+      <h2 style="margin: 0; font-family: 'Kalam', cursive; font-size: 2rem">2 · What are they doing?</h2>
+      <div style="font-size: 18px; color: #4a5875">Pick the description that fits best. You get two tries to find it.</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px">
+        <sc-for list="{{choices}}" as="c" hint-placeholder-count="5">
+          <button onClick="{{c.pick}}" disabled="{{c.disabled}}" style="{{c.style}}">{{c.label}}</button>
+        </sc-for>
+      </div>
+      <sc-if value="{{hasResponse}}" hint-placeholder-val="{{false}}">
+        <div style="background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 18px 22px; transform: rotate(-0.4deg); display: flex; flex-direction: column; gap: 8px">
+          <div style="font-family: 'Kalam', cursive; font-size: 21px; color: #1f5fa8">You picked: {{lastLabel}}</div>
+          <div style="font-size: 18px; line-height: 1.55">{{lastResponse}}</div>
+          <div style="font-family: 'Kalam', cursive; font-size: 19px; color: #4a5875">{{nextHint}}</div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="flex: 1 1 280px; min-width: 0; background: #FFF4E8; border: 1px solid #F2C9A0; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+      <div style="font-family: 'Silkscreen', monospace; font-size: 12px; color: #8A4A12">FOR THE ADULT</div>
+      <div style="font-size: 16px; line-height: 1.5">Every choice sounds reasonable, and none is marked wrong. The words describe how it looks from outside. Useful question: "Does it ever turn toward or away from anything?"</div>
+    </div>
+  </div>
+
+  <sc-if value="{{showReveal}}" hint-placeholder-val="{{false}}">
+    <div style="display: flex; flex-direction: column; gap: 18px">
+      <h2 style="margin: 0; font-family: 'Kalam', cursive; font-size: 2rem">3 · Look inside</h2>
+      <div style="background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 24px 26px; display: flex; flex-direction: column; gap: 18px">
+        <div style="font-family: 'Kalam', cursive; font-size: 1.7rem; font-weight: 700; line-height: 1.25">Could Val {{phrase}} with just one light sensor joined to one wheel: more light, faster?</div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; max-width: 620px">
+          <div style="background: #FFE7A3; border: 2px solid #1d2a44; padding: 8px 12px; font-weight: 700">light sensor</div>
+          <div style="flex: 1 1 40px; border-top: 3px solid #1F8A4C"></div>
+          <div style="background: #1F8A4C; color: #ffffff; padding: 2px 12px; font-family: 'Silkscreen', monospace; font-size: 20px">+</div>
+          <div style="flex: 1 1 40px; border-top: 3px solid #1F8A4C"></div>
+          <div style="background: #E07A2E; border: 2px solid #1d2a44; padding: 8px 12px; font-weight: 700">wheel</div>
+        </div>
+        <sc-if value="{{askGuess}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-wrap: wrap; gap: 12px">
+            <button onClick="{{guessYes}}" style="min-height: 52px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.15); color: #1d2a44; font: 700 21px 'Kalam', cursive; padding: 0 26px">Yes</button>
+            <button onClick="{{guessNo}}" style="min-height: 52px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.15); color: #1d2a44; font: 700 21px 'Kalam', cursive; padding: 0 26px">No way</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{answered}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div style="font-family: 'Kalam', cursive; font-size: 2rem; font-weight: 700; color: #1F8A4C">{{answerTitle}}</div>
+            <div style="font-size: 18px; line-height: 1.6; max-width: 780px">Where it's bright, Val goes fast, so it doesn't stay long. Where it's dim, Val goes slowly, so it stays a long time. Leave it running and it ends up in the dim, as if it hated the light. <b>Nothing inside Val avoids, loves or fears anything.</b></div>
+            <div style="font-size: 18px; line-height: 1.6; max-width: 780px">The woodlouse works the same way: more light, faster. It isn't afraid of anything; light just makes it hurry, and that keeps it out of the sun where it would dry out. The orange in both windows shows where each one has spent its time: a stripe for Val, which drives straight, and a cloud for the woodlouse, which wanders.</div>
+            <div style="font-family: 'Kalam', cursive; font-size: 22px; color: #1f5fa8">It looks complicated from outside, and it's simple inside.</div>
+            <button onClick="{{toggleHeat}}" style="min-height: 48px; align-self: flex-start; background: rgba(243,210,122,0.75); border: 2px solid #1d2a44; color: #1d2a44; font: 700 18px 'Atkinson Hyperlegible', sans-serif; padding: 0 18px">{{heatLabel}}</button>
+          </div>
+        </sc-if>
+      </div>
+      <div style="background: #FFF4E8; border: 1px solid #F2C9A0; padding: 14px 18px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap">
+        <div style="font-family: 'Silkscreen', monospace; font-size: 12px; color: #8A4A12">FOR THE ADULT</div>
+        <div style="flex: 1 1 400px; font-size: 16px; line-height: 1.5">Braitenberg's point: it's easier to build behaviour than to work out how it's built from watching. The child's word (love, fear, curiosity) describes the outside; the wiring is one line. Why woodlice do it: they lose water easily, and light usually means sun and dry air, so hurrying through bright places keeps them where it's damp. Val's drawing is its real tracked run: the clip toggle shows the footage it came from.</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{answered}}" hint-placeholder-val="{{false}}">
+    <div style="display: flex; flex-direction: column; gap: 16px">
+      <h2 style="margin: 0; font-family: 'Kalam', cursive; font-size: 2rem">4 · Try it</h2>
+      <div style="font-size: 18px; color: #4a5875">Change one thing. Predict where the woodlouse will end up, then watch. Val shows its real run for the same wiring.</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+        <button onClick="{{wirePlus}}" style="{{plusStyle}}">+ wire</button>
+        <button onClick="{{wireMinus}}" style="{{minusStyle}}">− wire</button>
+        <button onClick="{{swapSides}}" style="min-height: 52px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.15); color: #1d2a44; font: 700 18px 'Atkinson Hyperlegible', sans-serif; padding: 0 18px">Move the light to the other side</button>
+      </div>
+      <div style="font-size: 17px; color: #4a5875">{{wireNote}}</div>
+
+      <sc-if value="{{askPrediction}}" hint-placeholder-val="{{false}}">
+        <div style="background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 18px 22px; transform: rotate(-0.3deg); display: flex; flex-direction: column; gap: 14px; max-width: 760px">
+          <div style="font-family: 'Kalam', cursive; font-size: 1.6rem; font-weight: 700">You changed: {{trialChange}}. Where will the woodlouse end up?</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px">
+            <button onClick="{{predictDark}}" style="min-height: 56px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.15); color: #1d2a44; font: 700 21px 'Kalam', cursive; padding: 0 20px">In the dim</button>
+            <button onClick="{{predictLight}}" style="min-height: 56px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.15); color: #1d2a44; font: 700 21px 'Kalam', cursive; padding: 0 20px">In the light</button>
+            <button onClick="{{predictAll}}" style="min-height: 56px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.15); color: #1d2a44; font: 700 21px 'Kalam', cursive; padding: 0 20px">All over</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{trialRunning}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; gap: 8px; max-width: 760px">
+          <div style="font-family: 'Kalam', cursive; font-size: 21px">You said: {{trialPrediction}}. Watching… {{trialSeconds}} of 20 seconds</div>
+          <div style="height: 14px; border: 2px solid #1d2a44; background: #ffffff">
+            <div style="{{trialBarStyle}}"></div>
+          </div>
+          <div style="font-size: 16px; color: #4a5875">Watch the windows beside you fill in.</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{trialDone}}" hint-placeholder-val="{{false}}">
+        <div style="background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 18px 22px; transform: rotate(0.3deg); display: flex; flex-direction: column; gap: 8px; max-width: 760px">
+          <div style="font-family: 'Kalam', cursive; font-size: 1.6rem; font-weight: 700; color: {{verdictColour}}">{{verdictTitle}}</div>
+          <div style="font-size: 18px; line-height: 1.55">{{verdictText}}</div>
+          <div style="font-family: 'Kalam', cursive; font-size: 19px; color: #4a5875">Change something else to try again.</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{hasLog}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="font-family: 'Kalam', cursive; font-size: 1.5rem; font-weight: 700">My notebook</div>
+          <div style="overflow-x: auto; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12)">
+            <table style="width: 100%; border-collapse: collapse; font-size: 17px; min-width: 560px">
+              <thead>
+                <tr style="font-family: 'Silkscreen', monospace; font-size: 12px; color: #4a5875; text-align: left">
+                  <th style="padding: 10px 12px; border-bottom: 2px solid #1d2a44">#</th>
+                  <th style="padding: 10px 12px; border-bottom: 2px solid #1d2a44">I CHANGED</th>
+                  <th style="padding: 10px 12px; border-bottom: 2px solid #1d2a44">I PREDICTED</th>
+                  <th style="padding: 10px 12px; border-bottom: 2px solid #1d2a44">IT ENDED UP</th>
+                  <th style="padding: 10px 12px; border-bottom: 2px solid #1d2a44"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{log}}" as="r" hint-placeholder-count="2">
+                  <tr>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #dde7f2">{{r.n}}</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #dde7f2">{{r.change}}</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #dde7f2; font-family: 'Kalam', cursive; font-size: 19px; color: #1f5fa8">{{r.prediction}}</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #dde7f2">{{r.result}}</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #dde7f2; font-family: 'Kalam', cursive; font-size: 22px; font-weight: 700; color: {{r.markColour}}">{{r.mark}}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <div style="font-size: 15px; color: #4a5875">Saved with your notebook. (In this mock-up the notebook lasts until the page reloads.)</div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+  </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.TRIAL_TICKS = 500;            // a trial runs 20 seconds (one tick every 40 ms)
+    // Val's real runs, tracked from the clips (every other frame, 15 a second), in the
+    // lens's coordinates, with the pool of light measured from the same clip: [x, y, radius].
+    // Recorded with the light on the right; moving the light mirrors them.
+    this.RUNS = {
+      '-': {
+        path: [[30,188],[31,189],[32,189],[36,189],[43,189],[48,189],[56,189],[63,188],[69,188],[76,187],[84,187],[90,186],[96,186],[102,185],[108,185],[113,184],[120,184],[126,183],[132,183],[138,183],[142,183],[146,183],[152,183],[157,182],[162,181],[167,180],[172,179],[178,178],[184,178],[191,177],[197,176],[204,175],[210,175],[216,174],[223,173],[229,173],[236,172],[242,172],[248,171],[253,170],[258,170],[261,169],[264,169],[265,169],[266,169],[266,169],[266,169],[266,169],[266,169],[266,169],[266,169],[266,169],[266,169],[265,169],[265,169],[265,169],[265,169],[264,168],[264,168],[264,168],[264,168],[264,169],[264,169],[265,169],[265,169],[265,169],[265,169],[265,168]],
+        pool: [300, 218, 155], heading: 90, src: '/_blob/babf98207b67798525300308b8823d63'
+      },
+      '+': {
+        path: [[316,192],[316,192],[315,192],[312,192],[309,192],[305,192],[300,191],[294,190],[287,190],[280,189],[273,189],[266,188],[259,188],[252,187],[245,187],[238,186],[233,185],[229,185],[226,184],[225,184],[224,184],[224,184],[224,184],[223,184],[223,184],[223,184],[223,184],[223,184],[223,184],[223,184],[223,184],[223,184],[223,184],[223,184],[223,184],[224,184],[224,184],[224,184],[223,184],[222,184],[221,184],[220,184],[220,183],[220,183],[220,183],[220,183],[220,183]],
+        pool: [295, 220, 148], heading: -90, src: '/_blob/d704bac61b2be530f61e67964490d6b3'
+      }
+    };
+    // "In the light" for the notebook: within LIGHT_EDGE of the pool's centre, chosen so
+    // the light covers half the tray (then a woodlouse that ignored light would be half and half)
+    this.LIGHT_EDGE = {};
+    for (const wire of ['+', '-']) {
+      const pool = this.RUNS[wire].pool;
+      const d = [];
+      for (let y = 36; y <= 324; y += 6) {
+        for (let x = 36; x <= 324; x += 6) {
+          if (Math.hypot(x - 180, y - 180) <= 146) {
+            d.push(Math.hypot(x - pool[0], y - pool[1]));
+          }
+        }
+      }
+      d.sort((a, b) => a - b);
+      this.LIGHT_EDGE[wire] = d[Math.floor(d.length / 2)];
+    }
+    // Moving parts, changed every frame (kept out of state)
+    this.sim = {
+      valT: 0, lastIdx: -1, valHeat: new Array(900).fill(0), valMax: 1,
+      bx: 120, by: 150, bh: 0.4, bugHeat: new Array(900).fill(0), bugMax: 1
+    };
+    this.state = {
+      playing: false, started: false, frame: 0, real: false,
+      tries: [], guess: null, showHeat: false,
+      wire: '+', flipped: false,
+      // A Try-it trial: { change, phase: 'predict' | 'running' | 'done', prediction,
+      // ticks, darkSteps, steps, outcome, darkPercent }. log = the notebook rows.
+      trial: null, log: []
+    };
+  }
+
+  componentDidMount() {
+    this.timer = setInterval(() => this.tick(), 40);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  // The pool for the current wiring, mirrored when the light has been moved
+  pool() {
+    const p = this.RUNS[this.state.wire].pool;
+    if (this.state.flipped) {
+      return [360 - p[0], p[1], p[2]];
+    }
+    return p;
+  }
+
+  // 1 at the pool's centre, 0 at 1.6 radii and beyond
+  brightness(pool, x, y) {
+    return Math.max(0, 1 - Math.hypot(x - pool[0], y - pool[1]) / (1.6 * pool[2]));
+  }
+
+  addHeat(heat, x, y) {
+    const cell = Math.floor(y / 12) * 30 + Math.floor(x / 12);
+    if (cell < 0 || cell >= 900) {
+      return 0;
+    }
+    heat[cell] += 1;
+    return heat[cell];
+  }
+
+  resetVal() {
+    this.sim.valT = 0;
+    this.sim.lastIdx = -1;
+    this.sim.valHeat = new Array(900).fill(0);
+    this.sim.valMax = 1;
+  }
+
+  // Val's tracked point for path index i, mirrored when the light has been moved
+  valPoint(i) {
+    const p = this.RUNS[this.state.wire].path[i];
+    if (this.state.flipped) {
+      return [360 - p[0], p[1]];
+    }
+    return p;
+  }
+
+  // A change in Try it: stop, clear the trails, and ask for a prediction
+  startTrial(change, settings) {
+    if (this.video) {
+      this.video.pause();
+    }
+    this.resetVal();
+    this.sim.bugHeat = new Array(900).fill(0);
+    this.sim.bugMax = 1;
+    this.setState(Object.assign({}, settings, {
+      playing: false, showHeat: true,
+      trial: { change: change, phase: 'predict', prediction: null, ticks: 0, darkSteps: 0, steps: 0 }
+    }));
+  }
+
+  // The prediction is in: run for TRIAL_TICKS ticks and count where it spends its time
+  predict(prediction) {
+    const t = this.state.trial;
+    if (!t || t.phase !== 'predict') {
+      return;
+    }
+    this.resetVal();
+    if (this.video) {
+      this.video.currentTime = 0;
+      this.video.play().catch(() => {});
+    }
+    this.setState({ playing: true, started: true,
+      trial: Object.assign({}, t, { phase: 'running', prediction: prediction }) });
+  }
+
+  // The trial is over: say where it ended up and add a row to the notebook
+  finishTrial(t) {
+    const dark = t.steps > 0 ? t.darkSteps / t.steps : 0.5;
+    let outcome = 'all over';
+    if (dark >= 0.58) {
+      outcome = 'in the dim';
+    } else if (dark <= 0.42) {
+      outcome = 'in the light';
+    }
+    const done = Object.assign({}, t, { phase: 'done', outcome: outcome, darkPercent: Math.round(dark * 100) });
+    const row = { change: t.change, prediction: t.prediction, outcome: outcome, darkPercent: done.darkPercent };
+    if (this.video) {
+      this.video.pause();
+    }
+    this.setState({ playing: false, trial: done, log: this.state.log.concat([row]) });
+  }
+
+  tick() {
+    const st = this.state;
+    if (!st.playing) {
+      return;
+    }
+    const s = this.sim;
+    const run = this.RUNS[st.wire];
+    const pool = this.pool();
+    // Val: replay the real run at its real speed, pause 1.5 s, start again with a fresh trail
+    s.valT += 40;
+    const idx = Math.floor(s.valT / 66.7);
+    if (idx < run.path.length) {
+      if (idx !== s.lastIdx) {
+        const p = this.valPoint(idx);
+        s.valMax = Math.max(s.valMax, this.addHeat(s.valHeat, p[0], p[1]));
+        s.lastIdx = idx;
+      }
+    } else if (s.valT > run.path.length * 66.7 + 1500) {
+      this.resetVal();
+    }
+    // The woodlouse: speed from how bright it is where it stands, plus a random wobble.
+    // It never steers toward or away from anything.
+    let darkSteps = 0;
+    for (let n = 0; n < 4; n++) {
+      if (Math.hypot(s.bx - pool[0], s.by - pool[1]) > this.LIGHT_EDGE[st.wire]) {
+        darkSteps += 1;                // outside the lit half this step
+      }
+      const b = this.brightness(pool, s.bx, s.by);
+      const feel = st.wire === '+' ? b : 1 - b;
+      const speed = 0.12 + 3.4 * feel;
+      s.bh += (Math.random() - 0.5) * 0.5;
+      const nx = s.bx + Math.cos(s.bh) * speed;
+      const ny = s.by + Math.sin(s.bh) * speed;
+      if (Math.hypot(nx - 180, ny - 180) > 146) {
+        s.bh = Math.atan2(180 - s.by, 180 - s.bx) + (Math.random() - 0.5) * 1.5;   // bumped the rim
+      } else {
+        s.bx = nx;
+        s.by = ny;
+      }
+      s.bugMax = Math.max(s.bugMax, this.addHeat(s.bugHeat, s.bx, s.by));
+    }
+    const t = st.trial;
+    if (t && t.phase === 'running') {
+      const counted = Object.assign({}, t, { ticks: t.ticks + 1, darkSteps: t.darkSteps + darkSteps, steps: t.steps + 4 });
+      this.setState({ frame: st.frame + 1, trial: counted });
+      if (counted.ticks >= this.TRIAL_TICKS) {
+        this.finishTrial(counted);
+      }
+      return;
+    }
+    this.setState({ frame: st.frame + 1 });
+  }
+
+  cells(heat, max) {
+    const out = [];
+    if (!this.state.showHeat) {
+      return out;
+    }
+    for (let i = 0; i < 900; i++) {
+      if (heat[i] > 0) {
+        out.push({ x: (i % 30) * 12, y: Math.floor(i / 30) * 12, o: (0.18 + 0.72 * heat[i] / max).toFixed(2) });
+      }
+    }
+    return out;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const CHOICES = [
+      { id: 'light', label: 'Avoid light', phrase: 'avoid light',
+        resp: 'Good eye: that fits best. They both end up away from the light. But does either of them ever turn away from it, or do they just end up in the dim?' },
+      { id: 'love', label: 'Love', phrase: 'love the dark',
+        resp: 'Interesting: they both stay a long time in one place. Is it the light they love, or the dark?' },
+      { id: 'coward', label: 'Cowardice', phrase: 'act scared of the light',
+        resp: 'They do rush through the bright part. But do they run away from it, or just through it?' },
+      { id: 'aggro', label: 'Aggression', phrase: 'look aggressive',
+        resp: 'Aggression would mean charging at something. Do either of them aim at anything?' },
+      { id: 'curious', label: 'Curiosity', phrase: 'act curious',
+        resp: 'They do wander all over. But is it them choosing where to go, or bumps and wobbles turning them?' }
+    ];
+    const BASE = 'min-height: 56px; color: #1d2a44; font: 700 21px Kalam, cursive; text-align: left; padding: 6px 16px; ';
+    const last = s.tries.length > 0 ? s.tries[s.tries.length - 1] : null;
+    // The best fit opens the reveal at once; otherwise the second pick does
+    const done = s.tries.length >= 2 || s.tries.includes('light');
+    const choices = CHOICES.map((c) => {
+      const tried = s.tries.includes(c.id);
+      let style = BASE + 'background: #ffffff; border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.15)';
+      if (c.id === last) {
+        style = BASE + 'background: rgba(243,210,122,0.75); border: 2px solid #1d2a44; box-shadow: 3px 3px 0 rgba(29,42,68,0.15)';
+      } else if (tried) {
+        style = BASE + 'background: #f6f8fb; border: 2px dashed #8a97ab; color: #4a5875; text-decoration: line-through';
+      } else if (done) {
+        style = BASE + 'background: #f6f8fb; border: 2px solid #c4cfdd; color: #6b7891';
+      }
+      return {
+        label: c.id === last ? c.label + '  ✎' : c.label,
+        style: style,
+        disabled: done || tried,
+        pick: () => {
+          if (this.state.tries.length < 2 && !this.state.tries.includes(c.id)) {
+            this.setState({ tries: this.state.tries.concat([c.id]) });
+          }
+        }
+      };
+    });
+    const lastChoice = CHOICES.find((c) => c.id === last);
+
+    // The step bar: done steps are inked in, the current one highlighted
+    let current = 1;
+    if (s.started) {
+      current = 2;
+    }
+    if (done) {
+      current = 3;
+    }
+    if (s.guess) {
+      current = 4;
+    }
+    const steps = ['Watch', 'Describe', 'Look inside', 'Try it'].map((name, i) => {
+      let style = 'padding: 6px 14px; border: 2px solid #c4cfdd; color: #6b7891; background: #ffffff; font: 700 17px Kalam, cursive';
+      if (i + 1 < current) {
+        style = 'padding: 6px 14px; border: 2px solid #1d2a44; color: #1d2a44; background: #ffffff; font: 700 17px Kalam, cursive';
+      } else if (i + 1 === current) {
+        style = 'padding: 6px 14px; border: 2px solid #1d2a44; color: #1d2a44; background: rgba(243,210,122,0.75); font: 700 17px Kalam, cursive';
+      }
+      return { label: (i + 1) + ' ' + name, style: style };
+    });
+
+    // The pool of light: ten stepped rings from the dim floor to warm white
+    const STOPS = [[0, [92, 102, 118]], [0.45, [163, 166, 156]], [0.75, [241, 227, 166]], [1, [255, 246, 207]]];
+    const shade = (f) => {
+      let k = 0;
+      while (k < STOPS.length - 2 && f > STOPS[k + 1][0]) {
+        k++;
+      }
+      const a = STOPS[k], b = STOPS[k + 1];
+      const g = (f - a[0]) / (b[0] - a[0]);
+      return 'rgb(' + a[1].map((v, i) => Math.round(v + (b[1][i] - v) * g)).join(',') + ')';
+    };
+    const pool = this.pool();
+    const bands = [];
+    for (let i = 1; i <= 10; i++) {
+      const f = i / 10;
+      bands.push({ cx: pool[0], cy: pool[1], r: Math.round(pool[2] * (1.6 * (1 - f) + 0.12 * f)), fill: shade(f) });
+    }
+
+    // Val, at its tracked position, facing the way the run went
+    const run = this.RUNS[s.wire];
+    const vi = Math.min(run.path.length - 1, Math.max(0, this.sim.lastIdx));
+    const vp = this.valPoint(vi);
+    const heading = s.flipped ? -run.heading : run.heading;
+    const sign = s.wire === '+' ? '+' : '−';
+
+    // The verdict on the last trial, with the reason in one line
+    const t = s.trial;
+    const verdict = { title: '', colour: '#1d2a44', text: '' };
+    if (t && t.phase === 'done') {
+      const right = t.prediction === t.outcome;
+      let where = 'It spent ' + t.darkPercent + '% of its time in the dim half of the tray.';
+      if (t.outcome === 'in the light') {
+        where = 'It spent ' + (100 - t.darkPercent) + '% of its time in the lit half of the tray.';
+      }
+      let why = 'With a + wire, more light means faster: it hurries out of the light and lingers in the dim.';
+      if (s.wire === '-') {
+        why = 'With a − wire, more light means slower: it lingers in the light and hurries through the dim.';
+      }
+      if (t.outcome === 'all over') {
+        why = 'This time it wandered about evenly. The wobble is random: try the same thing again and see if it settles.';
+      }
+      verdict.title = (right ? '✓ ' : '✗ ') + 'You said ' + t.prediction + '. It ended up ' + t.outcome + '.';
+      verdict.colour = right ? '#1F8A4C' : '#C2364A';
+      verdict.text = where + ' ' + why;
+    }
+
+    const wireStyle = (on, colour) => 'min-height: 52px; color: #1d2a44; font: 700 18px Atkinson Hyperlegible, sans-serif; padding: 0 18px; border: 3px solid ' + colour + '; box-shadow: 3px 3px 0 rgba(29,42,68,0.15); background: ' + (on ? 'rgba(243,210,122,0.75)' : '#ffffff');
+
+    return {
+      steps: steps,
+      playLabel: s.playing ? '❚❚ Pause' : '▶ Play both',
+      togglePlay: () => {
+        const playing = !this.state.playing;
+        if (this.video) {
+          if (playing) {
+            this.video.play().catch(() => {});
+          } else {
+            this.video.pause();
+          }
+        }
+        this.setState({ playing: playing, started: true });
+      },
+      bands: bands,
+      valCells: this.cells(this.sim.valHeat, this.sim.valMax),
+      bugCells: this.cells(this.sim.bugHeat, this.sim.bugMax),
+      valTransform: 'translate(' + vp[0] + ' ' + vp[1] + ') rotate(' + heading + ')',
+      bugTransform: 'translate(' + this.sim.bx.toFixed(1) + ' ' + this.sim.by.toFixed(1) + ') rotate(' + (this.sim.bh * 180 / Math.PI).toFixed(0) + ')',
+      valAria: 'Val redrawn from its real run on a ' + sign + ' wire',
+      valCaption: 'its real run, ' + sign + ' wire' + (s.flipped ? ' (mirrored)' : ''),
+      drawn: !s.real,
+      real: s.real,
+      realSrc: run.src,
+      realAria: 'The real clip of Val on a ' + sign + ' wire',
+      realLabel: s.real ? 'Show the drawing' : 'Show the real clip',
+      toggleReal: () => this.setState({ real: !this.state.real }),
+      setVideo: (el) => {
+        this.video = el;
+      },
+      videoStyle: 'display: block; width: 100%; height: 100%; object-fit: cover; transform: scaleX(' + (s.flipped ? -1 : 1) + ')',
+      choices: choices,
+      hasResponse: !!lastChoice,
+      lastLabel: lastChoice ? lastChoice.label : '',
+      lastResponse: lastChoice ? lastChoice.resp : '',
+      nextHint: last === 'light' ? "Let's look inside. ↓" : (done ? "Now let's look inside. ↓" : 'One more try, then we look inside.'),
+      showReveal: done,
+      phrase: lastChoice ? lastChoice.phrase : '',
+      askGuess: !s.guess,
+      answered: !!s.guess,
+      answerTitle: s.guess === 'yes' ? "Yes! Here's how…" : "It can! Here's how…",
+      guessYes: () => this.setState({ guess: 'yes', showHeat: true }),
+      guessNo: () => this.setState({ guess: 'no', showHeat: true }),
+      heatLabel: s.showHeat ? 'Hide where they spent their time' : 'Show where they spent their time',
+      toggleHeat: () => this.setState({ showHeat: !this.state.showHeat }),
+      plusStyle: wireStyle(s.wire === '+', '#1F8A4C'),
+      minusStyle: wireStyle(s.wire === '-', '#C2364A'),
+      wirePlus: () => this.startTrial('+ wire', { wire: '+' }),
+      wireMinus: () => this.startTrial('− wire', { wire: '-' }),
+      swapSides: () => this.startTrial('moved the light', { flipped: !this.state.flipped }),
+      wireNote: s.wire === '+' ? 'Now: + wire, more light means faster.' : 'Now: − wire, more light means slower.',
+
+      // The trial: ask, run, then the verdict
+      askPrediction: !!t && t.phase === 'predict',
+      trialRunning: !!t && t.phase === 'running',
+      trialDone: !!t && t.phase === 'done',
+      trialChange: t ? t.change : '',
+      trialPrediction: t && t.prediction ? t.prediction : '',
+      trialSeconds: t ? Math.min(20, Math.floor(t.ticks * 40 / 1000)) : 0,
+      trialBarStyle: 'height: 100%; background: #E07A2E; width: ' + (t ? Math.min(100, Math.round(100 * t.ticks / this.TRIAL_TICKS)) : 0) + '%',
+      predictDark: () => this.predict('in the dim'),
+      predictLight: () => this.predict('in the light'),
+      predictAll: () => this.predict('all over'),
+      verdictTitle: verdict.title,
+      verdictColour: verdict.colour,
+      verdictText: verdict.text,
+
+      // The notebook
+      hasLog: s.log.length > 0,
+      log: s.log.map((r, i) => {
+        const right = r.prediction === r.outcome;
+        return {
+          n: i + 1,
+          change: r.change,
+          prediction: r.prediction,
+          result: r.outcome + ' (' + (r.outcome === 'in the light' ? 100 - r.darkPercent : r.darkPercent) + '%' + (r.outcome === 'all over' ? ' in the dim' : '') + ')',
+          mark: right ? '✓' : '✗',
+          markColour: right ? '#1F8A4C' : '#C2364A'
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

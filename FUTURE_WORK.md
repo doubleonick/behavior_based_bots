@@ -50,6 +50,25 @@ A web interface that carries the instructions, with a game/story layer:
   For the light vehicles the Color Unit points **up** at the light (see
   docs/hardware.md), so the V1 avatar for the light chapters should show it facing
   up, not forward: still to re-render.
+- **Vehicle 1 lesson mock-up (2026-11), `web/mockups/v1-lesson/`:** four steps
+  (Watch, What are they doing?, Look inside, Try it). Decisions:
+  - **One stimulus for both:** the woodlouse senses light too (it avoids light to
+    avoid drying out), so "What are they doing?" has one best fit. *Dropped:* a
+    woodlouse sensing dryness beside Val sensing light (two right answers).
+  - **Best fit opens the reveal at once;** other picks get a nudge and one more try.
+  - **The reveal asks with the child's own word:** "Could Val *love the dark* with
+    just one light sensor joined to one wheel?"
+  - **Try it is predict, run, check:** tap a prediction, 20 s run, verdict with the
+    measured share, a row in "My notebook". *Dropped:* a free-text prediction box
+    (no feedback, disconnected from the play).
+  - **A pinned observation deck** keeps Val and the woodlouse in view through every
+    step (a top strip on phones).
+  - **Val is redrawn from its real tracked run** (the A+ sprite on a drawn floor,
+    same pool of light and same orange time-trail as the woodlouse), with a "show
+    the real clip" switch as proof. *Dropped:* the plain video beside a vector
+    window, and pixelating the footage (it looked like a poor camera, not a
+    cartoon).
+  - Still to do: saving the notebook (save file + code), a prologue.
 - **Filming V1 for the tracked cartoon (2026-11):** overhead phone, plain light floor,
   a bright flashlight fixed above as the light, exposure locked, two seconds of
   empty floor first, whole run in frame. + wire: Val waits in the dark until the

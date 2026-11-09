@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Val V1: two views</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Kalam:wght@400;700&amp;family=Silkscreen&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1f5fa8}a:hover{color:#123a6b}
+</style>
+</helmet>
+<div style="width: 1280px; height: 760px; box-sizing: border-box; background-color: #f6f8fb; background-image: linear-gradient(#dde7f2 1px, transparent 1px), linear-gradient(90deg, #dde7f2 1px, transparent 1px); background-size: 24px 24px; color: #1d2a44; font-family: 'Atkinson Hyperlegible', sans-serif; padding: 36px 48px; display: flex; flex-direction: column; gap: 24px">
+
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <div style="font-family: 'Silkscreen', monospace; font-size: 14px; color: #4a5875">VAL · V1 BUILD · ONE MODULE · FROM THE PHOTOS</div>
+    <div style="font-family: 'Kalam', cursive; font-size: 34px; font-weight: 700">Which way should we draw Val?</div>
+  </div>
+
+  <div style="display: flex; gap: 40px; flex-grow: 1">
+
+    <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 14px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 24px; transform: rotate(-0.5deg)">
+      <div style="font-family: 'Kalam', cursive; font-size: 26px; font-weight: 700">A · From above</div>
+      <div style="display: flex; align-items: center; justify-content: center; flex-grow: 1">
+        <svg width="470" height="240" viewBox="-30 -40 470 240" role="img" aria-label="Val V1 seen from above, front on the left: sensor at the front corner, the Motion base down the middle with its blue battery at the front and the Matrix face-up at the back, the black wheel in the rear fork, servo on one side and the counterweight block on the other" shape-rendering="crispEdges">
+          <sc-for list="{{top}}" as="p" hint-placeholder-count="40">
+            <rect x="{{p.x}}" y="{{p.y}}" width="{{p.s}}" height="{{p.s}}" fill="{{p.c}}"></rect>
+          </sc-for>
+          <text x="-24" y="-16" font-family="Kalam, cursive" font-size="18" fill="#4a5875">◄ front</text>
+          <text x="340" y="-16" font-family="Kalam, cursive" font-size="18" fill="#4a5875">rear ►</text>
+        </svg>
+      </div>
+      <div style="font-size: 17px; line-height: 1.5">Shows the whole layout <b>and the face, straight on</b>, and matches the overhead arena and simulation. The face is small next to the long frame.</div>
+    </div>
+
+    <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 14px; background: #ffffff; border: 2px solid #1d2a44; box-shadow: 4px 5px 0 rgba(29,42,68,0.12); padding: 24px; transform: rotate(0.5deg)">
+      <div style="font-family: 'Kalam', cursive; font-size: 26px; font-weight: 700">B · Three-quarters, from behind</div>
+      <div style="display: flex; align-items: center; justify-content: center; flex-grow: 1">
+        <svg width="400" height="370" viewBox="0 0 400 370" role="img" aria-label="Val V1 seen from behind and a little above: the frame running away from us, the Matrix face-up on top nearest us, the battery beyond it, the black wheel centred below, servo on the left and the counterweight on the right" shape-rendering="crispEdges">
+          <sc-for list="{{three}}" as="p" hint-placeholder-count="40">
+            <rect x="{{p.x}}" y="{{p.y}}" width="{{p.s}}" height="{{p.s}}" fill="{{p.c}}"></rect>
+          </sc-for>
+        </svg>
+      </div>
+      <div style="font-size: 17px; line-height: 1.5">More of a character, with depth and a front and back. The face is <b>nearest you</b>, seen at a slant; the sensor is far away at the front.</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const BLACK = '#1E1F24', HOLE = '#08080A', EDGE = '#34363E';
+    const MOTION = '#3B404B', HOLDER = '#15161A';
+    const BATTERY = '#2F6FD6', BATTERY_SHINE = '#5B93EC', ATOM = '#C9CDD3';
+    const TYRE = '#26272C', HUB = '#5A5D66', SERVO = '#9EA3AB', SERVO_DARK = '#7E838C';
+    const NUT = '#B7BBC2', GREY_LEGO = '#B9BEC6', SENSOR = '#F1EFE9', PLUG = '#D9A5B5';
+    const SHADOW = '#C9D3DE';
+    const LED_OFF = '#2A2E36', EYE = '#4F8DFF', MOUTH = '#E07A2E';
+
+    const FACE = ['.....', '.E.E.', '.....', '.OOO.', '.....'];   // as on the robot in the photo
+    const ledColour = (ch) => {
+      if (ch === 'E') {
+        return EYE;
+      }
+      if (ch === 'O') {
+        return MOUTH;
+      }
+      return LED_OFF;
+    };
+
+    // Fill a block of pixels (x, y, w, h in pixel units) at scale s
+    const block = (list, s, x, y, w, h, c) => {
+      for (let j = 0; j < h; j++) {
+        for (let i = 0; i < w; i++) {
+          list.push({ x: (x + i) * s, y: (y + j) * s, s: s, c: c });
+        }
+      }
+    };
+
+    // ---- A: from above. Front on the left, rear on the right; Val's right side is
+    // at the top of the picture, its left side at the bottom. 1 pixel ~ 4 mm.
+    const top = [];
+    const T = 10;
+    block(top, T, 29, 0, 5, 2, BLACK);          // counterweight block (right side)
+    block(top, T, 31, 0, 1, 1, NUT);            // ... the M12 nut glinting inside
+    block(top, T, 3, 2, 35, 2, BLACK);          // right beam
+    block(top, T, 3, 10, 35, 2, BLACK);         // left beam
+    for (let c = 4; c < 38; c += 2) {
+      block(top, T, c, 3, 1, 1, HOLE);
+      block(top, T, c, 10, 1, 1, HOLE);
+    }
+    block(top, T, 3, 2, 2, 10, BLACK);          // front crossbar
+    block(top, T, 2, 1, 2, 2, GREY_LEGO);       // grey peg on the front right corner
+    block(top, T, 27, 12, 9, 2, BLACK);         // short beam over the servo (left side)
+    for (let c = 28; c < 36; c += 2) {
+      block(top, T, c, 12, 1, 1, HOLE);
+    }
+    block(top, T, 28, 14, 7, 1, SERVO);         // servo, peeking out below it
+    block(top, T, 8, 4, 18, 6, MOTION);         // Motion base, down the middle
+    block(top, T, 8, 5, 10, 4, HOLDER);         // battery holder
+    block(top, T, 9, 5, 8, 4, BATTERY);         // the battery, lying lengthwise
+    block(top, T, 9, 6, 8, 1, BATTERY_SHINE);
+    block(top, T, 19, 3, 7, 7, ATOM);           // Atom Matrix at the back, face up
+    // The face's top points to the front (left), as you see it standing behind Val
+    for (let j = 0; j < 5; j++) {
+      for (let i = 0; i < 5; i++) {
+        block(top, T, 20 + j, 4 + (4 - i), 1, 1, ledColour(FACE[j][i]));
+      }
+    }
+    block(top, T, 29, 6, 6, 2, TYRE);           // black wheel in the rear fork
+    block(top, T, 31, 6, 2, 2, HUB);
+    block(top, T, 1, 9, 3, 4, GREY_LEGO);       // grey Technic connector, front left
+    block(top, T, -1, 9, 2, 4, SENSOR);         // the sensor, facing forward
+    block(top, T, 0, 12, 1, 1, PLUG);
+
+    // ---- B: three-quarters from behind and a little above. Val's left is on the
+    // left. Things further away sit a little higher and to the right.
+    const three = [];
+    const Q = 12;
+    block(three, Q, 3, 29, 26, 1, SHADOW);      // shadow on the floor
+    const shift = (r) => Math.floor((21 - r) / 2);
+    for (let r = 5; r <= 21; r++) {             // the two long beams, running away from us
+      block(three, Q, 6 + shift(r), r, 3, 1, BLACK);
+      block(three, Q, 21 + shift(r), r, 3, 1, BLACK);
+      if (r % 2 === 0) {
+        block(three, Q, 7 + shift(r), r, 1, 1, HOLE);
+        block(three, Q, 22 + shift(r), r, 1, 1, HOLE);
+      }
+    }
+    block(three, Q, 9 + shift(5), 5, 12, 2, BLACK);   // front crossbar, far away
+    block(three, Q, 6 + shift(4), 2, 3, 3, SENSOR);   // the sensor at the far front left
+    block(three, Q, 7 + shift(4), 4, 2, 1, GREY_LEGO);
+    for (let r = 6; r <= 18; r++) {             // Motion base down the middle
+      block(three, Q, 11 + shift(r), r, 8, 1, MOTION);
+    }
+    for (let r = 6; r <= 11; r++) {             // battery, beyond the face
+      block(three, Q, 12 + shift(r), r, 6, 1, r === 7 ? BATTERY_SHINE : BATTERY);
+    }
+    for (let r = 12; r <= 18; r++) {            // Atom Matrix case, nearest us
+      block(three, Q, 11 + shift(r), r, 8, 1, ATOM);
+    }
+    for (let j = 0; j < 5; j++) {               // its face, seen at a slant
+      for (let i = 0; i < 5; i++) {
+        const r = 13 + j;
+        block(three, Q, 12 + shift(r) + i + Math.floor(i / 2), r, 1, 1, ledColour(FACE[j][i]));
+      }
+    }
+    block(three, Q, 11, 19, 8, 2, MOTION);      // the Motion's back, below the face
+    block(three, Q, 6, 21, 3, 3, BLACK);        // beam ends nearest us
+    block(three, Q, 7, 22, 1, 1, HOLE);
+    block(three, Q, 21, 21, 3, 3, BLACK);
+    block(three, Q, 22, 22, 1, 1, HOLE);
+    block(three, Q, 14, 21, 3, 8, TYRE);        // black wheel, edge-on, centred
+    block(three, Q, 15, 20, 1, 1, TYRE);
+    block(three, Q, 15, 29, 1, 1, TYRE);
+    block(three, Q, 15, 23, 1, 4, HUB);
+    block(three, Q, 1, 19, 5, 2, BLACK);        // short beam over the servo (left)
+    block(three, Q, 1, 21, 5, 6, SERVO);        // the servo, hanging below
+    block(three, Q, 1, 23, 5, 1, SERVO_DARK);
+    block(three, Q, 25, 19, 4, 4, BLACK);       // counterweight block (right)
+    block(three, Q, 26, 20, 2, 2, NUT);
+
+    return { top: top, three: three };
+  }
+}
+</script>
+</body>
+</html>
