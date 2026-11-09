@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The expedition map</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=IM+Fell+English:ital@0;1&amp;family=IM+Fell+English+SC&amp;family=Kalam:wght@400;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#7a2d14}a:hover{color:#4a1a0b}
+@keyframes drawleg{from{stroke-dashoffset:600}to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+.newleg{stroke-dasharray:600;animation:drawleg 2.4s ease-out 0.3s both}
+.here{animation:pulse 1.6s ease-in-out infinite}
+</style>
+</helmet>
+<div style="width: 1280px; height: 960px; box-sizing: border-box; background: #3b2a17; color: #3a2a14; font-family: 'Atkinson Hyperlegible', sans-serif; padding: 28px; display: flex; gap: 24px">
+
+  <div style="flex: 0 0 860px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: baseline; justify-content: space-between">
+      <div style="font-family: 'IM Fell English SC', serif; font-size: 40px; color: #f1e2bd; letter-spacing: 1px">Val's Expedition</div>
+      <div style="font-family: 'IM Fell English', serif; font-style: italic; font-size: 19px; color: #d8c08c">[ SUBTITLE: e.g. "Following life's footsteps" ]</div>
+    </div>
+
+    <svg width="860" height="700" viewBox="0 0 860 700" role="img" aria-label="An old travel map. A red dotted route runs from the Sea of Beginnings past the Tide Pools, where Val is now, toward stops that are not yet reached.">
+      <defs>
+        <radialGradient id="age" cx="0.5" cy="0.5" r="0.75">
+          <stop offset="0.55" stop-color="#ead9b0"></stop>
+          <stop offset="1" stop-color="#b98f55"></stop>
+        </radialGradient>
+        <pattern id="waves" width="40" height="18" patternUnits="userSpaceOnUse">
+          <path d="M2 12 q8 -8 16 0 q8 8 16 0" fill="none" stroke="#6f8e88" stroke-width="1.6" opacity="0.6"></path>
+        </pattern>
+      </defs>
+      <rect x="0" y="0" width="860" height="700" fill="url(#age)"></rect>
+      <rect x="10" y="10" width="840" height="680" fill="none" stroke="#4a3418" stroke-width="3"></rect>
+      <rect x="18" y="18" width="824" height="664" fill="none" stroke="#4a3418" stroke-width="1"></rect>
+
+      <path d="M18 470 C 120 440, 190 520, 300 560 S 470 640, 560 682 L 18 682 Z" fill="#a9c3bc" opacity="0.75"></path>
+      <path d="M18 470 C 120 440, 190 520, 300 560 S 470 640, 560 682 L 18 682 Z" fill="url(#waves)"></path>
+      <path d="M150 420 C 210 360, 330 380, 380 330 C 430 280, 520 300, 600 250 C 680 200, 760 120, 820 140 L 840 140 L 840 520 C 760 540, 700 590, 600 560 C 520 540, 430 600, 340 540 C 260 500, 180 470, 150 420 Z" fill="#dcc48f" stroke="#4a3418" stroke-width="2.5"></path>
+      <path d="M505 470 C 525 440, 590 440, 610 470 C 630 500, 580 520, 545 510 C 520 504, 500 490, 505 470 Z" fill="#a9c3bc" stroke="#4a3418" stroke-width="2"></path>
+      <g fill="#c7a86d" stroke="#4a3418" stroke-width="2">
+        <polygon points="700,190 725,140 750,190"></polygon>
+        <polygon points="735,175 765,110 795,175"></polygon>
+        <polygon points="780,190 805,145 830,190"></polygon>
+        <polygon points="470,170 492,128 514,170"></polygon>
+        <polygon points="500,180 528,122 556,180"></polygon>
+      </g>
+      <g stroke="#4a3418" stroke-width="1.5" fill="none" opacity="0.7">
+        <path d="M600 330 l12 -12 m6 12 l12 -12 m6 12 l12 -12"></path>
+        <path d="M640 380 l12 -12 m6 12 l12 -12"></path>
+        <path d="M300 470 q6 -10 12 0 q6 10 12 0"></path>
+      </g>
+
+      <g transform="translate(92 92)">
+        <circle cx="0" cy="0" r="44" fill="none" stroke="#4a3418" stroke-width="2"></circle>
+        <polygon points="0,-52 9,-9 0,0 -9,-9" fill="#4a3418"></polygon>
+        <polygon points="0,52 9,9 0,0 -9,9" fill="#ead9b0" stroke="#4a3418" stroke-width="1.5"></polygon>
+        <polygon points="52,0 9,9 0,0 9,-9" fill="#ead9b0" stroke="#4a3418" stroke-width="1.5"></polygon>
+        <polygon points="-52,0 -9,9 0,0 -9,-9" fill="#4a3418"></polygon>
+        <text x="-7" y="-58" font-family="IM Fell English SC, serif" font-size="20" fill="#4a3418">N</text>
+      </g>
+
+      <sc-for list="{{legs}}" as="l" hint-placeholder-count="6">
+        <path d="{{l.d}}" fill="none" stroke="{{l.colour}}" stroke-width="{{l.width}}" stroke-linecap="round" stroke-dasharray="{{l.dash}}" opacity="{{l.opacity}}"></path>
+      </sc-for>
+      <path class="newleg" d="{{newLeg}}" fill="none" stroke="#a3261b" stroke-width="4.5" stroke-linecap="round"></path>
+
+      <sc-for list="{{stops}}" as="s" hint-placeholder-count="7">
+        <g>
+          <circle cx="{{s.x}}" cy="{{s.y}}" r="15" fill="{{s.fill}}" stroke="#4a3418" stroke-width="3"></circle>
+          <text x="{{s.x}}" y="{{s.numY}}" text-anchor="middle" font-family="IM Fell English SC, serif" font-size="16" fill="{{s.numColour}}">{{s.num}}</text>
+          <text x="{{s.labelX}}" y="{{s.labelY}}" text-anchor="{{s.anchor}}" font-family="IM Fell English, serif" font-style="italic" font-size="19" fill="#3a2a14">{{s.place}}</text>
+        </g>
+      </sc-for>
+
+      <g transform="{{valMarker}}">
+        <circle class="here" cx="0" cy="0" r="30" fill="none" stroke="#a3261b" stroke-width="3"></circle>
+        <image href="/_blob/19b3a2fc5cbbb84389926f3662387cb8" x="-12" y="-62" width="24" height="58" preserveAspectRatio="xMidYMid meet" style="image-rendering: pixelated"></image>
+      </g>
+
+      <rect x="560" y="610" width="270" height="56" fill="#ead9b0" stroke="#4a3418" stroke-width="2"></rect>
+      <text x="575" y="634" font-family="IM Fell English SC, serif" font-size="16" fill="#4a3418">Key</text>
+      <line x1="575" y1="652" x2="615" y2="652" stroke="#a3261b" stroke-width="4" stroke-dasharray="2 9" stroke-linecap="round"></line>
+      <text x="622" y="657" font-family="IM Fell English, serif" font-size="15" fill="#3a2a14">travelled</text>
+      <line x1="700" y1="652" x2="740" y2="652" stroke="#4a3418" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round" opacity="0.5"></line>
+      <text x="747" y="657" font-family="IM Fell English, serif" font-size="15" fill="#3a2a14">ahead</text>
+    </svg>
+
+    <div style="display: flex; gap: 8px; align-items: center">
+      <div style="font-family: 'IM Fell English SC', serif; font-size: 17px; color: #d8c08c; margin-right: 4px">Stops</div>
+      <sc-for list="{{stops}}" as="s" hint-placeholder-count="7">
+        <button onClick="{{s.pick}}" aria-label="{{s.aria}}" style="{{s.buttonStyle}}">{{s.num}}</button>
+      </sc-for>
+    </div>
+    <div style="display: flex; gap: 12px">
+      <button onClick="{{showPrologue}}" style="min-height: 48px; background: #ead9b0; border: 2px solid #1d1309; color: #3a2a14; font: 18px 'IM Fell English SC', serif; padding: 0 18px">Read the prologue</button>
+      <button onClick="{{toggleJournal}}" style="min-height: 48px; background: #ead9b0; border: 2px solid #1d1309; color: #3a2a14; font: 18px 'IM Fell English SC', serif; padding: 0 18px">{{journalLabel}}</button>
+      <a href="Handbook.dc.html" style="min-height: 48px; display: flex; align-items: center; background: #3b2a17; border: 2px solid #d8c08c; color: #f1e2bd; font: 18px 'IM Fell English SC', serif; padding: 0 18px; text-decoration: none">The Handbook: for helpers and advanced explorers</a>
+    </div>
+  </div>
+
+  <div style="flex: 1 1 0; position: relative; background: #f4ead1; border: 2px solid #1d1309; box-shadow: 6px 7px 0 rgba(0,0,0,0.35); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; transform: rotate(0.6deg)">
+    <div style="position: absolute; top: -12px; left: 120px; width: 110px; height: 26px; background: rgba(214,196,150,0.85); transform: rotate(-3deg)"></div>
+
+    <sc-if value="{{showStory}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <div style="font-family: 'IM Fell English SC', serif; font-size: 16px; color: #7a2d14">{{cardTag}}</div>
+        <div style="font-family: 'IM Fell English', serif; font-size: 30px; line-height: 1.1">{{cardTitle}}</div>
+        <div style="align-self: center; width: 230px; height: 230px; box-sizing: border-box; border-radius: 50%; border: 9px solid #3a2a14; background: #e6d6ad; display: flex; align-items: center; justify-content: center; padding: 26px; text-align: center; font-family: 'Kalam', cursive; font-size: 17px; color: #6b5636">{{cardArt}}</div>
+        <div style="font-size: 18px; line-height: 1.55; color: #6b5636; border-left: 4px dashed #c7a86d; padding-left: 12px">{{cardStory}}</div>
+        <sc-if value="{{hasMission}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="font-family: 'IM Fell English SC', serif; font-size: 18px">Your mission</div>
+            <div style="font-family: 'Kalam', cursive; font-size: 19px; color: #6b5636">{{cardMission}}</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{canBegin}}" hint-placeholder-val="{{true}}">
+          <a href="{{beginHref}}" style="align-self: flex-start; min-height: 50px; display: flex; align-items: center; background: #a3261b; border: 2px solid #1d1309; box-shadow: 3px 3px 0 rgba(0,0,0,0.3); color: #fff4e2; font: 20px 'IM Fell English SC', serif; padding: 0 20px; text-decoration: none">{{beginLabel}}</a>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{showJournal}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="font-family: 'IM Fell English SC', serif; font-size: 16px; color: #7a2d14">YOUR EXPEDITION JOURNAL</div>
+        <div style="font-family: 'IM Fell English', serif; font-size: 28px">What you found out</div>
+        <div style="font-size: 16px; color: #6b5636">Every prediction you test in a chapter is written here. This is your part of the story.</div>
+        <sc-for list="{{journal}}" as="j" hint-placeholder-count="3">
+          <div style="border-bottom: 1px dashed #c7a86d; padding: 8px 0; display: flex; flex-direction: column; gap: 3px">
+            <div style="font-family: 'IM Fell English SC', serif; font-size: 14px; color: #7a2d14">{{j.where}}</div>
+            <div style="font-family: 'Kalam', cursive; font-size: 18px">{{j.text}}</div>
+          </div>
+        </sc-for>
+        <div style="font-size: 14px; color: #8a744f">[ Placeholder entries. In the guide these come from "My notebook" in each chapter, and are kept in the save file. ]</div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":960}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // The stops on the map. "place" names are working names: placeholders to rename.
+    this.STOPS = [
+      { num: '0', place: '[Sea of Beginnings]', x: 110, y: 560, title: 'Meet Val', life: 'before anything could sense' },
+      { num: '1', place: '[The Tide Pools]', x: 250, y: 440, title: 'Getting around', life: 'the first cells: faster or slower' },
+      { num: '2', place: '[Twin Shores]', x: 410, y: 360, title: 'Fear and aggression', life: 'bodies with two sides' },
+      { num: '3', place: '[The Lagoon]', x: 555, y: 455, title: 'Love and the explorer', life: 'wires that hold back' },
+      { num: '4', place: '[Plains of Pull]', x: 645, y: 300, title: 'Many pulls at once', life: 'balancing many senses' },
+      { num: '5', place: '[Layered Peaks]', x: 765, y: 225, title: 'Layers on layers', life: 'new skills on old reflexes' },
+      { num: '?', place: '[Caves of Memory]', x: 515, y: 210, title: 'Uncharted', life: 'remembering and learning' }
+    ];
+    this.DONE = 1;        // stops finished so far (0 = Meet Val is done)
+    this.state = { selected: 1, view: 'story' };
+  }
+
+  // A gentle curve between two stops, bowed to one side like a hand-drawn route
+  leg(a, b) {
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const len = Math.hypot(dx, dy);
+    const cx = mx - dy / len * 34, cy = my + dx / len * 34;
+    return 'M ' + a.x + ' ' + a.y + ' Q ' + cx.toFixed(0) + ' ' + cy.toFixed(0) + ' ' + b.x + ' ' + b.y;
+  }
+
+  renderVals() {
+    const S = this.STOPS;
+    const here = this.DONE;                     // Val is at the first unfinished stop
+    const legs = [];
+    for (let i = 0; i + 1 < S.length - 1; i++) {
+      if (i + 1 === here) {
+        continue;                               // drawn separately, animated
+      }
+      const travelled = i + 1 < here;
+      legs.push({
+        d: this.leg(S[i], S[i + 1]),
+        colour: travelled ? '#a3261b' : '#4a3418',
+        width: travelled ? 4.5 : 2.5,
+        dash: travelled ? '2 10' : '2 9',
+        opacity: travelled ? 1 : 0.45
+      });
+    }
+    legs.push({ d: this.leg(S[3], S[6]), colour: '#4a3418', width: 2, dash: '1 12', opacity: 0.35 });
+
+    const stops = S.map((s, i) => {
+      const done = i < here, current = i === here, locked = i > here;
+      const left = s.x > 600;
+      return {
+        x: s.x, y: s.y, num: s.num, numY: s.y + 5, place: s.place,
+        labelX: left ? s.x - 24 : s.x + 24, labelY: s.y + 32, anchor: left ? 'end' : 'start',
+        fill: done ? '#a3261b' : (current ? '#f4ead1' : '#cdb57e'),
+        numColour: done ? '#fff4e2' : (locked ? '#7b6646' : '#3a2a14'),
+        aria: 'Stop ' + s.num + ', ' + s.place.replace(/[\[\]]/g, '') + (locked ? ' (not reached yet)' : ''),
+        buttonStyle: 'min-width: 44px; min-height: 44px; font: 18px IM Fell English SC, serif; border: 2px solid #1d1309; color: '
+          + (done ? '#fff4e2; background: #a3261b' : (locked ? '#7b6646; background: #cdb57e' : '#3a2a14; background: #f4ead1'))
+          + (this.state.selected === i ? '; outline: 3px solid #f1e2bd; outline-offset: 2px' : ''),
+        pick: () => this.setState({ selected: i, view: 'story' })
+      };
+    });
+
+    // The card on the right: the prologue, a stop's story scene, or the journal
+    const sel = this.state.selected;
+    let tag = '', title = '', art = '', story = '', mission = '', begin = '', href = '#', canBegin = false;
+    if (sel === 'prologue') {
+      tag = 'PROLOGUE';
+      title = '[ TITLE of the opening ]';
+      art = '[ SCENE ART: Val switching on for the first time, the map unrolled beside it ]';
+      story = '[ STORY, 4–6 sentences, to the player: who Val is, that Val has just woken with a face but no senses, and that the two of you will travel through life\'s story, one new sense or wire at a time. End with the first step: "Let\'s go and meet Val." ]';
+      mission = '[ MISSION: e.g. "Switch Val on and find out what its face can do." ]';
+      begin = 'Set out';
+      canBegin = true;
+    } else {
+      const s = S[sel];
+      const locked = sel > here;
+      tag = 'STOP ' + s.num + ' · ' + s.place.replace(/[\[\]]/g, '').toUpperCase();
+      title = locked ? 'Uncharted' : s.title;
+      if (locked) {
+        art = '[ the map is blank here ]';
+        story = 'Finish the stop before this one to travel here.';
+        mission = '';
+      } else {
+        art = '[ SCENE ART: ' + s.life + ' ]';
+        story = '[ STORY, 3–5 sentences, to the player: where we are in life\'s story (' + s.life + '), and what Val is about to gain. Ends on a question the chapter answers. ]';
+        mission = '[ MISSION, one line: what to find out, e.g. "Find out where Val ends up, and why." ]';
+        begin = sel < here ? 'Visit again' : 'Begin the chapter';
+        canBegin = true;
+        href = sel === 1 ? 'Lesson.dc.html' : '#';
+      }
+    }
+
+    const JOURNAL = [
+      { where: 'STOP 1 · THE TIDE POOLS', text: '[ e.g. "+ wire: I said in the dim. It ended up in the dim. ✓" ]' },
+      { where: 'STOP 1 · THE TIDE POOLS', text: '[ e.g. "− wire: I said in the dim. It ended up in the light. ✗" ]' },
+      { where: 'STOP 1 · THE TIDE POOLS', text: '[ e.g. "Moved the light: I said in the light. ✓" ]' }
+    ];
+
+    const current = S[here];
+    return {
+      legs: legs,
+      newLeg: this.leg(S[here - 1], S[here]),
+      stops: stops,
+      valMarker: 'translate(' + current.x + ' ' + current.y + ')',
+      showStory: this.state.view === 'story',
+      showJournal: this.state.view === 'journal',
+      cardTag: tag, cardTitle: title, cardArt: art, cardStory: story, cardMission: mission,
+      hasMission: mission !== '',
+      canBegin: canBegin, beginLabel: begin + ' →', beginHref: href,
+      showPrologue: () => this.setState({ selected: 'prologue', view: 'story' }),
+      journalLabel: this.state.view === 'journal' ? 'Back to the map' : 'My expedition journal',
+      toggleJournal: () => this.setState({ view: this.state.view === 'journal' ? 'story' : 'journal' }),
+      journal: JOURNAL
+    };
+  }
+}
+</script>
+</body>
+</html>

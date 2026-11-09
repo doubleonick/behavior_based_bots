@@ -68,7 +68,15 @@ A web interface that carries the instructions, with a game/story layer:
     the real clip" switch as proof. *Dropped:* the plain video beside a vector
     window, and pixelating the footage (it looked like a poor camera, not a
     cartoon).
-  - Still to do: saving the notebook (save file + code), a prologue.
+  - Still to do: saving the notebook (save file + code); the story text (prologue
+    and each stop's scene, placeholders for the owner to write); moving the lesson's
+    "For the adult" slips into the Handbook, since the pages are now all written to
+    the child.
+- **Tone settled (2026-11): expedition**, Indiana Jones map style, game feel carrying
+  the narrative, the notebook as the player's part. Everything is child-directed;
+  helpers and advanced students get an appendix, *The Expedition Handbook*. Mock-ups:
+  `Expedition.dc.html` (map, prologue, per-stop scenes, journal) and
+  `Handbook.dc.html`.
 - **Filming V1 for the tracked cartoon (2026-11):** overhead phone, plain light floor,
   a bright flashlight fixed above as the light, exposure locked, two seconds of
   empty floor first, whole run in frame. + wire: Val waits in the dark until the

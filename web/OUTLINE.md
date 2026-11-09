@@ -205,6 +205,19 @@ homeschool records.
 
 ---
 
+## Decided since this outline (2026-11)
+
+- **Tone: expedition.** An old travel map (Indiana Jones style) with a red route;
+  each chapter is a stop with a short story scene, and the guide opens with a
+  prologue. The game feel carries the narrative; the notebook experiments are the
+  player's part in the story (they fill "My expedition journal").
+- **Everything is written to the child.** Adult material moves to an appendix, *The
+  Expedition Handbook*, for helpers and for older or more advanced explorers, which
+  the player can open any time. (So the "Grown-up notes" part of each chapter
+  becomes that chapter's Handbook page.)
+- Mock-ups: `web/mockups/v1-lesson/` (`Expedition.dc.html`, `Handbook.dc.html`,
+  `Lesson.dc.html`).
+
 ## Open questions for the owner
 
 1. **Tone and frame.** Three you like, and they may combine rather than compete:
