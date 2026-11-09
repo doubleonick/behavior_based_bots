@@ -47,6 +47,14 @@ A web interface that carries the instructions, with a game/story layer:
   at the rear; the built robot has a black wheel, and the Matrix lies face up at the
   rear of the Motion base. The V1 sensor sits in front between two grey 2x4 L beams
   whose feet act as casters.
+  For the light vehicles the Color Unit points **up** at the light (see
+  docs/hardware.md), so the V1 avatar for the light chapters should show it facing
+  up, not forward: still to re-render.
+- **Filming V1 for the tracked cartoon (2026-11):** overhead phone, plain light floor,
+  a bright flashlight fixed above as the light, exposure locked, two seconds of
+  empty floor first, whole run in frame. + wire: Val waits in the dark until the
+  light comes on. - wire: set Val down by hand in the dim. Dead time is trimmed
+  afterwards. First takes (IMG_2169 +, IMG_2171 -) tracked well by the blue battery.
 - Two-module Val, which one has the face: chosen on the robot (both Matrices ask,
   the child presses one). The other Matrix shows its sensor's signal instead; five
   displays mocked up (level, spikes, trace, ripple, wire), none chosen yet. The web

@@ -195,6 +195,12 @@ Both answer at I2C address **0x29**, so the firmware asks each chip for its ID:
 
 DFRobot's SEN0245 is the same VL53L0X chip, so it is recognised too.
 
+**Pointing the Color Unit for light vehicles:** for V1 under a light shining down on
+the floor (a flashlight on a stand), the Color Unit worked best **pointing up**, at
+the light, not forward. *(tested, owner's filming, 2026-11)* Facing forward it sees
+mostly the floor and the far wall, so the reading changes little as Val drives
+through the pool of light.
+
 Every sensor turns its raw reading into a 0..1 stimulus, a straight line between
 two calibration points taken during setup: "low" (no stimulus) and "high" (full
 stimulus). For distance, "high" is the *smaller* number (near).
