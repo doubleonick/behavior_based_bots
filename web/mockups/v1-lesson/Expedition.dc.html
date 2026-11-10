@@ -69,7 +69,10 @@ a{color:#7a2d14}a:hover{color:#4a1a0b}
       <sc-for list="{{legs}}" as="l" hint-placeholder-count="6">
         <path d="{{l.d}}" fill="none" stroke="{{l.colour}}" stroke-width="{{l.width}}" stroke-linecap="round" stroke-dasharray="{{l.dash}}" opacity="{{l.opacity}}"></path>
       </sc-for>
-      <path class="newleg" d="{{newLeg}}" fill="none" stroke="#a3261b" stroke-width="4.5" stroke-linecap="round"></path>
+      <mask id="reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="860" height="700">
+        <path class="newleg" d="{{newLeg}}" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round"></path>
+      </mask>
+      <path d="{{newLeg}}" mask="url(#reveal)" fill="none" stroke="#a3261b" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="2 10"></path>
 
       <sc-for list="{{stops}}" as="s" hint-placeholder-count="7">
         <g>
