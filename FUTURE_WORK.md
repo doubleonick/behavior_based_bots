@@ -30,6 +30,34 @@ A web interface that carries the instructions, with a game/story layer:
   save code, no accounts at first.
 - Instructions only: the site does not talk to the robot (no Web Serial / BLE) for
   now.
+  **Tentative change (2026-11), pending testing: the guide talks to Val over the USB
+  cable** (Web Serial, Chrome / Edge on a computer). Reasoning: a computer is in the
+  room anyway, because the Arduino IDE is the only way to change firmware today. Uses,
+  in the order to try them: (1) Val reports which sensors it found, so the guide only
+  offers what is plugged in; (2) the guide sends a subsumption hierarchy (mock-up
+  2026-11: plan and predict in the guide, or build it bottom-up on Val's one button;
+  the on-robot setup stays as the fallback so rule 5 still holds); (3) one-click
+  flashing of ready-built firmware from the guide (e.g. ESP Web Tools), instead of
+  installing the IDE; (4) settings that now need a reflash (`PORT_A_UNIT`, `BUMPERS`,
+  ...) sent over the link. Bluetooth only if an untethered live view is wanted later.
+  Nothing built or run on the robot yet. PAW's Hierarchy Builder (a desktop app, BLE)
+  uses the same `verb_target` behaviour names as Val_Brooks: a matching message
+  format is possible, not decided. Tablets (no Web Serial, and no Web Bluetooth on
+  iPad) are not supported by this route.
+- **Tentative path (2026-11): eleven robots,** each to be confirmed by building it on
+  Val before its lesson is written ("if the robot cannot perform the behaviour, the
+  lesson will not work"): Meet Val; Vehicle 1; Vehicles 2a/2b; Vehicles 3a/3b (ending
+  on 3c: several senses on mixed wires); habituation; Vehicle 4 (4a a favourite
+  level, 4b a threshold); potential field; Vehicle 5 (holding a state); subsumption;
+  Vehicle 7 (learning by association); Vehicle 6 (selection, probably a web game).
+  Vehicles 8 to 14 are appendix only. More may follow as a "frontier" that combines
+  ideas. Confirmed on the robot by the owner: two joined modules give convincing
+  2a/2b and 3a/3b. Creatures, habitats and the map are decided after the robots.
+- **Creatures (decided 2026-11):** each stop shows a living animal, from as old a
+  lineage as possible, and the Handbook names the ancient ancestor. The robots are a
+  coarse sampling of the tree; the appendix gives the deeper context. Body-plan
+  spine: no sides (radial, e.g. jellies; Vehicle 1) and then bilateral symmetry
+  (Vehicle 2 onward). The owner's source notes and synthesis are kept outside the repo.
 - Art: Val drawn as 16-bit pixel art rendered from the chassis STL files
   (`vechicle_one_unibody_v3` / `v3a`, mirrored). Matrix case light grey, Motion base
   dark grey, blue battery at the front, grey wheel with a thin red tyre centred in the
