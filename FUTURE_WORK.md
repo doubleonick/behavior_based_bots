@@ -133,6 +133,21 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Firmware
 
+- **Vehicle 4: curved wires (2026-11, branch `expanded_vehicles`, a test bench).**
+  In Val_Vehicle each wire has a shape (`Connection::curve`): STRAIGHT (Vehicles 1 to
+  3, the default, so nothing changes unless asked), HUMP (4a: passes most at a
+  favourite level, falling to nothing `HUMP_WIDTH` either side; a tent, not a
+  Gaussian) or STEP (4b: nothing below a threshold, everything above; it stays on
+  until the reading drops 0.05 below, so a wobbling sensor doesn't make it chatter).
+  Set per port in the sketch (`PORT_A_CURVE`, `PORT_A_LEVEL`, ...), not on the robot
+  yet: setup screens come only if the behaviour proves itself. Serial shows what the
+  curve passes on. Host tests `vehicle_step` and `vehicle_hump` pass. **Not yet run on
+  the robot.** To confirm there: 4b, Val sits still and then goes at once; 4a on one
+  module, the wheel is fastest at the favourite level (with a - wire: slowest there,
+  so it lingers); 4a on two joined modules, whether Val circles a light at the
+  distance it likes (the least certain: it depends on the sensors' range and how
+  smooth the servos are). The key ignores curves. The faces (Angry, Curious, Scared,
+  Love) still read what the sensor feels, not what the curve passes: to revisit.
 - **Two-wheel Braitenberg vehicle.** Val_Vehicle wires every sensor to one servo.
   For the classic vehicles (fear, aggression, love, exploration), each wire needs a
   "which wheel" step (left / right / crossed). The face could name the vehicle's

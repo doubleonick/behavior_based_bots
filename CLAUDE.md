@@ -16,7 +16,7 @@ make sense to them; everything an adult needs should be written down for them.
 | path | holds |
 |---|---|
 | `firmware/shared/` | **the originals** of every class the sketches share |
-| `firmware/Val_Vehicle/` | Braitenberg vehicle: sensors wired +/−/off to one servo (S1) |
+| `firmware/Val_Vehicle/` | Braitenberg vehicle: sensors wired +/−/off to one servo (S1); a wire can be curved for Vehicle 4 (a hump or a step, set in the sketch for now) |
 | `firmware/Val_Field/` | potential field: sensors push/pull by direction; two wheels (S1 left, S2 right) |
 | `firmware/Val_Brooks/` | subsumption test bench: behaviours in a fixed hierarchy, picked by uncommenting one `TEST_` line (and `BOTTOM`: wander or cruise); two wheels, ToF / Color pairs on a PaHub in Port B, left Key in Port A, right Key in Port C |
 | `firmware/Unit_Tester/` | diagnostics: every port pin's reading and "is anything driving it?" on the matrix and Serial; a key LED test. Uses no shared files |

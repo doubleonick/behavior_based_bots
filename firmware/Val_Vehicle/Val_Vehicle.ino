@@ -44,6 +44,9 @@
   - Then the vehicle runs: the servo's speed is the sum of what every wire delivers.
   - The key is a bumper: on a + wire Val drives forwards until the key is pressed,
     then backwards; on a - wire, backwards until pressed, then forwards.
+  - Vehicle 4: a wire can be curved instead of straight (see Connection.h). A HUMP
+    wire has a favourite level; a STEP wire passes nothing until a threshold. For
+    now these are settings below (PORT_A_CURVE ...), not setup screens.
   - The face is for talking to people: hello, setup, surprise at a new sensor.
     While the wheel turns, the matrix shows spikes instead: one lane per sensor
     (green +, red -), and the wheel firing along the bottom row.
@@ -98,6 +101,33 @@ const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and
 #define ASSUME_KEY_ON_PORT_C 0        // 1 = an M5 Key Unit in Port C
 #endif
 
+// Vehicle 4 (a test bench for now: these are set here, not in setup on the robot).
+// The shape of the wire in each port: Connection::STRAIGHT (Vehicles 1 to 3),
+// Connection::HUMP (4a: a favourite level) or Connection::STEP (4b: a threshold).
+// LEVEL is the favourite level (HUMP) or the threshold (STEP): 0 = the sensor's low
+// point, 1 = its high point. Change, then upload again. The key ignores these.
+#ifndef PORT_A_CURVE
+#define PORT_A_CURVE Connection::STRAIGHT
+#endif
+#ifndef PORT_A_LEVEL
+#define PORT_A_LEVEL 0.5f
+#endif
+#ifndef PORT_B_CURVE
+#define PORT_B_CURVE Connection::STRAIGHT
+#endif
+#ifndef PORT_B_LEVEL
+#define PORT_B_LEVEL 0.5f
+#endif
+#ifndef PORT_C_CURVE
+#define PORT_C_CURVE Connection::STRAIGHT
+#endif
+#ifndef PORT_C_LEVEL
+#define PORT_C_LEVEL 0.5f
+#endif
+#ifndef HUMP_WIDTH
+#define HUMP_WIDTH 0.35f              // HUMP: how far from the favourite level the wire still passes anything
+#endif
+
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
 const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> Asleep
 const unsigned long SURPRISE_MS     = 3300;    // how long Val looks surprised at a new sensor
@@ -135,6 +165,8 @@ const int PORT_C_INDEX = 2;
 
 // One wire per port. wires[i].sensor points at whichever sensor is in port i (or nothing).
 Connection wires[PORT_COUNT];
+const Connection::Curve PORT_CURVE[PORT_COUNT] = {PORT_A_CURVE, PORT_B_CURVE, PORT_C_CURVE};
+const float PORT_LEVEL[PORT_COUNT] = {PORT_A_LEVEL, PORT_B_LEVEL, PORT_C_LEVEL};
 
 // What each port was last set up with. A sensor of a different kind counts as new.
 struct PortRecord {
@@ -414,6 +446,9 @@ void printWiring() {
     Serial.printf("  %s: %s, weight %+.0f, low %ld, high %ld\n", wires[i].sensor->portName(),
                   wires[i].sensor->typeName(), wires[i].weight,
                   wires[i].sensor->lowPoint(), wires[i].sensor->highPoint());
+    if (wires[i].curve != Connection::STRAIGHT) {
+      Serial.printf("    curve: %s, level %.2f\n", Connection::curveName(wires[i].curve), wires[i].level);
+    }
   }
 }
 
@@ -704,6 +739,13 @@ void printStatus(float sum) {
   for (int i = 0; i < PORT_COUNT; i++) {
     if (isPlugged(i)) {
       Sensor* s = wires[i].sensor;
+      if (wires[i].curve != Connection::STRAIGHT) {
+        // a curved wire: what the sensor feels, the curve, what the curve passes on
+        Serial.printf("%s %c %5ld (%.2f %s %.2f x %+.0f)  ", s->portName(), s->typeCode(), s->raw(),
+                      s->value(), Connection::curveName(wires[i].curve), wires[i].passed(),
+                      wires[i].weight);
+        continue;
+      }
       Serial.printf("%s %c %5ld (%.2f x %+.0f)  ", s->portName(), s->typeCode(), s->raw(),
                     s->value(), wires[i].weight);
     }
@@ -728,6 +770,9 @@ void setup() {
 
   loadSetup();
   for (int i = 0; i < PORT_COUNT; i++) {
+    wires[i].curve = PORT_CURVE[i];    // Vehicle 4: the shape of each wire, from the settings
+    wires[i].level = PORT_LEVEL[i];
+    wires[i].width = HUMP_WIDTH;
     detectPort(i);
   }
   lastSearchMs = millis();
