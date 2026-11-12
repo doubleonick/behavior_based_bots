@@ -1,0 +1,55 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Light Unit assumed on Port A (level on G32)
+[  0.50s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 1 sensor(s)
+   >> t=3.49s setup STARTS
+[ 13.10s] Mount: left
+[ 13.10s]   Port A: Light Unit, weight +1, low 200, high 3800
+[ 13.10s]     neuron in the wire: threshold 0.50, gain 20, self 0.00
+   >> t=13.10s setup ends
+[ 13.11s] Port A U   200 (0.00 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 13.11s] Face: Happy
+[ 13.61s] Port A U   200 (0.00 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 14.11s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 14.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 15.11s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 15.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 16.11s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 16.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 17.00s] [ 17.00s] Matrix: spikes
+[ 17.11s] Port A U  2360 (0.60 neuron 0.68 -> 0.68 x +1)  | sum +0.68 -> servo 115 deg | Spikes
+[ 17.61s] Port A U  2360 (0.60 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 178 deg | Spikes
+[ 18.11s] Port A U  2360 (0.60 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 18.61s] Port A U  2360 (0.60 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 19.11s] Port A U  2360 (0.60 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 19.61s] Port A U  2360 (0.60 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 20.11s] Port A U  2072 (0.52 neuron 0.59 -> 0.59 x +1)  | sum +0.59 -> servo 165 deg | Spikes
+[ 20.61s] Port A U  2072 (0.52 neuron 0.40 -> 0.40 x +1)  | sum +0.40 -> servo 127 deg | Spikes
+[ 21.11s] Port A U  2072 (0.52 neuron 0.40 -> 0.40 x +1)  | sum +0.40 -> servo 126 deg | Spikes
+[ 21.61s] Port A U  2072 (0.52 neuron 0.40 -> 0.40 x +1)  | sum +0.40 -> servo 126 deg | Spikes
+[ 22.11s] Port A U  2072 (0.52 neuron 0.40 -> 0.40 x +1)  | sum +0.40 -> servo 126 deg | Spikes
+[ 22.61s] Port A U  2072 (0.52 neuron 0.40 -> 0.40 x +1)  | sum +0.40 -> servo 126 deg | Spikes
+[ 23.11s] Port A U  1280 (0.30 neuron 0.13 -> 0.13 x +1)  | sum +0.13 -> servo 116 deg | Spikes
+[ 23.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 91 deg | Spikes
+[ 24.11s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Spikes
+[ 24.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Spikes
+[ 24.70s] [ 24.70s] Matrix: face
+[ 24.70s] Face: Scared
+[ 25.11s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 25.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 26.00s] [ 26.00s] Matrix: spikes
+[ 26.11s] Port A U  3800 (1.00 neuron 0.68 -> 0.68 x +1)  | sum +0.68 -> servo 115 deg | Spikes
+[ 26.61s] Port A U  3800 (1.00 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 178 deg | Spikes
+[ 27.11s] Port A U  3800 (1.00 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 180 deg | Spikes
+[ 27.16s] Matrix: face (Angry, during the run)
+[ 27.16s] Face: Angry
+[ 27.61s] Port A U  3800 (1.00 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 28.11s] Port A U  3800 (1.00 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 28.61s] Port A U  3800 (1.00 neuron 1.00 -> 1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+LED frames shown: 732, checksum 63b33278

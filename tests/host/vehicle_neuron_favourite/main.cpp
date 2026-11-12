@@ -1,11 +1,12 @@
-// Host test for Vehicle 4b: a STEP wire (a threshold) on Val_Vehicle's Light Unit.
-// Story: Light Unit in Port A, + wire, threshold at 0.5. Setup as in vehicle_light.
-// From 14 s the light is at 0.30 (below the threshold: the wheel stays still), from
-// 17 s at 0.60 (above: full speed at once), from 20 s at 0.47 (just under, inside the
-// gap: it keeps going), from 23 s at 0.30 (stops), from 26 s at 1.00 (full speed).
+// Host test for Vehicle 4a: a neuron AGAINST the wire (a favourite level), graded
+// (gain 1), on Val_Vehicle's Light Unit.
+// Story: Light Unit in Port A, + wire, threshold 0.5, the neuron holds back twice
+// what it fires. Setup as in vehicle_light. From 14 s the light climbs in steps:
+// 0.10, 0.30, 0.50 (the favourite: fastest, half speed), 0.70 (slower again: 0.30),
+// 0.90 (nearly still: 0.10). Three seconds each.
 #define PORT_A_UNIT LIGHT_UNIT
-#define PORT_A_CURVE Connection::STEP
-#define PORT_A_LEVEL 0.5f
+#define PORT_A_NEURON Connection::AGAINST_THE_WIRE
+#define PORT_A_THRESHOLD 0.5f
 #include <Arduino.h>
 #include <Wire.h>
 #include <FastLED.h>
@@ -26,9 +27,9 @@ int main(){
     // the level on G32: dark for "low" (200), lit for "high" (3800), then the story
     if(t>8.5 && t<10.1){ fakeAnalog[32]=200; } else if(t>10.1 && t<11.6){ fakeAnalog[32]=3800; }
     else if(t<14){ fakeAnalog[32]=200; }
-    else if(t<17){ fakeAnalog[32]=1280; } else if(t<20){ fakeAnalog[32]=2360; }
-    else if(t<23){ fakeAnalog[32]=1892; } else if(t<26){ fakeAnalog[32]=1280; }
-    else { fakeAnalog[32]=3800; }
+    else if(t<17){ fakeAnalog[32]=560; } else if(t<20){ fakeAnalog[32]=1280; }
+    else if(t<23){ fakeAnalog[32]=2000; } else if(t<26){ fakeAnalog[32]=2720; }
+    else { fakeAnalog[32]=3440; }
     loop();
     if(setupMode.active()!=lastSetup){ lastSetup=setupMode.active(); ::printf("   >> t=%.2fs setup %s\n", t, lastSetup?"STARTS":"ends"); }
   }

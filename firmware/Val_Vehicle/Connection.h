@@ -6,79 +6,47 @@
            -1 = inhibitory   (more stimulus -> slower)
             0 = not connected
 
-  curve:   the shape of the wire. What the sensor feels (0..1) goes in, and what the
-           wire passes on (0..1) comes out. This is where Vehicle 4 lives.
+  Vehicles 1 to 3: the sensor is wired straight to the motor.
 
-             STRAIGHT  out = in. Vehicles 1 to 3.
+        sensor -----------------------> motor
 
-             HUMP      Vehicle 4a: the wire has a favourite level. It passes most at
-                       that level, and less and less on either side of it:
+  Vehicle 4 puts one nerve cell (a Neuron, see Neuron.h) on the way. Where it sits
+  decides what the vehicle does:
 
-                         out 1 |      /\
-                               |     /  \
-                             0 |____/    \____
-                                    level        in
-                                  <-width->
+    IN_THE_WIRE (Vehicle 4b): the signal has to go through the neuron. Nothing
+    reaches the motor until the sensor feels more than the neuron's threshold.
 
-             STEP      Vehicle 4b: a threshold. Nothing passes until the sensor
-                       feels at least `level`; from then on everything does.
+        sensor -------> (neuron) -----> motor
 
-                         out 1 |       ______
-                               |      |
-                             0 |______|
-                                    level        in
+    AGAINST_THE_WIRE (Vehicle 4a): the wire still goes straight to the motor, and a
+    side branch goes to a neuron that works against it. Below the neuron's threshold
+    only the wire acts: more stimulus, more signal. Above it the neuron holds back
+    more than the wire adds: more stimulus, LESS signal. So the wire has a favourite
+    level, the neuron's threshold.
 
-  level:   HUMP: the favourite level. STEP: the threshold.
-           0 = the sensor's low point, 1 = its high point (the ones set in setup).
-  width:   HUMP only: how far from the favourite level the wire still passes anything.
+        sensor -----------------------> motor
+            \                            ^
+             '--------> (neuron) --------'   takes away `against` x its firing
+
+  Either way, what the wire delivers is then multiplied by the weight as before.
 */
 #pragma once
-#include <math.h>
 #include "Sensor.h"
+#include "Neuron.h"
 
 class Connection {
 public:
-  enum Curve : uint8_t { STRAIGHT, HUMP, STEP };
+  enum NeuronPlace : uint8_t { NO_NEURON, IN_THE_WIRE, AGAINST_THE_WIRE };
 
   Sensor* sensor = nullptr;
   float   weight = 1.0f;
-  Curve   curve  = STRAIGHT;
-  float   level  = 0.5f;
-  float   width  = 0.35f;
 
-  // A real sensor's reading wobbles. Without a gap, a STEP wire sitting right at its
-  // threshold would flick on and off. So once it is on, it stays on until the
-  // reading has dropped this far below the threshold.
-  static constexpr float STEP_GAP = 0.05f;
+  NeuronPlace place = NO_NEURON;      // where this wire's neuron sits, if it has one
+  Neuron  neuron;
+  float   against = 2.0f;             // AGAINST_THE_WIRE: how strongly the neuron holds back
 
   bool isActive() const {
     return sensor != nullptr && sensor->isConnected() && weight != 0;
-  }
-
-  // The shape of the wire: x is what the sensor feels (0..1)
-  float transfer(float x) {
-    if (curve == HUMP) {
-      if (width <= 0) {
-        return 0;
-      }
-      float away = fabsf(x - level) / width;   // 0 at the favourite level, 1 at the edge
-      if (away >= 1) {
-        return 0;
-      }
-      return 1 - away;
-    }
-    if (curve == STEP) {
-      if (x >= level) {
-        _stepOn = true;
-      } else if (x < level - STEP_GAP) {
-        _stepOn = false;
-      }
-      if (_stepOn) {
-        return 1;
-      }
-      return 0;
-    }
-    return x;                                  // STRAIGHT
   }
 
   // What this wire delivers to the motor
@@ -86,26 +54,36 @@ public:
     if (!isActive()) {
       return 0;
     }
-    _passed = transfer(sensor->value());
+    float felt = sensor->value();      // what the sensor feels, 0..1
+
+    if (place == IN_THE_WIRE) {
+      _passed = neuron.update(felt);
+    } else if (place == AGAINST_THE_WIRE) {
+      _passed = felt - against * neuron.update(felt);
+      if (_passed < 0) {
+        _passed = 0;                   // held back completely: nothing gets through
+      }
+    } else {
+      _passed = felt;                  // no neuron: straight through
+    }
     return weight * _passed;
   }
 
-  // What the curve passed on the last time output() ran (for printing)
+  // What got through the last time output() ran (for printing)
   float passed() const {
     return _passed;
   }
 
-  static const char* curveName(Curve c) {
-    if (c == HUMP) {
-      return "hump";
+  static const char* placeName(NeuronPlace p) {
+    if (p == IN_THE_WIRE) {
+      return "neuron in the wire";
     }
-    if (c == STEP) {
-      return "step";
+    if (p == AGAINST_THE_WIRE) {
+      return "neuron against the wire";
     }
-    return "straight";
+    return "no neuron";
   }
 
 private:
-  bool  _stepOn = false;
   float _passed = 0;
 };

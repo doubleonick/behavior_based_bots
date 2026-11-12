@@ -1,0 +1,50 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Light Unit assumed on Port A (level on G32)
+[  0.50s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] Port A U   200 (0.05 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 1 sensor(s)
+   >> t=3.49s setup STARTS
+[ 13.10s] Mount: left
+[ 13.10s]   Port A: Light Unit, weight +1, low 200, high 3800
+[ 13.10s]     neuron against the wire: threshold 0.50, gain 1, self 0.00
+   >> t=13.10s setup ends
+[ 13.11s] Port A U   200 (0.00 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 13.11s] Face: Happy
+[ 13.61s] Port A U   200 (0.00 neuron 0.00 -> 0.00 x +1)  | sum +0.00 -> servo 90 deg | Happy
+[ 14.00s] [ 14.00s] Matrix: spikes
+[ 14.11s] Port A U   560 (0.10 neuron 0.00 -> 0.10 x +1)  | sum +0.10 -> servo 96 deg | Spikes
+[ 14.61s] Port A U   560 (0.10 neuron 0.00 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+[ 15.11s] Port A U   560 (0.10 neuron 0.00 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+[ 15.61s] Port A U   560 (0.10 neuron 0.00 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+[ 16.11s] Port A U   560 (0.10 neuron 0.00 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+[ 16.61s] Port A U   560 (0.10 neuron 0.00 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+[ 17.11s] Port A U  1280 (0.30 neuron 0.00 -> 0.30 x +1)  | sum +0.30 -> servo 110 deg | Spikes
+[ 17.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 18.11s] Port A U  1280 (0.30 neuron 0.00 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 18.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 19.11s] Port A U  1280 (0.30 neuron 0.00 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 19.61s] Port A U  1280 (0.30 neuron 0.00 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 20.11s] Port A U  2000 (0.50 neuron 0.00 -> 0.50 x +1)  | sum +0.50 -> servo 128 deg | Spikes
+[ 20.61s] Port A U  2000 (0.50 neuron 0.00 -> 0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 21.11s] Port A U  2000 (0.50 neuron 0.00 -> 0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 21.61s] Port A U  2000 (0.50 neuron 0.00 -> 0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 22.11s] Port A U  2000 (0.50 neuron 0.00 -> 0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 22.61s] Port A U  2000 (0.50 neuron 0.00 -> 0.50 x +1)  | sum +0.50 -> servo 135 deg | Spikes
+[ 23.11s] Port A U  2720 (0.70 neuron 0.14 -> 0.43 x +1)  | sum +0.43 -> servo 136 deg | Spikes
+[ 23.61s] Port A U  2720 (0.70 neuron 0.20 -> 0.30 x +1)  | sum +0.30 -> servo 118 deg | Spikes
+[ 24.11s] Port A U  2720 (0.70 neuron 0.20 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 24.61s] Port A U  2720 (0.70 neuron 0.20 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 25.11s] Port A U  2720 (0.70 neuron 0.20 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 25.61s] Port A U  2720 (0.70 neuron 0.20 -> 0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 26.11s] Port A U  3440 (0.90 neuron 0.34 -> 0.23 x +1)  | sum +0.23 -> servo 118 deg | Spikes
+[ 26.61s] Port A U  3440 (0.90 neuron 0.40 -> 0.10 x +1)  | sum +0.10 -> servo 100 deg | Spikes
+[ 27.11s] Port A U  3440 (0.90 neuron 0.40 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+[ 27.61s] Port A U  3440 (0.90 neuron 0.40 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+[ 28.11s] Port A U  3440 (0.90 neuron 0.40 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+[ 28.61s] Port A U  3440 (0.90 neuron 0.40 -> 0.10 x +1)  | sum +0.10 -> servo 99 deg | Spikes
+LED frames shown: 730, checksum d74b0bf5

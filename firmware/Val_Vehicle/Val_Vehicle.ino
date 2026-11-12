@@ -30,6 +30,7 @@
     ColorSensor.h / ColorSensor.cpp        light sensor
     DistanceSensor.h / DistanceSensor.cpp  distance sensor
     Connection.h                           one wire from a sensor to the motor
+    Neuron.h                               one nerve cell (Vehicles 4 and 5)
     Button.h                               short press / long press / hold
     SetupMode.h / SetupMode.cpp            the one-button setup screens
 
@@ -44,9 +45,11 @@
   - Then the vehicle runs: the servo's speed is the sum of what every wire delivers.
   - The key is a bumper: on a + wire Val drives forwards until the key is pressed,
     then backwards; on a - wire, backwards until pressed, then forwards.
-  - Vehicle 4: a wire can be curved instead of straight (see Connection.h). A HUMP
-    wire has a favourite level; a STEP wire passes nothing until a threshold. For
-    now these are settings below (PORT_A_CURVE ...), not setup screens.
+  - Vehicles 4 and 5: a wire can have one nerve cell on the way (see Connection.h and
+    Neuron.h). In the wire, nothing gets through below its threshold (4b). Against
+    the wire, the wire has a favourite level (4a). A neuron that listens to itself
+    stays on (5). For now these are settings below (PORT_A_NEURON ...), not setup
+    screens.
   - The face is for talking to people: hello, setup, surprise at a new sensor.
     While the wheel turns, the matrix shows spikes instead: one lane per sensor
     (green +, red -), and the wheel firing along the bottom row.
@@ -101,31 +104,44 @@ const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and
 #define ASSUME_KEY_ON_PORT_C 0        // 1 = an M5 Key Unit in Port C
 #endif
 
-// Vehicle 4 (a test bench for now: these are set here, not in setup on the robot).
-// The shape of the wire in each port: Connection::STRAIGHT (Vehicles 1 to 3),
-// Connection::HUMP (4a: a favourite level) or Connection::STEP (4b: a threshold).
-// LEVEL is the favourite level (HUMP) or the threshold (STEP): 0 = the sensor's low
-// point, 1 = its high point. Change, then upload again. The key ignores these.
-#ifndef PORT_A_CURVE
-#define PORT_A_CURVE Connection::STRAIGHT
+// Vehicles 4 and 5 (a test bench for now: these are set here, not in setup on the robot).
+// A wire can have one nerve cell (see Connection.h and Neuron.h). For each port say
+// where it sits:
+//   Connection::NO_NEURON         sensor straight to motor (Vehicles 1 to 3)
+//   Connection::IN_THE_WIRE       Vehicle 4b: nothing gets through below the threshold
+//   Connection::AGAINST_THE_WIRE  Vehicle 4a: a favourite level, at the threshold
+// THRESHOLD: 0 = the sensor's low point, 1 = its high point (the ones set in setup).
+// Change, then upload again. The key ignores these.
+#ifndef PORT_A_NEURON
+#define PORT_A_NEURON Connection::NO_NEURON
 #endif
-#ifndef PORT_A_LEVEL
-#define PORT_A_LEVEL 0.5f
+#ifndef PORT_A_THRESHOLD
+#define PORT_A_THRESHOLD 0.5f
 #endif
-#ifndef PORT_B_CURVE
-#define PORT_B_CURVE Connection::STRAIGHT
+#ifndef PORT_B_NEURON
+#define PORT_B_NEURON Connection::NO_NEURON
 #endif
-#ifndef PORT_B_LEVEL
-#define PORT_B_LEVEL 0.5f
+#ifndef PORT_B_THRESHOLD
+#define PORT_B_THRESHOLD 0.5f
 #endif
-#ifndef PORT_C_CURVE
-#define PORT_C_CURVE Connection::STRAIGHT
+#ifndef PORT_C_NEURON
+#define PORT_C_NEURON Connection::NO_NEURON
 #endif
-#ifndef PORT_C_LEVEL
-#define PORT_C_LEVEL 0.5f
+#ifndef PORT_C_THRESHOLD
+#define PORT_C_THRESHOLD 0.5f
 #endif
-#ifndef HUMP_WIDTH
-#define HUMP_WIDTH 0.35f              // HUMP: how far from the favourite level the wire still passes anything
+// The same for every neuron:
+#ifndef NEURON_GAIN
+#define NEURON_GAIN 1.0f              // 1 = graded (fires harder the further above the threshold); 20 = all-or-none
+#endif
+#ifndef NEURON_TIME_MS
+#define NEURON_TIME_MS 100.0f         // how quickly a neuron follows its input (about this many milliseconds)
+#endif
+#ifndef NEURON_SELF
+#define NEURON_SELF 0.0f              // Vehicle 5: how much a neuron listens to itself. 0 = not at all.
+#endif                                //   At least threshold + 1 / gain: once on, it stays on (memory).
+#ifndef AGAINST_STRENGTH
+#define AGAINST_STRENGTH 2.0f         // AGAINST_THE_WIRE: how strongly the neuron holds the wire back
 #endif
 
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
@@ -165,8 +181,8 @@ const int PORT_C_INDEX = 2;
 
 // One wire per port. wires[i].sensor points at whichever sensor is in port i (or nothing).
 Connection wires[PORT_COUNT];
-const Connection::Curve PORT_CURVE[PORT_COUNT] = {PORT_A_CURVE, PORT_B_CURVE, PORT_C_CURVE};
-const float PORT_LEVEL[PORT_COUNT] = {PORT_A_LEVEL, PORT_B_LEVEL, PORT_C_LEVEL};
+const Connection::NeuronPlace PORT_NEURON[PORT_COUNT] = {PORT_A_NEURON, PORT_B_NEURON, PORT_C_NEURON};
+const float PORT_THRESHOLD[PORT_COUNT] = {PORT_A_THRESHOLD, PORT_B_THRESHOLD, PORT_C_THRESHOLD};
 
 // What each port was last set up with. A sensor of a different kind counts as new.
 struct PortRecord {
@@ -446,8 +462,9 @@ void printWiring() {
     Serial.printf("  %s: %s, weight %+.0f, low %ld, high %ld\n", wires[i].sensor->portName(),
                   wires[i].sensor->typeName(), wires[i].weight,
                   wires[i].sensor->lowPoint(), wires[i].sensor->highPoint());
-    if (wires[i].curve != Connection::STRAIGHT) {
-      Serial.printf("    curve: %s, level %.2f\n", Connection::curveName(wires[i].curve), wires[i].level);
+    if (wires[i].place != Connection::NO_NEURON) {
+      Serial.printf("    %s: threshold %.2f, gain %.0f, self %.2f\n", Connection::placeName(wires[i].place),
+                    wires[i].neuron.threshold, wires[i].neuron.gain, wires[i].neuron.selfWeight);
     }
   }
 }
@@ -739,10 +756,11 @@ void printStatus(float sum) {
   for (int i = 0; i < PORT_COUNT; i++) {
     if (isPlugged(i)) {
       Sensor* s = wires[i].sensor;
-      if (wires[i].curve != Connection::STRAIGHT) {
-        // a curved wire: what the sensor feels, the curve, what the curve passes on
-        Serial.printf("%s %c %5ld (%.2f %s %.2f x %+.0f)  ", s->portName(), s->typeCode(), s->raw(),
-                      s->value(), Connection::curveName(wires[i].curve), wires[i].passed(),
+      if (wires[i].place != Connection::NO_NEURON) {
+        // a wire with a neuron: what the sensor feels, how hard the neuron fires,
+        // what gets through to the motor
+        Serial.printf("%s %c %5ld (%.2f neuron %.2f -> %.2f x %+.0f)  ", s->portName(), s->typeCode(),
+                      s->raw(), s->value(), wires[i].neuron.output(), wires[i].passed(),
                       wires[i].weight);
         continue;
       }
@@ -770,9 +788,12 @@ void setup() {
 
   loadSetup();
   for (int i = 0; i < PORT_COUNT; i++) {
-    wires[i].curve = PORT_CURVE[i];    // Vehicle 4: the shape of each wire, from the settings
-    wires[i].level = PORT_LEVEL[i];
-    wires[i].width = HUMP_WIDTH;
+    wires[i].place = PORT_NEURON[i];   // Vehicles 4 and 5: each wire's neuron, from the settings
+    wires[i].neuron.threshold = PORT_THRESHOLD[i];
+    wires[i].neuron.gain = NEURON_GAIN;
+    wires[i].neuron.timeMs = NEURON_TIME_MS;
+    wires[i].neuron.selfWeight = NEURON_SELF;
+    wires[i].against = AGAINST_STRENGTH;
     detectPort(i);
   }
   lastSearchMs = millis();

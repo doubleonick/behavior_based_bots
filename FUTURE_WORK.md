@@ -133,21 +133,39 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Firmware
 
-- **Vehicle 4: curved wires (2026-11, branch `expanded_vehicles`, a test bench).**
-  In Val_Vehicle each wire has a shape (`Connection::curve`): STRAIGHT (Vehicles 1 to
-  3, the default, so nothing changes unless asked), HUMP (4a: passes most at a
-  favourite level, falling to nothing `HUMP_WIDTH` either side; a tent, not a
-  Gaussian) or STEP (4b: nothing below a threshold, everything above; it stays on
-  until the reading drops 0.05 below, so a wobbling sensor doesn't make it chatter).
-  Set per port in the sketch (`PORT_A_CURVE`, `PORT_A_LEVEL`, ...), not on the robot
-  yet: setup screens come only if the behaviour proves itself. Serial shows what the
-  curve passes on. Host tests `vehicle_step` and `vehicle_hump` pass. **Not yet run on
-  the robot.** To confirm there: 4b, Val sits still and then goes at once; 4a on one
-  module, the wheel is fastest at the favourite level (with a - wire: slowest there,
-  so it lingers); 4a on two joined modules, whether Val circles a light at the
-  distance it likes (the least certain: it depends on the sensors' range and how
-  smooth the servos are). The key ignores curves. The faces (Angry, Curious, Scared,
-  Love) still read what the sensor feels, not what the curve passes: to revisit.
+- **Vehicles 4 and 5: one nerve cell on the wire (2026-11, branch `expanded_vehicles`,
+  a test bench).** One part, `Neuron` (Val_Vehicle/Neuron.h), is meant to carry
+  Vehicles 4, 5 and 7, so each vehicle is a small change to the last and the lessons
+  need one explanation. It adds its inputs, is silent below a threshold, fires harder
+  above it up to a ceiling, and follows its input over a short time:
+  `target = clamp(gain x (input + self x output - threshold), 0, 1)`, output moving
+  towards target over `timeMs`. Gain 1 is graded (the biological default); gain 20 is
+  all-or-none (Braitenberg's abrupt 4b and his Vehicle 5 threshold devices). A
+  neuron that listens to itself (`self` at least threshold + 1 / gain) stays on once
+  switched on: memory.
+  In Val_Vehicle a wire can have one neuron (`Connection::place`): IN_THE_WIRE
+  (4b: sensor -> neuron -> motor) or AGAINST_THE_WIRE (4a: the wire goes straight to
+  the motor and a side branch through the neuron holds it back twice as hard, which
+  gives a favourite level at the threshold; lopsided, peak speed = the threshold).
+  Set per port in the sketch (`PORT_A_NEURON`, `PORT_A_THRESHOLD`, `NEURON_GAIN`,
+  `NEURON_TIME_MS`, `NEURON_SELF`, `AGAINST_STRENGTH`), not on the robot yet: setup
+  screens come only if the behaviour proves itself. With no neuron nothing changes.
+  Host tests `vehicle_neuron_step`, `vehicle_neuron_favourite`, `vehicle_neuron_memory`
+  pass. **Not yet run on the robot.** To confirm there: 4b, Val sits still and then
+  goes; 4a on one module, fastest at the favourite level (with a - wire: slowest
+  there, so it lingers); 4a on two joined modules, whether Val circles a light at the
+  distance it likes (the least certain); memory, a flash of light sets Val going and
+  it keeps going. Still to design for Vehicle 5: what switches a memory neuron off
+  (an inhibiting input from another sensor, which needs wires between ports), and
+  whether habituation is the same neuron with a slow negative echo. The key ignores
+  neurons. The faces (Angry, Curious, Scared, Love) still read what the sensor feels,
+  not what reaches the motor: to revisit. The motor's own sum (weights, and a bias of
+  1 when every wire is inhibitory) is the same arithmetic as a neuron's but has not
+  been rewritten as one.
+  *Dropped (2026-11):* the first version bent the signal with formulas on the wire
+  (a tent "HUMP" and an on/off "STEP" with a 0.05 gap). Faithful to Braitenberg's
+  text, but an abstraction with no biological part to point at; replaced before it
+  was run on the robot. Not a Gaussian either way.
 - **Two-wheel Braitenberg vehicle.** Val_Vehicle wires every sensor to one servo.
   For the classic vehicles (fear, aggression, love, exploration), each wire needs a
   "which wheel" step (left / right / crossed). The face could name the vehicle's
