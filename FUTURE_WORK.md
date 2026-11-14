@@ -133,6 +133,20 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Firmware
 
+- **A safety reflex from the IMU: "not level, motors off" (2026-11, exploring).** Wanted:
+  a safety feature with no extra sensor (so not a downward IR, and not a stop on the
+  path), and a reason to explore the Matrix's IMU. `firmware/IMU_Test/` (branch
+  `expanded_vehicles`, **not yet run on the robot**) is the first step: a bubble level
+  on the matrix, tilt / total g / jolt on Serial with one word (LEVEL, TILTED,
+  FALLING, JOLT), the button sets "this is level", and an optional trial that stops
+  S1 while not level and restarts after a second of level. To find out with it:
+  which axes are Val's front and left; what the numbers are with the nose over a
+  table edge, picked up, on its side, falling; with the wheel crawling, how far the
+  nose drops before Val is past saving. Expectation, not measured: it can stop the
+  wheels when picked up, tipped or falling; it only saves Val from an edge if
+  something other than the drive wheel leads and Val is slow. Then choose the rule
+  and put it in the shared code for every sketch. The thresholds in the test (12
+  degrees, 0.4 g, 0.6 g) are first guesses.
 - **Vehicles 4 and 5: one nerve cell on the wire (2026-11, branch `expanded_vehicles`,
   a test bench).** One part, `Neuron` (Val_Vehicle/Neuron.h), is meant to carry
   Vehicles 4, 5 and 7, so each vehicle is a small change to the last and the lessons
