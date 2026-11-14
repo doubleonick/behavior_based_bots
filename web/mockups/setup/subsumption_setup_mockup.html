@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subsumption setup mock-up</title>
+<style>
+:root{--ink:#1d2a44;--paper:#f6f8fb;--grid:#dde7f2;--org:#E07A2E;--blue:#1f5fa8;--note:#FFF4E8}
+*{box-sizing:border-box}
+body{margin:0;background:#e9eef5;color:var(--ink);font:17px/1.5 "Atkinson Hyperlegible",Verdana,sans-serif;padding:16px}
+h1{font-size:1.5rem;margin:0 0 4px} h2{font-size:1.2rem;margin:0 0 8px}
+.sub{margin:0 0 16px}
+.cols{display:flex;flex-wrap:wrap;gap:16px}
+.panel{flex:1 1 380px;background:var(--paper);border:2.5px solid var(--ink);padding:18px;
+ background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.atom{background:#c9ced6;border:2.5px solid var(--ink);border-radius:14px;padding:14px;width:max-content}
+.matrix{display:grid;grid-template-columns:repeat(5,34px);grid-template-rows:repeat(5,34px);gap:5px;background:#111;padding:8px;border-radius:8px}
+.matrix.small{grid-template-columns:repeat(5,20px);grid-template-rows:repeat(5,20px);gap:3px;padding:5px}
+.px{border-radius:4px;background:#1b1b1b}
+.btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+button{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:8px;padding:8px 12px;cursor:pointer}
+button:hover{background:#eef3fa} button.main{background:var(--org);color:#fff;font-weight:bold}
+.say{flex:1 1 220px;background:#fff;border:2px solid var(--ink);padding:12px;min-height:150px}
+.say b{display:block;margin-bottom:4px}
+.hint{color:var(--blue);font-size:15px;margin-top:8px}
+.legend{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:15px;margin-top:14px;align-items:center}
+.sw{display:inline-flex;gap:2px}.sw i{width:14px;height:14px;border-radius:3px;display:inline-block;background:#1b1b1b;border:1.5px solid #1d2a44}
+.world{margin-top:14px;background:var(--note);border:2px solid var(--ink);padding:10px}
+.world label{display:block;margin:2px 0}
+.cards{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.stack{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:250px}
+.stack li{background:#fff;border:2px solid var(--ink);padding:6px 8px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.stack li.bottom{background:#e8f0fb}
+.stack small{color:var(--blue)}
+.mini button{padding:2px 8px}
+.note{background:var(--note);border:2px solid var(--ink);padding:12px;margin-top:16px;font-size:16px}
+</style></head><body>
+<h1>Subsumption setup: two ways to choose Val's layers</h1>
+<p class="sub">A mock-up to try, not firmware. Both use the picture <code>Val_Brooks</code> already shows while driving: one row per behaviour, the top row wins.</p>
+<div class="cols">
+
+<section class="panel">
+<h2>A. On Val, with the one button</h2>
+<div class="row">
+  <div>
+    <div class="atom"><div class="matrix" id="mA"></div></div>
+    <div class="btns">
+      <button class="main" id="short">Short press</button>
+      <button class="main" id="long">Long press</button>
+      <button id="hold">Hold 2 s</button>
+    </div>
+  </div>
+  <div class="say"><b id="sayT"></b><span id="sayB"></span><div class="hint" id="sayH"></div></div>
+</div>
+<div class="world" id="world" hidden>
+  <b>Pretend world</b> (to see which layer takes control)
+  <label><input type="checkbox" id="wBump"> Val bumps into something</label>
+  <label><input type="checkbox" id="wObj"> an object is close</label>
+  <label><input type="checkbox" id="wLight"> a light is off to one side</label>
+</div>
+<div class="legend" id="legend"></div>
+</section>
+
+<section class="panel">
+<h2>B. In the guide, as part of the journey</h2>
+<p style="margin:0">Tap a behaviour to put it on top of the stack.</p>
+<div class="cards" id="cards"></div>
+<div class="row">
+  <ul class="stack" id="stack"></ul>
+  <div><div style="font-size:15px;margin-bottom:4px">Val's matrix will show:</div>
+    <div class="atom"><div class="matrix small" id="mB"></div></div></div>
+</div>
+<div class="note" id="tellB"></div>
+</section>
+</div>
+
+<div class="note"><b>What is assumed here</b> (all open to change): layers are built from the bottom up, one at a time; a behaviour is only offered if its sensors were found; "avoid" and "approach" for the same thing can't both be in the stack; five rows is the most the matrix can show. In B, the page does not talk to Val: the child copies the stack onto Val with setup A, or Val is given it another way (a decision for later).</div>
+
+<script>
+const COL={white:'#f2f2f2',purple:'#a24bd8',yellow:'#f0c628',blue:'#2f6fe0',red:'#e23a3a',green:'#2fbf5a',off:'#1b1b1b'};
+const B={
+  ESC:{name:'Escape a bump',colour:'white',sign:'red',needs:'wBump',kid:'back away and turn when Val bumps'},
+  AV_OBJ:{name:'Avoid objects',colour:'purple',sign:'red',needs:'wObj',opp:'AP_OBJ',kid:'turn away from things that are close'},
+  AP_OBJ:{name:'Approach objects',colour:'purple',sign:'green',needs:'wObj',opp:'AV_OBJ',kid:'turn toward things that are close'},
+  AV_LIGHT:{name:'Avoid light',colour:'yellow',sign:'red',needs:'wLight',opp:'AP_LIGHT',kid:'turn away from the light'},
+  AP_LIGHT:{name:'Approach light',colour:'yellow',sign:'green',needs:'wLight',opp:'AV_LIGHT',kid:'turn toward the light'},
+  WANDER:{name:'Wander',colour:'blue',sign:'wander',kid:'roll a die for the next move'},
+  CRUISE:{name:'Cruise',colour:'blue',sign:'green',kid:'drive straight ahead'}
+};
+const UPPER=['ESC','AV_OBJ','AP_OBJ','AV_LIGHT','AP_LIGHT'];
+function mk(el){el.innerHTML='';for(let i=0;i<25;i++){const d=document.createElement('div');d.className='px';el.appendChild(d);}}
+// stack: bottom first. Draw bottom-aligned; opts: blinkTop (candidate), inControl index, phase
+function draw(el,stack,o={}){
+  const px=el.children;for(const p of px){p.style.background=COL.off;p.style.opacity=1;}
+  stack.forEach((id,i)=>{
+    const r=4-i;if(r<0)return;const b=B[id];
+    let sign=b.sign==='wander'?(o.wanderFwd?'green':'red'):b.sign;
+    const dim=(o.blinkTop&&i===stack.length-1&&o.phase%2===1)?0.15:(o.flashAll&&o.phase%2===1?0.35:1);
+    const set=(c,col,op)=>{const p=px[r*5+c];p.style.background=COL[col];p.style.opacity=op;};
+    set(0,sign,dim);
+    for(let c=2;c<5;c++){
+      let op=dim;
+      if(o.inControl!==undefined){op=(i===o.inControl)?((o.phase%3===c-2)?1:0.3):0.55;}
+      set(c,b.colour,op);
+    }
+  });
+}
+// ---------- A: on Val ----------
+const mA=document.getElementById('mA');mk(mA);
+let A;function resetA(){A={mode:'BOTTOM',stack:['WANDER'],opt:0};document.getElementById('world').hidden=true;tellA();}
+function options(){const used=A.stack.slice(0,A.mode==='ADD'?A.base:A.stack.length);
+  return UPPER.filter(id=>!used.includes(id)&&!used.includes(B[id].opp)).concat(['DONE']);}
+function say(t,b,h){sayT.textContent=t;sayB.textContent=b;sayH.textContent=h;}
+function tellA(){
+  if(A.mode==='BOTTOM'){const b=B[A.stack[0]];say('Bottom layer: '+b.name,'What Val does when nothing else wants control: '+b.kid+'.','Short press: the other choice. Long press: keep it.');}
+  else if(A.mode==='ADD'){const o=options()[A.opt];
+    if(o==='DONE'){say('Finished?','The whole stack flashes: this is Val\'s set of layers.','Short press: keep looking. Long press: yes, start driving.');}
+    else{say('Next layer up: '+B[o].name,'It takes control from the layers under it when it needs to: '+B[o].kid+'.','Short press: next choice. Long press: add it.');}}
+  else{say('Driving','The lit-up row is the layer in control. Tick the boxes to change the world.','Hold 2 s: set up again.');}
+}
+function shortA(){if(A.mode==='BOTTOM'){A.stack[0]=A.stack[0]==='WANDER'?'CRUISE':'WANDER';}
+  else if(A.mode==='ADD'){A.opt=(A.opt+1)%options().length;syncCand();}tellA();}
+function syncCand(){const o=options()[A.opt];A.stack.length=A.base;if(o!=='DONE'){A.stack.push(o);}}
+function startAdd(){A.mode='ADD';A.base=A.stack.length;A.opt=0;if(options().length===1||A.base>=5){A.mode='RUN';world.hidden=false;}else{syncCand();}}
+function longA(){if(A.mode==='BOTTOM'){startAdd();}
+  else if(A.mode==='ADD'){const o=options()[A.opt];if(o==='DONE'){A.stack.length=A.base;A.mode='RUN';world.hidden=false;}else{startAdd();}}
+  tellA();}
+document.getElementById('short').onclick=shortA;document.getElementById('long').onclick=longA;document.getElementById('hold').onclick=resetA;
+function controlOf(stack){for(let i=stack.length-1;i>0;i--){const n=B[stack[i]].needs;if(document.getElementById(n).checked){return i;}}return 0;}
+let phase=0,wf=true;
+setInterval(()=>{phase++;if(phase%2===0){wf=Math.random()<0.67;}
+  if(A.mode==='BOTTOM'){draw(mA,A.stack,{blinkTop:true,phase:Math.floor(phase/2),wanderFwd:wf});}
+  else if(A.mode==='ADD'){const done=options()[A.opt]==='DONE';draw(mA,A.stack,{blinkTop:!done,flashAll:done,phase:Math.floor(phase/2),wanderFwd:wf});}
+  else{draw(mA,A.stack,{inControl:controlOf(A.stack),phase:phase,wanderFwd:wf});}
+  draw(mB,Bs,{wanderFwd:wf});
+},220);
+// legend
+legend.innerHTML=[['red','Left pixel red: pushes away'],['green','Left pixel green: goes toward'],['white','White: bump'],['purple','Purple: distance'],['yellow','Yellow: light'],['blue','Blue: wander or cruise']]
+ .map(([c,t])=>`<span class="sw"><i style="background:${COL[c]}"></i></span><span>${t}</span>`).join('');
+// ---------- B: in the guide ----------
+const mB=document.getElementById('mB');mk(mB);let Bs=['WANDER'];
+function renderB(){
+  cards.innerHTML='';
+  UPPER.forEach(id=>{const ok=!Bs.includes(id)&&!Bs.includes(B[id].opp)&&Bs.length<5;const b=document.createElement('button');b.textContent=B[id].name;b.disabled=!ok;b.style.opacity=ok?1:0.4;b.onclick=()=>{Bs.push(id);renderB();};cards.appendChild(b);});
+  stack.innerHTML='';
+  for(let i=Bs.length-1;i>=0;i--){const id=Bs[i];const li=document.createElement('li');
+    if(i===0){li.className='bottom';li.innerHTML=`<span>${B[id].name} <small>(bottom)</small></span><span class="mini"><button title="swap wander and cruise">swap</button></span>`;li.querySelector('button').onclick=()=>{Bs[0]=Bs[0]==='WANDER'?'CRUISE':'WANDER';renderB();};}
+    else{li.innerHTML=`<span>${B[id].name}</span><span class="mini"><button>↑</button> <button>↓</button> <button>✕</button></span>`;
+      const [u,d,x]=li.querySelectorAll('button');
+      u.onclick=()=>{if(i<Bs.length-1){[Bs[i],Bs[i+1]]=[Bs[i+1],Bs[i]];renderB();}};
+      d.onclick=()=>{if(i>1){[Bs[i],Bs[i-1]]=[Bs[i-1],Bs[i]];renderB();}};
+      x.onclick=()=>{Bs.splice(i,1);renderB();};}
+    stack.appendChild(li);}
+  const top=Bs.slice(1).reverse().map(id=>B[id].name.toLowerCase());
+  tellB.innerHTML=Bs.length===1?'<b>Predict:</b> with only the bottom layer, what will Val do all day?':
+   '<b>Predict before you try:</b> Val will '+B[Bs[0]].kid+', unless it needs to '+top.join(', or ')+'. When two layers both want control, the higher one wins. Which layer do you expect to see lit up most often?';
+}
+resetA();renderB();
+</script></body></html>

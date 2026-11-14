@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neuron display mock-up</title>
+<style>
+:root{--ink:#1d2a44;--paper:#f6f8fb;--grid:#dde7f2;--blue:#1f5fa8;--note:#FFF4E8}
+*{box-sizing:border-box}
+body{margin:0;background:#e9eef5;color:var(--ink);font:17px/1.5 "Atkinson Hyperlegible",Verdana,sans-serif;padding:16px}
+h1{font-size:1.5rem;margin:0 0 4px} p{margin:0 0 12px}
+.controls{background:#fff;border:2.5px solid var(--ink);padding:14px;display:flex;flex-wrap:wrap;gap:14px 18px;align-items:center;margin-bottom:16px}
+.controls label{display:flex;align-items:center;gap:8px}
+input[type=range]{width:200px}
+button,select{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+.cards{display:flex;flex-wrap:wrap;gap:16px}
+.card{flex:1 1 330px;background:var(--paper);border:2.5px solid var(--ink);padding:14px;
+ background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.card h2{font-size:1.1rem;margin:0}
+.card .sub{color:var(--blue);font-size:15px;margin:2px 0 10px}
+.pair{display:flex;gap:14px;flex-wrap:wrap}
+.pair figure{margin:0}.pair figcaption{font-size:15px;font-weight:bold;margin-bottom:4px}
+.atom{background:#c9ced6;border:2.5px solid var(--ink);border-radius:12px;padding:10px;width:max-content}
+.matrix{display:grid;grid-template-columns:repeat(5,24px);grid-template-rows:repeat(5,24px);gap:4px;background:#111;padding:7px;border-radius:8px}
+.px{border-radius:4px;background:#1b1b1b}
+.read{font-size:15px;margin-top:10px;background:#fff;border:2px solid var(--ink);padding:8px}
+.read b{display:inline-block;min-width:118px}
+.note{background:var(--note);border:2px solid var(--ink);padding:12px;margin-top:16px;font-size:16px}
+.key{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:15px}
+.key i{display:inline-block;width:14px;height:14px;border-radius:3px;border:1.5px solid var(--ink);vertical-align:-2px;margin-right:5px}
+</style></head><body>
+<h1>Showing a neuron on Val's matrix: two views</h1>
+<p>A mock-up to try, not firmware. One light sensor on a + wire. <b>The wiring view</b> shows where the cell sits. <b>The cell view</b> zooms in on that one cell to show how hard it is working.</p>
+<div class="controls">
+  <label>Light <input type="range" id="light" min="0" max="1" step="0.01" value="0.2"> <b id="lightV">0.20</b></label>
+  <label>Threshold <input type="range" id="th" min="0.1" max="0.9" step="0.05" value="0.5" style="width:130px"> <b id="thV">0.50</b></label>
+  <label>Gain <select id="gain"><option value="1">1 (graded)</option><option value="20">20 (all-or-none)</option></select></label>
+  <button id="flash">Flash the light for 1 s</button>
+  <button id="reset">Hold 2 s (reset)</button>
+</div>
+<div class="cards" id="cards"></div>
+<div class="key">
+  <span><i style="background:#2fbf5a"></i>green: the + wire's spikes</span>
+  <span><i style="background:#00e5ff"></i>cyan: the nerve cell</span>
+  <span><i style="background:#e23a3a"></i>red: holding back</span>
+  <span><i style="background:#f2f2f2"></i>white: the wheel</span>
+</div>
+<div class="note">
+<b>Wiring view.</b> As the spikes display is today, plus one bright cyan pixel: <b>on the lane</b> = in the wire, <b>beside the lane</b> = against the wire. The cell does not change brightness here; its place is the whole message.<br>
+<b>Cell view.</b> The cell fills the middle 3 x 3. Spikes come in at the top, the cell's answer leaves at the bottom. <b>The more of the nine squares are lit, the harder it is firing</b> (none lit = silent). What leaves the bottom is green if it drives the motor on, red if it holds the wire back.<br>
+<b>Memory.</b> A cell that listens to itself has a loop: its own spikes run from the bottom, up the right-hand edge, and back in at the top. The loop is always faintly drawn, so you can see the cell has one, and cyan spikes run round it while the cell is firing. When the light has gone and the loop is still running, that is the memory.
+</div>
+<script>
+const COL={green:[47,191,90],cyan:[0,229,255],white:[242,242,242],red:[226,58,58]};
+const FRAME=40,TAIL=2.5,MIN_RATE=0.5,MAX_RATE=10;
+const KINDS=[
+ {id:'in',t:'In the wire',s:'Vehicle 4b: nothing gets through below the threshold.'},
+ {id:'against',t:'Against the wire',s:'Vehicle 4a: a favourite level, at the threshold.'},
+ {id:'memory',t:'Memory',s:'Vehicle 5: in the wire, listening to itself (gain 4, self 1).'}];
+const LOOP=[[4,3],[4,4],[3,4],[2,4],[1,4],[0,4],[0,3]];
+const FILL=[[3,1],[3,2],[3,3],[2,1],[2,2],[2,3],[1,1],[1,2],[1,3]];   // bottom row first
+function grid(el){for(let i=0;i<25;i++){const d=document.createElement('div');d.className='px';el.appendChild(d);}return el.children;}
+function mk(){return {phase:Math.random(),ages:[]};}
+const sims=KINDS.map(k=>{
+  const c=document.createElement('div');c.className='card';
+  c.innerHTML=`<h2>${k.t}</h2><div class="sub">${k.s}</div><div class="pair">
+   <figure><figcaption>Wiring view</figcaption><div class="atom"><div class="matrix"></div></div></figure>
+   <figure><figcaption>Cell view (zoomed in)</figcaption><div class="atom"><div class="matrix"></div></div></figure></div><div class="read"></div>`;
+  cards.appendChild(c);const ms=c.querySelectorAll('.matrix');
+  return {k,over:grid(ms[0]),zoom:grid(ms[1]),read:c.querySelector('.read'),out:0,s:{a:mk(),b:mk(),w:mk(),zi:mk(),zo:mk(),zl:mk()}};
+});
+function fire(seg,rate,maxAge){seg.ages=seg.ages.map(a=>a+1).filter(a=>a<=maxAge);
+  if(rate<=0)return;const b=seg.phase;seg.phase+=rate*FRAME/1000;if(Math.floor(seg.phase)>Math.floor(b))seg.ages.push(0);}
+function rate(v,silent){if(silent&&v<=0.005)return 0;return MIN_RATE+(MAX_RATE-MIN_RATE)*Math.max(0,Math.min(1,v));}
+function show(px,buf){for(let i=0;i<25;i++){const p=px[i];if(buf[i]){const [col,b]=buf[i];const [r,g,bl]=COL[col];p.style.background=`rgb(${r},${g},${bl})`;p.style.opacity=Math.max(0.1,b);}else{p.style.background='#1b1b1b';p.style.opacity=1;}}}
+let flashUntil=0;
+function step(){
+  const th=+document.getElementById('th').value,g=+gain.value;
+  const x=Date.now()<flashUntil?0.9:+light.value;
+  lightV.textContent=x.toFixed(2);thV.textContent=th.toFixed(2);
+  for(const s of sims){
+    const id=s.k.id,gg=id==='memory'?4:g,self=id==='memory'?1:0;
+    let target=Math.max(0,Math.min(1,gg*(x+self*s.out-th)));
+    s.out+=Math.min(1,FRAME/100)*(target-s.out);
+    const cell=s.out,passed=id==='against'?Math.max(0,x-2*cell):cell;
+    // ---- wiring view ----
+    let buf=new Array(25).fill(null);
+    let put=(r,c,col,b)=>{const i=r*5+c;if(!buf[i]||buf[i][1]<b)buf[i]=[col,b];};
+    const seg=(sg,rows)=>{for(const a of sg.ages){rows.forEach((r,i)=>{const bh=a-i;if(bh>=0&&bh<TAIL)put(r,2,'green',1-bh/TAIL);});}};
+    put(0,2,'green',1);
+    if(id==='against'){fire(s.s.a,rate(x),2+TAIL);seg(s.s.a,[1,2]);fire(s.s.b,rate(passed,true),1+TAIL);seg(s.s.b,[3]);put(2,3,'cyan',1);}
+    else{fire(s.s.a,rate(x),1+TAIL);seg(s.s.a,[1]);fire(s.s.b,rate(passed,true),1+TAIL);seg(s.s.b,[3]);put(2,2,'cyan',1);}
+    fire(s.s.w,passed>0.01?MAX_RATE*passed:0,6);
+    for(const a of s.s.w.ages){for(let c=0;c<5;c++){const bh=a-Math.abs(c-2);if(bh>=0&&bh<3)put(4,c,'white',1-bh/3);}}
+    show(s.over,buf);
+    // ---- cell view ----
+    buf=new Array(25).fill(null);
+    const lit=Math.ceil(cell*9-0.02);
+    FILL.forEach(([r,c],i)=>put(r,c,'cyan',i<lit?1:0.18));
+    fire(s.s.zi,rate(x),2);if(s.s.zi.ages.some(a=>a<=1)){put(0,2,'green',1);}else{put(0,2,'green',0.2);}
+    fire(s.s.zo,cell>0.01?MAX_RATE*cell:0,2);const outCol=id==='against'?'red':'green';
+    put(4,2,outCol,s.s.zo.ages.some(a=>a<=1)?1:0.2);
+    if(self>0){LOOP.forEach(([r,c])=>put(r,c,'cyan',0.16));
+      fire(s.s.zl,cell>0.01?6*cell:0,LOOP.length+2);
+      for(const a of s.s.zl.ages){LOOP.forEach(([r,c],i)=>{const bh=a-i;if(bh>=0&&bh<2)put(r,c,'cyan',1-bh/2.5);});}}
+    show(s.zoom,buf);
+    s.read.innerHTML=`<b>sensor feels</b> ${x.toFixed(2)}<br><b>neuron fires</b> ${cell.toFixed(2)} (${lit} of 9 lit)<br><b>reaches motor</b> ${passed.toFixed(2)}`;
+  }
+}
+setInterval(step,FRAME);
+flash.onclick=()=>{flashUntil=Date.now()+1000;};
+reset.onclick=()=>{for(const s of sims){s.out=0;}};
+</script></body></html>

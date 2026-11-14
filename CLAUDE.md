@@ -28,7 +28,7 @@ make sense to them; everything an adult needs should be written down for them.
 | `tests/host/` | runs the real sketches against fake hardware |
 | `docs/hardware.md` | pins, Motion registers, sensor chip IDs, port limits, quirks |
 | `docs/code-survey.md` | where the firmware's lines go, duplication, and a proposed tidy-up plan |
-| `web/` | the planned web guide: `OUTLINE.md`; `mockups/v1-lesson/` (design canvas source of the Vehicle 1 lesson mock-up); `media/v1/` (Val's V1 clips) |
+| `web/` | the planned web guide: `OUTLINE.md`; `mockups/v1-lesson/` (design canvas source of the Vehicle 1 lesson mock-up); `mockups/setup/` (click-through mock-ups of setup screens and displays on the 5x5 matrix); `media/v1/` (Val's V1 clips) |
 | `tools/video/` | phone clip to guide: `convert_clip.sh` (HDR to web MP4, trim, turn), `track_clip.py` (Val's path and the pool of light) |
 | `FUTURE_WORK.md` | plans, open questions, and records of things dropped or corrected |
 

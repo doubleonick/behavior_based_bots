@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neuron setup mock-up</title>
+<style>
+:root{--ink:#1d2a44;--paper:#f6f8fb;--grid:#dde7f2;--org:#E07A2E;--blue:#1f5fa8;--note:#FFF4E8}
+*{box-sizing:border-box}
+body{margin:0;background:#e9eef5;color:var(--ink);font:17px/1.5 "Atkinson Hyperlegible",Verdana,sans-serif;padding:16px}
+h1{font-size:1.5rem;margin:0 0 4px} p{margin:0 0 12px}
+.panel{background:var(--paper);border:2.5px solid var(--ink);padding:18px;max-width:980px;
+ background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.atom{background:#c9ced6;border:2.5px solid var(--ink);border-radius:14px;padding:14px;width:max-content}
+.matrix{display:grid;grid-template-columns:repeat(5,40px);grid-template-rows:repeat(5,40px);gap:6px;background:#111;padding:9px;border-radius:8px}
+.px{border-radius:5px;background:#1b1b1b}
+.btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+button,select{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:8px;padding:8px 12px;cursor:pointer}
+button.main{background:var(--org);color:#fff;font-weight:bold}
+.say{flex:1 1 300px;background:#fff;border:2px solid var(--ink);padding:12px;min-height:170px}
+.say b{display:block;margin-bottom:4px}.hint{color:var(--blue);font-size:15px;margin-top:8px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;padding:0;list-style:none;font-size:15px}
+.steps li{border:2px solid var(--ink);padding:2px 10px;background:#fff}.steps li.on{background:var(--ink);color:#fff}
+.world{margin-top:14px;background:var(--note);border:2px solid var(--ink);padding:10px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.note{background:var(--note);border:2px solid var(--ink);padding:12px;margin-top:16px;font-size:16px;max-width:980px}
+</style></head><body>
+<h1>Setting up a wire's nerve cell on Val</h1>
+<p>A mock-up to try, not firmware. Short press changes, long press keeps, as everywhere else on Val. These screens would come after a wire's sign, low point and high point.</p>
+<div class="panel">
+<ul class="steps" id="steps"></ul>
+<div class="row">
+  <div>
+    <div class="atom"><div class="matrix" id="m"></div></div>
+    <div class="btns"><button class="main" id="short">Short press</button><button class="main" id="long">Long press</button><button id="hold">Hold 2 s</button></div>
+  </div>
+  <div class="say"><b id="sayT"></b><span id="sayB"></span><div class="hint" id="sayH"></div></div>
+</div>
+<div class="world">
+  <label>This wire is <select id="sign"><option value="1">+ (green)</option><option value="-1">− (red)</option></select></label>
+  <label id="lightL" hidden>Light <input type="range" id="light" min="0" max="1" step="0.01" value="0.2" style="width:200px"> <b id="lightV"></b></label>
+  <span id="read"></span>
+</div>
+</div>
+<div class="note"><b>What is assumed here</b> (all open to change):
+the wire's sign was chosen on the screen before, as today;
+"no cell" is offered first, so Vehicles 1 to 3 need no extra presses;
+forward strength sets the cell's <b>gain</b>: 1, 2, 5, 10, 20 for the five shades;
+the self weight has five choices starting at zero: 0 (no loop), 0.375, 0.75, 1.125, 1.5;
+the threshold is shown to Val, like the low and high points: hold Val where the cell should start to fire and long press, then try it before keeping it; any level from 0 to 1 is allowed (0: the cell is always awake; 1: it only wakes at the high point);
+On the real LEDs the two dimmest shades may be hard to tell apart.</div>
+<script>
+const COL={green:[47,191,90],red:[226,58,58],cyan:[0,229,255],white:[242,242,242]};
+const SHADE=[0.2,0.4,0.6,0.8,1.0],GAINS=[1,2,5,10,20],SELFS=[0,0.375,0.75,1.125,1.5],SELF_SHADE=[0,0.25,0.5,0.75,1.0];
+const PLACES=['none','on','beside'];
+const RING=[[1,1],[2,1],[3,1],[3,2],[3,3],[2,3],[1,3],[1,2]];   // counter-clockwise from top left
+const m=document.getElementById('m');for(let i=0;i<25;i++){const d=document.createElement('div');d.className='px';m.appendChild(d);}
+let st,frame=0,flashUntil=0;
+function reset(){st={screen:0,place:0,gain:0,self:0,th:0.5,out:0,ph:{a:0,b:0,w:0,c:0},ag:{a:[],b:[],w:[],c:[]}};tell();}
+function tell(){
+  const names=['1 Place','2 Threshold','3 Strength','4 Self','Driving'];const at=[0,1,1,2,3,4][st.screen];
+  steps.innerHTML=names.map((n,i)=>`<li class="${i===at?'on':''}">${n}</li>`).join('');
+  lightL.hidden=!(st.screen===1||st.screen===2||st.screen===5);
+  const T=(t,b,h)=>{sayT.textContent=t;sayB.textContent=b;sayH.textContent=h;};
+  if(st.screen===0){const p=PLACES[st.place];
+    T('Where does the nerve cell go?',p==='none'?'No cell: the sensor is wired straight to the motor.':p==='on'?'The blinking cell is ON the wire: the signal has to go through it.':'The blinking cell is NEXT TO the wire: it works against the wire.','Short press: next place. Long press: keep it.');}
+  else if(st.screen===1){T('When should the cell wake up?','Put Val in the amount of light where the cell should START to fire. The bar on the right shows what the sensor feels now; its cyan top is where the threshold would go.','Move the Light slider (that is you moving Val or the lamp). Long press: set it here.');}
+  else if(st.screen===2){T('Try it','The cyan mark stays where you set it. Move the light: the cell lights up whenever the bar reaches the mark, and goes dim below it.','Long press: keep it. Short press: set it again.');}
+  else if(st.screen===3){T('How strong is the cell?','The cell fires from top to bottom, from its input to its output. Brighter = it answers more strongly. Shade '+(st.gain+1)+' of 5 (gain '+GAINS[st.gain]+').','Short press: next shade. Long press: keep it.');}
+  else if(st.screen===4){T('Does the cell listen to itself?',st.self===0?'Choice 1 of 5: nothing goes round. No self connection (self 0).':'Its signal runs round and back into itself. Brighter = it listens to itself more. Choice '+(st.self+1)+' of 5 (self '+SELFS[st.self]+').','Short press: next shade. Long press: keep it.');}
+  else{T('Driving','The wiring view. Move the light. The cell blinks faster the harder it fires.','Hold 2 s: set up again.');}
+}
+short.onclick=()=>{if(st.screen===0){st.place=(st.place+1)%3;}else if(st.screen===2){st.screen=1;}else if(st.screen===3){st.gain=(st.gain+1)%5;}else if(st.screen===4){st.self=(st.self+1)%5;}tell();};
+long.onclick=()=>{if(st.screen===0){st.screen=PLACES[st.place]==='none'?5:1;}else if(st.screen===1){st.th=+light.value;st.screen=2;}else if(st.screen<5){st.screen++;}tell();};
+hold.onclick=reset;
+function fire(k,rate,maxAge){st.ag[k]=st.ag[k].map(a=>a+1).filter(a=>a<=maxAge);if(rate<=0)return;const b=st.ph[k];st.ph[k]+=rate*0.04;if(Math.floor(st.ph[k])>Math.floor(b))st.ag[k].push(0);}
+function draw(){
+  frame++;const buf=new Array(25).fill(null);
+  const put=(r,c,col,b)=>{const i=r*5+c;if(!buf[i]||buf[i][1]<b)buf[i]=[col,b];};
+  const wire=+sign.value>0?'green':'red';const blink=Math.floor(frame/6)%2===0;
+  if(st.screen===0){
+    put(0,2,wire,1);for(let r=1;r<=3;r++){put(r,2,wire,0.45);}
+    const p=PLACES[st.place];if(p==='on'){put(2,2,'cyan',blink?1:0.12);}if(p==='beside'){put(2,3,'cyan',blink?1:0.12);}
+    for(let c=1;c<=3;c++){put(4,c,'white',0.35);}
+  }else if(st.screen===1||st.screen===2){
+    const x=+light.value;lightV.textContent=x.toFixed(2);
+    const lit=Math.round(x*5);                              // the live bar, filling from the bottom
+    for(let k=0;k<lit;k++){put(4-k,4,wire,0.8);}
+    let awake=false;
+    if(st.screen===1){if(lit>0){put(4-(lit-1),4,'cyan',1);}else{put(4,4,'cyan',blink?1:0.15);}}
+    else{const mark=Math.max(1,Math.ceil(st.th*5-0.001));put(4-(mark-1),4,'cyan',1);awake=x>=st.th;}
+    for(let r=1;r<=3;r++){for(let c=0;c<=2;c++){put(r,c,'cyan',st.screen===1?(blink?0.3:0.1):(awake?1:0.1));}}
+  }else if(st.screen===3){
+    const row=Math.floor(frame/5)%4;           // rows 0,1,2 lit in turn, then a pause
+    for(let r=0;r<3;r++){for(let c=0;c<3;c++){put(1+r,1+c,'cyan',r===row?SHADE[st.gain]:0.07);}}
+  }else if(st.screen===4){
+    const pos=Math.floor(frame/3)%8;
+    RING.forEach(([r,c],i)=>{let b=0.07;if(st.self>0){const d=(pos-i+8)%8;if(d<3){b=SELF_SHADE[st.self]*(1-d/3.5);}}put(r,c,'cyan',b);});
+    put(2,2,'cyan',0.07);
+  }else{
+    const x=Date.now()<flashUntil?0.9:+light.value;lightV.textContent=x.toFixed(2);
+    const p=PLACES[st.place],g=GAINS[st.gain],self=SELFS[st.self],th=st.th;let passed=x,cell=0;
+    if(p!=='none'){let t=Math.max(0,Math.min(1,g*(x+self*st.out-th)));st.out+=0.4*(t-st.out);cell=st.out;passed=p==='beside'?Math.max(0,x-2*cell):cell;}
+    const rate=(v,s)=>(s&&v<=0.005)?0:0.5+9.5*Math.max(0,Math.min(1,v));
+    const seg=(k,rows)=>{for(const a of st.ag[k]){rows.forEach((r,i)=>{const bh=a-i;if(bh>=0&&bh<2.5)put(r,2,wire,1-bh/2.5);});}};
+    put(0,2,wire,1);
+    if(p==='none'){fire('a',rate(x),5.5);seg('a',[1,2,3]);}
+    else{const top=p==='beside'?[1,2]:[1];fire('a',rate(x),top.length+2.5);seg('a',top);fire('b',rate(passed,true),3.5);seg('b',[3]);
+      fire('c',cell>0.01?10*cell:0,2);put(2,p==='beside'?3:2,'cyan',st.ag.c.some(a=>a<=1)?1:0.45);}
+    fire('w',passed>0.01?10*passed:0,6);for(const a of st.ag.w){for(let c=0;c<5;c++){const bh=a-Math.abs(c-2);if(bh>=0&&bh<3)put(4,c,'white',1-bh/3);}}
+    read.textContent=`sensor ${x.toFixed(2)}`+(p==='none'?'':` · cell fires ${cell.toFixed(2)}`)+` · reaches motor ${passed.toFixed(2)}`+(p!=='none'&&self>=th+1/g?' · this cell can hold itself on':'');
+  }
+  if(st.screen!==5){read.textContent=(st.screen===2)?('threshold set at '+st.th.toFixed(2)):'';}
+  for(let i=0;i<25;i++){const px=m.children[i];if(buf[i]){const [c,b]=buf[i];const [r,g,bl]=COL[c];px.style.background=`rgb(${r},${g},${bl})`;px.style.opacity=Math.max(0.07,b);}else{px.style.background='#1b1b1b';px.style.opacity=1;}}
+}
+reset();setInterval(draw,40);
+</script></body></html>

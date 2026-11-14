@@ -162,6 +162,46 @@ A web interface that carries the instructions, with a game/story layer:
   not what reaches the motor: to revisit. The motor's own sum (weights, and a bias of
   1 when every wire is inhibitory) is the same arithmetic as a neuron's but has not
   been rewritten as one.
+  First run on the robot (owner, 2026-11, one module, not extensive): recognisable
+  4a, 4b and memory behaviours.
+- **Setting up a wire's nerve cell on Val (agreed 2026-11, not built).** Mock-up:
+  `web/mockups/setup/neuron_setup_mockup.html`. For each wire, after today's sign,
+  low point and high point:
+  1. *Place:* no cell, a cell on the wire, or a cell next to the wire. The wire is
+     drawn in its sign's colour (green +, red -) and the cell blinks **cyan** (the
+     colour for a nerve cell everywhere). Where the cell sits is the only difference
+     between "in the wire" and "against the wire". No cell skips the rest.
+  2. *Threshold:* shown to Val like the low and high points. The cell (a cyan 3x3)
+     sleeps on the left, the live bar is on the right with a cyan top; long press
+     sets the threshold at what the sensor feels now. Then "Try it": the mark stays,
+     the cell lights whenever the bar reaches it; long press keeps, short press sets
+     again. Any level from 0 to 1 is allowed, on purpose: 0 (always awake; with gain
+     1 in the wire that is a plain wire, so Vehicles 1 to 3 are the same part at its
+     plainest; against the wire it is a dead wire) and 1 (hardly ever wakes) are
+     discoveries, not errors. Threshold comes second, not last: it belongs with the
+     sensor while the lamp is still in hand, and last would muddle "Try it" with the
+     strength and self choices (and could look like Val just running).
+  3. *Strength:* the middle 3x3 fires top to bottom (input to output); five evenly
+     spaced shades choose the gain (proposed 1, 2, 5, 10, 20).
+  4. *Self:* the 3x3's ring fires counter-clockwise; five choices starting at zero
+     (0 = no self connection; proposed 0, 0.375, 0.75, 1.125, 1.5).
+  So gain and self become per wire (they are one setting for all neurons in the test
+  bench). Open: whether five shades can be told apart on the real LEDs at Val's low
+  brightness (try with a small sketch first); what the driving view shows for a cell
+  (the wiring view with a blinking cell, or a zoomed 3x3 whose lit squares count how
+  hard it fires and whose right-hand loop shows memory:
+  `neuron_display_mockup.html`); whether the display stays on while a cell holds Val
+  still (today the face returns when the wheel stops, so a waiting cell is never
+  seen); how a memory cell is switched off. *Dropped:* showing strength by the
+  cell's brightness in the wiring view (too subtle), blue for the cell (cyan reads
+  better), and a memory cell drawn as just "stays lit" (no feedback visible).
+- **Subsumption setup (mock-up 2026-11, not built):**
+  `web/mockups/setup/subsumption_setup_mockup.html`. On Val: the bottom layer first
+  (wander or cruise), then one layer up at a time from the behaviours whose sensors
+  were found, "finished" flashes the stack. In the guide: stack the cards, see the
+  matrix Val will show, read a prediction. Only offering behaviours for sensors
+  that are plugged in is wanted; a web builder can only know that if Val tells it,
+  hence the tentative USB link (see the web guide section).
   *Dropped (2026-11):* the first version bent the signal with formulas on the wire
   (a tent "HUMP" and an on/off "STEP" with a 0.05 gap). Faithful to Braitenberg's
   text, but an abstraction with no biological part to point at; replaced before it
