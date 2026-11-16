@@ -87,11 +87,13 @@ float totalG = 1;
 float forwardZero = 0;                // what "level" read when the button was last pressed
 float leftZero = 0;
 
-const int LEVEL = 0;
-const int TILTED = 1;
-const int FALLING = 2;
-const int JOLT = 3;
-int state = LEVEL;
+// (The names start with IS_ because Arduino already uses the word FALLING for
+// something else, and a second meaning would not compile.)
+const int IS_LEVEL = 0;
+const int IS_TILTED = 1;
+const int IS_FALLING = 2;
+const int IS_JOLT = 3;
+int state = IS_LEVEL;
 unsigned long joltUntilMs = 0;        // JOLT is shown for a moment so it can be seen
 unsigned long notLevelMs = 0;         // when Val was last not level
 bool wheelTurning = false;
@@ -207,27 +209,27 @@ void think() {
     joltUntilMs = millis() + 300;
   }
   if (totalG < FALLING_G) {
-    state = FALLING;
+    state = IS_FALLING;
   } else if (millis() < joltUntilMs) {
-    state = JOLT;
+    state = IS_JOLT;
   } else if (fabsf(forwardDeg) > TILT_LIMIT_DEG || fabsf(leftDeg) > TILT_LIMIT_DEG) {
-    state = TILTED;
+    state = IS_TILTED;
   } else {
-    state = LEVEL;
+    state = IS_LEVEL;
   }
-  if (state != LEVEL) {
+  if (state != IS_LEVEL) {
     notLevelMs = millis();
   }
 }
 
 const char* stateName() {
-  if (state == TILTED) {
+  if (state == IS_TILTED) {
     return "TILTED";
   }
-  if (state == FALLING) {
+  if (state == IS_FALLING) {
     return "FALLING";
   }
-  if (state == JOLT) {
+  if (state == IS_JOLT) {
     return "JOLT";
   }
   return "LEVEL";
@@ -245,7 +247,7 @@ void updateWheel() {
   bool shouldTurn = (WHEEL_ANGLE != 90);
   if (shouldTurn && STOP_WHEN_NOT_LEVEL) {
     // stopped while not level, and until it has been level for a while
-    if (state != LEVEL || millis() - notLevelMs < LEVEL_AGAIN_MS) {
+    if (state != IS_LEVEL || millis() - notLevelMs < LEVEL_AGAIN_MS) {
       shouldTurn = false;
     }
   }
@@ -289,12 +291,12 @@ void draw() {
     FastLED.show();
     return;
   }
-  if (state == FALLING) {
+  if (state == IS_FALLING) {
     fill(CRGB(255, 140, 0));
     FastLED.show();
     return;
   }
-  if (state == JOLT) {
+  if (state == IS_JOLT) {
     fill(CRGB(255, 255, 255));
     FastLED.show();
     return;
@@ -306,7 +308,7 @@ void draw() {
   int row = 2 - dotOffset(forwardDeg);              // nose down: the dot moves up (forward)
   int col = 2 - dotOffset(leftDeg);                 // left side down: the dot moves left
   CRGB colour = CRGB(0, 255, 0);
-  if (state == TILTED) {
+  if (state == IS_TILTED) {
     colour = CRGB(255, 0, 0);
   }
   leds[row * 5 + col] = colour;
