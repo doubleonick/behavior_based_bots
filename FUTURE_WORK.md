@@ -133,6 +133,13 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Firmware
 
+- **`firmware/Color_Test/` (2026-11, branch `expanded_vehicles`, not yet run on the
+  robot):** the whole matrix shows the colour the Color Unit sees. The strongest of
+  red, green and blue is stretched to full, so the colour shows even in dim light
+  (`SHOW_BRIGHTNESS` true dims it with the light instead); below `TOO_DARK` it goes
+  dark. Pressing the screen over something white takes a white balance. To find out
+  on the robot: how true the colours look on the matrix's LEDs, and whether white
+  balance is needed for the colours a lesson would use.
 - **A safety reflex from the IMU: "not level, motors off" (2026-11, exploring).** Wanted:
   a safety feature with no extra sensor (so not a downward IR, and not a stop on the
   path), and a reason to explore the Matrix's IMU. `firmware/IMU_Test/` (branch
