@@ -18,9 +18,12 @@
     white   the whole matrix, for a moment: a jolt
     purple  cross: no IMU found
 
-  Button (press the screen): "this is level". Val takes the way it is sitting now as
-  level, so tilt reads 0 from here. It also does this once at the start, so start with
-  Val sitting on the table.
+  Button (the screen):
+    short press   the next driving speed: stopped, then each of SPEED_STEPS in turn,
+                  then stopped again. Val always starts stopped.
+    long press    "this is level". Val takes the way it is sitting now as level, so
+                  tilt reads 0 from here. It also does this once at the start, so
+                  start with Val sitting on the table.
 
   Serial (115200), 10 times a second:
     x y z      what the IMU feels along each of its axes, in g (1 g = gravity)
@@ -28,12 +31,20 @@
     left       how far the left side is down (+) or up (-), in degrees
     total      how much it feels altogether: about 1.00 sitting still, near 0 falling
     jolt       the size of the latest sudden change, in g
+    slope      forward and left again, averaged over about half a second: the
+               steady tilt under the shaking, which is what a hill would read as
+    speed      which driving speed is chosen (0 = stopped)
     and one word: LEVEL, TILTED, FALLING or JOLT
 
-  The wheel (optional): set WHEEL_ANGLE to something other than 90 and the servo in
-  S1 turns (90 = stop; 100 is a slow crawl one way, 80 the other). With
-  STOP_WHEN_NOT_LEVEL true the wheel stops whenever the word is not LEVEL, and starts
-  again once Val has been level for a second. That is the safety idea being tried.
+  Driving: a slow drive, for seeing whether Val can hold or climb a slope and what
+  the tilt reads while it moves. Short presses step through SPEED_STEPS (how many
+  degrees away from "stop" the servos are sent; small numbers are slow). Say which
+  servos Val has with S1_DIRECTION and S2_DIRECTION: +1 or -1 for a servo that is
+  there (flip the sign if that wheel turns the wrong way), 0 for none. The speed
+  shows as blue dots on the bottom row.
+  With STOP_WHEN_NOT_LEVEL true the wheels stop whenever the word is not LEVEL, and
+  start again once Val has been level for a second: the safety idea. Leave it false
+  for slopes, or Val will stop as soon as it tilts.
   HOLD VAL, or put something soft under the table edge, while you try it.
 
   Needs: FastLED, and the SparkFun BMI270 Arduino Library.
@@ -58,8 +69,13 @@ const float FALLING_G      = 0.4f;    // feeling less than this in total is FALL
 const float JOLT_G         = 0.6f;    // a sudden change bigger than this is a JOLT
 const unsigned long LEVEL_AGAIN_MS = 1000;   // level for this long before the wheel restarts
 
-const int  WHEEL_ANGLE = 90;          // 90 = the wheel stays still. Try 100 for a slow crawl.
-const bool STOP_WHEN_NOT_LEVEL = true;
+// Driving. Each step is how many degrees away from "stop" (90) the servos are sent.
+const int SPEED_STEP_COUNT = 4;
+const int SPEED_STEPS[SPEED_STEP_COUNT] = {4, 8, 14, 22};
+const int S1_DIRECTION = 1;           // +1 or -1: a servo in S1, and which way is forward. 0: none.
+const int S2_DIRECTION = 0;           // the same for S2 (two wheels: usually the opposite sign to S1)
+const bool STOP_WHEN_NOT_LEVEL = false;      // true: stop the wheels whenever Val is not level
+const unsigned long LONG_PRESS_MS = 600;     // holding the screen this long is a long press
 
 const int MATRIX_PIN = 27;
 const int BUTTON_PIN = 39;
@@ -97,6 +113,12 @@ int state = IS_LEVEL;
 unsigned long joltUntilMs = 0;        // JOLT is shown for a moment so it can be seen
 unsigned long notLevelMs = 0;         // when Val was last not level
 bool wheelTurning = false;
+int speedStep = 0;                    // 0 = stopped, 1.. = SPEED_STEPS[speedStep - 1]
+float slopeForwardDeg = 0;            // the tilt, averaged over about half a second
+float slopeLeftDeg = 0;
+bool buttonWasDown = false;
+unsigned long buttonDownMs = 0;
+bool longPressDone = false;
 unsigned long lastReadMs = 0;
 unsigned long lastPrintMs = 0;
 bool zeroPending = true;              // take "level" from the first steady readings
@@ -203,6 +225,9 @@ void think() {
   }
   forwardDeg = rawForwardDeg - forwardZero;
   leftDeg = rawLeftDeg - leftZero;
+  // The steady slope under the shaking: follow the tilt slowly
+  slopeForwardDeg += 0.02f * (forwardDeg - slopeForwardDeg);
+  slopeLeftDeg += 0.02f * (leftDeg - slopeLeftDeg);
 
   // One word for what is going on. A jolt is shown for a third of a second.
   if (jolt >= JOLT_G) {
@@ -235,16 +260,27 @@ const char* stateName() {
   return "LEVEL";
 }
 
-// ---------- The wheel (servo in S1, through the Motion's angle register) ----------
-void setWheel(int degrees) {
+// ---------- The wheels (servos in S1 and S2, through the Motion's angle registers) ----------
+// channel 1 = S1, 2 = S2. 90 degrees = stop.
+void setServo(int channel, int degrees) {
   Wire.beginTransmission(MOTION_ADDRESS);
-  Wire.write(0x00);                   // register 0x00 = S1's angle
+  Wire.write(channel - 1);            // register 0x00 = S1's angle, 0x01 = S2's
   Wire.write((uint8_t)degrees);
   Wire.endTransmission();
 }
 
+// Send the servos this many degrees away from stop (0 = stop)
+void driveBy(int degreesFromStop) {
+  if (S1_DIRECTION != 0) {
+    setServo(1, 90 + S1_DIRECTION * degreesFromStop);
+  }
+  if (S2_DIRECTION != 0) {
+    setServo(2, 90 + S2_DIRECTION * degreesFromStop);
+  }
+}
+
 void updateWheel() {
-  bool shouldTurn = (WHEEL_ANGLE != 90);
+  bool shouldTurn = (speedStep > 0);
   if (shouldTurn && STOP_WHEN_NOT_LEVEL) {
     // stopped while not level, and until it has been level for a while
     if (state != IS_LEVEL || millis() - notLevelMs < LEVEL_AGAIN_MS) {
@@ -253,13 +289,39 @@ void updateWheel() {
   }
   if (shouldTurn != wheelTurning) {
     wheelTurning = shouldTurn;
-    Serial.println(wheelTurning ? "Wheel: turning" : "Wheel: STOPPED");
+    Serial.println(wheelTurning ? "Wheels: turning" : "Wheels: STOPPED");
   }
   if (wheelTurning) {
-    setWheel(WHEEL_ANGLE);
+    driveBy(SPEED_STEPS[speedStep - 1]);
   } else {
-    setWheel(90);
+    driveBy(0);
   }
+}
+
+// ---------- The button: short press = next speed, long press = "this is level" ----------
+void updateButton() {
+  bool down = (digitalRead(BUTTON_PIN) == LOW);
+  if (down && !buttonWasDown) {
+    buttonDownMs = millis();          // just pressed
+    longPressDone = false;
+  }
+  if (down && !longPressDone && millis() - buttonDownMs >= LONG_PRESS_MS) {
+    longPressDone = true;             // held long enough: "this is level"
+    zeroPending = true;
+  }
+  if (!down && buttonWasDown && !longPressDone) {
+    // let go after a short press: the next speed, and after the last one, stopped
+    speedStep++;
+    if (speedStep > SPEED_STEP_COUNT) {
+      speedStep = 0;
+    }
+    if (speedStep == 0) {
+      Serial.println("Speed 0: stopped");
+    } else {
+      Serial.printf("Speed %d: %d degrees from stop\n", speedStep, SPEED_STEPS[speedStep - 1]);
+    }
+  }
+  buttonWasDown = down;
 }
 
 // ---------- The matrix: index = row * 5 + col, row 0 at the top ----------
@@ -303,6 +365,9 @@ void draw() {
   }
   fill(CRGB(0, 0, 0));
   leds[2 * 5 + 2] = CRGB(40, 40, 40);               // a dim mark in the middle
+  for (int k = 0; k < speedStep && k < 5; k++) {
+    leds[4 * 5 + k] = CRGB(0, 0, 90);               // the driving speed: blue dots, bottom row
+  }
   // The dot slides towards the low side. The top of the matrix is Val's front
   // (the face is upright when seen from behind), the left of the matrix its left.
   int row = 2 - dotOffset(forwardDeg);              // nose down: the dot moves up (forward)
@@ -316,8 +381,9 @@ void draw() {
 }
 
 void printReadings() {
-  Serial.printf("x %+.2f  y %+.2f  z %+.2f | forward %+6.1f  left %+6.1f deg | total %.2f g | jolt %.2f | %s\n",
-                accel[0], accel[1], accel[2], forwardDeg, leftDeg, totalG, jolt, stateName());
+  Serial.printf("x %+.2f  y %+.2f  z %+.2f | forward %+6.1f  left %+6.1f deg | slope %+6.1f %+6.1f deg | total %.2f g | jolt %.2f | speed %d | %s\n",
+                accel[0], accel[1], accel[2], forwardDeg, leftDeg, slopeForwardDeg, slopeLeftDeg,
+                totalG, jolt, speedStep, stateName());
 }
 
 // ---------- Setup / loop ----------
@@ -328,16 +394,14 @@ void setup() {
   FastLED.addLeds<WS2812, MATRIX_PIN, GRB>(leds, 25);
   FastLED.setBrightness(LED_BRIGHTNESS);
   Wire.begin(25, 21, 100000);         // the Matrix's internal bus: IMU and Motion base
-  setWheel(90);                       // the wheel starts still
+  driveBy(0);                         // the wheels start still
   Serial.println("IMU test");
   beginImu();
   notLevelMs = millis();
 }
 
 void loop() {
-  if (digitalRead(BUTTON_PIN) == LOW) {
-    zeroPending = true;               // "this is level"
-  }
+  updateButton();
 
   if (millis() - lastReadMs >= 10) {  // read 100 times a second
     lastReadMs = millis();

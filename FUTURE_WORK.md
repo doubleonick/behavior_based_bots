@@ -154,6 +154,20 @@ A web interface that carries the instructions, with a game/story layer:
   something other than the drive wheel leads and Val is slow. Then choose the rule
   and put it in the shared code for every sketch. The thresholds in the test (12
   degrees, 0.4 g, 0.6 g) are first guesses.
+  First run (owner, 2026-11): with the axes set, the bubble moves the right way. Not
+  expected to save Val from driving off an edge (agreed). So the reflex is for being
+  picked up, tipped or falling, and the IMU's better use may be as a sense: gravity
+  is among the oldest senses (jellyfish and comb jellies steer by it), so it belongs
+  early on the path as one more sense Val has, not as a stop. Ideas, none built: the
+  slope under Val as a literal gradient at the potential-field stop (uphill pulls or
+  downhill pulls; one IMU gives forward and sideways, like a left / right pair with
+  no port); tilt as a sensor on a vehicle's wire; "picked up or tipped: stop" as
+  subsumption's bottom layer. Frontier: noticing "I am driving but not moving"
+  (command against what is felt). Unknown and to test first: whether Val can climb a
+  slope without slipping, and whether a few degrees reads clearly while driving.
+  IMU_Test now has a slow drive for that: short presses step through `SPEED_STEPS`,
+  a long press sets level, `S1_DIRECTION` / `S2_DIRECTION` say which servos, and
+  Serial adds a half-second average of the tilt ("slope").
 - **Vehicles 4 and 5: one nerve cell on the wire (2026-11, branch `expanded_vehicles`,
   a test bench).** One part, `Neuron` (Val_Vehicle/Neuron.h), is meant to carry
   Vehicles 4, 5 and 7, so each vehicle is a small change to the last and the lessons
