@@ -68,7 +68,13 @@ direct connection to the servo signal pins.
   `firmware/IMU_Test/` reads either chip (the MPU6886 directly, from its data sheet:
   address 0x68, WHO_AM_I 0x75 = 0x19, accelerometer from 0x3B; **not tried on a real
   one**) and shows tilt as a bubble level, for finding out what the IMU can tell about
-  Val tipping over an edge, being picked up or falling. Nothing measured yet.
+  Val tipping over an edge, being picked up or falling.
+  **Axes found on Val (owner, 2026-11, BMI270, Matrix face up at the back):** nose
+  down reads towards -1 on **y**, left side down towards -1 on **x**; z is up / down.
+  In IMU_Test's terms: `FORWARD_AXIS 1`, `FORWARD_SIGN -1`, `LEFT_AXIS 0`,
+  `LEFT_SIGN -1`. Val_Brooks' own `IMU_FORWARD_AXIS` / `IMU_LEFT_AXIS` settings have
+  not been checked against this (it measures jolts, not tilt, so its signs need
+  their own test).
 
 ## Units that can't say what they are (not yet tried on the robot)
 

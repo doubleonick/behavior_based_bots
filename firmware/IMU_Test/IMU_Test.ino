@@ -59,10 +59,11 @@
 // x y z on Serial and tip Val's nose DOWN: the axis that goes up towards +1 is the
 // forward axis with sign +1 (if it goes towards -1, its sign is -1). Then the same
 // with the LEFT side down. The axis left over is the one that points down.
-const int   FORWARD_AXIS = 0;
-const float FORWARD_SIGN = 1.0f;
-const int   LEFT_AXIS    = 1;
-const float LEFT_SIGN    = 1.0f;
+// (These are the values found on Val, with the Matrix mounted face up at the back.)
+const int   FORWARD_AXIS = 1;
+const float FORWARD_SIGN = -1.0f;
+const int   LEFT_AXIS    = 0;
+const float LEFT_SIGN    = -1.0f;
 
 const float TILT_LIMIT_DEG = 12.0f;   // more tilt than this is TILTED
 const float FALLING_G      = 0.4f;    // feeling less than this in total is FALLING
