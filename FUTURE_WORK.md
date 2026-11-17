@@ -168,6 +168,15 @@ A web interface that carries the instructions, with a game/story layer:
   IMU_Test now has a slow drive for that: short presses step through `SPEED_STEPS`,
   a long press sets level, `S1_DIRECTION` / `S2_DIRECTION` say which servos, and
   Serial adds a half-second average of the tilt ("slope").
+  Second run (owner, 2026-11, one module, IMU_Test's slow drive): **Val climbs up
+  and down an incline,** fairly steep (not measured). **A collision registered as a
+  JOLT at the top speed** (22 degrees from stop); at lower speeds the bubble moved
+  but no JOLT was called, so 0.6 g is too high for slow bumps (or they are too soft
+  to feel: the Serial numbers would say). No false alarms seen, not tested hard.
+  Left / right not tested (needs two modules). **Decided: do not put any IMU logic
+  into the other sketches yet.** Still to measure before anything is built: the
+  slope reading while driving on a ramp of known angle; the jolt size at each speed
+  against the jolt of the wheels starting and stopping.
 - **Vehicles 4 and 5: one nerve cell on the wire (2026-11, branch `expanded_vehicles`,
   a test bench).** One part, `Neuron` (Val_Vehicle/Neuron.h), is meant to carry
   Vehicles 4, 5 and 7, so each vehicle is a small change to the last and the lessons
