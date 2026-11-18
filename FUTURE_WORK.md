@@ -156,6 +156,46 @@ A web interface that carries the instructions, with a game/story layer:
   *Dropped:* a separate "light or colour?" screen (light became one of the channels);
   a "?" show-me colour (fixed colours for now); strict colour matching (red would
   count as no colour at all); low and high per colour channel.
+  First run (owner, 2026-11): **colour only works at close range,** so it suits
+  patches or strips of colour on the floor, with the Color Unit pointing down.
+- **Floor colour as taste and smell, not vision (idea for the path, 2026-11).** A
+  sensor reading only what is right under it is a contact chemical sense, older
+  than eyes, not colour vision (early eyespots sensed light and shade and its
+  direction, at a distance, not colour). So on the path: light from above stays
+  "light"; colour on the floor is "a chemical on the ground", and magenta, yellow
+  and cyan can stand for different chemicals (food, danger, a mate: an analogy).
+  Flies and butterflies taste with their feet, which is nearly what Val does
+  (high confidence). Fits the early sea and seabed stops: the first moving animals
+  grazed on algal mats (owner's source 02). Revisit the light-based creature
+  choices with this in mind.
+  *Vehicles:*
+  - Vehicle 1 (one module, sensor down): a patch is a food patch. A - wire on its
+    colour slows Val on the patch and speeds it off, so it lingers there: the
+    roundworm C. elegans slowing on its bacterial food (kinesis; high confidence).
+    A + wire hurries it across. Bacteria do the oldest version: they only know the
+    chemistry where they are.
+  - Vehicles 2 and 3 (two modules, one sensor each side): a strip is a scent trail.
+    Each side tastes the ground under it; with the right wiring Val steers to keep
+    the strip between its sensors, as an ant follows a trail with its two antennae
+    (trail following: high confidence; that the left / right comparison is the
+    whole story: medium). Uncrossed + turns off the trail, crossed + turns onto it.
+    Needs a Color Unit per module (owner has one so far).
+  - With one sensor, a trail can only be followed by swinging and comparing over
+    time, as maggots and worms do: that needs memory, so it belongs at or after
+    Vehicle 5.
+  *Fields:*
+  - One Color Unit, many stimuli: approach one colour, avoid another (approach
+    yellow food, avoid magenta danger), each colour its own wire.
+  - A floor sensor has no direction of its own, so its push or pull acts in the
+    direction it is MOUNTED (left, right, front of the chassis), not where it points.
+    One unit mounted to one side gives a one-sided pull at a patch's edge; two
+    (left and right) give a proper turn towards or away.
+  - Patches have edges, not gradients. For a real field, print a strip that fades
+    from white to full colour: the stimulus already multiplies by saturation, so
+    the fade reads as a concentration gradient to climb or flee. Untested.
+  - Long-range smell (a wolf scenting the air) is the field idea proper: a
+    gradient followed from far away. A dog with its nose on a trail is the close
+    version.
 - **`firmware/Color_Test/` (2026-11, branch `expanded_vehicles`, not yet run on the
   robot):** the whole matrix shows the colour the Color Unit sees. The strongest of
   red, green and blue is stretched to full, so the colour shows even in dim light
