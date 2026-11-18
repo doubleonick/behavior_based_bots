@@ -55,20 +55,20 @@
 [ 39.41s] Hub 0 C  3000 (0.05 pull +0)  Hub 1 C  3000 (0.05 pull +0)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Surprised
 [ 39.71s] Setup for 2 new sensor(s)
    >> t=39.71s setup STARTS
-[ 58.41s] Wheels: S1 forward = left, S2 forward = right
-[ 58.41s]   Hub 0: Light, pull at -45 deg, low 400, high 20000
-[ 58.41s]   Hub 1: Light, pull at +45 deg, low 400, high 20000
-   >> t=58.41s setup ends
-[ 58.41s] [ 58.41s] Matrix: spikes
-[ 58.41s] Lanes, left to right: Hub 1 Hub 0
-[ 58.41s] Hub 0 C  3000 (0.13 pull -45)  Hub 1 C  3000 (0.13 pull +45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Spikes
-[ 58.91s] Hub 0 C  3000 (0.13 pull -45)  Hub 1 C  3000 (0.13 pull +45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Spikes
-[ 59.41s] Hub 0 C  3000 (0.13 pull -45)  Hub 1 C  3000 (0.13 pull +45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Spikes
-[ 59.91s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
-[ 60.41s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
-[ 60.91s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
-[ 61.41s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
-   >> t=61.9s  S1 (left) 127 deg, S2 (right) 0 deg
-[ 61.91s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
-[ 62.41s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
-LED frames shown: 1573, checksum de8aa665
+[ 67.41s] Wheels: S1 forward = left, S2 forward = right
+[ 67.41s]   Hub 0: Light, pull at -45 deg, low 400, high 20000
+[ 67.41s]   Hub 1: Light, pull at +45 deg, low 400, high 20000
+   >> t=67.41s setup ends
+[ 67.42s] [ 67.42s] Matrix: spikes
+[ 67.42s] Lanes, left to right: Hub 1 Hub 0
+[ 67.42s] Hub 0 C  3000 (0.13 pull -45)  Hub 1 C  3000 (0.13 pull +45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Spikes
+[ 67.92s] Hub 0 C  3000 (0.13 pull -45)  Hub 1 C  3000 (0.13 pull +45)  | field (+0.00, +0.19) -> L +0.49 R +0.49 | Spikes
+[ 68.42s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 68.92s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 69.42s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 69.92s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 70.42s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+   >> t=70.9s  S1 (left) 127 deg, S2 (right) 0 deg
+[ 70.92s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+[ 71.42s] Hub 0 C  2000 (0.08 pull -45)  Hub 1 C 15000 (0.74 pull +45)  | field (-0.47, +0.58) -> L +0.42 R +1.00 | Spikes
+LED frames shown: 1801, checksum ca7c4268

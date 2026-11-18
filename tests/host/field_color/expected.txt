@@ -1,0 +1,58 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Light sensor found on Port A (SDA=G32, SCL=G26)
+[  0.50s] Port A C 30200 (0.46 pull +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  1.00s] Port A C 30200 (0.46 pull +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  1.50s] Port A C 30200 (0.46 pull +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  2.00s] Port A C 30200 (0.46 pull +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  2.50s] Port A C 30200 (0.46 pull +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  3.00s] Port A C 30200 (0.46 pull +0)  | field (+0.00, +0.00) -> L +0.00 R +0.00 | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 1 sensor(s)
+   >> t=3.49s setup STARTS
+[ 24.30s] Wheels: S1 forward = left, S2 forward = right
+[ 24.30s]   Port A: Light, off at +90 deg, low 275, high 30200
+[ 24.30s]   Port A: Magenta, pull at +90 deg
+[ 24.30s]   Port A: Yellow, push at +90 deg
+   >> t=24.31s setup ends
+[ 24.31s] [ 24.31s] Matrix: spikes
+[ 24.31s] Lanes, left to right: Port A Magenta Port A Yellow
+[ 24.31s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 24.81s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 25.31s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 25.81s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 26.31s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 26.81s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 27.31s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 27.81s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 28.31s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+   >> t=28.7s  S1 (left) 117 deg, S2 (right) 63 deg
+[ 28.81s] Port A C 30200 (1.00 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 29.31s] Port A C 20700 (0.68 off +90)  Magenta (0.65 pull)  Yellow (0.00 push)  | field (-0.65, -0.00) -> L -0.35 R +0.95 | Spikes
+[ 29.81s] Port A C 20700 (0.68 off +90)  Magenta (0.65 pull)  Yellow (0.00 push)  | field (-0.65, -0.00) -> L -0.35 R +0.95 | Spikes
+[ 30.31s] Port A C 20700 (0.68 off +90)  Magenta (0.65 pull)  Yellow (0.00 push)  | field (-0.65, -0.00) -> L -0.35 R +0.95 | Spikes
+[ 30.81s] Port A C 20700 (0.68 off +90)  Magenta (0.65 pull)  Yellow (0.00 push)  | field (-0.65, -0.00) -> L -0.35 R +0.95 | Spikes
+[ 31.31s] Port A C 20700 (0.68 off +90)  Magenta (0.65 pull)  Yellow (0.00 push)  | field (-0.65, -0.00) -> L -0.35 R +0.95 | Spikes
+   >> t=31.7s  S1 (left) 59 deg, S2 (right) 5 deg
+[ 31.81s] Port A C 20700 (0.68 off +90)  Magenta (0.65 pull)  Yellow (0.00 push)  | field (-0.65, -0.00) -> L -0.35 R +0.95 | Spikes
+[ 32.31s] Port A C 20700 (0.68 off +90)  Magenta (0.65 pull)  Yellow (0.00 push)  | field (-0.65, -0.00) -> L -0.35 R +0.95 | Spikes
+[ 32.81s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.65 push)  | field (+0.65, +0.00) -> L +0.95 R -0.35 | Spikes
+[ 33.31s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.65 push)  | field (+0.65, +0.00) -> L +0.95 R -0.35 | Spikes
+[ 33.81s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.65 push)  | field (+0.65, +0.00) -> L +0.95 R -0.35 | Spikes
+[ 34.31s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.65 push)  | field (+0.65, +0.00) -> L +0.95 R -0.35 | Spikes
+   >> t=34.7s  S1 (left) 175 deg, S2 (right) 121 deg
+[ 34.81s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.65 push)  | field (+0.65, +0.00) -> L +0.95 R -0.35 | Spikes
+[ 35.31s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.65 push)  | field (+0.65, +0.00) -> L +0.95 R -0.35 | Spikes
+[ 35.81s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 36.31s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 36.81s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 37.31s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+   >> t=37.7s  S1 (left) 117 deg, S2 (right) 63 deg
+[ 37.81s] Port A C 20700 (0.68 off +90)  Magenta (0.00 pull)  Yellow (0.00 push)  | field (+0.00, +0.00) -> L +0.30 R +0.30 | Spikes
+[ 38.31s] Port A C 11200 (0.37 off +90)  Magenta (0.12 pull)  Yellow (0.12 push)  | field (+0.00, -0.00) -> L +0.30 R +0.30 | Spikes
+[ 38.81s] Port A C 11200 (0.37 off +90)  Magenta (0.12 pull)  Yellow (0.12 push)  | field (+0.00, -0.00) -> L +0.30 R +0.30 | Spikes
+[ 39.31s] Port A C 11200 (0.37 off +90)  Magenta (0.12 pull)  Yellow (0.12 push)  | field (+0.00, -0.00) -> L +0.30 R +0.30 | Spikes
+[ 39.81s] Port A C 11200 (0.37 off +90)  Magenta (0.12 pull)  Yellow (0.12 push)  | field (+0.00, -0.00) -> L +0.30 R +0.30 | Spikes
+[ 40.31s] Port A C 11200 (0.37 off +90)  Magenta (0.12 pull)  Yellow (0.12 push)  | field (+0.00, -0.00) -> L +0.30 R +0.30 | Spikes
+   >> t=40.7s  S1 (left) 117 deg, S2 (right) 63 deg
+[ 40.81s] Port A C 11200 (0.37 off +90)  Magenta (0.12 pull)  Yellow (0.12 push)  | field (+0.00, -0.00) -> L +0.30 R +0.30 | Spikes
+LED frames shown: 1037, checksum 2ae2009b

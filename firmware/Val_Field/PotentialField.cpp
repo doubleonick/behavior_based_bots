@@ -11,7 +11,7 @@ void PotentialField::compute() {
       continue;
     }
 
-    float length = s.sensor->value() * s.gain;       // 0..1 times gain
+    float length = s.sensor->valueFor(s.channel) * s.gain;   // 0..1 times gain
 
     // Pull points toward where the sensor looks; push points the other way
     float direction = s.angle;

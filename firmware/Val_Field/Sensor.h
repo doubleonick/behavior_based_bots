@@ -45,6 +45,9 @@ public:
   bool  isConnected() const { return _connected; }
   long  raw() const { return _raw; }
   virtual float value() const;        // 0..1 between the calibration points (a child may shape it further)
+  // A sensor that can feel more than one thing (the Color Unit: light and colours)
+  // gives each its own stimulus. Channel 0 is the sensor's ordinary value().
+  virtual float valueFor(uint8_t channel) const { return value(); }
 
   // virtual so a child class can do more when it is calibrated
   virtual void calibrateLow()  { _low = _raw; }

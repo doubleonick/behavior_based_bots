@@ -4,7 +4,8 @@
 // -45, Hub 1: push at +45; calibration); an obstacle on the left makes the robot turn
 // right, and the spike lanes are ordered left (Hub 1) to right (Hub 0). Then both
 // distance sensors are unplugged and two light sensors go on the same channels:
-// surprise, setup for just those two (pull, same sides, calibration); a bright light
+// surprise, setup for just those two (pull, same sides, calibration, colour wires left
+// off); a bright light
 // on the left makes the robot turn left.
 // This story has no Reflective IR or Key Unit: don't assume them in empty ports
 #define ASSUME_KEY_ON_PORT_C 0
@@ -62,7 +63,9 @@ int main(){
       if(lastSetup && setups==2){               // the light sensors' setup: press along with it
         lightSetupAt=t; tp=t+0.8f;
         sensorSteps(7, lowAt[2], highAt[2]);     // Hub 0: pull, -45 (right)
+        longP(); longP(); longP();               // Hub 0's magenta, yellow, cyan wires: left off
         sensorSteps(1, lowAt[3], highAt[3]);     // Hub 1: pull, +45 (left)
+        longP(); longP(); longP();               // Hub 1's colour wires: left off
       }
       if(!lastSetup && setups==2){ lightRunAt=t+1; } }
     if(fabsf(t-(runAt+2.5f))<0.003f || fabsf(t-(runAt+5.5f))<0.003f || fabsf(t-(lightRunAt+2.5f))<0.003f){

@@ -22,6 +22,20 @@ const uint32_t ENTER_MS    = 500;    // half a second of static
 const uint32_t DONE_MS     = 1600;
 const float    WHEEL_SPEED = 0.3f;    // how fast a wheel turns while checking its direction
 
+// The colour that stands for a Color Unit's colour wire (channel 1-3)
+const Canvas::Color& colorForChannel(uint8_t channel) {
+  if (channel == 1) {
+    return Palette::MAGENTA;
+  }
+  if (channel == 2) {
+    return Palette::YELLOW;
+  }
+  if (channel == 3) {
+    return Palette::CYAN;
+  }
+  return Palette::WHITE;
+}
+
 const Canvas::Color& colorForPolicy(PotentialField::Policy p) {
   if (p == PotentialField::PULL) {
     return Palette::GREEN;
@@ -49,11 +63,20 @@ int FieldSetup::stepFromAngle(float angle) {
   return ((step % 8) + 8) % 8;
 }
 
-void FieldSetup::start(PotentialField::Source** sources, int count, bool withWheels) {
-  _count = min(count, 3);
+void FieldSetup::start(PotentialField::Source** sources, int count, bool withWheels, int othersOn) {
+  _count = min(count, MAX_ENTRIES);
+  _dots = 0;
   for (int n = 0; n < _count; n++) {
     _sources[n] = sources[n];
+    if (!isColour(n) || n == 0) {
+      _dots++;                            // a new sensor: a new dot
+    }
+    _dotOf[n] = _dots - 1;                // a colour wire shares its sensor's dot
   }
+  if (_dots > 3) {
+    _dots = 3;
+  }
+  _othersOn = othersOn;
   _current = 0;
   _finished = false;
   _withWheels = withWheels;
@@ -73,13 +96,39 @@ void FieldSetup::goTo(Phase p) {
   }
 }
 
-void FieldSetup::nextSource() {
-  _current++;
+// A colour wire may be offered while fewer than MAX_LANES wires are on, counting
+// one lane for every sensor still to come after it
+bool FieldSetup::roomForColour() const {
+  int on = _othersOn;
+  for (int n = 0; n < _current; n++) {
+    if (_sources[n]->policy != PotentialField::OFF) {
+      on++;
+    }
+  }
+  for (int n = _current + 1; n < _count; n++) {
+    if (!isColour(n)) {
+      on++;                               // keep a lane for each sensor still to come
+    }
+  }
+  return on < MAX_LANES;
+}
+
+void FieldSetup::enterSource() {
+  while (_current < _count && isColour(_current) && !roomForColour()) {
+    _sources[_current]->policy = PotentialField::OFF;
+    Serial.printf("Colour wire skipped: %d wires are on already\n", MAX_LANES);
+    _current++;
+  }
   if (_current < _count) {
     goTo(POLICY);
   } else {
     goTo(DONE);
   }
+}
+
+void FieldSetup::nextSource() {
+  _current++;
+  enterSource();
 }
 
 void FieldSetup::flip(MotionServo& servo) {
@@ -112,7 +161,7 @@ void FieldSetup::handle(Button::Event e) {
     } else if (e == Button::LONG_PRESS) {
       if (_count > 0) {
         _current = 0;
-        goTo(POLICY);
+        enterSource();
       } else {
         goTo(DONE);
       }
@@ -129,10 +178,13 @@ void FieldSetup::handle(Button::Event e) {
         s->policy = PotentialField::PULL;
       }
     } else if (e == Button::LONG_PRESS) {
-      if (s->policy == PotentialField::OFF) {
+      bool hasColours = (_current + 1 < _count && isColour(_current + 1));
+      if (isColour(_current)) {
+        nextSource();                      // a colour wire shares its sensor's angle and calibration
+      } else if (s->policy == PotentialField::OFF && !hasColours) {
         nextSource();                      // off: nothing more to set
       } else {
-        goTo(ANGLE);
+        goTo(ANGLE);                       // (a Color Unit's colour wires need these even if light is off)
       }
     }
   } else if (_phase == ANGLE) {
@@ -168,7 +220,7 @@ void FieldSetup::update() {
     if (_withWheels) {
       goTo(WHEEL_LEFT);
     } else if (_count > 0) {
-      goTo(POLICY);
+      enterSource();
     } else {
       goTo(DONE);
     }
@@ -187,23 +239,36 @@ void FieldSetup::update() {
 // ---------------------------------------------------------------------
 //  Drawing
 // ---------------------------------------------------------------------
-// Top row: one dot per sensor
+// Top row: one dot per sensor (a Color Unit's colour wires share its dot)
 void FieldSetup::drawDots(float t) {
-  for (int j = 0; j < _count; j++) {
-    int col = Icons::DOT_COLS[_count][j];
-    if (_phase == DONE || j < _current) {
-      PotentialField::Policy p = _sources[j]->policy;
+  int currentDot = _dots;
+  if (_current < _count) {
+    currentDot = _dotOf[_current];
+  }
+  for (int j = 0; j < _dots; j++) {
+    int col = Icons::DOT_COLS[_dots][j];
+    // the sensor's own (first) entry
+    int first = 0;
+    while (first < _count && _dotOf[first] != j) {
+      first++;
+    }
+    if (_phase == DONE || j < currentDot) {
+      PotentialField::Policy p = _sources[first]->policy;
       float level = 0.7f;
       if (p == PotentialField::OFF) {
         level = 0.35f;
       }
       _canvas.put(0, col, colorForPolicy(p), level);
-    } else if (j == _current) {
+    } else if (j == currentDot) {
       float level = 0.15f;
       if (sinf(t * PI * 3) > -0.3f) {
         level = 0.9f;
       }
-      _canvas.put(0, col, Palette::WHITE, level);
+      const Canvas::Color* colour = &Palette::WHITE;
+      if (isColour(_current)) {
+        colour = &colorForChannel(_sources[_current]->channel);   // which colour is being asked
+      }
+      _canvas.put(0, col, *colour, level);
     } else {
       _canvas.put(0, col, Palette::WHITE, 0.22f);
     }
@@ -211,10 +276,10 @@ void FieldSetup::drawDots(float t) {
 }
 
 // Column 4: live meter of the sensor's stimulus, filling from the bottom
-void FieldSetup::drawMeter(float level) {
+void FieldSetup::drawMeter(float level, const Canvas::Color& rgb) {
   for (int k = 0; k < 4; k++) {
     float fill = constrain(level * 4 - k, 0.0f, 1.0f);
-    _canvas.put(4 - k, 4, Palette::WHITE, 0.15f + 0.75f * fill);
+    _canvas.put(4 - k, 4, rgb, 0.15f + 0.75f * fill);
   }
 }
 
@@ -267,6 +332,11 @@ void FieldSetup::draw() {
     } else {
       _canvas.putRows(Icons::CROSS, '#', Palette::GREY, pulse);
     }
+    if (isColour(_current)) {
+      // how much of this colour the sensor feels now
+      PotentialField::Source* s = _sources[_current];
+      drawMeter(s->sensor->valueFor(s->channel), colorForChannel(s->channel));
+    }
   } else if (_phase == ANGLE) {
     PotentialField::Source* s = _sources[_current];
     drawArrow(stepFromAngle(s->angle), colorForPolicy(s->policy), pulse);
@@ -289,7 +359,7 @@ void FieldSetup::draw() {
         _canvas.putRows(Icons::SUN, '#', Palette::SUN, pulse);
       }
     }
-    drawMeter(sensor->meterLevel());
+    drawMeter(sensor->meterLevel(), Palette::WHITE);
   } else if (_phase == DONE) {
     drawDots(t);
     _canvas.putRows(Icons::CHECK, '#', Palette::GREEN, 0.9f);

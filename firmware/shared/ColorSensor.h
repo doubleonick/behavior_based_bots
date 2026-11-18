@@ -14,6 +14,9 @@
   one of the same strength. Either way the low and high points are set on this
   brightness, as for any light sensor.
 
+  One sensor, many stimuli (Val_Field): its own channel stays LIGHT, and
+  valueFor(channel) gives each channel's stimulus from the same reading.
+
   Stimulus (value): LIGHT is the brightness between the low and high points.
   A colour channel is that, times how much the colour seen is like the channel's:
 
@@ -52,8 +55,14 @@ public:
   // still count (shared by every Color Unit)
   static void setHues(float magenta, float yellow, float cyan, float width);
 
-  // How much what it sees now is like a colour channel's colour: 0..1 (1 for LIGHT)
-  float colourMatch() const;
+  // How much what it sees now is like a channel's colour: 0..1 (1 for LIGHT)
+  float matchFor(Channel c) const;
+  float colourMatch() const { return matchFor(_channel); }
+
+  // Many stimuli from one Color Unit (Val_Field): leave its own channel on LIGHT, and
+  // ask for each channel's stimulus: brightness (between the low and high points,
+  // on the clear filter) x how much it is like that channel's colour.
+  float valueFor(uint8_t channel) const override;
 
 protected:
   bool readRaw(long& out) override;

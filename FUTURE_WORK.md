@@ -149,10 +149,21 @@ A web interface that carries the instructions, with a game/story layer:
   `vehicle_color` (magenta: full under magenta, a third under red or blue, nothing
   under white or cyan); `vehicle`, `vehicle_emotions` and `vehicle_units` gained the
   extra press (Serial unchanged, LED checksums changed by the new screen).
-  **Not yet run on the robot.** **Fields (agreed, not built):** one sensor, many
-  stimuli: light's sign (default +), low and high once, then magenta, yellow, cyan
-  signs (default x); 3 lanes for now, so once 3 wires are active the rest are
-  skipped. **Hierarchies (later):** colour behaviours, `approach_magenta` style.
+  **Not yet run on the robot.** **Fields (built 2026-11, not yet run on the
+  robot):** one sensor, many stimuli. A Color Unit in a place has its light wire
+  (`field.source[i]`) and three colour wires (`field.source[colourSlot(i, k)]`,
+  channel 1-3) that share its sensor, angle and low / high; each colour's stimulus
+  is the clear filter's brightness stimulus x the hue match (`valueFor`). Setup:
+  light's pull / push / off (default pull); then angle, low, high, always asked for
+  a Color Unit even if light is off; then magenta, yellow, cyan (default off), each
+  with its dot blinking in its colour and a meter of that colour. 3 lanes: a colour
+  wire is only offered while fewer than 3 wires are on, keeping a lane for each
+  sensor still to come; the rest are skipped (Serial says so). Host test
+  `field_color` (one Color Unit on the left side, tasting the floor: magenta pulls
+  left, yellow pushes right, cyan off, red cancels); `field_hub` gained the colour
+  presses (outcome unchanged). Note: Val_Field's colour brightness is the clear
+  filter (calibrated once for all four wires), Val_Vehicle's is the brightest of
+  red, green and blue: for floor patches set high over the white floor or a patch. **Hierarchies (later):** colour behaviours, `approach_magenta` style.
   *Dropped:* a separate "light or colour?" screen (light became one of the channels);
   a "?" show-me colour (fixed colours for now); strict colour matching (red would
   count as no colour at all); low and high per colour channel.

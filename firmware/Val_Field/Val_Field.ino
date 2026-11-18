@@ -34,6 +34,11 @@
   - Setup runs the first time, or when you hold the button for 2 seconds:
       wheels (check each turns forward), then for each sensor:
       pull / push / off, which way it points, and its low/high calibration.
+  - A Color Unit is one sensor with up to four wires: light (as before), and
+    magenta, yellow and cyan (each starts off). They share where it points and its
+    low and high points, and each pulls or pushes on its own: approach one colour,
+    avoid another. Pointed at the floor, close up, it tastes the ground under it.
+    Only 3 wires can be on at once (the display's lanes).
   - A newly plugged sensor (or a different kind on a port): Val looks surprised,
     then only that sensor is set up.
   - A PaHub is found the same way as a sensor: if one answers on a port, its six
@@ -76,6 +81,22 @@ const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and
 const float BASE_SPEED   = 0.3f;      // cruising speed with nothing in the field (0..1)
 const float FORWARD_GAIN = 1.0f;      // how strongly the field speeds up / slows down
 const float TURN_GAIN    = 1.0f;      // how strongly the field steers
+
+// The Color Unit's colours. Each colour's hue round the colour wheel (red 0, yellow 60,
+// green 120, cyan 180, blue 240, magenta 300), and how many degrees away still count,
+// a little, as that colour.
+#ifndef MAGENTA_HUE
+#define MAGENTA_HUE 300.0f
+#endif
+#ifndef YELLOW_HUE
+#define YELLOW_HUE 60.0f
+#endif
+#ifndef CYAN_HUE
+#define CYAN_HUE 180.0f
+#endif
+#ifndef HUE_WIDTH
+#define HUE_WIDTH 90.0f
+#endif
 
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
 const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> Asleep
@@ -141,8 +162,13 @@ KeySensor key(PORT_C);                     // assumed in Port C when nothing els
 const int PORT_A_INDEX = 0;
 const int PORT_C_INDEX = 2;
 
-// The field. field.source[i] belongs to place i.
+// The field. field.source[i] belongs to place i. A Color Unit in place i also has
+// three colour wires (magenta, yellow, cyan): field.source[colourSlot(i, k)].
 PotentialField field;
+const int COLOURS = PotentialField::COLOURS_PER_PLACE;
+int colourSlot(int i, int k) {
+  return PLACE_COUNT + i * COLOURS + k;
+}
 
 // What each place was last set up with. A sensor of a different kind counts as new.
 struct PortRecord {
@@ -151,6 +177,7 @@ struct PortRecord {
   float angle = 0;
   long low = 0;
   long high = 0;
+  uint8_t colourPolicy[PotentialField::COLOURS_PER_PLACE] = {PotentialField::OFF, PotentialField::OFF, PotentialField::OFF};
 };
 PortRecord record[PLACE_COUNT];
 
@@ -188,6 +215,25 @@ void setDefaults(int i) {
 }
 
 bool isPlugged(int i);
+bool isSetUp(int i);
+
+// A Color Unit in place i: its colour wires get its sensor, angle and on/off state.
+// Anything else (or nothing) in place i: its colour wires are empty.
+void syncColourWires(int i) {
+  PotentialField::Source& main = field.source[i];
+  bool colourUnit = main.sensor != nullptr && main.sensor->typeCode() == 'C';
+  for (int k = 0; k < COLOURS; k++) {
+    PotentialField::Source& c = field.source[colourSlot(i, k)];
+    c.channel = k + 1;
+    if (colourUnit) {
+      c.sensor = main.sensor;
+    } else {
+      c.sensor = nullptr;
+    }
+    c.angle = main.angle;
+    c.enabled = colourUnit && main.enabled;
+  }
+}
 
 // Is there a PaHub in a port? Look in each port (both wire orders). When one is
 // found, its six channels become places to look for sensors.
@@ -271,13 +317,24 @@ bool detectPort(int i, bool allowAssumed) {
   } else {
     return false;
   }
-  if (record[i].type == s.sensor->typeCode()) {
+  bool known = (record[i].type == s.sensor->typeCode());
+  if (known) {
     s.policy = (PotentialField::Policy)record[i].policy;
     s.angle = record[i].angle;
     s.sensor->setCalibration(record[i].low, record[i].high);
   } else {
     setDefaults(i);
   }
+  // a Color Unit's colour wires: as they were, or off
+  for (int k = 0; k < COLOURS; k++) {
+    PotentialField::Source& c = field.source[colourSlot(i, k)];
+    if (known) {
+      c.policy = (PotentialField::Policy)record[i].colourPolicy[k];
+    } else {
+      c.policy = PotentialField::OFF;
+    }
+  }
+  syncColourWires(i);
   return true;
 }
 
@@ -380,23 +437,48 @@ void updateKeyLed() {
 void startSetup(bool full) {
   surprisePending = false;
   showingSpikes = false;               // setup owns the matrix now
-  PotentialField::Source* toSetUp[PLACE_COUNT];
+  PotentialField::Source* toSetUp[FieldSetup::MAX_ENTRIES];
   int count = 0;
+  int sensors = 0;                     // how many sensors (a Color Unit is one, with up to 4 wires)
+  int othersOn = 0;                    // wires already on that are not being set up
   for (int i = 0; i < PLACE_COUNT; i++) {
     if (!isPlugged(i)) {
       continue;
     }
+    syncColourWires(i);
+    bool colourUnit = (field.source[i].sensor->typeCode() == 'C');
     if (full || !isSetUp(i)) {
-      toSetUp[count] = &field.source[i];
-      count++;
+      if (count < FieldSetup::MAX_ENTRIES) {
+        toSetUp[count] = &field.source[i];
+        count++;
+      }
+      sensors++;
+      // a Color Unit's colour wires come straight after it
+      if (colourUnit) {
+        for (int k = 0; k < COLOURS && count < FieldSetup::MAX_ENTRIES; k++) {
+          toSetUp[count] = &field.source[colourSlot(i, k)];
+          count++;
+        }
+      }
+    } else {
+      if (field.source[i].policy != PotentialField::OFF) {
+        othersOn++;
+      }
+      if (colourUnit) {
+        for (int k = 0; k < COLOURS; k++) {
+          if (field.source[colourSlot(i, k)].policy != PotentialField::OFF) {
+            othersOn++;
+          }
+        }
+      }
     }
   }
   if (full) {
-    Serial.printf("Full setup: %d sensor(s)\n", count);
+    Serial.printf("Full setup: %d sensor(s)\n", sensors);
   } else {
-    Serial.printf("Setup for %d new sensor(s)\n", count);
+    Serial.printf("Setup for %d new sensor(s)\n", sensors);
   }
-  setupMode.start(toSetUp, count, full);
+  setupMode.start(toSetUp, count, full, othersOn);
 }
 
 // A new sensor appeared: look surprised first, then set up just that sensor
@@ -410,6 +492,7 @@ void reactToNewSensor() {
 
 void finishSetup() {
   for (int i = 0; i < PLACE_COUNT; i++) {
+    syncColourWires(i);                // colour wires take the angle just chosen
     if (isPlugged(i)) {
       PotentialField::Source& s = field.source[i];
       record[i].type = s.sensor->typeCode();
@@ -417,6 +500,9 @@ void finishSetup() {
       record[i].angle = s.angle;
       record[i].low = s.sensor->lowPoint();
       record[i].high = s.sensor->highPoint();
+      for (int k = 0; k < COLOURS; k++) {
+        record[i].colourPolicy[k] = field.source[colourSlot(i, k)].policy;
+      }
     }
   }
   saveSetup();
@@ -436,6 +522,14 @@ void printSetup() {
     Serial.printf("  %s: %s, %s at %+.0f deg, low %ld, high %ld\n", s.sensor->portName(),
                   s.sensor->typeName(), PotentialField::policyName(s.policy), s.angle,
                   s.sensor->lowPoint(), s.sensor->highPoint());
+    for (int k = 0; k < COLOURS; k++) {
+      PotentialField::Source& c = field.source[colourSlot(i, k)];
+      if (c.sensor != nullptr && c.policy != PotentialField::OFF) {
+        Serial.printf("  %s: %s, %s at %+.0f deg\n", c.sensor->portName(),
+                      ColorSensor::channelName((ColorSensor::Channel)c.channel),
+                      PotentialField::policyName(c.policy), c.angle);
+      }
+    }
   }
 }
 
@@ -464,6 +558,10 @@ void saveSetup() {
     saved.putLong(key, record[i].low);
     snprintf(key, sizeof(key), "h%d", i);
     saved.putLong(key, record[i].high);
+    for (int k = 0; k < COLOURS; k++) {
+      snprintf(key, sizeof(key), "c%dk%d", i, k);
+      saved.putUChar(key, record[i].colourPolicy[k]);
+    }
   }
   saved.end();
 }
@@ -490,6 +588,10 @@ void loadSetup() {
     record[i].low = saved.getLong(key, 0);
     snprintf(key, sizeof(key), "h%d", i);
     record[i].high = saved.getLong(key, 0);
+    for (int k = 0; k < COLOURS; k++) {
+      snprintf(key, sizeof(key), "c%dk%d", i, k);
+      record[i].colourPolicy[k] = saved.getUChar(key, PotentialField::OFF);
+    }
   }
   saved.end();
 }
@@ -542,11 +644,11 @@ float leftness(float angle) {
 // Hand the spikes what every sensor in the field feels, in lanes from left to right
 // (by where each sensor points, so the matrix matches the robot when seen from behind)
 void feedSpikes(float left, float right) {
-  int order[PLACE_COUNT];
+  int order[PotentialField::MAX_SOURCES];
   int count = 0;
-  for (int i = 0; i < PLACE_COUNT; i++) {
+  for (int i = 0; i < PotentialField::MAX_SOURCES; i++) {
     PotentialField::Source& s = field.source[i];
-    if (!s.enabled || s.policy == PotentialField::OFF) {
+    if (!s.enabled || s.sensor == nullptr || s.policy == PotentialField::OFF) {
       continue;
     }
     // insert in order: most left-pointing first
@@ -564,13 +666,18 @@ void feedSpikes(float left, float right) {
   for (int lane = 0; lane < count; lane++) {
     PotentialField::Source& s = field.source[order[lane]];
     float weight = (s.policy == PotentialField::PULL) ? 1 : -1;   // pull green, push red
-    spikes.setLane(lane, s.sensor->value(), weight);
+    spikes.setLane(lane, s.sensor->valueFor(s.channel), weight);
   }
   if (printLanes) {
     printLanes = false;
     Serial.printf("Lanes, left to right:");
     for (int lane = 0; lane < count; lane++) {
-      Serial.printf(" %s", field.source[order[lane]].sensor->portName());
+      PotentialField::Source& s = field.source[order[lane]];
+      if (s.channel == 0) {
+        Serial.printf(" %s", s.sensor->portName());
+      } else {
+        Serial.printf(" %s %s", s.sensor->portName(), ColorSensor::channelName((ColorSensor::Channel)s.channel));
+      }
     }
     Serial.printf("\n");
   }
@@ -621,6 +728,13 @@ void printStatus(float left, float right) {
       PotentialField::Source& s = field.source[i];
       Serial.printf("%s %c %5ld (%.2f %s %+.0f)  ", s.sensor->portName(), s.sensor->typeCode(),
                     s.sensor->raw(), s.sensor->value(), PotentialField::policyName(s.policy), s.angle);
+      for (int k = 0; k < COLOURS; k++) {
+        PotentialField::Source& c = field.source[colourSlot(i, k)];
+        if (c.sensor != nullptr && c.policy != PotentialField::OFF) {
+          Serial.printf("%s (%.2f %s)  ", ColorSensor::channelName((ColorSensor::Channel)c.channel),
+                        c.sensor->valueFor(c.channel), PotentialField::policyName(c.policy));
+        }
+      }
     }
   }
   Serial.printf("| field (%+.2f, %+.2f) -> L %+.2f R %+.2f | %s\n", field.vx(), field.vy(),
@@ -648,6 +762,10 @@ void setup() {
   field.baseSpeed = BASE_SPEED;
   field.forwardGain = FORWARD_GAIN;
   field.turnGain = TURN_GAIN;
+  ColorSensor::setHues(MAGENTA_HUE, YELLOW_HUE, CYAN_HUE, HUE_WIDTH);
+  for (int i = 0; i < PLACE_COUNT; i++) {
+    syncColourWires(i);                // the colour wires' channels, empty until a Color Unit turns up
+  }
 
   loadSetup();
   findHub();
@@ -712,6 +830,7 @@ void loop() {
     // Only sensors that are plugged in AND set up take part in the field
     for (int i = 0; i < PLACE_COUNT; i++) {
       field.source[i].enabled = isSetUp(i);
+      syncColourWires(i);              // a Color Unit's colour wires follow its light wire
     }
 
     float left = 0;

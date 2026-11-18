@@ -36,9 +36,14 @@ public:
     Policy  policy = PULL;
     float   angle = 0;                // mount angle, degrees CCW from forward
     float   gain = 1;
+    uint8_t channel = 0;              // which of the sensor's stimuli (a Color Unit: 0 light, 1-3 colours)
   };
 
-  static const int MAX_SOURCES = 9;   // one per place: 3 ports + 6 PaHub channels
+  // One per place (3 ports + 6 PaHub channels), then three colour wires per place,
+  // used only when the place holds a Color Unit
+  static const int PLACES = 9;
+  static const int COLOURS_PER_PLACE = 3;
+  static const int MAX_SOURCES = PLACES * (1 + COLOURS_PER_PLACE);
   Source source[MAX_SOURCES];
 
   // Tuning

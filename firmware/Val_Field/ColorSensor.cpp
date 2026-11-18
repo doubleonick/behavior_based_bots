@@ -105,9 +105,9 @@ bool ColorSensor::readRaw(long& out) {
   return true;
 }
 
-// How much what it sees is like this channel's colour, 0..1
-float ColorSensor::colourMatch() const {
-  if (_channel == LIGHT) {
+// How much what it sees is like a channel's colour, 0..1
+float ColorSensor::matchFor(Channel c) const {
+  if (c == LIGHT) {
     return 1;
   }
   float r = (float)_red;
@@ -136,7 +136,7 @@ float ColorSensor::colourMatch() const {
   }
 
   // How close that is to the channel's own hue (the short way round the wheel)
-  float away = fabsf(hue - s_hue[_channel]);
+  float away = fabsf(hue - s_hue[c]);
   if (away > 180) {
     away = 360 - away;
   }
@@ -153,6 +153,15 @@ float ColorSensor::colourMatch() const {
 // The stimulus: brightness between the calibration points, times the colour match
 float ColorSensor::value() const {
   return Sensor::value() * colourMatch();
+}
+
+// One channel's stimulus from the same reading (used when one Color Unit feeds
+// several wires, so its own channel is LIGHT and the brightness is the clear filter's)
+float ColorSensor::valueFor(uint8_t channel) const {
+  if (channel >= CHANNEL_COUNT) {
+    return 0;
+  }
+  return Sensor::value() * matchFor((Channel)channel);
 }
 
 // Square-root scaled so dim indoor light still shows on the meter
