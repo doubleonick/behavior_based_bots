@@ -14,6 +14,30 @@ const uint8_t ATIME_VALUE = 0xC0;   // 64 steps x 2.4 ms = ~154 ms per measureme
 const uint8_t GAIN_VALUE  = 1;      // 0 = 1x, 1 = 4x, 2 = 16x, 3 = 60x
 }
 
+// Where each channel sits on the colour wheel (LIGHT has none), and how far counts
+float ColorSensor::s_hue[ColorSensor::CHANNEL_COUNT] = {0, 300, 60, 180};
+float ColorSensor::s_width = 90;
+
+void ColorSensor::setHues(float magenta, float yellow, float cyan, float width) {
+  s_hue[MAGENTA] = magenta;
+  s_hue[YELLOW] = yellow;
+  s_hue[CYAN] = cyan;
+  s_width = width;
+}
+
+const char* ColorSensor::channelName(Channel c) {
+  if (c == MAGENTA) {
+    return "Magenta";
+  }
+  if (c == YELLOW) {
+    return "Yellow";
+  }
+  if (c == CYAN) {
+    return "Cyan";
+  }
+  return "Light";
+}
+
 void ColorSensor::writeRegister(uint8_t reg, uint8_t value) {
   Wire1.beginTransmission(ADDRESS);
   Wire1.write(CMD | reg);
@@ -69,8 +93,66 @@ bool ColorSensor::readRaw(long& out) {
   for (int i = 0; i < 8; i++) {
     d[i] = Wire1.read();
   }
-  out = d[0] | (d[1] << 8);                   // clear channel
+  long clear = d[0] | (d[1] << 8);            // low byte first
+  _red   = d[2] | (d[3] << 8);
+  _green = d[4] | (d[5] << 8);
+  _blue  = d[6] | (d[7] << 8);
+  if (_channel == LIGHT) {
+    out = clear;                              // how bright, any colour
+  } else {
+    out = max(_red, max(_green, _blue));      // how bright the colour is
+  }
   return true;
+}
+
+// How much what it sees is like this channel's colour, 0..1
+float ColorSensor::colourMatch() const {
+  if (_channel == LIGHT) {
+    return 1;
+  }
+  float r = (float)_red;
+  float g = (float)_green;
+  float b = (float)_blue;
+  float biggest = max(r, max(g, b));
+  float smallest = min(r, min(g, b));
+  if (biggest <= 0) {
+    return 0;                                 // no light at all: no colour
+  }
+
+  // Hue: where the colour sits round the wheel, in degrees
+  float spread = biggest - smallest;
+  float hue = 0;
+  if (spread > 0) {
+    if (biggest == r) {
+      hue = 60 * ((g - b) / spread);
+    } else if (biggest == g) {
+      hue = 60 * ((b - r) / spread + 2);
+    } else {
+      hue = 60 * ((r - g) / spread + 4);
+    }
+  }
+  if (hue < 0) {
+    hue += 360;
+  }
+
+  // How close that is to the channel's own hue (the short way round the wheel)
+  float away = fabsf(hue - s_hue[_channel]);
+  if (away > 180) {
+    away = 360 - away;
+  }
+  float closeness = 0;
+  if (s_width > 0 && away < s_width) {
+    closeness = 1 - away / s_width;
+  }
+
+  // How much colour there is at all: 0 for white or grey light
+  float saturation = spread / biggest;
+  return closeness * saturation;
+}
+
+// The stimulus: brightness between the calibration points, times the colour match
+float ColorSensor::value() const {
+  return Sensor::value() * colourMatch();
 }
 
 // Square-root scaled so dim indoor light still shows on the meter

@@ -44,7 +44,7 @@ public:
   bool  update();                     // call every loop; true when a new reading arrived
   bool  isConnected() const { return _connected; }
   long  raw() const { return _raw; }
-  float value() const;                // 0..1 between the calibration points
+  virtual float value() const;        // 0..1 between the calibration points (a child may shape it further)
 
   // virtual so a child class can do more when it is calibrated
   virtual void calibrateLow()  { _low = _raw; }

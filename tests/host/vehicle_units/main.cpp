@@ -22,7 +22,7 @@ struct Press { float at, len; };
 int main(){
   Press presses[] = {
     {6.0,1.0},{7.5,1.0},{9.0,1.0},{10.5,1.0},{12.0,1.0},   // mount, IR +, IR low, IR high, key +
-    {40.0,1.0},{41.5,1.0},{43.0,1.0} };                   // light on A: +, low, high
+    {39.0,0.8},{40.0,1.0},{41.5,1.0},{43.0,1.0} };       // light on A: channel (light), +, low, high
   setup(); bool lastSetup=false;
   for(fakeMillis=5; fakeMillis<50000; fakeMillis+=5){
     float t=fakeMillis/1000.0f; fakeButtonDown=false;

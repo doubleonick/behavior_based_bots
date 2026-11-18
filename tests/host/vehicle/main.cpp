@@ -18,7 +18,7 @@ TwoWire& TwoWire::wireMain(){ return Wire; }
 struct Press { float at, len; };
 int main(){
   Press presses[] = {
-    {6.0,1.0},{7.5,1.0},{9.0,1.0},{10.5,1.0},       // full setup: mount, A +, A low, A high
+    {6.0,1.0},{7.1,0.8},{8.0,0.8},{9.0,1.0},{10.5,1.0},   // full setup: mount, A's channel (light), A +, A low, A high
     {27.5,0.2},{28.5,1.0},{30.0,1.0},{31.5,1.0},   // C (distance): short press makes it -, far, near
     {53.2,0.2},{54.0,1.0},{55.5,1.0},{57.0,1.0} }; // A now distance: short press makes it -, far, near
   setup(); bool lastSetup=false;

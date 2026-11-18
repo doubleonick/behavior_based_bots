@@ -38,7 +38,7 @@ Shared classes: `Canvas` (the 5x5 picture every display draws on, and `FrameTime
 `Palette` (every colour), `Icons` (every setup picture), `Face` (expressions, talking,
 `tuneIn`), `Spikes` (the wiring's activity while driving), `Static` (white static),
 `MotionServo`, `Port`, `I2CBus`, `Sensor` (parent; 0..1 stimulus from two calibration
-points), `ColorSensor`, `DistanceSensor`, `ReflectiveIRSensor` (a level on Port A; on/off on
+points), `ColorSensor` (light, or one colour: magenta / yellow / cyan, fuzzy by hue), `DistanceSensor`, `ReflectiveIRSensor` (a level on Port A; on/off on
 Port B), `LightUnitSensor` (a level, Port A), `KeySensor` (button + LED, any port),
 `Button` (short / long / hold).
 

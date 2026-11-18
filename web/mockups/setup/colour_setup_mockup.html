@@ -1,0 +1,162 @@
+<title>Val colour setup</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* single light look on purpose: notebook paper around a pretend 5x5 matrix */
+:root{--ink:#1d2a44;--paper:#f6f8fb;--grid:#dde7f2;--org:#E07A2E;--blue:#1f5fa8;--note:#FFF4E8;--ground:#e9eef5;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:17px/1.5 "Atkinson Hyperlegible",Verdana,sans-serif;padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-size:1.5rem;margin:0 0 4px;text-wrap:balance} h2{font-size:1.1rem;margin:0 0 8px} p{margin:0 0 12px;max-width:70ch}
+.panel{background:var(--paper);border:2.5px solid var(--ink);padding:16px;max-width:1040px;margin-bottom:16px;
+ background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.atom{background:#c9ced6;border:2.5px solid var(--ink);border-radius:14px;padding:12px;width:max-content;max-width:100%}
+.matrix{display:grid;grid-template-columns:repeat(5,38px);grid-template-rows:repeat(5,38px);gap:6px;background:#111;padding:9px;border-radius:8px}
+.px{border-radius:5px;background:#1b1b1b}
+.btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+button{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.main{background:var(--org);color:#fff;font-weight:bold}
+button.on{outline:3px solid var(--org)}
+.say{flex:1 1 300px;min-width:0;background:#fff;border:2px solid var(--ink);padding:12px;min-height:170px}
+.say b{display:block;margin-bottom:4px}.hint{color:var(--blue);font-size:15px;margin-top:8px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;padding:0;list-style:none;font-size:15px}
+.steps li{border:2px solid var(--ink);padding:2px 10px;background:#fff}.steps li.on{background:var(--ink);color:#fff}
+.world{margin-top:14px;background:var(--note);border:2px solid var(--ink);padding:10px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.tune{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 18px;font-size:15px}
+.tune label{display:flex;align-items:center;gap:8px}.tune input{flex:1;min-width:0}
+.tune b{display:inline-block;min-width:3.2em;font-variant-numeric:tabular-nums}
+table{border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}td,th{border:1px solid var(--ink);padding:3px 8px;text-align:left;background:#fff}
+.chip{display:inline-block;width:12px;height:12px;border-radius:3px;border:1.5px solid var(--ink);vertical-align:-1px;margin-right:4px}
+.note{background:var(--note);border:2px solid var(--ink);padding:12px;font-size:16px;max-width:1040px}
+.hueband{height:14px;border:1.5px solid var(--ink);border-radius:4px;background:linear-gradient(90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00);position:relative;margin-top:6px}
+#hueCanvas{width:100%;height:70px;display:block;margin-top:4px;background:#fff;border:1.5px solid var(--ink);border-radius:4px}
+</style>
+
+<h1>The Color Unit as light or colour</h1>
+<p>A mock-up, not firmware. Pick the sketch, then step through setup with the short and long press, and try the pretend flashlight. The colour matching is fuzzy, and its settings can be tuned below.</p>
+
+<div class="panel">
+<div class="row" style="align-items:center">
+  <b>Sketch:</b>
+  <button id="sVehicle" class="on">Val_Vehicle (one sensor, one stimulus)</button>
+  <button id="sField">Val_Field (one sensor, many stimuli)</button>
+</div>
+</div>
+
+<div class="panel">
+<ul class="steps" id="steps"></ul>
+<div class="row">
+  <div>
+    <div class="atom"><div class="matrix" id="m"></div></div>
+    <div class="btns"><button class="main" id="short">Short press</button><button class="main" id="long">Long press</button><button id="hold">Hold 2 s</button></div>
+  </div>
+  <div class="say"><b id="sayT"></b><span id="sayB"></span><div class="hint" id="sayH"></div></div>
+</div>
+<div class="world">
+  <b>Pretend flashlight:</b> <span id="lights"></span>
+  <label>any hue <input type="range" id="anyHue" min="0" max="359" step="1" value="0" style="width:120px"></label>
+  <label>brightness <input type="range" id="bright" min="0" max="1" step="0.01" value="0.8" style="width:120px"></label>
+</div>
+<div style="margin-top:12px;overflow-x:auto"><table id="out"></table></div>
+</div>
+
+<div class="panel">
+<h2>Tuning the fuzzy colours</h2>
+<div class="tune">
+  <label><span class="chip" style="background:#ff00dc"></span>magenta at <input type="range" id="hM" min="0" max="359" value="300"><b id="hMv"></b></label>
+  <label><span class="chip" style="background:#ffd200"></span>yellow at <input type="range" id="hY" min="0" max="359" value="60"><b id="hYv"></b></label>
+  <label><span class="chip" style="background:#00e5ff"></span>cyan at <input type="range" id="hC" min="0" max="359" value="180"><b id="hCv"></b></label>
+  <label>counts within <input type="range" id="w" min="10" max="180" value="90"><b id="wv"></b></label>
+</div>
+<canvas id="hueCanvas" width="720" height="70" aria-label="How much each colour channel responds around the colour wheel"></canvas>
+<div style="font-size:14px;color:var(--blue)">Around the colour wheel (red at both ends), how strongly each channel responds. A channel answers fully at its own hue and fades to nothing at "counts within" degrees away.</div>
+</div>
+
+<div class="note"><b>How a colour channel's stimulus is worked out:</b> how close the hue is (the curves above) × how saturated the colour is (white light has no colour) × the light-intensity stimulus from the low and high points. Intensity here is the brightest of red, green and blue, so a red beam counts as bright as a white one of the same strength.
+<br><b>Vehicle:</b> one channel per Color Unit, chosen first; the sign and the low and high follow, as today.
+<b>Field:</b> light's sign, then low and high (taken once, on light intensity, shared by every channel), then magenta, yellow and cyan, each starting on x. Only 3 wires can be active; once 3 are, the rest are skipped.</div>
+
+<script>
+const C={white:[242,242,242],M:[255,0,220],Y:[255,210,0],Cy:[0,229,255],grey:[110,110,110],moon:[40,60,255],sun:[255,160,0],green:[47,191,90],red:[226,58,58]};
+const CH=['L','M','Y','Cy'],CHNAME={L:'light',M:'magenta',Y:'yellow',Cy:'cyan'},CHCOL={L:C.white,M:C.M,Y:C.Y,Cy:C.Cy};
+const L4=["#...","#...","#...","####"],DOT=[".##.","####","####",".##."];
+const PLUS=["....",".#..","###.",".#.."],MINUS=["....","....","###.","...."],CROSS=["....","#.#.",".#..","#.#."];
+const MOON=[".##.","#...","#...",".##."],SUN=["#..#",".##.",".##.","#..#"],CHECK=["...#","..#.","#.#.",".#.."];
+let sketch='vehicle';
+function grid(el){el.innerHTML='';for(let i=0;i<25;i++){const d=document.createElement('div');d.className='px';el.appendChild(d);}return el.children;}
+const m=grid(document.getElementById('m'));
+function pic(buf,rows,col,b=1){rows.forEach((s,r)=>[...s].forEach((ch,c)=>{if(ch!=='.')buf[(r+1)*5+c]=[col,b];}));}
+function paint(buf){for(let i=0;i<25;i++){const p=m[i];if(buf[i]){const[c,b]=buf[i];p.style.background=`rgb(${c[0]},${c[1]},${c[2]})`;p.style.opacity=Math.max(0.08,b);}else{p.style.background='#1b1b1b';p.style.opacity=1;}}}
+// ---- the pretend light ----
+const LIGHTS={off:[0,0,0],R:[1,0,0],G:[0,1,0],B:[0,0,1],W:[1,1,1],M:[1,0,1],Y:[1,1,0],C:[0,1,1],hue:null};
+let light='W';
+lights.innerHTML=Object.keys(LIGHTS).filter(k=>k!=='hue').map(k=>`<button data-l="${k}">${k}</button>`).join(' ');
+lights.querySelectorAll('button').forEach(b=>b.onclick=()=>{light=b.dataset.l;mark();});
+anyHue.oninput=()=>{light='hue';mark();};
+function mark(){lights.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.l===light));}mark();
+function hsvToRgb(h){const x=h/60,c=1,f=1-Math.abs(x%2-1);const t=[[c,f,0],[f,c,0],[0,c,f],[0,f,c],[f,0,c],[c,0,f]][Math.floor(x)%6];return t;}
+function seen(){const k=+bright.value;const base=light==='hue'?hsvToRgb(+anyHue.value):LIGHTS[light];return base.map(v=>v*k);}
+// ---- fuzzy colour ----
+function tuning(){return {M:+hM.value,Y:+hY.value,Cy:+hC.value,w:+w.value};}
+function hueSat(v){const mx=Math.max(...v),mn=Math.min(...v);if(mx<0.02)return [0,0];const d=mx-mn;let h=0;
+  if(d>0){if(mx===v[0])h=60*(((v[1]-v[2])/d)%6);else if(mx===v[1])h=60*((v[2]-v[0])/d+2);else h=60*((v[0]-v[1])/d+4);}if(h<0)h+=360;return [h,d/mx];}
+function closeness(h,centre,width){let d=Math.abs(h-centre)%360;if(d>180)d=360-d;return Math.max(0,1-d/width);}
+function intensityRaw(v){return Math.max(v[0],v[1],v[2]);}   // the brightest of red, green and blue, so a coloured light counts as bright as a white one
+function lightStim(v){return Math.max(0,Math.min(1,(intensityRaw(v)-st.low)/Math.max(0.01,st.high-st.low)));}
+function chStim(ch,v){if(ch==='L')return lightStim(v);const t=tuning();const [h,s]=hueSat(v);return closeness(h,t[ch],t.w)*s*lightStim(v);}
+// ---- setup ----
+let st;
+function reset(){st={i:0,low:0,high:1,ch:'L',sign:{L:1,M:0,Y:0,Cy:0},seq:[],screen:''};
+  st.seq=sketch==='vehicle'?['channel','sign','low','high','done']:['sign:L','low','high','sign:M','sign:Y','sign:Cy','done'];st.i=0;enter();}
+function active(){return CH.filter(c=>st.sign[c]!==0);}
+function enter(){st.screen=st.seq[st.i];
+  if(st.screen&&st.screen.startsWith('sign:')&&st.screen!=='sign:L'&&active().length>=3){st.full=Date.now();st.i++;return enter();}
+  tell();}
+function cur(){if(sketch==='vehicle')return st.ch;return st.screen.startsWith('sign:')?st.screen.slice(5):'L';}
+function tell(){
+  const labels=sketch==='vehicle'?{channel:'Channel',sign:'Sign',low:'Low',high:'High',done:'Driving'}:{'sign:L':'Light',low:'Low',high:'High','sign:M':'Magenta','sign:Y':'Yellow','sign:Cy':'Cyan',done:'Driving'};
+  steps.innerHTML=st.seq.map((k,i)=>`<li class="${i===st.i?'on':''}">${labels[k]}</li>`).join('');
+  const T=(t,b,h)=>{sayT.textContent=t;sayB.textContent=b;sayH.textContent=h;};const c=cur(),s=st.screen;
+  if(s==='channel')T('What does it feel?',c==='L'?'L: how bright it is, any colour.':'How much '+CHNAME[c]+' it sees.','Short press: the next (light, magenta, yellow, cyan). Long press: keep it.');
+  else if(s==='sign'||s.startsWith('sign:'))T('The '+CHNAME[c]+' wire',['x: not connected.','+: more '+CHNAME[c]+', faster (pulls in a field).','−: more '+CHNAME[c]+', slower (pushes in a field).'][[0,1,-1].indexOf(st.sign[c])],'The dot on top and the meter on the right are in the channel\'s colour. Short press: + , − , x. Long press: keep it.'+(st.full&&Date.now()-st.full<1500?' (3 wires already: the rest are skipped.)':''));
+  else if(s==='low')T('Low: dark','Cover the sensor, long press. (Light intensity: shared by every channel.)','The meter on the right is the light intensity.');
+  else if(s==='high')T('High: bright','Shine the light at it, long press.','Any colour of light will do: this is brightness.');
+  else T('Driving','Change the light and watch the stimulus each wire gets (table below).','Hold 2 s: set up again.');
+}
+short.onclick=()=>{const s=st.screen,c=cur();
+  if(s==='channel'){st.ch=CH[(CH.indexOf(st.ch)+1)%4];st.sign={L:0,M:0,Y:0,Cy:0};st.sign[st.ch]=1;}
+  else if(s==='sign'||s.startsWith('sign:')){const o=[1,-1,0];st.sign[c]=o[(o.indexOf(st.sign[c])+1)%3];}
+  tell();};
+long.onclick=()=>{const s=st.screen,v=seen();
+  if(s==='sign'&&sketch==='vehicle'&&st.sign[st.ch]===0){st.i=st.seq.length-1;return enter();}
+  if(s==='low')st.low=intensityRaw(v);
+  if(s==='high')st.high=Math.max(st.low+0.01,intensityRaw(v));
+  if(s==='done')return;
+  st.i++;enter();};
+hold.onclick=reset;
+sVehicle.onclick=()=>{sketch='vehicle';sVehicle.classList.add('on');sField.classList.remove('on');reset();};
+sField.onclick=()=>{sketch='field';sField.classList.add('on');sVehicle.classList.remove('on');reset();};
+// ---- the hue chart ----
+function drawHue(){const cv=hueCanvas,g=cv.getContext('2d'),W=cv.width,H=cv.height,t=tuning();g.clearRect(0,0,W,H);
+  for(let x=0;x<W;x++){const rgb=hsvToRgb(x/W*360);g.fillStyle=`rgb(${rgb.map(v=>v*255).join(',')})`;g.fillRect(x,H-8,1,8);}
+  [['M',C.M],['Y',C.Y],['Cy',C.Cy]].forEach(([k,col])=>{g.beginPath();for(let x=0;x<W;x++){const y=H-10-closeness(x/W*360,t[k],t.w)*(H-16);x?g.lineTo(x,y):g.moveTo(x,y);}g.strokeStyle=`rgb(${col.join(',')})`;g.lineWidth=3;g.stroke();});
+  const [h,s]=hueSat(seen());if(s>0.05){const x=h/360*W;g.fillStyle='#1d2a44';g.fillRect(x-1,0,2,H-8);}
+  hMv.textContent=t.M+'°';hYv.textContent=t.Y+'°';hCv.textContent=t.Cy+'°';wv.textContent='±'+t.w+'°';}
+// ---- every frame ----
+let frame=0;
+setInterval(()=>{frame++;const pulse=0.55+0.45*Math.sin(frame/5);const v=seen(),s=st.screen,c=cur();const b=new Array(25).fill(null);
+  b[2]=[CHCOL[c],1];
+  if(s==='channel'){if(c==='L')pic(b,L4,C.white,pulse);else pic(b,DOT,CHCOL[c],pulse);}
+  else if(s==='sign'||s.startsWith('sign:')){const k=st.sign[c];pic(b,k===1?PLUS:k===-1?MINUS:CROSS,k===1?C.green:k===-1?C.red:C.grey,pulse);}
+  else if(s==='low')pic(b,MOON,C.moon,pulse);else if(s==='high')pic(b,SUN,C.sun,pulse);
+  else{const a=active();a.slice(0,3).forEach((ch,j)=>{const col=[0,2,4][j]??2;b[col]=[CHCOL[ch],1];const n=Math.round(chStim(ch,v)*4);for(let r=0;r<n;r++){b[(4-r)*5+col]=[st.sign[ch]>0?C.green:C.red,0.9];}});}
+  if(s!=='done'&&s!=='channel'&&!(s==='sign'||s.startsWith('sign:'))){const n=Math.round(lightStim(v)*4);for(let r=0;r<n;r++)b[(4-r)*5+4]=[C.white,0.85];}
+  if(s==='sign'||s.startsWith('sign:')){const n=Math.round(chStim(c,v)*4);for(let r=0;r<n;r++)b[(4-r)*5+4]=[CHCOL[c],0.85];}
+  paint(b);drawHue();
+  const rows=CH.map(ch=>`<tr><td><span class="chip" style="background:rgb(${CHCOL[ch].join(',')})"></span>${CHNAME[ch]}</td><td>${st.sign[ch]===1?'+':st.sign[ch]===-1?'−':'x'}</td><td>${chStim(ch,v).toFixed(2)}</td></tr>`).join('');
+  out.innerHTML=`<tr><th>channel</th><th>wire</th><th>stimulus now</th></tr>${rows}`;
+  if(s&&s.startsWith('sign')&&st.full)tell();
+},50);
+reset();
+</script>

@@ -20,9 +20,9 @@ struct Press { float at, len; };
 long light(float v){ return (long)(400 + v * 19600); }
 int main(){
   Press presses[] = {
-    {6.0,1.0},{7.5,1.0},{9.0,1.0},{10.5,1.0},       // full setup: mount, A +, A low, A high
+    {6.0,1.0},{7.1,0.8},{8.0,0.8},{9.0,1.0},{10.5,1.0},   // full setup: mount, A's channel (light), A +, A low, A high
     {30.0,2.6},                                     // hold: setup again
-    {35.0,1.0},{36.5,0.2},{37.2,1.0},{38.7,1.0},{40.2,1.0} };  // mount, A: short = -, confirm, low, high
+    {35.0,0.8},{35.9,0.75},{36.75,0.2},{37.2,1.0},{38.7,1.0},{40.2,1.0} };  // mount, A's channel, A: short = -, confirm, low, high
   setup(); bool lastSetup=false;
   for(fakeMillis=5; fakeMillis<64000; fakeMillis+=5){
     float t=fakeMillis/1000.0f; fakeButtonDown=false;

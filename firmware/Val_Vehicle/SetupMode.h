@@ -5,6 +5,10 @@
     1. Mount: an arrow shows "forward" and the wheel turns slowly forward.
        Short press flips left/right (the wheel reverses). Long press confirms.
     2. For each sensor that is plugged in:
+         channel (a Color Unit only): what it feels. A white L = light (any colour),
+                 a block in magenta, yellow or cyan = that colour. Short press
+                 changes, long press confirms. The wire's dot on the top row takes
+                 the colour too.
          sign:   + (green) excitatory, - (red) inhibitory, x (grey) not connected.
                  Short press changes, long press confirms.
          low:    no stimulus, long press.     light: moon, cover the sensor  } skipped
@@ -28,6 +32,7 @@
 #include "Button.h"
 #include "MotionServo.h"
 #include "Connection.h"
+#include "ColorSensor.h"
 
 class SetupMode {
 public:
@@ -43,7 +48,7 @@ public:
   bool takeFinished();                 // true once, right after setup ends
 
 private:
-  enum Phase : uint8_t { OFF, ENTER, MOUNT, SIGN, LOW_POINT, HIGH_POINT, DONE };
+  enum Phase : uint8_t { OFF, ENTER, MOUNT, CHANNEL, SIGN, LOW_POINT, HIGH_POINT, DONE };
 
   CRGB*        _leds;
   MotionServo& _servo;
@@ -59,6 +64,8 @@ private:
 
   void goTo(Phase p);
   void nextWire();
+  void startWire();                    // a Color Unit's channel first, else straight to the sign
+  ColorSensor* colorUnit();            // this wire's Color Unit, or nullptr
 
   void drawDots(float t);
   void drawMeter(float level);

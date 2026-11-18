@@ -45,6 +45,9 @@
   - Then the vehicle runs: the servo's speed is the sum of what every wire delivers.
   - The key is a bumper: on a + wire Val drives forwards until the key is pressed,
     then backwards; on a - wire, backwards until pressed, then forwards.
+  - A Color Unit can feel light (any colour, the default) or one colour: magenta,
+    yellow or cyan. Setup asks which, first (an L, or a block in the colour); the
+    low and high points are then set on brightness. One sensor, one stimulus.
   - Vehicles 4 and 5: a wire can have one nerve cell on the way (see Connection.h and
     Neuron.h). In the wire, nothing gets through below its threshold (4b). Against
     the wire, the wire has a favourite level (4a). A neuron that listens to itself
@@ -102,6 +105,22 @@ const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and
 #endif
 #ifndef ASSUME_KEY_ON_PORT_C
 #define ASSUME_KEY_ON_PORT_C 0        // 1 = an M5 Key Unit in Port C
+#endif
+
+// The Color Unit's colours (used when its channel is magenta, yellow or cyan). Each
+// colour's hue round the colour wheel (red 0, yellow 60, green 120, cyan 180, blue 240,
+// magenta 300), and how many degrees away still count, a little, as that colour.
+#ifndef MAGENTA_HUE
+#define MAGENTA_HUE 300.0f
+#endif
+#ifndef YELLOW_HUE
+#define YELLOW_HUE 60.0f
+#endif
+#ifndef CYAN_HUE
+#define CYAN_HUE 180.0f
+#endif
+#ifndef HUE_WIDTH
+#define HUE_WIDTH 90.0f
 #endif
 
 // Vehicles 4 and 5 (a test bench for now: these are set here, not in setup on the robot).
@@ -190,6 +209,7 @@ struct PortRecord {
   float weight = 1;
   long low = 0;
   long high = 0;
+  uint8_t channel = 0;                // a Color Unit: what it feels (ColorSensor::Channel)
 };
 PortRecord record[PORT_COUNT];
 
@@ -266,6 +286,13 @@ float sumWires() {
 // =====================================================================
 //  Finding sensors
 // =====================================================================
+// A Color Unit set up before in port i: give it back the channel it had
+void restoreChannel(int i) {
+  if (wires[i].sensor == &colorSensor[i]) {
+    colorSensor[i].setChannel((ColorSensor::Channel)record[i].channel);
+  }
+}
+
 // Look in port i for a sensor of either kind. Returns true if one was found.
 // If the port was set up before with the same kind of sensor, its wiring and
 // calibration come back; otherwise it will need setting up.
@@ -288,6 +315,7 @@ bool detectPort(int i) {
     return false;
   }
   if (record[i].type == wires[i].sensor->typeCode()) {
+    restoreChannel(i);
     wires[i].weight = record[i].weight;
     wires[i].sensor->setCalibration(record[i].low, record[i].high);
   } else {
@@ -352,6 +380,7 @@ void lookForI2CInstead(int i) {
   wires[i].sensor = found;
   wires[i].weight = 1;                  // new here: starts as + until set up
   if (record[i].type == found->typeCode()) {
+    restoreChannel(i);
     wires[i].weight = record[i].weight;
     found->setCalibration(record[i].low, record[i].high);
   }
@@ -445,6 +474,10 @@ void finishSetup() {
       record[i].weight = wires[i].weight;
       record[i].low = wires[i].sensor->lowPoint();
       record[i].high = wires[i].sensor->highPoint();
+      record[i].channel = 0;
+      if (wires[i].sensor == &colorSensor[i]) {
+        record[i].channel = (uint8_t)colorSensor[i].channel();
+      }
     }
   }
   saveSetup();
@@ -491,6 +524,8 @@ void saveSetup() {
     saved.putLong(key, record[i].low);
     snprintf(key, sizeof(key), "h%d", i);
     saved.putLong(key, record[i].high);
+    snprintf(key, sizeof(key), "c%d", i);
+    saved.putUChar(key, record[i].channel);
   }
   saved.end();
 }
@@ -514,6 +549,8 @@ void loadSetup() {
     record[i].low = saved.getLong(key, 0);
     snprintf(key, sizeof(key), "h%d", i);
     record[i].high = saved.getLong(key, 0);
+    snprintf(key, sizeof(key), "c%d", i);
+    record[i].channel = saved.getUChar(key, 0);
   }
   saved.end();
 }
@@ -786,6 +823,7 @@ void setup() {
   servo.begin();
   servo.setAllowReverse(ALLOW_REVERSE);
 
+  ColorSensor::setHues(MAGENTA_HUE, YELLOW_HUE, CYAN_HUE, HUE_WIDTH);
   loadSetup();
   for (int i = 0; i < PORT_COUNT; i++) {
     wires[i].place = PORT_NEURON[i];   // Vehicles 4 and 5: each wire's neuron, from the settings

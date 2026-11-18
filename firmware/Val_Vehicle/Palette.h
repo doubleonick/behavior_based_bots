@@ -23,7 +23,9 @@ const Color MOON   = { 40,  60, 255};   // light sensor: covered
 const Color SUN    = {255, 160,   0};   // light sensor: lit
 const Color TEAL   = {  0, 200, 160};   // distance sensor
 const Color PURPLE = {150,   0, 255};   // distance behaviours
-const Color YELLOW = {255, 200,   0};   // light behaviours
+const Color YELLOW = {255, 200,   0};   // light behaviours; the Color Unit's yellow channel
+const Color MAGENTA = {255,  0, 200};   // the Color Unit's magenta channel
+const Color CYAN   = {  0, 220, 255};   // the Color Unit's cyan channel
 
 // ---- Static (into setup, and tuning back into the face) ----
 const Color STATIC = {200, 200, 220};   // white, a touch blue like the setup screens

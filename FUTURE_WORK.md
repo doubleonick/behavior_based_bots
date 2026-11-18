@@ -133,6 +133,29 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Firmware
 
+- **The Color Unit as light or colour (2026-11, branch `expanded_vehicles`).** Agreed
+  design (mock-up `web/mockups/setup/colour_setup_mockup.html`): a Color Unit has four
+  channels, LIGHT (any colour, the clear filter, as before), MAGENTA, YELLOW, CYAN.
+  Low and high are always set on brightness; a colour channel's stimulus is that
+  brightness stimulus x how close the hue is (1 at the channel's hue, 0 at
+  `HUE_WIDTH` degrees away: fuzzy, so red counts a third as magenta and as yellow) x
+  saturation (white light has no colour). A colour channel's brightness is the
+  brightest of red, green and blue, so a coloured beam counts as bright as white.
+  Hues and width are settings (`MAGENTA_HUE` 300, `YELLOW_HUE` 60, `CYAN_HUE` 180,
+  `HUE_WIDTH` 90). **Vehicles: one sensor, one stimulus** (built): setup asks the
+  channel first (a white L, or a block in the colour; the wire's dot takes the
+  colour), then sign, low, high as before. Starts on light, so a light vehicle needs
+  one more long press than before and nothing else changes. Host test
+  `vehicle_color` (magenta: full under magenta, a third under red or blue, nothing
+  under white or cyan); `vehicle`, `vehicle_emotions` and `vehicle_units` gained the
+  extra press (Serial unchanged, LED checksums changed by the new screen).
+  **Not yet run on the robot.** **Fields (agreed, not built):** one sensor, many
+  stimuli: light's sign (default +), low and high once, then magenta, yellow, cyan
+  signs (default x); 3 lanes for now, so once 3 wires are active the rest are
+  skipped. **Hierarchies (later):** colour behaviours, `approach_magenta` style.
+  *Dropped:* a separate "light or colour?" screen (light became one of the channels);
+  a "?" show-me colour (fixed colours for now); strict colour matching (red would
+  count as no colour at all); low and high per colour channel.
 - **`firmware/Color_Test/` (2026-11, branch `expanded_vehicles`, not yet run on the
   robot):** the whole matrix shows the colour the Color Unit sees. The strongest of
   red, green and blue is stretched to full, so the colour shows even in dim light

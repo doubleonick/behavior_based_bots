@@ -5,6 +5,20 @@
 
 namespace {
 
+// The colour that stands for a Color Unit's channel
+const Canvas::Color& colorForChannel(ColorSensor::Channel c) {
+  if (c == ColorSensor::MAGENTA) {
+    return Palette::MAGENTA;
+  }
+  if (c == ColorSensor::YELLOW) {
+    return Palette::YELLOW;
+  }
+  if (c == ColorSensor::CYAN) {
+    return Palette::CYAN;
+  }
+  return Palette::WHITE;
+}
+
 const uint32_t ENTER_MS     = 500;    // half a second of static
 const uint32_t DONE_MS      = 1600;
 const float    MOUNT_SPEED  = 0.3f;   // how fast the wheel turns while choosing the mount
@@ -45,10 +59,27 @@ void SetupMode::goTo(Phase p) {
   }
 }
 
+// The wire being set up, if its sensor is a Color Unit (the only sensor of type 'C')
+ColorSensor* SetupMode::colorUnit() {
+  Sensor* s = _wires[_wire]->sensor;
+  if (s != nullptr && s->typeCode() == 'C') {
+    return static_cast<ColorSensor*>(s);
+  }
+  return nullptr;
+}
+
+void SetupMode::startWire() {
+  if (colorUnit() != nullptr) {
+    goTo(CHANNEL);
+  } else {
+    goTo(SIGN);
+  }
+}
+
 void SetupMode::nextWire() {
   _wire++;
   if (_wire < _count) {
-    goTo(SIGN);
+    startWire();
   } else {
     goTo(DONE);
   }
@@ -74,10 +105,19 @@ void SetupMode::handle(Button::Event e) {
     } else if (e == Button::LONG_PRESS) {
       if (_count > 0) {
         _wire = 0;
-        goTo(SIGN);
+        startWire();
       } else {
         goTo(DONE);
       }
+    }
+  } else if (_phase == CHANNEL) {
+    ColorSensor* c = colorUnit();
+    if (e == Button::SHORT_PRESS) {
+      // cycle light -> magenta -> yellow -> cyan -> light
+      int next = ((int)c->channel() + 1) % ColorSensor::CHANNEL_COUNT;
+      c->setChannel((ColorSensor::Channel)next);
+    } else if (e == Button::LONG_PRESS) {
+      goTo(SIGN);
     }
   } else if (_phase == SIGN) {
     Connection* w = _wires[_wire];
@@ -121,7 +161,7 @@ void SetupMode::update() {
     if (_withMount) {
       goTo(MOUNT);
     } else if (_count > 0) {
-      goTo(SIGN);
+      startWire();
     } else {
       goTo(DONE);
     }
@@ -156,7 +196,13 @@ void SetupMode::drawDots(float t) {
       if (sinf(t * PI * 3) > -0.3f) {
         level = 0.9f;
       }
-      _canvas.put(0, col, Palette::WHITE, level);
+      // the wire being set up blinks; a Color Unit's in its channel's colour
+      const Canvas::Color* colour = &Palette::WHITE;
+      Sensor* s = _wires[j]->sensor;
+      if (s != nullptr && s->typeCode() == 'C') {
+        colour = &colorForChannel(static_cast<ColorSensor*>(s)->channel());
+      }
+      _canvas.put(0, col, *colour, level);
     } else {
       _canvas.put(0, col, Palette::WHITE, 0.22f);
     }
@@ -192,6 +238,14 @@ void SetupMode::draw() {
       _canvas.put(4, 0, Palette::AMBER, 0.9f);
     } else {
       _canvas.put(4, 4, Palette::AMBER, 0.9f);
+    }
+  } else if (_phase == CHANNEL) {
+    drawDots(t);
+    ColorSensor::Channel c = colorUnit()->channel();
+    if (c == ColorSensor::LIGHT) {
+      _canvas.putRows(Icons::LETTER_L, '#', Palette::WHITE, pulse);
+    } else {
+      _canvas.putRows(Icons::BLOCK, '#', colorForChannel(c), pulse);
     }
   } else if (_phase == SIGN) {
     drawDots(t);
