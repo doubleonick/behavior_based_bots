@@ -78,6 +78,20 @@ direct connection to the servo signal pins.
 
 ## Units that can't say what they are (not yet tried on the robot)
 
+**Where each sketch expects them, and the setting that switches each on** (an I2C
+sensor answering in the same port always wins):
+
+| sketch | unit | port | setting | default |
+|---|---|---|---|---|
+| Val_Vehicle, Val_Field | Reflective IR or Light Unit | Port A only (a level on G32) | `PORT_A_UNIT IR_UNIT` / `LIGHT_UNIT` | off (`NO_UNIT`) |
+| Val_Vehicle, Val_Field | Key Unit | Port C | `ASSUME_KEY_ON_PORT_C 1` | off |
+| Val_Brooks | Key Units (bumpers) | left Port A, right Port C | `BUMPERS 3` (1: one Key in C; 2: bump switches on C) | on (3) |
+| Val_Brooks | Reflective IR | Port B (on/off) | `ASSUME_IR_ON_PORT_B 1` | on |
+
+With none switched on and no I2C sensor, setup finds nothing: Val_Vehicle and
+Val_Field then show a grey crossed box for 2 s before the check mark, and Serial
+says how to switch one on.
+
 `firmware/Unit_Tester/` is for finding out what these units really do, pin by pin,
 before the Val sketches rely on them: it shows each port pin's reading and whether
 anything drives it (read with the weak pull-up, then the weak pull-down: an empty pin

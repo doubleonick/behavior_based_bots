@@ -21,6 +21,7 @@ const Canvas::Color& colorForChannel(ColorSensor::Channel c) {
 
 const uint32_t ENTER_MS     = 500;    // half a second of static
 const uint32_t DONE_MS      = 1600;
+const uint32_t NO_SENSOR_MS = 2000;   // how long "no sensor found" shows
 const float    MOUNT_SPEED  = 0.3f;   // how fast the wheel turns while choosing the mount
 
 const Canvas::Color& colorForWeight(float w) {
@@ -107,7 +108,7 @@ void SetupMode::handle(Button::Event e) {
         _wire = 0;
         startWire();
       } else {
-        goTo(DONE);
+        goTo(NO_SENSOR);
       }
     }
   } else if (_phase == CHANNEL) {
@@ -163,8 +164,10 @@ void SetupMode::update() {
     } else if (_count > 0) {
       startWire();
     } else {
-      goTo(DONE);
+      goTo(NO_SENSOR);
     }
+  } else if (_phase == NO_SENSOR && now - _phaseMs >= NO_SENSOR_MS) {
+    goTo(DONE);
   } else if (_phase == DONE && now - _phaseMs >= DONE_MS) {
     _phase = OFF;
     _finished = true;
@@ -239,6 +242,8 @@ void SetupMode::draw() {
     } else {
       _canvas.put(4, 4, Palette::AMBER, 0.9f);
     }
+  } else if (_phase == NO_SENSOR) {
+    _canvas.putRows(Icons::NO_SENSOR, '#', Palette::GREY, pulse);
   } else if (_phase == CHANNEL) {
     drawDots(t);
     ColorSensor::Channel c = colorUnit()->channel();

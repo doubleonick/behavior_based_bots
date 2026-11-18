@@ -24,6 +24,9 @@
        only offered while fewer than 3 wires are on (keeping a place for each sensor
        still to come); the rest are skipped and stay off.
        The top row has one dot per sensor; confirmed sensors show their colour.
+    (No sensor found: a grey box with a cross for 2 seconds, so it is clear that
+     nothing was there to set up. Check the port, or the PORT_A_UNIT /
+     ASSUME_KEY_ON_PORT_C settings for units that can't say what they are.)
     3. A check mark, then setup ends (the sketch then tunes the face back in).
 
   When only a newly plugged sensor needs setting up, the wheel steps are skipped.
@@ -59,7 +62,7 @@ public:
   static int   stepFromAngle(float angle);
 
 private:
-  enum Phase : uint8_t { OFF, ENTER, WHEEL_LEFT, WHEEL_RIGHT, POLICY, ANGLE, LOW_POINT, HIGH_POINT, DONE };
+  enum Phase : uint8_t { OFF, ENTER, WHEEL_LEFT, WHEEL_RIGHT, NO_SENSOR, POLICY, ANGLE, LOW_POINT, HIGH_POINT, DONE };
 
   CRGB*        _leds;
   MotionServo& _left;

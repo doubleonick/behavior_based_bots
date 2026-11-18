@@ -16,6 +16,7 @@ const char* const SUN[5]   = {".....", "#..#.", ".##..", ".##..", "#..#."};   //
 const char* const FAR[5]   = {".....", ".....", ".##..", ".##..", "....."};   // small = far away
 const char* const NEAR[5]  = {".....", "####.", "#..#.", "#..#.", "####."};   // big = close
 const char* const CHECK[5] = {".....", "....#", "...#.", "#.#..", ".#..."};
+const char* const NO_SENSOR[5] = {"#####", "##.##", "#.#.#", "##.##", "#####"};   // setup found no sensor: an empty box, crossed
 const char* const LETTER_L[5] = {".....", "#....", "#....", "#....", "####."};   // Color Unit: feel light
 const char* const BLOCK[5]    = {".....", ".##..", "####.", "####.", ".##.."};   // Color Unit: feel one colour
 

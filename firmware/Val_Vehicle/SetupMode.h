@@ -18,6 +18,9 @@
          (reflective IR uses the distance squares; a key skips low and high: it is
           only pressed or not)
        The top row has one dot per wire; confirmed wires show their colour.
+    (No sensor found: a grey box with a cross for 2 seconds, so it is clear that
+     nothing was there to set up. Check the port, or the PORT_A_UNIT / 
+     ASSUME_KEY_ON_PORT_C settings for units that can't say what they are.)
     3. A check mark, then setup ends (the sketch then tunes the face back in).
   The right-hand column is a live meter of the sensor's stimulus.
   When only a newly plugged sensor needs wiring, step 1 (mount) is skipped
@@ -48,7 +51,7 @@ public:
   bool takeFinished();                 // true once, right after setup ends
 
 private:
-  enum Phase : uint8_t { OFF, ENTER, MOUNT, CHANNEL, SIGN, LOW_POINT, HIGH_POINT, DONE };
+  enum Phase : uint8_t { OFF, ENTER, MOUNT, NO_SENSOR, CHANNEL, SIGN, LOW_POINT, HIGH_POINT, DONE };
 
   CRGB*        _leds;
   MotionServo& _servo;

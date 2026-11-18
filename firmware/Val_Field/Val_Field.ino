@@ -475,6 +475,9 @@ void startSetup(bool full) {
   }
   if (full) {
     Serial.printf("Full setup: %d sensor(s)\n", sensors);
+    if (sensors == 0) {
+      Serial.println("No sensor found. Is it plugged in? A Light Unit, Reflective IR or Key can't say what it is: switch it on with PORT_A_UNIT or ASSUME_KEY_ON_PORT_C at the top of this sketch (Light Unit and Reflective IR: Port A only).");
+    }
   } else {
     Serial.printf("Setup for %d new sensor(s)\n", sensors);
   }

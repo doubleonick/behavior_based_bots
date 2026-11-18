@@ -1,0 +1,18 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.50s] | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] | sum +0.00 -> servo 90 deg | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 0 sensor(s)
+[  3.49s] [  3.49s] No sensor found. Is it plugged in? A Light Unit, Reflective IR or Key can't say what it is: switch it on with PORT_A_UNIT or ASSUME_KEY_ON_PORT_C at the top of this sketch (Light Unit and Reflective IR: Port A only).
+   >> t=3.49s setup STARTS
+[ 10.60s] Mount: left
+   >> t=10.60s setup ends
+[ 10.61s] | sum +0.00 -> servo 90 deg | Happy
+[ 10.61s] Face: Happy
+[ 11.11s] | sum +0.00 -> servo 90 deg | Happy
+[ 11.61s] | sum +0.00 -> servo 90 deg | Happy
+LED frames shown: 303, checksum 229d81f9

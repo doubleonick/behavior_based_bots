@@ -20,6 +20,7 @@ const int8_t DIRECTION[8][2] = {
 
 const uint32_t ENTER_MS    = 500;    // half a second of static
 const uint32_t DONE_MS     = 1600;
+const uint32_t NO_SENSOR_MS = 2000;   // how long "no sensor found" shows
 const float    WHEEL_SPEED = 0.3f;    // how fast a wheel turns while checking its direction
 
 // The colour that stands for a Color Unit's colour wire (channel 1-3)
@@ -163,7 +164,7 @@ void FieldSetup::handle(Button::Event e) {
         _current = 0;
         enterSource();
       } else {
-        goTo(DONE);
+        goTo(NO_SENSOR);
       }
     }
   } else if (_phase == POLICY) {
@@ -222,8 +223,10 @@ void FieldSetup::update() {
     } else if (_count > 0) {
       enterSource();
     } else {
-      goTo(DONE);
+      goTo(NO_SENSOR);
     }
+  } else if (_phase == NO_SENSOR && now - _phaseMs >= NO_SENSOR_MS) {
+    goTo(DONE);
   } else if (_phase == DONE && now - _phaseMs >= DONE_MS) {
     _phase = OFF;
     _finished = true;
@@ -322,6 +325,8 @@ void FieldSetup::draw() {
     } else {
       _canvas.put(4, 4, Palette::AMBER, 0.9f);
     }
+  } else if (_phase == NO_SENSOR) {
+    _canvas.putRows(Icons::NO_SENSOR, '#', Palette::GREY, pulse);
   } else if (_phase == POLICY) {
     drawDots(t);
     PotentialField::Policy p = _sources[_current]->policy;
