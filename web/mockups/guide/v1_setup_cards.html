@@ -1,0 +1,193 @@
+<title>Setting up Val for Vehicle 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&family=Silkscreen&display=swap">
+<style>
+/* Layout: a lab-notebook page; one card per screen Val shows, in the order Val shows them.
+   Single light look on purpose: the notebook from the Vehicle 1 lesson mock-up. */
+:root{
+  --ink:#1d2a44; --paper:#f6f8fb; --grid:#dde7f2; --val:#E07A2E; --pen:#1f5fa8;
+  --plus:#1F8A4C; --minus:#C2364A; --hi:rgba(243,210,122,.75); --adult:#FFF4E8; --desk:#e6ebf2;
+  --read:"Atkinson Hyperlegible",Verdana,sans-serif; --hand:"Kalam","Comic Sans MS",cursive; --tag:"Silkscreen","Courier New",monospace;
+  color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--desk);color:var(--ink);font:18px/1.55 var(--read);padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.page{max-width:1080px;margin:0 auto;background:var(--paper);border:2px solid var(--ink);box-shadow:5px 6px 0 rgba(29,42,68,.18);padding:28px clamp(16px,4vw,40px) 36px;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:26px 26px}
+.tagline{font:13px var(--tag);letter-spacing:.06em;color:var(--pen);margin:0 0 6px}
+h1{font:700 2rem/1.15 var(--read);margin:0 0 6px;text-wrap:balance}
+.lede{font:22px/1.4 var(--hand);color:var(--pen);margin:0 0 18px;max-width:60ch}
+.mark{background:linear-gradient(transparent 55%,var(--hi) 55%)}
+/* the one-button legend */
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 26px}
+.press{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--ink);padding:8px 12px;min-width:0;flex:1 1 220px}
+.press b{display:block}
+.press small{display:block;color:#4a5670;font-size:15px}
+/* A press, shown as a finger's pressure on Val's black screen: a soft pale blue glow,
+   strongest in the middle, fading outwards like diffused light. Shown briefly for a short press, for one
+   second for a long press, for two seconds for "hold 2 seconds"; then a pause. */
+/* the same light grey bezel as the matrix pictures on the cards */
+.touch{flex:none;width:72px;height:72px;border-radius:12px;background:#c9ced6;border:2px solid var(--ink);padding:7px}
+.touch b{display:block;width:100%;height:100%;border-radius:6px;background:#0c0c0c;position:relative;overflow:hidden}
+.touch i{position:absolute;inset:0;opacity:0;
+  background:radial-gradient(circle at 50% 50%, rgba(214,236,255,.95) 0, rgba(176,214,252,.8) 14%, rgba(140,192,246,.5) 32%, rgba(120,176,240,.22) 52%, rgba(110,165,235,.06) 68%, rgba(110,165,235,0) 80%)}
+.touch.short i{animation:pressShort 2.2s infinite}
+.touch.long i{animation:pressLong 3s infinite}
+.touch.hold i{animation:pressHold 4s infinite}
+/* each: a quick swell, held for the press, then gone */
+@keyframes pressShort{0%{opacity:0;transform:scale(.7)}3%{opacity:1;transform:scale(1)}11%{opacity:1;transform:scale(1)}14%,100%{opacity:0;transform:scale(1.05)}}
+@keyframes pressLong{0%{opacity:0;transform:scale(.7)}3%{opacity:1;transform:scale(1)}33%{opacity:1;transform:scale(1)}36%,100%{opacity:0;transform:scale(1.05)}}
+@keyframes pressHold{0%{opacity:0;transform:scale(.7)}2%{opacity:1;transform:scale(1)}50%{opacity:1;transform:scale(1)}53%,100%{opacity:0;transform:scale(1.05)}}
+@media (prefers-reduced-motion:reduce){.touch i{animation:none!important;opacity:1}}
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,470px),1fr));gap:20px}
+.card{background:#fff;border:2px solid var(--ink);padding:16px;display:grid;grid-template-columns:auto 1fr;gap:14px 18px;align-items:start;min-width:0}
+.card.only{border-style:dashed}
+.step{grid-column:1/-1;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.step .n{font:13px var(--tag);background:var(--ink);color:#fff;padding:2px 8px}
+.step h2{font:700 1.2rem var(--read);margin:0}
+.step .when{font:15px var(--hand);color:var(--pen)}
+.atom{background:#c9ced6;border:2px solid var(--ink);border-radius:12px;padding:8px;width:max-content}
+.matrix{display:grid;grid-template-columns:repeat(5,22px);grid-template-rows:repeat(5,22px);gap:4px;background:#111;padding:6px;border-radius:6px}
+.px{border-radius:4px;background:#1c1c1c}
+.try{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.try button{font:13px var(--tag);color:var(--ink);background:var(--paper);border:2px solid var(--ink);padding:4px 8px;cursor:pointer}
+.try button:hover{background:#eef3fa}
+button:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.body{min-width:0}
+.asks{font:21px/1.3 var(--hand);margin:0 0 6px}
+.body p{margin:0 0 8px;font-size:17px}
+.do{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:16px}
+.do li{display:flex;gap:8px;align-items:baseline}
+.chip{font:12px var(--tag);border:2px solid var(--ink);padding:0 6px;white-space:nowrap;background:var(--paper)}
+.chip.long{background:var(--val);color:#fff;border-color:var(--val)}
+.sees{font-size:15px;color:#4a5670;margin-top:6px}
+.plus{color:var(--plus);font-weight:700}.minus{color:var(--minus);font-weight:700}
+/* the end: predict, trouble, adult */
+.after{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px;margin-top:26px}
+.predict{border:2px solid var(--ink);background:#fff;padding:16px}
+.predict h3,.trouble h3,.adult h3{margin:0 0 6px;font-size:1.1rem}
+.predict p{font:20px/1.35 var(--hand);color:var(--pen);margin:0}
+.trouble{border:2px dashed var(--ink);background:#fff;padding:16px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.trouble p{margin:0 0 6px;font-size:16px}
+.adult{background:var(--adult);border:2px solid var(--val);padding:16px;font-size:16px}
+.adult p{margin:0 0 6px}
+code{font:15px ui-monospace,Menlo,Consolas,monospace;background:#eef2f8;padding:0 4px}
+@media (prefers-reduced-motion:reduce){.matrix .px{transition:none}}
+</style>
+
+<div class="page">
+  <p class="tagline">STOP 1 · VEHICLE 1 · SETTING UP VAL</p>
+  <h1>Getting Val ready</h1>
+  <p class="lede">Val asks you a few questions, one picture at a time. <span class="mark">You answer with Val's screen</span>: it is Val's only button.</p>
+
+  <div class="legend" aria-label="The three ways to press Val's screen">
+    <div class="press"><span class="touch short" aria-hidden="true"><b><i></i></b></span><span><b>Short press</b><small>a quick tap: change the answer</small></span></div>
+    <div class="press"><span class="touch long" aria-hidden="true"><b><i></i></b></span><span><b>Long press</b><small>hold, count "one", let go: keep the answer</small></span></div>
+    <div class="press"><span class="touch hold" aria-hidden="true"><b><i></i></b></span><span><b>Hold 2 seconds</b><small>while Val is driving or resting: start setup again</small></span></div>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="after">
+    <div class="predict">
+      <h3>Before you let Val go</h3>
+      <p>You chose a <span class="plus">+</span> wire: more light, faster. Where do you think Val will end up: in the light, or in the dark? Write it in your notebook first.</p>
+    </div>
+    <div class="trouble">
+      <div class="atom"><div class="matrix" data-pic="nosensor"></div></div>
+      <div>
+        <h3>If you see this box with a cross</h3>
+        <p>Val didn't find a sensor. Check it is plugged in all the way.</p>
+        <p>A Light Unit needs a grown-up to change one line on the computer first (see the Handbook).</p>
+      </div>
+    </div>
+    <div class="adult">
+      <h3>For the adult</h3>
+      <p>Setup starts by itself the first time Val is switched on, and after <b>Hold 2 seconds</b> at any time. Answers are forgotten at power-off unless <code>SAVE_SETUP</code> is on.</p>
+      <p>Card 3 appears only for a Color Unit. A Light Unit or Reflective IR is found only on Port A, and only when <code>PORT_A_UNIT</code> says it is there.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Colours and pictures copied from Val's firmware (Palette.h, Icons.h), so the cards
+   match the robot. */
+const P={white:[180,180,200],green:[0,255,60],red:[255,0,0],grey:[70,70,80],blue:[0,150,255],amber:[255,110,0],
+  moon:[40,60,255],sun:[255,160,0],magenta:[255,0,200],yellow:[255,200,0],cyan:[0,220,255],stat:[200,200,220]};
+const I={plus:[".....",".....","..#..",".###.","..#.."],minus:[".....",".....",".....",".###.","....."],
+  cross:[".....",".....",".#.#.","..#..",".#.#."],moon:[".....",".##..","#....","#....",".##.."],
+  sun:[".....","#..#.",".##..",".##..","#..#."],check:[".....","....#","...#.","#.#..",".#..."],
+  L:[".....","#....","#....","#....","####."],block:[".....",".##..","####.","####.",".##.."],
+  nosensor:["#####","##.##","#.#.#","##.##","#####"]};
+const ARROW=[[0,2],[1,1],[1,2],[1,3],[2,0],[2,2],[2,4],[3,2],[4,2]];
+// light level the pretend sensor feels on the low / high cards (for the live meter)
+const CARDS=[
+ {n:'1',title:'Snow',when:'setup is starting',pic:'static',asks:'Val is getting ready to ask.',
+  text:'White snow for half a second means setup has started. Nothing to do yet.',do:[],sees:'Then Val shows its first question.'},
+ {n:'2',title:'Which way is forward?',pic:'mount',state:{side:'left'},asks:'Is the wheel pushing Val forward?',
+  text:'The wheel turns slowly. The blue arrow points to Val\'s front. The orange dot shows which side the wheel is on.',
+  do:[['short','No, it goes backwards: Val tries the other way (the orange dot moves to the other corner).'],['long','Yes, that\'s forward: keep it.']],
+  tryLabel:'short press',tryFn:s=>{s.side=s.side==='left'?'right':'left';}},
+ {n:'3',title:'What should the sensor feel?',when:'only for a Color Unit',only:true,pic:'channel',state:{ch:0},asks:'Light, or one colour?',
+  text:'L means light, any colour. A coloured block means just that colour (magenta, yellow or cyan).',
+  do:[['short','Next choice: L, magenta, yellow, cyan.'],['long','Keep it. For this stop, keep the white L.']],
+  tryLabel:'short press',tryFn:s=>{s.ch=(s.ch+1)%4;}},
+ {n:'4',title:'Plus or minus?',pic:'sign',state:{w:1},asks:'How is the sensor wired to the wheel?',
+  text:'',signText:true,
+  do:[['short','Next: + , − , x.'],['long','Keep it. For your first try, keep the green +.']],
+  sees:'The dot at the top blinks: that is the sensor you are wiring.',
+  tryLabel:'short press',tryFn:s=>{s.w=s.w>0?-1:s.w<0?0:1;}},
+ {n:'5',title:'Dark',pic:'low',asks:'Show me what dark is.',
+  text:'Cover the sensor with your hand. The bar on the right drops: that is what the sensor feels.',
+  do:[['long','When it is covered, keep it.']],sees:'The moon means "no light at all".'},
+ {n:'6',title:'Bright',pic:'high',asks:'Show me what bright is.',
+  text:'Shine your light right at the sensor. The bar climbs to the top.',
+  do:[['long','When it is lit up, keep it.']],sees:'The sun means "as much light as Val will get".'},
+ {n:'7',title:'All set',pic:'done',asks:'Done!',
+  text:'A green check, then the snow settles back into Val\'s face. Val is now a Vehicle 1.',do:[],sees:'Change your mind? Hold the screen for 2 seconds to start again.'}
+];
+const SIGN_TEXT={1:'<span class="plus">Green +</span>: more light, faster.',
+                 '-1':'<span class="minus">Red −</span>: more light, slower.',
+                 0:'<b>Grey x</b>: not connected; Val ignores this sensor.'};
+const cardsEl=document.getElementById('cards'),live=[];
+CARDS.forEach(c=>{
+  const el=document.createElement('section');el.className='card'+(c.only?' only':'');
+  el.innerHTML=`<div class="step"><span class="n">CARD ${c.n}</span><h2>${c.title}</h2>${c.when?`<span class="when">(${c.when})</span>`:''}</div>
+   <div><div class="atom"><div class="matrix"></div></div>${c.tryFn?`<div class="try"><button type="button" id="try${c.n}">try a ${c.tryLabel}</button></div>`:''}</div>
+   <div class="body"><p class="asks">${c.asks}</p><p class="txt"></p>
+   <ul class="do">${c.do.map(([k,t])=>`<li><span class="chip ${k==='long'?'long':''}">${k==='long'?'LONG':'SHORT'}</span><span>${t}</span></li>`).join('')}</ul>
+   ${c.sees?`<div class="sees">${c.sees}</div>`:''}</div>`;
+  cardsEl.appendChild(el);
+  const px=grid(el.querySelector('.matrix'));const state=Object.assign({},c.state||{});
+  const txt=el.querySelector('.txt');
+  const setText=()=>{txt.innerHTML=c.signText?SIGN_TEXT[state.w]:c.text;};setText();
+  if(c.tryFn){el.querySelector('button').onclick=()=>{c.tryFn(state);setText();};}
+  live.push({c,px,state});
+});
+const trouble=grid(document.querySelector('[data-pic="nosensor"]'));
+function grid(el){for(let i=0;i<25;i++){const d=document.createElement('div');d.className='px';el.appendChild(d);}return el.children;}
+function paint(px,buf){for(let i=0;i<25;i++){const p=px[i];if(buf[i]){const[c,b]=buf[i];
+  p.style.background=`rgb(${c[0]},${c[1]},${c[2]})`;p.style.opacity=Math.max(0.1,b);}else{p.style.background='#1c1c1c';p.style.opacity=1;}}}
+function rows(buf,pic,col,b){pic.forEach((s,r)=>[...s].forEach((ch,c)=>{if(ch==='#')buf[r*5+c]=[col,b];}));}
+function meter(buf,level){for(let k=0;k<4;k++){const f=Math.max(0,Math.min(1,level*4-k));buf[(4-k)*5+4]=[P.white,0.15+0.75*f];}}
+function dot(buf,t,col){buf[2]=[col||P.white,Math.sin(t*Math.PI*3)>-0.3?0.9:0.15];}
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let t0=performance.now();
+function frame(now){
+  const t=reduce?0.25:(now-t0)/1000;const pulse=0.6+0.3*Math.sin(t*Math.PI*2);
+  live.forEach(({c,px,state})=>{
+    const b=new Array(25).fill(null);
+    if(c.pic==='static'){const f=Math.floor(t*12);for(let k=0;k<25;k++){const v=Math.abs(Math.sin((f+1)*(k+3)*12.9898)*43758.5453)%1;b[k]=[P.stat,v*0.8];}}
+    if(c.pic==='mount'){ARROW.forEach(([r,cc])=>{const w=0.5+0.5*Math.sin((r+t*4)*1.6);b[r*5+cc]=[P.blue,0.35+0.55*w];});b[state.side==='left'?20:24]=[P.amber,0.9];}
+    if(c.pic==='channel'){const chs=[[I.L,P.white],[I.block,P.magenta],[I.block,P.yellow],[I.block,P.cyan]];const [pic,col]=chs[state.ch];rows(b,pic,col,pulse);dot(b,t,col);}
+    if(c.pic==='sign'){dot(b,t);rows(b,state.w>0?I.plus:state.w<0?I.minus:I.cross,state.w>0?P.green:state.w<0?P.red:P.grey,pulse);}
+    if(c.pic==='low'){dot(b,t);rows(b,I.moon,P.moon,pulse);meter(b,0.08+0.06*Math.sin(t*2));}
+    if(c.pic==='high'){dot(b,t);rows(b,I.sun,P.sun,pulse);meter(b,0.92+0.06*Math.sin(t*2));}
+    if(c.pic==='done'){b[2]=[P.green,0.7];rows(b,I.check,P.green,0.9);}
+    paint(px,b);
+  });
+  const nb=new Array(25).fill(null);rows(nb,I.nosensor,P.grey,0.6+0.3*Math.sin(t*Math.PI*2));paint(trouble,nb);
+  if(!reduce){requestAnimationFrame(frame);}
+}
+requestAnimationFrame(frame);
+</script>

@@ -10,10 +10,25 @@ dropped or a finding turns out wrong, record that here too.
   play**: Val exploring a home-made version of where that stop's creatures live,
   with stand-in stimulus sources (a lamp for the sun, coloured patches on the floor
   for food or scent, ...). Not designed yet.
-- **The opening sequence (2026-11, mock-up in progress):** a landing page like a lab
-  notebook's cover, with pictures that hint at what will be explored; one button
-  opens it into the introduction to the adventure; from there to meeting Val (stop
-  0). Establishing this sequence comes before the real content.
+- **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
+  a landing page like a lab notebook's cover, with pictures that hint at what will be
+  explored; one button opens it into the introduction to the adventure; from there
+  to meeting Val (stop 0). Establishing this sequence comes before the real content.
+  Open: whether the cover and its four sketches are right; whether Meet Val teaches
+  the button itself or hands over to the setup cards; whether Meet Val leads to the
+  map or straight to the first stop.
+- **A physical notebook as the reference (owner, 2026-11: an approach being explored,
+  not a decision):** find a real book to guide the notebook's physical look (cover,
+  binding, paper, ruling, wear) and its art and layout (spreads, how text, sketches
+  and notes share a page). Photos to take: the cover straight on and close up; two or
+  three typical spreads, flat, in even light; details (paper, page numbers, corners,
+  tabs, stamps, handwriting); anything suiting a child's version (pockets, fold-outs,
+  tape). Use it for style and layout; draw our own pictures rather than copying a
+  book's art or text that is under copyright.
+- **Setup cards per stop (2026-11, Vehicle 1 drafted: `web/mockups/guide/v1_setup_cards.html`):**
+  the guide explains each screen and the matrix confirms (decision A above). The
+  presses are shown as a pale blue touch glow on a black screen, held for as long as
+  the press (brief, 1 s, 2 s).
 - **The 5x5 matrix is near its limit (2026-11).** Each setup screen is close to what
   25 LEDs can carry (five shades, coloured dots, moving spikes), and with everything
   on one wire has up to nine screens. **Decided: favour the guide explaining and the
