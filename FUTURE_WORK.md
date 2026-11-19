@@ -284,7 +284,7 @@ A web interface that carries the instructions, with a game/story layer:
   4a, 4b and memory behaviours.
 - **Setting up a wire's nerve cell on Val (agreed 2026-11, not built).** Mock-up:
   `web/mockups/setup/neuron_setup_mockup.html`. For each wire, after today's sign,
-  low point and high point:
+  low point and high point (when: decided 2026-11, see below):
   1. *Place:* no cell, a cell on the wire, or a cell next to the wire. The wire is
      drawn in its sign's colour (green +, red -) and the cell blinks **cyan** (the
      colour for a nerve cell everywhere). Where the cell sits is the only difference
@@ -310,7 +310,15 @@ A web interface that carries the instructions, with a game/story layer:
   hard it fires and whose right-hand loop shows memory:
   `neuron_display_mockup.html`); whether the display stays on while a cell holds Val
   still (today the face returns when the wheel stops, so a waiting cell is never
-  seen); how a memory cell is switched off. *Dropped:* showing strength by the
+  seen); how a memory cell is switched off.
+  *When the neuron screens appear (decided 2026-11):* for now, a sketch setting
+  (`NEURONS_IN_SETUP`, off by default), so Vehicles 1 to 3 never see them; Val_Vehicle
+  only (Val_Field and Val_Brooks get none until a lesson needs them). Long term:
+  one path stage setting (e.g. `PATH_STOP`) that switches features on as the path
+  goes (neurons from Vehicle 4, memory from Vehicle 5, ...), set when a stop's
+  firmware is flashed (fits flashing from the guide, the tentative USB plan).
+  *Rejected:* always asking (a screen about cells before the lesson has them);
+  unlocking on the robot by a hidden gesture or an existing cell (hard to discover). *Dropped:* showing strength by the
   cell's brightness in the wiring view (too subtle), blue for the cell (cyan reads
   better), and a memory cell drawn as just "stays lit" (no feedback visible).
 - **Subsumption setup (mock-up 2026-11, not built):**
