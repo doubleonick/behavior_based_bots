@@ -21,6 +21,22 @@
     (No sensor found: a grey box with a cross for 2 seconds, so it is clear that
      nothing was there to set up. Check the port, or the PORT_A_UNIT / 
      ASSUME_KEY_ON_PORT_C settings for units that can't say what they are.)
+       Then, only when the sketch switches them on (NEURONS_IN_SETUP), the wire's
+       nerve cell (Vehicles 4 and 5; see Connection.h and Neuron.h). Skipped for an
+       "x" wire and for a key:
+         place:     no cell, a cell ON the wire, or a cell NEXT TO the wire. The wire
+                    runs down the middle in its sign's colour; the cell blinks cyan.
+                    Short press changes, long press confirms. No cell: done.
+         threshold: when the cell wakes. The cell (a cyan block) sleeps on the left;
+                    the right column is the live meter, its top in cyan. Put Val in
+                    the light (or distance) where the cell should wake, long press.
+         try it:    the cyan mark stays; the cell lights up whenever the meter
+                    reaches it. Long press keeps it, short press sets it again.
+         strength:  the cell fires top to bottom; five shades, dim to bright =
+                    gain 1, 2, 5, 10, 20. Short press changes, long press confirms.
+         self:      does the cell listen to itself? Its edge fires round,
+                    anticlockwise; five choices, from nothing going round (0) to
+                    bright (holds itself on). Short press changes, long press confirms.
     3. A check mark, then setup ends (the sketch then tunes the face back in).
   The right-hand column is a live meter of the sensor's stimulus.
   When only a newly plugged sensor needs wiring, step 1 (mount) is skipped
@@ -50,8 +66,17 @@ public:
   bool active() const { return _phase != OFF; }
   bool takeFinished();                 // true once, right after setup ends
 
+  // The nerve cell screens (Vehicles 4 and 5): off unless the sketch switches them on
+  void setNeuronScreens(bool on) { _neuronScreens = on; }
+
+  // The five strengths (gain) and five self-weights the screens offer
+  static const int NEURON_LEVELS = 5;
+  static const float GAINS[NEURON_LEVELS];
+  static const float SELF_WEIGHTS[NEURON_LEVELS];
+
 private:
-  enum Phase : uint8_t { OFF, ENTER, MOUNT, NO_SENSOR, CHANNEL, SIGN, LOW_POINT, HIGH_POINT, DONE };
+  enum Phase : uint8_t { OFF, ENTER, MOUNT, NO_SENSOR, CHANNEL, SIGN, LOW_POINT, HIGH_POINT,
+                         CELL_PLACE, CELL_THRESHOLD, CELL_TRY, CELL_STRENGTH, CELL_SELF, DONE };
 
   CRGB*        _leds;
   MotionServo& _servo;
@@ -63,14 +88,18 @@ private:
   int          _wire = 0;
   bool         _finished = false;
   bool         _withMount = true;
+  bool         _neuronScreens = false;
   Canvas       _canvas;
 
   void goTo(Phase p);
   void nextWire();
   void startWire();                    // a Color Unit's channel first, else straight to the sign
+  void afterCalibration();             // the nerve cell screens, if they are on, else the next wire
+  static int levelOf(float value, const float* levels);   // the nearest of the five levels
   ColorSensor* colorUnit();            // this wire's Color Unit, or nullptr
 
   void drawDots(float t);
   void drawMeter(float level);
+  void drawWireMeter(float level, const Canvas::Color& rgb, float threshold, bool showMark);
   void draw();
 };

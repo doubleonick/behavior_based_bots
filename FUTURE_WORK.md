@@ -282,7 +282,8 @@ A web interface that carries the instructions, with a game/story layer:
   been rewritten as one.
   First run on the robot (owner, 2026-11, one module, not extensive): recognisable
   4a, 4b and memory behaviours.
-- **Setting up a wire's nerve cell on Val (agreed 2026-11, not built).** Mock-up:
+- **Setting up a wire's nerve cell on Val (agreed 2026-11; built 2026-11 in Val_Vehicle behind
+  `NEURONS_IN_SETUP`, host test `vehicle_neuron_setup`, not yet run on the robot).** Mock-up:
   `web/mockups/setup/neuron_setup_mockup.html`. For each wire, after today's sign,
   low point and high point (when: decided 2026-11, see below):
   1. *Place:* no cell, a cell on the wire, or a cell next to the wire. The wire is
@@ -317,6 +318,12 @@ A web interface that carries the instructions, with a game/story layer:
   one path stage setting (e.g. `PATH_STOP`) that switches features on as the path
   goes (neurons from Vehicle 4, memory from Vehicle 5, ...), set when a stop's
   firmware is flashed (fits flashing from the guide, the tentative USB plan).
+  As built: the screens follow a wire's high point (skipped for an x wire and the
+  key); the threshold is what `value()` reads when long-pressed; gains 1, 2, 5, 10,
+  20 and self 0, 0.375, 0.75, 1.125, 1.5 (`SetupMode::GAINS` / `SELF_WEIGHTS`); the
+  `PORT_x_NEURON` / `NEURON_GAIN` / ... settings are where each wire starts; the
+  cell is remembered with the wire (and saved with `SAVE_SETUP`). Still to check on
+  the LEDs: whether the five shades can be told apart.
   *Rejected:* always asking (a screen about cells before the lesson has them);
   unlocking on the robot by a hidden gesture or an existing cell (hard to discover). *Dropped:* showing strength by the
   cell's brightness in the wiring view (too subtle), blue for the cell (cyan reads

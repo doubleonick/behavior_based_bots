@@ -16,7 +16,7 @@ make sense to them; everything an adult needs should be written down for them.
 | path | holds |
 |---|---|
 | `firmware/shared/` | **the originals** of every class the sketches share |
-| `firmware/Val_Vehicle/` | Braitenberg vehicle: sensors wired +/−/off to one servo (S1); a wire can have one `Neuron` on the way for Vehicles 4 and 5 (a threshold, a favourite level, memory; set in the sketch for now) |
+| `firmware/Val_Vehicle/` | Braitenberg vehicle: sensors wired +/−/off to one servo (S1); a wire can have one `Neuron` on the way for Vehicles 4 and 5 (a threshold, a favourite level, memory), set in the sketch or, with `NEURONS_IN_SETUP 1`, on Val's setup screens |
 | `firmware/Val_Field/` | potential field: sensors push/pull by direction; two wheels (S1 left, S2 right); a Color Unit is one sensor with up to four wires (light, magenta, yellow, cyan), 3 on at once |
 | `firmware/Val_Brooks/` | subsumption test bench: behaviours in a fixed hierarchy, picked by uncommenting one `TEST_` line (and `BOTTOM`: wander or cruise); two wheels, ToF / Color pairs on a PaHub in Port B, left Key in Port A, right Key in Port C |
 | `firmware/Unit_Tester/` | diagnostics: every port pin's reading and "is anything driving it?" on the matrix and Serial; a key LED test. Uses no shared files |

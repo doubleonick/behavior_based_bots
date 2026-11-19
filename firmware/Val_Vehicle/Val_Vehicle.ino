@@ -162,6 +162,12 @@ const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and
 #ifndef AGAINST_STRENGTH
 #define AGAINST_STRENGTH 2.0f         // AGAINST_THE_WIRE: how strongly the neuron holds the wire back
 #endif
+// The nerve cell screens in setup (Vehicles 4 and 5): 1 = after each wire's
+// calibration, set its cell on Val (place, threshold, strength, self); the settings
+// above are then only where each wire starts. 0 = no cell screens (Vehicles 1 to 3).
+#ifndef NEURONS_IN_SETUP
+#define NEURONS_IN_SETUP 0
+#endif
 
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
 const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> Asleep
@@ -210,6 +216,12 @@ struct PortRecord {
   long low = 0;
   long high = 0;
   uint8_t channel = 0;                // a Color Unit: what it feels (ColorSensor::Channel)
+  // the wire's nerve cell, as set on the cell screens (NEURONS_IN_SETUP)
+  bool neuronSet = false;
+  uint8_t place = 0;
+  float threshold = 0.5f;
+  float gain = 1;
+  float self = 0;
 };
 PortRecord record[PORT_COUNT];
 
@@ -286,6 +298,17 @@ float sumWires() {
 // =====================================================================
 //  Finding sensors
 // =====================================================================
+// A wire set up before on the cell screens: give it back its nerve cell
+void restoreNeuron(int i) {
+  if (!NEURONS_IN_SETUP || !record[i].neuronSet) {
+    return;
+  }
+  wires[i].place = (Connection::NeuronPlace)record[i].place;
+  wires[i].neuron.threshold = record[i].threshold;
+  wires[i].neuron.gain = record[i].gain;
+  wires[i].neuron.selfWeight = record[i].self;
+}
+
 // A Color Unit set up before in port i: give it back the channel it had
 void restoreChannel(int i) {
   if (wires[i].sensor == &colorSensor[i]) {
@@ -316,6 +339,7 @@ bool detectPort(int i) {
   }
   if (record[i].type == wires[i].sensor->typeCode()) {
     restoreChannel(i);
+    restoreNeuron(i);
     wires[i].weight = record[i].weight;
     wires[i].sensor->setCalibration(record[i].low, record[i].high);
   } else {
@@ -381,6 +405,7 @@ void lookForI2CInstead(int i) {
   wires[i].weight = 1;                  // new here: starts as + until set up
   if (record[i].type == found->typeCode()) {
     restoreChannel(i);
+    restoreNeuron(i);
     wires[i].weight = record[i].weight;
     found->setCalibration(record[i].low, record[i].high);
   }
@@ -481,6 +506,11 @@ void finishSetup() {
       if (wires[i].sensor == &colorSensor[i]) {
         record[i].channel = (uint8_t)colorSensor[i].channel();
       }
+      record[i].neuronSet = NEURONS_IN_SETUP;
+      record[i].place = (uint8_t)wires[i].place;
+      record[i].threshold = wires[i].neuron.threshold;
+      record[i].gain = wires[i].neuron.gain;
+      record[i].self = wires[i].neuron.selfWeight;
     }
   }
   saveSetup();
@@ -529,6 +559,16 @@ void saveSetup() {
     saved.putLong(key, record[i].high);
     snprintf(key, sizeof(key), "c%d", i);
     saved.putUChar(key, record[i].channel);
+    snprintf(key, sizeof(key), "n%d", i);
+    saved.putUChar(key, record[i].neuronSet ? 1 : 0);
+    snprintf(key, sizeof(key), "np%d", i);
+    saved.putUChar(key, record[i].place);
+    snprintf(key, sizeof(key), "nt%d", i);
+    saved.putFloat(key, record[i].threshold);
+    snprintf(key, sizeof(key), "ng%d", i);
+    saved.putFloat(key, record[i].gain);
+    snprintf(key, sizeof(key), "ns%d", i);
+    saved.putFloat(key, record[i].self);
   }
   saved.end();
 }
@@ -554,6 +594,16 @@ void loadSetup() {
     record[i].high = saved.getLong(key, 0);
     snprintf(key, sizeof(key), "c%d", i);
     record[i].channel = saved.getUChar(key, 0);
+    snprintf(key, sizeof(key), "n%d", i);
+    record[i].neuronSet = saved.getUChar(key, 0) != 0;
+    snprintf(key, sizeof(key), "np%d", i);
+    record[i].place = saved.getUChar(key, 0);
+    snprintf(key, sizeof(key), "nt%d", i);
+    record[i].threshold = saved.getFloat(key, 0.5f);
+    snprintf(key, sizeof(key), "ng%d", i);
+    record[i].gain = saved.getFloat(key, 1);
+    snprintf(key, sizeof(key), "ns%d", i);
+    record[i].self = saved.getFloat(key, 0);
   }
   saved.end();
 }
@@ -827,6 +877,7 @@ void setup() {
   servo.setAllowReverse(ALLOW_REVERSE);
 
   ColorSensor::setHues(MAGENTA_HUE, YELLOW_HUE, CYAN_HUE, HUE_WIDTH);
+  setupMode.setNeuronScreens(NEURONS_IN_SETUP);
   loadSetup();
   for (int i = 0; i < PORT_COUNT; i++) {
     wires[i].place = PORT_NEURON[i];   // Vehicles 4 and 5: each wire's neuron, from the settings
