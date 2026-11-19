@@ -12,6 +12,7 @@ uses the Val sketches' shared files: copy one folder, open its `.ino`, upload.
 | `Ex4_Light_Unit` | Light Unit (U021) | FastLED |
 | `Ex5_Key` | Key Unit (button + LED) | FastLED |
 | `Ex6_Color` | Color Unit (R, G, B and clear light) | FastLED |
+| `Ex7_DLight` | DLight Unit (U136): brightness in lux | FastLED |
 
 Board: M5Stack board package, **M5Atom**. Serial Monitor at 115200.
 
@@ -22,11 +23,11 @@ wire lands on the first pin listed, its **white** wire on the second.
 
 | unit | Port A (G26 / G32) | Port B (G33 / G23) | Port C (G19 / G22) |
 |---|---|---|---|
-| ToF, Color (I2C) | works | works | works |
+| ToF, Color, DLight (I2C) | works | works | works (DLight: not tried) |
 | Reflective IR, Light Unit | **a level** (white on G32) | on/off only | on/off only (not tried) |
 | Key | works | works | works |
 
-- **I2C units** (ToF, Color) work in any port, and on a PaHub (set `HUB_CHANNEL`).
+- **I2C units** (ToF, Color, DLight) work in any port, and on a PaHub (set `HUB_CHANNEL`).
 - **Analog units** (Reflective IR, Light Unit) only give a **level** in Port A. Only
   G26, G32 and G33 can read a voltage, and in Port B the level wire lands on G23.
   Ports B and C give their on/off output, which flips where the unit's knob is set.
