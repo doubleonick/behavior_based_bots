@@ -157,6 +157,16 @@ A web interface that carries the instructions, with a game/story layer:
 
 ## Firmware
 
+- **DLight Unit in Val_Vehicle and Val_Field (2026-11, branch `expanded_vehicles`, not
+  yet run on the robot in these sketches).** `DLightSensor` (shared, typeCode 'L'):
+  found by itself in any port or PaHub channel, at 0x23 or 0x5C (the BH1750 has no ID
+  register; no other unit Val uses answers there). Raw = lux; low / high set in setup
+  with the moon and sun; the meter is logarithmic; the stimulus is linear in lux
+  between low and high (a log stimulus might suit the wide range better: to try).
+  Val_Field: pulls by default, like the other light sensors. Host test
+  `vehicle_dlight` (Port B: room light about a third, flashlight full, dark stopped).
+  Ex7_DLight worked on the robot in Port A (owner); B, C and a PaHub not tried.
+  Not added to Val_Brooks.
 - **The Color Unit as light or colour (2026-11, branch `expanded_vehicles`).** Agreed
   design (mock-up `web/mockups/setup/colour_setup_mockup.html`): a Color Unit has four
   channels, LIGHT (any colour, the clear filter, as before), MAGENTA, YELLOW, CYAN.

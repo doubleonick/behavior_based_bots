@@ -6,6 +6,7 @@
             up to 3 sensors, one each in Port A, B and C, any mix of:
               M5 Color Unit (TCS3472)  used as a light sensor
               M5 ToF Unit   (VL53L0X)  used as a distance sensor
+              M5 DLight Unit (BH1750)  light, in lux
             and, if switched on below, in ports where no I2C sensor answers:
               M5 Reflective IR Unit or M5 Light Unit   Port A only (a level, on G32)
               M5 Key Unit              Port C (a button; its LED shows the wire's colour)
@@ -29,6 +30,7 @@
     Sensor.h / Sensor.cpp                  parent class for all sensors
     ColorSensor.h / ColorSensor.cpp        light sensor
     DistanceSensor.h / DistanceSensor.cpp  distance sensor
+    DLightSensor.h / DLightSensor.cpp      DLight (light in lux)
     Connection.h                           one wire from a sensor to the motor
     Neuron.h                               one nerve cell (Vehicles 4 and 5)
     Button.h                               short press / long press / hold
@@ -83,6 +85,7 @@
 #include "DistanceSensor.h"
 #include "ReflectiveIRSensor.h"
 #include "LightUnitSensor.h"
+#include "DLightSensor.h"
 #include "KeySensor.h"
 #include "Palette.h"
 #include "Connection.h"
@@ -198,6 +201,7 @@ const int PORT_COUNT = 3;
 const bool USE_PORT[PORT_COUNT] = {true, true, true};
 ColorSensor    colorSensor[PORT_COUNT]    = {ColorSensor(PORT_A), ColorSensor(PORT_B), ColorSensor(PORT_C)};
 DistanceSensor distanceSensor[PORT_COUNT] = {DistanceSensor(PORT_A), DistanceSensor(PORT_B), DistanceSensor(PORT_C)};
+DLightSensor   dLight[PORT_COUNT]         = {DLightSensor(PORT_A), DLightSensor(PORT_B), DLightSensor(PORT_C)};
 ReflectiveIRSensor reflectiveIR(PORT_A);   // in Port A if PORT_A_UNIT says so
 LightUnitSensor lightUnit(PORT_A);         // in Port A if PORT_A_UNIT says so
 KeySensor key(PORT_C);                     // assumed in Port C when no I2C sensor answers
@@ -328,6 +332,8 @@ bool detectPort(int i) {
     wires[i].sensor = &colorSensor[i];
   } else if (distanceSensor[i].begin()) {
     wires[i].sensor = &distanceSensor[i];
+  } else if (dLight[i].begin()) {
+    wires[i].sensor = &dLight[i];
   } else if (i == PORT_A_INDEX && PORT_A_UNIT == IR_UNIT && reflectiveIR.begin()) {
     wires[i].sensor = &reflectiveIR;    // nothing answered: the reflective IR the settings name
   } else if (i == PORT_A_INDEX && PORT_A_UNIT == LIGHT_UNIT && lightUnit.begin()) {
@@ -390,6 +396,8 @@ void lookForI2CInstead(int i) {
     found = &colorSensor[i];
   } else if (distanceSensor[i].begin()) {
     found = &distanceSensor[i];
+  } else if (dLight[i].begin()) {
+    found = &dLight[i];
   }
   if (found == nullptr) {
     if (wires[i].sensor == &reflectiveIR) {

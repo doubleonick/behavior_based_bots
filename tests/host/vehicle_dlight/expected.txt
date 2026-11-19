@@ -1,0 +1,42 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] DLight found on Port B (SDA=G23, SCL=G33, address 0x23)
+[  0.50s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.00s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  1.50s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.00s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  2.50s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.00s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 1 sensor(s)
+   >> t=3.49s setup STARTS
+[ 13.10s] Mount: left
+[ 13.10s]   Port B: DLight, weight +1, low 5, high 1000
+   >> t=13.10s setup ends
+[ 13.11s] [ 13.11s] Matrix: spikes
+[ 13.11s] Port B L  1000 (1.00 x +1)  | sum +1.00 -> servo 90 deg | Spikes
+[ 13.61s] Port B L  1000 (1.00 x +1)  | sum +1.00 -> servo 178 deg | Spikes
+[ 14.11s] Port B L   300 (0.30 x +1)  | sum +0.30 -> servo 170 deg | Spikes
+[ 14.61s] Port B L   300 (0.30 x +1)  | sum +0.30 -> servo 118 deg | Spikes
+[ 15.11s] Port B L   300 (0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 15.61s] Port B L   300 (0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 16.11s] Port B L   300 (0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 16.61s] Port B L   300 (0.30 x +1)  | sum +0.30 -> servo 117 deg | Spikes
+[ 17.11s] Port B L  1000 (1.00 x +1)  | sum +1.00 -> servo 126 deg | Spikes
+[ 17.61s] Port B L  1000 (1.00 x +1)  | sum +1.00 -> servo 179 deg | Spikes
+[ 18.10s] Matrix: face (Angry, during the run)
+[ 18.10s] Face: Angry
+[ 18.11s] Port B L  1000 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 18.61s] Port B L  1000 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 19.11s] Port B L  1000 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 19.61s] Port B L  1000 (1.00 x +1)  | sum +1.00 -> servo 180 deg | Angry
+[ 20.11s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 166 deg | Angry
+[ 20.61s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 91 deg | Angry
+[ 21.10s] [ 21.10s] Matrix: face
+[ 21.10s] Face: Scared
+[ 21.11s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 21.61s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 22.11s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 22.61s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 23.11s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+[ 23.61s] Port B L     5 (0.00 x +1)  | sum +0.00 -> servo 90 deg | Scared
+LED frames shown: 605, checksum f51a7658

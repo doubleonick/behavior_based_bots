@@ -11,6 +11,7 @@
             up to 3 sensors, any mix of:
               M5 Color Unit (TCS3472)  light: brighter = stronger
               M5 ToF Unit   (VL53L0X)  distance: nearer = stronger
+              M5 DLight Unit (BH1750)  light in lux: brighter = stronger
             in Port A, B and C, or on an M5 PaHub (PCA9548A) plugged into one
             of the ports. On a hub, two sensors of the same kind can share one
             port (for example two distance sensors pointing left and right).
@@ -26,7 +27,7 @@
 
   Keep all these files together in a folder named Val_Field. The shared ones
   (Face, Spikes, Static, Canvas, Palette, Icons, MotionServo, Port, I2CBus, Sensor,
-  ColorSensor, DistanceSensor, ReflectiveIRSensor, LightUnitSensor, KeySensor, Button)
+  ColorSensor, DistanceSensor, DLightSensor, ReflectiveIRSensor, LightUnitSensor, KeySensor, Button)
   are copies of Val/shared/ - edit them there and run sync_shared.py.
 
   What it does
@@ -68,6 +69,7 @@
 #include "DistanceSensor.h"
 #include "ReflectiveIRSensor.h"
 #include "LightUnitSensor.h"
+#include "DLightSensor.h"
 #include "KeySensor.h"
 #include "Palette.h"
 #include "I2CBus.h"
@@ -155,6 +157,11 @@ DistanceSensor distanceSensor[PLACE_COUNT] = {
   DistanceSensor(place[3]), DistanceSensor(place[4]), DistanceSensor(place[5]),
   DistanceSensor(place[6]), DistanceSensor(place[7]), DistanceSensor(place[8])
 };
+DLightSensor dLight[PLACE_COUNT] = {
+  DLightSensor(place[0]), DLightSensor(place[1]), DLightSensor(place[2]),
+  DLightSensor(place[3]), DLightSensor(place[4]), DLightSensor(place[5]),
+  DLightSensor(place[6]), DLightSensor(place[7]), DLightSensor(place[8])
+};
 
 ReflectiveIRSensor reflectiveIR(PORT_A);   // in Port A if PORT_A_UNIT says so
 LightUnitSensor lightUnit(PORT_A);         // in Port A if PORT_A_UNIT says so
@@ -203,10 +210,10 @@ void printSetup();
 //  Finding sensors
 // =====================================================================
 // A new sensor's starting setup: distance, reflective IR and the key push (avoid
-// things); light (Color Unit or Light Unit) pulls (seek light); all pointing straight ahead.
+// things); light (Color Unit, Light Unit or DLight) pulls (seek light); all pointing straight ahead.
 void setDefaults(int i) {
   PotentialField::Source& s = field.source[i];
-  if (s.sensor->typeCode() == 'C' || s.sensor->typeCode() == 'U') {
+  if (s.sensor->typeCode() == 'C' || s.sensor->typeCode() == 'U' || s.sensor->typeCode() == 'L') {
     s.policy = PotentialField::PULL;
   } else {
     s.policy = PotentialField::PUSH;
@@ -308,6 +315,8 @@ bool detectPort(int i, bool allowAssumed) {
     s.sensor = &colorSensor[i];
   } else if (distanceSensor[i].begin()) {
     s.sensor = &distanceSensor[i];
+  } else if (dLight[i].begin()) {
+    s.sensor = &dLight[i];
   } else if (allowAssumed && i == PORT_A_INDEX && PORT_A_UNIT == IR_UNIT && reflectiveIR.begin()) {
     s.sensor = &reflectiveIR;          // nothing answered: the reflective IR the settings name
   } else if (allowAssumed && i == PORT_A_INDEX && PORT_A_UNIT == LIGHT_UNIT && lightUnit.begin()) {

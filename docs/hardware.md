@@ -215,6 +215,7 @@ Both answer at I2C address **0x29**, so the firmware asks each chip for its ID:
 | sensor | chip | ID check | raw reading |
 |---|---|---|---|
 | M5 Color Unit | TCS3472 | register 0x92 (0x80 \| 0x12) reads 0x44, 0x4D or 0x10 | clear channel, 0–65535 (gain 4x, ~154 ms) |
+| M5 DLight Unit (U136) | BH1750FVI | no ID register: recognised by answering at 0x23 (or 0x5C) | lux, 0 to ~54 600 (counts / 1.2; continuous, 1 lx steps, ~120 ms). Owner, 2026-11: works on Port A (Ex7_DLight); B, C and a PaHub not tried |
 | M5 ToF Unit | VL53L0X | registers 0xC0 / 0xC1 read 0xEE / 0xAA | distance in mm, capped at 2000 |
 
 DFRobot's SEN0245 is the same VL53L0X chip, so it is recognised too.

@@ -43,11 +43,12 @@ Shared classes: `Canvas` (the 5x5 picture every display draws on, and `FrameTime
 `Palette` (every colour), `Icons` (every setup picture), `Face` (expressions, talking,
 `tuneIn`), `Spikes` (the wiring's activity while driving), `Static` (white static),
 `MotionServo`, `Port`, `I2CBus`, `Sensor` (parent; 0..1 stimulus from two calibration
-points), `ColorSensor` (light, or one colour: magenta / yellow / cyan, fuzzy by hue), `DistanceSensor`, `ReflectiveIRSensor` (a level on Port A; on/off on
+points), `ColorSensor` (light, or one colour: magenta / yellow / cyan, fuzzy by hue), `DistanceSensor`,
+`DLightSensor` (light in lux; found by itself in any port), `ReflectiveIRSensor` (a level on Port A; on/off on
 Port B), `LightUnitSensor` (a level, Port A), `KeySensor` (button + LED, any port),
 `Button` (short / long / hold).
 
-Usual layouts: **Val_Vehicle** Color or ToF in B, IR or Light Unit in A, Key in C.
+Usual layouts: **Val_Vehicle** Color, DLight or ToF in B, IR or Light Unit in A, Key in C.
 **Val_Field** the same without the Key. **Val_Brooks** ToF / Color pairs on a PaHub
 in B, Keys in A (left) and C (right).
 
