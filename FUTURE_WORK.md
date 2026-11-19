@@ -5,6 +5,15 @@ dropped or a finding turns out wrong, record that here too.
 
 ## The web guide (`web/`)
 
+- **Ideas for play (owner, 2026-11):** each stop could end in a **challenge** to do
+  with that stop's robot (a fun goal, not just an experiment), and/or **open-ended
+  play**: Val exploring a home-made version of where that stop's creatures live,
+  with stand-in stimulus sources (a lamp for the sun, coloured patches on the floor
+  for food or scent, ...). Not designed yet.
+- **The opening sequence (2026-11, mock-up in progress):** a landing page like a lab
+  notebook's cover, with pictures that hint at what will be explored; one button
+  opens it into the introduction to the adventure; from there to meeting Val (stop
+  0). Establishing this sequence comes before the real content.
 - **The 5x5 matrix is near its limit (2026-11).** Each setup screen is close to what
   25 LEDs can carry (five shades, coloured dots, moving spikes), and with everything
   on one wire has up to nine screens. **Decided: favour the guide explaining and the
