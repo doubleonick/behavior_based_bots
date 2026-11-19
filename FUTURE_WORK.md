@@ -5,6 +5,30 @@ dropped or a finding turns out wrong, record that here too.
 
 ## The web guide (`web/`)
 
+- **The 5x5 matrix is near its limit (2026-11).** Each setup screen is close to what
+  25 LEDs can carry (five shades, coloured dots, moving spikes), and with everything
+  on one wire has up to nine screens. **Decided: favour the guide explaining and the
+  matrix confirming (A):** each lesson shows pictures of that stop's screens and
+  what each press does; this also builds out the lessons. The path-stage setting
+  (each stop's firmware shows only that stop's screens) is a heuristic to use where
+  it helps. Later, if needed: setup from the guide over USB (B, with on-robot setup
+  kept), or a screen with more pixels (C, e.g. the Atom S3: a small colour LCD in the
+  Atom's footprint, probably fits the Motion base; not checked). A proposed rule of
+  thumb ("one question per screen, at most two colours with meaning, a screen that
+  needs a key belongs in the guide") was judged too strict: kept only as a warning
+  sign. Screens it flags: the five shades (strength, self), the "switched off by"
+  screen, the field's colour wires.
+- **Memory's off switch (decided 2026-11, mock-up `web/mockups/setup/memory_off_mockup.html`;
+  not built):** another wire on the same module, whatever its sensor, can switch a memory
+  cell off, at a fixed strong strength (twice what it feels); it still moves the wheel
+  as an ordinary wire (a new stimulus takes over and the old behaviour is dropped,
+  as down a priority list). Screen "What switches this memory off?" after Self: only
+  the cell's own wire (cyan dot) and the chosen one (red dot, red spikes into the
+  cell) show; the cell is an empty outline when the memory is off and a filled block
+  when it is on. Biological fit: the roundworm's lasting dwelling / roaming states,
+  ended mostly by a change in what it senses, with fading as the backstop (already
+  built: the lower self shades). Later: two cells that hold themselves and silence
+  each other.
 A web interface that carries the instructions, with a game/story layer:
 
 - **For kids:** a story that leads them through the things to explore with Val,

@@ -10,6 +10,7 @@ but nothing here runs on the robot.
 | `neuron_setup_mockup.html` | setting up a wire's nerve cell on Val (Vehicles 4 and 5): Place, Threshold (show Val, then "Try it"), Strength, Self, then driving | **agreed (2026-11), not built** |
 | `neuron_display_mockup.html` | two views of a cell while driving: the wiring view (where the cell sits) and a zoomed-in cell (nine squares for how hard it fires, a loop for memory) | an idea on the table; the driving view is not decided |
 | `colour_setup_mockup.html` | the Color Unit as light or one colour: Val_Vehicle (choose one channel) and Val_Field (light plus up to three colour wires), a pretend RGBW flashlight, and the fuzzy-hue tuning (also published as a private artifact) | Val_Vehicle and Val_Field **built (2026-11)** |
+| `memory_off_mockup.html` | what switches a memory cell off: another wire on the module (cyan dot = the memory's own wire, red dot and spikes = the one that switches it off; outline = off, filled = on), with a pretend light, colour and Key (also a private artifact) | agreed (2026-11), not built |
 | `subsumption_setup_mockup.html` | choosing Val_Brooks' layers: (A) on Val, bottom-up with the one button; (B) planned in the guide, with a prediction | A is workable; B waits on the guide talking to Val (tentative, over USB) |
 
 Decisions and open questions are recorded in `FUTURE_WORK.md`.

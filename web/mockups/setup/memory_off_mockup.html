@@ -1,0 +1,127 @@
+<title>Val cross-wire setup</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* single light look on purpose: notebook paper around a pretend 5x5 matrix */
+:root{--ink:#1d2a44;--paper:#f6f8fb;--grid:#dde7f2;--org:#E07A2E;--blue:#1f5fa8;--note:#FFF4E8;--ground:#e9eef5;--on:#1F8A4C;--off:#7a8599;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:17px/1.5 "Atkinson Hyperlegible",Verdana,sans-serif;padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-size:1.5rem;margin:0 0 4px;text-wrap:balance} h2{font-size:1.1rem;margin:0 0 8px} p{margin:0 0 12px;max-width:72ch}
+.panel{background:var(--paper);border:2.5px solid var(--ink);padding:16px;max-width:1040px;margin-bottom:16px;
+ background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.atom{background:#c9ced6;border:2.5px solid var(--ink);border-radius:14px;padding:12px;width:max-content;max-width:100%}
+.matrix{display:grid;grid-template-columns:repeat(5,38px);grid-template-rows:repeat(5,38px);gap:6px;background:#111;padding:9px;border-radius:8px}
+.px{border-radius:5px;background:#1b1b1b}
+.btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+button{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.main{background:var(--org);color:#fff;font-weight:bold}
+.say{flex:1 1 300px;min-width:0;background:#fff;border:2px solid var(--ink);padding:12px;min-height:170px}
+.say b{display:block;margin-bottom:4px}.hint{color:var(--blue);font-size:15px;margin-top:8px}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;padding:0;list-style:none;font-size:15px}
+.steps li{border:2px solid var(--ink);padding:2px 10px;background:#fff}.steps li.on{background:var(--ink);color:#fff}.steps li.done{background:#dfe6ef}
+.world{margin-top:14px;background:var(--note);border:2px solid var(--ink);padding:10px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.state{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:15px;font-variant-numeric:tabular-nums}
+.chip{border:2px solid var(--ink);border-radius:999px;padding:2px 12px;background:#fff}
+.chip.lit{background:var(--on);color:#fff;border-color:var(--on)}
+.wires{font-size:15px;margin:0;padding-left:18px}
+.legend{display:flex;flex-direction:column;gap:2px;font-size:14px;margin-top:8px}.legend .k{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:-2px;border-radius:3px}.ko{border:3px solid #00a9c0}.kf{background:#00c4e0}.kr{background:#e23a3a}
+.note{background:var(--note);border:2px solid var(--ink);padding:12px;font-size:16px;max-width:1040px}
+</style>
+
+<h1>What silences a memory cell</h1>
+<p>A mock-up, not firmware. One module with three wires. Port A's wire has a memory cell: once light switches it on, it holds itself on. The new screen chooses another wire that switches the memory off. Then try it: switch the memory on, take the light away, and see what turns it off. Only two dots show on the matrix: the memory's own wire (cyan) and the one that switches it off (red).</p>
+
+<div class="panel">
+<h2>This module</h2>
+<ul class="wires">
+  <li><b>Port A:</b> Light Unit, + wire, with a memory cell (on the wire, strongest self-weight). Its dot is on the left of the top row.</li>
+  <li><b>Port B:</b> Color Unit, feeling magenta, + wire. Its dot is in the middle.</li>
+  <li><b>Port C:</b> Key, + wire. Its dot is on the right.</li>
+</ul>
+</div>
+
+<div class="panel">
+<ul class="steps" id="steps"></ul>
+<div class="row">
+  <div>
+    <div class="atom"><div class="matrix" id="m"></div></div>
+    <div class="legend"><span><i class="k ko"></i>empty outline: memory off</span><span><i class="k kf"></i>filled block: memory on</span><span><i class="k kr"></i>red dot and spikes: the wire that silences it</span></div>
+    <div class="btns"><button class="main" id="short">Short press</button><button class="main" id="long">Long press</button><button id="hold">Hold 2 s</button></div>
+  </div>
+  <div class="say"><b id="sayT"></b><span id="sayB"></span><div class="hint" id="sayH"></div></div>
+</div>
+<div class="world" id="world">
+  <b>Pretend world:</b>
+  <label>light on A <input type="range" id="lightA" min="0" max="1" step="0.01" value="0" style="width:120px"></label>
+  <button id="flash">Flash A for 1 s</button>
+  <label>magenta under B <input type="range" id="magB" min="0" max="1" step="0.01" value="0" style="width:120px"></label>
+  <button id="key">Press the Key (C)</button>
+</div>
+<div class="state" id="state"></div>
+</div>
+
+<div class="note"><b>What is assumed here</b> (all open):
+the screen comes after the Self screen, only for a wire that has a cell, and only when the module has another wire;
+the silencing wire works against the cell at a fixed, strong strength (twice what it feels), and it still drives the wheel as an ordinary + wire: a new stimulus takes over and the old behaviour is dropped;
+the choices are the other wires on the same module, whatever their sensor; a wire can silence only one cell for now.
+<br><b>On Val's matrix:</b> only two dots show: the cell's own wire (cyan, top left) and the silencer (red). The cell is an outline when the memory is off and a filled block when it is on.</div>
+
+<script>
+const COL={cyan:[0,229,255],red:[226,58,58],green:[47,191,90],white:[200,200,215],grey:[90,90,100]};
+const DOTCOL={A:0,B:2,C:4};
+const CHOICES=['none','B','C'];
+const m=(()=>{const el=document.getElementById('m');for(let i=0;i<25;i++){const d=document.createElement('div');d.className='px';el.appendChild(d);}return el.children;})();
+let st,frame=0,flashUntil=0,keyUntil=0;
+function reset(){st={screen:'self',silencer:'none',out:0};tell();}
+const ORDER=[['place','Place'],['threshold','Threshold'],['strength','Strength'],['self','Self'],['silence','Silenced by'],['drive','Driving']];
+function tell(){
+  const at=ORDER.findIndex(o=>o[0]===st.screen);
+  steps.innerHTML=ORDER.map((o,i)=>`<li class="${i===at?'on':i<at?'done':''}">${o[1]}</li>`).join('');
+  const T=(t,b,h)=>{sayT.textContent=t;sayB.textContent=b;sayH.textContent=h;};
+  if(st.screen==='self'){T('Self (already set)','Port A\'s cell listens to itself at the strongest level: once on, it holds itself on.','Long press: keep it, and go on to the new screen.');}
+  else if(st.screen==='silence'){
+    const s=st.silencer;
+    T('What switches this memory off?',s==='none'?'Nothing: once on, it stays on. No red on the screen.':s==='B'?'Port B (the magenta wire): its dot turns red, and red spikes run into the cell. Magenta under B switches the memory off.':'Port C (the Key): its dot turns red, and red spikes run into the cell. A press switches the memory off.','Short press: the next choice (nothing, Port B, Port C). Long press: keep it.');}
+  else{T('Driving','Raise the light on A (or flash it) to switch the cell on, then take the light away. Does the wheel keep going? Then try what you chose to silence it.','Hold 2 s: start again from the Self screen.');}
+}
+short.onclick=()=>{if(st.screen==='silence'){st.silencer=CHOICES[(CHOICES.indexOf(st.silencer)+1)%3];}tell();};
+long.onclick=()=>{if(st.screen==='self'){st.screen='silence';}else if(st.screen==='silence'){st.screen='drive';st.out=0;}tell();};
+hold.onclick=reset;
+flash.onclick=()=>{flashUntil=Date.now()+1000;};
+key.onclick=()=>{keyUntil=Date.now()+400;};
+function wheelText(v){return v<0.05?'stopped':v>0.95?'full speed':'speed '+v.toFixed(2);}
+function step(){
+  frame++;const t=frame*0.04;const buf=new Array(25).fill(null);
+  const put=(r,c,col,b)=>{const i=r*5+c;if(!buf[i]||buf[i][1]<b)buf[i]=[col,b];};
+  const a=Date.now()<flashUntil?0.9:+lightA.value, b=+magB.value, c=Date.now()<keyUntil?1:0;
+  const silVal=st.silencer==='B'?b:st.silencer==='C'?c:0;
+  // the cell: threshold 0.5, gain 4, self 1.5, silenced at twice what the silencer feels
+  const target=Math.max(0,Math.min(1,4*(a+1.5*st.out-0.5-2*silVal)));
+  st.out+=0.4*(target-st.out);
+  const cellOn=st.out>0.5;
+  // The cell: an empty outline = memory off, a filled block = memory on (rows 2-4, cols 1-3)
+  const ring=[[2,1],[3,1],[4,1],[4,2],[4,3],[3,3],[2,3],[2,2]];
+  const drawCell=(on)=>{ring.forEach(([r,cc])=>put(r,cc,COL.cyan,on?1:0.55));put(3,2,COL.cyan,on?1:0);};
+  // Only two dots: the cell's own wire (cyan) and, if one is chosen, the silencer (red)
+  put(0,DOTCOL.A,COL.cyan,0.9);
+  const path=st.silencer==='B'?[[1,2]]:st.silencer==='C'?[[1,4],[2,4]]:[];
+  const runSpikes=(active)=>{const k=Math.floor(t*6)%(path.length+1);path.forEach(([r,cc],i)=>put(r,cc,COL.red,active&&i===k?1:0.15));};
+  if(st.screen==='self'){
+    const head=Math.floor(t*8)%8;
+    ring.forEach(([r,cc],k)=>{const behind=(head-k+8)%8;put(r,cc,COL.cyan,behind<3?1-behind/3.5:0.07);});
+  }else if(st.screen==='silence'){
+    drawCell(false);
+    if(st.silencer!=='none'){put(0,DOTCOL[st.silencer],COL.red,1);runSpikes(true);}
+  }else{
+    drawCell(cellOn);
+    put(1,0,COL.cyan,a>0.05?0.9:0.15);            // the cell's own wire, lit while its sensor feels something
+    if(st.silencer!=='none'){put(0,DOTCOL[st.silencer],COL.red,1);runSpikes(silVal>0.05);}
+  }
+  for(let i=0;i<25;i++){const p=m[i];if(buf[i]){const[cc,bb]=buf[i];p.style.background=`rgb(${cc[0]},${cc[1]},${cc[2]})`;p.style.opacity=Math.max(0.07,bb);}else{p.style.background='#1b1b1b';p.style.opacity=1;}}
+  world.hidden=st.screen!=='drive';
+  state.innerHTML=st.screen==='drive'?`<span class="chip ${cellOn?'lit':''}">memory cell: ${cellOn?'ON':'off'}</span><span class="chip">wheel: ${wheelText(Math.min(1,st.out+b+c))}</span><span class="chip">light on A ${a.toFixed(2)}</span><span class="chip">silencer (${st.silencer==='none'?'none':'Port '+st.silencer}) ${silVal.toFixed(2)}</span>`:'';
+}
+setInterval(step,40);reset();
+</script>
