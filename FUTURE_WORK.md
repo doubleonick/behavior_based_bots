@@ -231,7 +231,7 @@ A web interface that carries the instructions, with a game/story layer:
   - Long-range smell (a wolf scenting the air) is the field idea proper: a
     gradient followed from far away. A dog with its nose on a trail is the close
     version.
-- **`firmware/Color_Test/` (2026-11, branch `expanded_vehicles`, not yet run on the
+- **`firmware/tools/Color_Test/` (2026-11, branch `expanded_vehicles`, not yet run on the
   robot):** the whole matrix shows the colour the Color Unit sees. The strongest of
   red, green and blue is stretched to full, so the colour shows even in dim light
   (`SHOW_BRIGHTNESS` true dims it with the light instead); below `TOO_DARK` it goes
@@ -240,7 +240,7 @@ A web interface that carries the instructions, with a game/story layer:
   balance is needed for the colours a lesson would use.
 - **A safety reflex from the IMU: "not level, motors off" (2026-11, exploring).** Wanted:
   a safety feature with no extra sensor (so not a downward IR, and not a stop on the
-  path), and a reason to explore the Matrix's IMU. `firmware/IMU_Test/` (branch
+  path), and a reason to explore the Matrix's IMU. `firmware/tools/IMU_Test/` (branch
   `expanded_vehicles`, **not yet run on the robot**) is the first step: a bubble level
   on the matrix, tilt / total g / jolt on Serial with one word (LEVEL, TILTED,
   FALLING, JOLT), the button sets "this is level", and an optional trial that stops

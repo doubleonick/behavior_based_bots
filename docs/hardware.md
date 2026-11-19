@@ -65,7 +65,7 @@ direct connection to the servo signal pins.
   `INERTIAL_COLLISION` is 1. Which axis is the robot's front depends on how the Atom is
   mounted: set `IMU_FORWARD_AXIS` / `IMU_LEFT_AXIS` and their signs from the Serial
   readings. The v1.0 Atom Matrix has an MPU6886 instead, which this code does not read.
-  `firmware/IMU_Test/` reads either chip (the MPU6886 directly, from its data sheet:
+  `firmware/tools/IMU_Test/` reads either chip (the MPU6886 directly, from its data sheet:
   address 0x68, WHO_AM_I 0x75 = 0x19, accelerometer from 0x3B; **not tried on a real
   one**) and shows tilt as a bubble level, for finding out what the IMU can tell about
   Val tipping over an edge, being picked up or falling.
@@ -92,7 +92,7 @@ With none switched on and no I2C sensor, setup finds nothing: Val_Vehicle and
 Val_Field then show a grey crossed box for 2 s before the check mark, and Serial
 says how to switch one on.
 
-`firmware/Unit_Tester/` is for finding out what these units really do, pin by pin,
+`firmware/tools/Unit_Tester/` is for finding out what these units really do, pin by pin,
 before the Val sketches rely on them: it shows each port pin's reading and whether
 anything drives it (read with the weak pull-up, then the weak pull-down: an empty pin
 follows them), and can drive a Key's LED once the Key has been pressed.

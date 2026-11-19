@@ -13,17 +13,22 @@ make sense to them; everything an adult needs should be written down for them.
 
 ## Layout
 
+Firmware is grouped as: the robot sketches (`Val_Vehicle`, `Val_Field`, `Val_Brooks`, with
+`shared/`), `examples/` (one device each, for beginners) and `tools/` (diagnostics and
+explorers for trying hardware). The robot sketches' names are due to change; no
+convention yet.
+
 | path | holds |
 |---|---|
 | `firmware/shared/` | **the originals** of every class the sketches share |
 | `firmware/Val_Vehicle/` | Braitenberg vehicle: sensors wired +/−/off to one servo (S1); a wire can have one `Neuron` on the way for Vehicles 4 and 5 (a threshold, a favourite level, memory), set in the sketch or, with `NEURONS_IN_SETUP 1`, on Val's setup screens |
 | `firmware/Val_Field/` | potential field: sensors push/pull by direction; two wheels (S1 left, S2 right); a Color Unit is one sensor with up to four wires (light, magenta, yellow, cyan), 3 on at once |
 | `firmware/Val_Brooks/` | subsumption test bench: behaviours in a fixed hierarchy, picked by uncommenting one `TEST_` line (and `BOTTOM`: wander or cruise); two wheels, ToF / Color pairs on a PaHub in Port B, left Key in Port A, right Key in Port C |
-| `firmware/Unit_Tester/` | diagnostics: every port pin's reading and "is anything driving it?" on the matrix and Serial; a key LED test. Uses no shared files |
-| `firmware/IR_Test/` | just the Reflective IR Unit on Port A or B: digital and analog readings on the matrix and Serial. Uses no shared files |
-| `firmware/Light_Test/` | just the Light Unit on Port A, B or C: both pins' readings (level or on/off) on the matrix and Serial. Uses no shared files |
-| `firmware/Color_Test/` | just the Color Unit on one port: the whole matrix turns the colour it sees (press the screen over something white to white-balance), the readings on Serial. Uses no shared files |
-| `firmware/IMU_Test/` | just the Atom Matrix's own motion sensor (BMI270, or MPU6886 on a v1.0): a bubble level on the matrix, tilt / slope / falling / jolt on Serial, a slow drive stepped by short presses (for slopes), and an optional "stop the wheels when not level" trial. Uses no shared files |
+| `firmware/tools/Unit_Tester/` | diagnostics: every port pin's reading and "is anything driving it?" on the matrix and Serial; a key LED test. Uses no shared files |
+| `firmware/tools/IR_Test/` | just the Reflective IR Unit on Port A or B: digital and analog readings on the matrix and Serial. Uses no shared files |
+| `firmware/tools/Light_Test/` | just the Light Unit on Port A, B or C: both pins' readings (level or on/off) on the matrix and Serial. Uses no shared files |
+| `firmware/tools/Color_Test/` | just the Color Unit on one port: the whole matrix turns the colour it sees (press the screen over something white to white-balance), the readings on Serial. Uses no shared files |
+| `firmware/tools/IMU_Test/` | just the Atom Matrix's own motion sensor (BMI270, or MPU6886 on a v1.0): a bubble level on the matrix, tilt / slope / falling / jolt on Serial, a slow drive stepped by short presses (for slopes), and an optional "stop the wheels when not level" trial. Uses no shared files |
 | `firmware/examples/` | standalone beginner examples, one device each (servo, ToF, IR, Light Unit, Key, Color, DLight), with hook-up notes. Use no shared files |
 | `cad/` | OpenSCAD models: `vechicles_v2.scad` (the current chassis for Vehicle, Field and Brooks, mirrored pair; needs `foundational_modules.scad` beside it); `render/val_v1_render.py` (Val's V1 avatar as 16-bit pixel art, rendered from the chassis CAD plus parts placed from photos; `val_v1_above_rear.png` is the avatar); `servo_wheel.scad` (the vechicles_v2 wheel with its tire, as a one-piece servo horn: M5 kit cross axle or SG90 horn pocket; optional TPU tire / rigid core split); `mg996_brick_mount.scad` (a clamp that pins an MG996 servo's broad side to a Technic beam, holes 6 apart, plus a Technic horn adapter; extrapolated from M5's brick-compatible servo kits) and its preview images |
 | `firmware/sync_shared.py` | copies `shared/` into the sketches |
