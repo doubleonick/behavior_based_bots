@@ -36,6 +36,18 @@ dropped or a finding turns out wrong, record that here too.
   the key pattern inside the cover, cream dot-grid spreads, pages written like the
   owner's own (handwritten underlined title and date, pencil notes, labelled
   drawings). Paper colour still judged by eye (no photo beside white paper yet).
+- **The Ci icon and wordmark (owner, 2026-11; `web/mockups/guide/ci_icon.html`):**
+  Curious Innovations' icon, redrawn from the owner's description (not the original
+  file): a partial gear as the C, a minimal lightbulb as a lower-case i in the C's
+  gap. Chosen: version B (the glass narrows to a screw base; threads slanted as on a
+  real bulb), with the lighter gear first drawn for the wordmark (ring as thick as the
+  font's round strokes, 14 smaller teeth), used everywhere. It tiles the inside cover
+  in pale grey on slate, in place of the key pattern, and is debossed on cover style B
+  in place of the jellyfish. Beneath the tiles, "Curious Innovations" in orange in IM
+  Fell English, with the gear as the C and the bulb as the I, scaled to the letters.
+  Tried and dropped: one orange icon among the tiles (4th in the centre column, then
+  the bottom row), replaced by the wordmark; steampunk display fonts, in favour of
+  the expedition map's lettering.
 - **The test platform (owner, 2026-11):** a new chassis, "Val Brooks Version 3", two
   M5 360° servos, a Technic caster, the Atom Motion and Matrix on top; works much
   better than the previous one, particularly for field behaviour. The owner is

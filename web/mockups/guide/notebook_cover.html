@@ -1,6 +1,6 @@
 <title>Val notebook cover study</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&family=Silkscreen&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&family=Silkscreen&family=IM+Fell+English&display=swap">
 <style>
 /* Layout: two covers side by side (a paper label, or a title pressed into the cover),
    each opening to its first page. Single light look on purpose: a desk under a lamp. */
@@ -31,10 +31,9 @@ figcaption b{display:block;color:var(--ink);font-size:16px}
   transform-style:preserve-3d;box-shadow:6px 10px 22px rgba(0,0,0,.35),1px 2px 0 rgba(0,0,0,.5)}
 .book.open .cover{transform:rotateY(-155deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:inherit;overflow:hidden;background:var(--leather)}
-.face.inside{transform:rotateY(180deg);background:#e9e4d6;
-  background-image:repeating-linear-gradient(0deg,transparent 0 9px,rgba(60,60,60,.55) 9px 10px),repeating-linear-gradient(90deg,transparent 0 9px,rgba(60,60,60,.55) 9px 10px);
-  background-color:#4a4a4a}
-.face.inside::after{content:"";position:absolute;inset:10px;border:1.5px solid rgba(255,255,255,.18);border-radius:3px 10px 10px 3px}
+.face.inside{transform:rotateY(180deg);background:#3b3e45}
+.face.inside svg{position:absolute;inset:0;width:100%;height:100%}
+.ci-wordmark text{font-family:"IM Fell English",Georgia,serif}
 .cover svg.grain{position:absolute;inset:0;width:100%;height:100%}
 /* sheen: two soft pools of light, as in the photos */
 .face.front::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
@@ -95,7 +94,9 @@ figcaption b{display:block;color:var(--ink);font-size:16px}
       <span class="ribbon"></span><span class="ribbon foot"></span>
       <div class="pages"><span class="edge"></span><div class="first"><small>PAGE 1</small>This notebook belongs to an explorer.<br>[the adventure begins…]</div></div>
       <div class="cover">
-       <div class="face inside" aria-hidden="true"></div>
+       <div class="face inside" aria-hidden="true"><svg viewBox="0 0 260 400" preserveAspectRatio="xMidYMid slice">
+         <rect width="260" height="400" fill="url(#ciP)"/><rect y="344" width="260" height="56" fill="#3b3e45"/>
+         <g class="ci-wordmark" fill="#E07A2E" style="--bg:#3b3e45"></g></svg></div>
        <div class="face front">
         <svg class="grain" aria-hidden="true"><use href="#leather"/></svg>
         <div class="label">
@@ -117,27 +118,29 @@ figcaption b{display:block;color:var(--ink);font-size:16px}
       <span class="ribbon"></span><span class="ribbon foot"></span>
       <div class="pages"><span class="edge"></span><div class="first"><small>PAGE 1</small>This notebook belongs to an explorer.<br>[the adventure begins…]</div></div>
       <div class="cover">
-       <div class="face inside" aria-hidden="true"></div>
+       <div class="face inside" aria-hidden="true"><svg viewBox="0 0 260 400" preserveAspectRatio="xMidYMid slice">
+         <rect width="260" height="400" fill="url(#ciP)"/><rect y="344" width="260" height="56" fill="#3b3e45"/>
+         <g class="ci-wordmark" fill="#E07A2E" style="--bg:#3b3e45"></g></svg></div>
        <div class="face front">
         <svg class="grain" aria-hidden="true"><use href="#leather"/></svg>
         <div class="emboss">
           <div class="title">[VAL'S EXPEDITION]</div>
           <div class="rule"></div>
           <div class="kind">FIELD NOTEBOOK</div>
-          <svg viewBox="0 0 60 60" aria-hidden="true"><path d="M10 30 C10 12 50 12 50 30 Q43 27 38 30 Q30 26 22 30 Q16 27 10 30Z M18 32 q-4 9 1 16 M26 32 q4 9 -1 16 M34 32 q-4 9 1 16 M42 32 q4 8 -1 14" fill="none" style="stroke:color-mix(in srgb,var(--leather),#000 55%)" stroke-width="2.4" stroke-linecap="round"/></svg>
+          <svg class="ci-deboss" viewBox="-56 -56 112 112" aria-hidden="true"></svg>
         </div>
        </div>
         <span class="band"></span>
       </div>
     </div>
     <button class="btn" type="button" data-book="bookB">Open</button>
-    <figcaption><b>B · Pressed into the cover</b>The title and a small jellyfish debossed into the leather, black on black, as on a fine notebook.</figcaption>
+    <figcaption><b>B · Pressed into the cover</b>The title and the Ci icon debossed into the leather, tone on tone, as on a fine notebook.</figcaption>
   </figure>
 </div>
 
-<p class="note">The leather grain and creases are drawn by the browser (no photo used), so the cover can scale and stay sharp. Colours are judged by eye from your photos, which were taken under cool indoor light; they will be matched properly once there is a page photographed beside white paper. The grey patterned band along the page's spine side, and the inside of the cover, stand in for the interlocking-square pattern in your notebook: to be redrawn from a photo of it.</p>
+<p class="note">The leather grain and creases are drawn by the browser (no photo used), so the cover can scale and stay sharp. Colours are judged by eye from your photos, which were taken under cool indoor light; they will be matched properly once there is a page photographed beside white paper. The inside of the cover is the endpaper: the Ci icon tiled in pale grey on slate, with \"Curious Innovations\" along the bottom. The grey band along the page's spine side still stands in for the real notebook's pattern.</p>
 
-<!-- the leather: fine pebbled grain plus a network of fine creases -->
+<!-- the leather: fine pebbled grain plus a network of fine creases; and the endpaper pattern -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <filter id="grainF" x="0" y="0" width="100%" height="100%">
@@ -148,6 +151,7 @@ figcaption b{display:block;color:var(--ink);font-size:16px}
       <feComponentTransfer in="ridge" result="crease"><feFuncA type="table" tableValues="0 0 0 .55 0 0 0"/></feComponentTransfer>
       <feMerge><feMergeNode in="pebble"/><feMergeNode in="crease"/></feMerge>
     </filter>
+    <pattern id="ciP" width="60" height="64" patternUnits="userSpaceOnUse"></pattern>
     <symbol id="leather" viewBox="0 0 100 100" preserveAspectRatio="none">
       <rect width="100" height="100" style="fill:var(--leather)"/>
       <rect width="100" height="100" filter="url(#grainF)" opacity=".13"/>
@@ -156,6 +160,76 @@ figcaption b{display:block;color:var(--ink);font-size:16px}
 </svg>
 
 <script>
+// ===== The Ci mark: a gear for the C, a lightbulb for the i (version B), and the
+// "Curious Innovations" wordmark. Same drawing as web/mockups/guide/ci_icon.html. =====
+const GEAR={R:40,r:30,tooth:5.5,teeth:14,gap:44,inset:0.4};
+function gearC({R=40,r=25,tooth=7,teeth=12,gap=44,inset=0.36}={}){
+  // teeth: how many would go all the way round; gap: half-angle of the opening, degrees
+  const pts=[];const step=360/teeth;const toRad=a=>a*Math.PI/180;
+  const P=(rad,a)=>[rad*Math.cos(toRad(a)),-rad*Math.sin(toRad(a))];
+  // walk the outer edge from the lower jaw (gap) round the left to the upper jaw (360-gap)
+  let a=gap;pts.push(P(R,a));
+  const end=360-gap;
+  // first full tooth starts at the first multiple of step past the gap
+  let t=Math.ceil(gap/step)*step+step*inset*0.5;
+  while(t+step*0.5<=end){
+    const w=step*inset;   // tooth top width (angle)
+    pts.push(P(R,t));pts.push(P(R+tooth,t+w*0.15));pts.push(P(R+tooth,t+w*0.85));pts.push(P(R,t+w));
+    t+=step;
+  }
+  pts.push(P(R,end));pts.push(P(r,end));
+  for(let k=0;k<=40;k++){const b=end-(end-gap)*k/40;pts.push(P(r,b));}
+  return 'M'+pts.map(p=>p.map(v=>v.toFixed(2)).join(' ')).join(' L')+' Z';
+}
+function bulbI(style){
+  const x=31;   // stands inside the C's gap, between its jaws
+  if(style==='glow'){
+    return `<circle cx="${x}" cy="-12" r="6.5"/>
+      <path d="M${x-4} -1 H${x+4} V20 H${x-4} Z"/>
+      <g stroke-width="2" stroke-linecap="round" fill="none"><path d="M${x} -22.5 v-3.5 M${x-8.5} -19 l-2.4 -2.4 M${x+8.5} -19 l2.4 -2.4"/></g>`;
+  }
+  if(style==='neck'){
+    // the glass narrows into the base, like a real bulb, with screw lines on the stem
+    return `<path d="M${x} -21 a7.5 7.5 0 0 1 4.8 13.2 l-1 3.8 h-7.6 l-1 -3.8 a7.5 7.5 0 0 1 4.8 -13.2 Z"/>
+      <path d="M${x-4} -1 H${x+4} V20 H${x-4} Z"/>
+      <g stroke="var(--bg)" stroke-width="1.3"><path d="M${x-4} 4 l8 2 M${x-4} 8.5 l8 2 M${x-4} 13 l8 2"/></g>`;
+  }
+  return `<circle cx="${x}" cy="-12" r="6.5"/><path d="M${x-4} -1 H${x+4} V20 H${x-4} Z"/>`;   // plain
+}
+
+function ciMarkup(fill,bg){return `<g fill="${fill}" stroke="${fill}" style="--bg:${bg}"><path d="${gearC(GEAR)}" stroke="none"/>${bulbI('neck')}</g>`;}
+// Fill an SVG <pattern> with the icon in offset rows (like bricks), pale grey on slate
+function ciPattern(pat,k){
+  k=k||1; const w=60*k,h=64*k,s=.21*k;
+  pat.setAttribute('width',w);pat.setAttribute('height',h);
+  pat.innerHTML=`<rect width="${w}" height="${h}" fill="#3b3e45"/>
+    <g transform="translate(${15*k} ${16*k}) scale(${s})">${ciMarkup('#c9c9cf','#3b3e45')}</g>
+    <g transform="translate(${45*k} ${48*k}) scale(${s})">${ciMarkup('#c9c9cf','#3b3e45')}</g>`;
+}
+// "Curious Innovations" in IM Fell English, the gear as its C and the bulb as its I
+function ciWordmark(g,cx,baseline,size){
+  const NS='http://www.w3.org/2000/svg', cap=size*0.68;
+  g.innerHTML='';
+  const word=t=>{const e=document.createElementNS(NS,'text');e.textContent=t;e.setAttribute('y',baseline);e.setAttribute('font-size',size);g.appendChild(e);return e;};
+  const gearR=GEAR.R+GEAR.tooth, gs=(cap*1.08)/(2*gearR);
+  const gear=document.createElementNS(NS,'path');gear.setAttribute('d',gearC(GEAR));g.appendChild(gear);
+  const t1=word('urious');
+  const bs=cap/41;
+  const bulb=document.createElementNS(NS,'g');bulb.innerHTML=bulbI('neck');g.appendChild(bulb);
+  const t2=word('nnovations');
+  const gw=2*gearR*gs, bw=11*bs, space=size*0.28, gap=size*0.05;
+  const w1=t1.getComputedTextLength(), w2=t2.getComputedTextLength();
+  let x=cx-(gw-size*0.06+w1+space+bw+gap+w2)/2;
+  gear.setAttribute('transform',`translate(${x+gearR*gs} ${baseline-cap/2}) scale(${gs})`); x+=gw-size*0.06;
+  t1.setAttribute('x',x); x+=w1+space;
+  bulb.setAttribute('transform',`translate(${x+bw/2-31*bs} ${baseline-20*bs}) scale(${bs})`); x+=bw+gap;
+  t2.setAttribute('x',x);
+}
+
+ciPattern(document.getElementById('ciP'),1);
+// the debossed icon on cover B: the cover's own colour, a shade darker (the bulb's threads cut back to the leather)
+document.querySelectorAll('.ci-deboss').forEach(svg=>{svg.innerHTML=ciMarkup('currentColor','var(--leather)');});
+(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>document.querySelectorAll('.ci-wordmark').forEach(g=>ciWordmark(g,130,377,16)));
 const root=document.documentElement;
 function shade(hex,f){const n=parseInt(hex.slice(1),16);const c=[n>>16,n>>8&255,n&255].map(v=>Math.round(v*f));return '#'+c.map(v=>v.toString(16).padStart(2,'0')).join('');}
 function setBand(){const c=getComputedStyle(root).getPropertyValue('--leather').trim();

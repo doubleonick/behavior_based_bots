@@ -1,0 +1,133 @@
+<title>Ci icon study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400&family=Cinzel+Decorative:wght@700&family=Rye&family=Federant&family=Metamorphous&family=IM+Fell+English&family=IM+Fell+English+SC&display=swap">
+<style>
+/* Layout: the icon large in three versions, then each one tiled across the inside of the
+   notebook's cover. Single light look on purpose: cream paper on a desk. */
+:root{--ink:#1d2a44;--paper:#f2ead6;--desk:#e4e7eb;--slate:#3b3e45;--tile:#c9c9cf;--val:#E07A2E;--pen:#1f5fa8;
+  --read:"Atkinson Hyperlegible",Verdana,sans-serif;--hand:"Kalam","Comic Sans MS",cursive;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--desk);color:var(--ink);font:17px/1.5 var(--read);padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font:700 1.45rem var(--read);margin:0 auto 4px;max-width:1040px;text-wrap:balance}
+h2{font:700 1.1rem var(--read);margin:28px auto 10px;max-width:1040px}
+p.lede{max-width:1040px;margin:0 auto 18px;color:#3b4660}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px;max-width:1040px;margin:0 auto}
+.card{background:var(--paper);border:2px solid var(--ink);border-radius:4px 14px 14px 4px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card svg.big{width:100%;max-width:240px;aspect-ratio:1;margin:0 auto;display:block}
+.card b{font-size:16px}
+.card span{font-size:15px;color:#3b4660}
+.small{display:flex;gap:14px;align-items:flex-end;justify-content:center}
+.small svg{display:block}
+.endpaper{border-radius:14px 2px 2px 14px;aspect-ratio:13/18;width:100%;display:block;box-shadow:inset -18px 0 22px -16px rgba(0,0,0,.6);border:2px solid #222}
+#tiles{grid-template-columns:minmax(0,340px);justify-content:center}
+.wordmark text{font-size:17px;font-family:"IM Fell English",Georgia,serif}
+.fonts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:1040px;margin:0 auto 14px;font-size:15px;align-items:center}
+.fonts button{font-size:16px;color:var(--ink);background:#fff;border:2px solid #9aa3b2;border-radius:999px;padding:4px 14px;cursor:pointer}
+.fonts button.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.note{max-width:1040px;margin:26px auto 0;font-size:15px;color:#3b4660;background:#fff8;border:1.5px solid #9aa3b2;padding:12px 14px;border-radius:6px}
+</style>
+
+<h1>The Ci icon: a gear for the C, a lightbulb for the i</h1>
+<p class="lede">My reading of your description: part of a gear curves round to make the C, and a minimal lightbulb stands in the C's gap as a lower-case i, its glass the dot and its base the stem. Three versions, then each tiled across the inside cover.</p>
+
+<div class="row" id="icons"></div>
+<h2>B, tiled across the inside of the cover</h2>
+
+<div class="row" id="tiles"></div>
+
+<p class="note">Drawn from your description only, not from the original file, so the proportions, number of teeth and the bulb's shape are guesses for you to correct. Each version is one vector shape, so it scales to any size and tiles cleanly. On the endpapers it is drawn in the same pale grey on slate as the key pattern in your real notebook, in offset rows (like bricks), which usually reads more like printed endpaper than a straight grid. The cover uses version B, all in pale grey. Beneath it, "Curious Innovations" in orange, in IM Fell English (the expedition map's lettering), with the gear as its C and the lightbulb as its I. The gear is the lighter one first drawn for the wordmark (a ring as thick as the font's round strokes, smaller teeth), used everywhere so the icon and the wordmark match.</p>
+
+<script>
+// ---- the C: a partial gear (an annulus with teeth on its outer edge, open on the right) ----
+function gearC({R=40,r=25,tooth=7,teeth=12,gap=44,inset=0.36}={}){
+  // teeth: how many would go all the way round; gap: half-angle of the opening, degrees
+  const pts=[];const step=360/teeth;const toRad=a=>a*Math.PI/180;
+  const P=(rad,a)=>[rad*Math.cos(toRad(a)),-rad*Math.sin(toRad(a))];
+  // walk the outer edge from the lower jaw (gap) round the left to the upper jaw (360-gap)
+  let a=gap;pts.push(P(R,a));
+  const end=360-gap;
+  // first full tooth starts at the first multiple of step past the gap
+  let t=Math.ceil(gap/step)*step+step*inset*0.5;
+  while(t+step*0.5<=end){
+    const w=step*inset;   // tooth top width (angle)
+    pts.push(P(R,t));pts.push(P(R+tooth,t+w*0.15));pts.push(P(R+tooth,t+w*0.85));pts.push(P(R,t+w));
+    t+=step;
+  }
+  pts.push(P(R,end));pts.push(P(r,end));
+  for(let k=0;k<=40;k++){const b=end-(end-gap)*k/40;pts.push(P(r,b));}
+  return 'M'+pts.map(p=>p.map(v=>v.toFixed(2)).join(' ')).join(' L')+' Z';
+}
+// ---- the i: a minimal lightbulb, glass = the dot, base = the stem ----
+function bulbI(style){
+  const x=31;   // stands inside the C's gap, between its jaws
+  if(style==='glow'){
+    return `<circle cx="${x}" cy="-12" r="6.5"/>
+      <path d="M${x-4} -1 H${x+4} V20 H${x-4} Z"/>
+      <g stroke-width="2" stroke-linecap="round" fill="none"><path d="M${x} -22.5 v-3.5 M${x-8.5} -19 l-2.4 -2.4 M${x+8.5} -19 l2.4 -2.4"/></g>`;
+  }
+  if(style==='neck'){
+    // the glass narrows into the base, like a real bulb, with screw lines on the stem
+    return `<path d="M${x} -21 a7.5 7.5 0 0 1 4.8 13.2 l-1 3.8 h-7.6 l-1 -3.8 a7.5 7.5 0 0 1 4.8 -13.2 Z"/>
+      <path d="M${x-4} -1 H${x+4} V20 H${x-4} Z"/>
+      <g stroke="var(--bg)" stroke-width="1.3"><path d="M${x-4} 4 l8 2 M${x-4} 8.5 l8 2 M${x-4} 13 l8 2"/></g>`;
+  }
+  return `<circle cx="${x}" cy="-12" r="6.5"/><path d="M${x-4} -1 H${x+4} V20 H${x-4} Z"/>`;   // plain
+}
+// The gear, as redesigned for the wordmark: a ring as thick as the font's round strokes,
+// smaller and more numerous teeth. Used everywhere, so the icon and the wordmark match.
+const GEAR={R:40,r:30,tooth:5.5,teeth:14,gap:44,inset:0.4};
+const VERSIONS=[
+  {key:'plain',name:'A · Plain',text:'A gear C, and the simplest i: a round bulb for the dot, a straight base for the stem.',gear:GEAR},
+  {key:'neck',name:'B · A real bulb',text:'The glass narrows into a screw base, so it reads as a lightbulb first and an i second.',gear:GEAR},
+  {key:'glow',name:'C · Lit up',text:'Three short rays above the bulb: an idea arriving. Busier, but the most playful.',gear:GEAR},
+];
+function icon(v,fill,bg,size){
+  return `<svg ${size?`width="${size}" height="${size}"`:'class="big"'} viewBox="-56 -56 112 112" role="img" aria-label="Ci icon, version ${v.key}" style="--bg:${bg}">
+    <g fill="${fill}" stroke="${fill}"><path d="${gearC(v.gear)}" stroke="none"/>${bulbI(v.key)}</g></svg>`;
+}
+const icons=document.getElementById('icons'),tiles=document.getElementById('tiles');
+VERSIONS.forEach(v=>{
+  icons.insertAdjacentHTML('beforeend',`<div class="card">${icon(v,'#1d2a44','#f2ead6')}
+    <div class="small">${icon(v,'#1d2a44','#f2ead6',48)}${icon(v,'#1d2a44','#f2ead6',24)}${icon(v,'#E07A2E','#f2ead6',48)}</div>
+    <b>${v.name}</b><span>${v.text}</span></div>`);
+  const id='pat-'+v.key;
+  if(v.key!=='neck'){return;}   // the cover uses B
+  tiles.insertAdjacentHTML('beforeend',`<div class="card"><svg class="endpaper" viewBox="0 0 260 360" preserveAspectRatio="xMidYMid slice" aria-label="Version ${v.key} tiled on slate">
+    <defs><pattern id="${id}" width="60" height="64" patternUnits="userSpaceOnUse">
+      <rect width="60" height="64" fill="#3b3e45"/>
+      <g transform="translate(15 16) scale(.21)" fill="#c9c9cf" stroke="#c9c9cf" style="--bg:#3b3e45"><path d="${gearC(v.gear)}" stroke="none"/>${bulbI(v.key)}</g>
+      <g transform="translate(45 48) scale(.21)" fill="#c9c9cf" stroke="#c9c9cf" style="--bg:#3b3e45"><path d="${gearC(v.gear)}" stroke="none"/>${bulbI(v.key)}</g>
+    </pattern></defs><rect width="260" height="360" fill="url(#${id})"/>
+    <rect x="0" y="292" width="260" height="68" fill="#3b3e45"/>
+    <g class="wordmark" fill="#E07A2E" style="--bg:#3b3e45"></g>
+    </svg><b>${v.name}</b></div>`);
+});
+
+// The maker's mark: "Curious Innovations" in IM Fell English (the map's lettering), with
+// the gear standing in for the C and the lightbulb for the I, each scaled to the letters.
+function wordmark(g){
+  const NS='http://www.w3.org/2000/svg', size=17, baseline=326, cap=size*0.68;
+  const B=VERSIONS.find(v=>v.key==='neck');
+  g.innerHTML='';
+  const word=t=>{const e=document.createElementNS(NS,'text');e.textContent=t;e.setAttribute('y',baseline);g.appendChild(e);return e;};
+  // the gear, as tall as a capital plus a little (its teeth stick out, like a round letter overshoots)
+  // a lighter gear for the wordmark: its ring as thick as the C of the font, smaller teeth,
+  // as tall as a round capital (which overshoots the cap height a little)
+  const G=GEAR, gearR=G.R+G.tooth, gs=(cap*1.08)/(2*gearR);
+  const gear=document.createElementNS(NS,'path');gear.setAttribute('d',gearC(G));g.appendChild(gear);
+  const t1=word('urious');
+  // the bulb, from the top of its glass (-21) to the bottom of its base (20), as tall as a capital
+  const bs=cap/41;
+  const bulb=document.createElementNS(NS,'g');bulb.innerHTML=bulbI('neck');g.appendChild(bulb);
+  const t2=word('nnovations');
+  const gw=2*gearR*gs, bw=11*bs, space=size*0.28, gap=size*0.05;
+  const w1=t1.getComputedTextLength(), w2=t2.getComputedTextLength();
+  const total=gw-size*0.06+w1+space+bw+gap+w2;
+  let x=130-total/2;
+  gear.setAttribute('transform',`translate(${x+gearR*gs} ${baseline-cap/2}) scale(${gs})`); x+=gw-size*0.06;   // the C is open on the right, so the next letter tucks in
+  t1.setAttribute('x',x); x+=w1+space;
+  bulb.setAttribute('transform',`translate(${x+bw/2-31*bs} ${baseline-20*bs}) scale(${bs})`); x+=bw+gap;
+  t2.setAttribute('x',x);
+}
+(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>document.querySelectorAll('.wordmark').forEach(wordmark));
+</script>
