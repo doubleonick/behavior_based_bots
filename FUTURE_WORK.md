@@ -48,8 +48,10 @@ dropped or a finding turns out wrong, record that here too.
   Tried and dropped: one orange icon among the tiles (4th in the centre column, then
   the bottom row), replaced by the wordmark; steampunk display fonts, in favour of
   the expedition map's lettering.
-  A **bold Ci** (owner, 2026-11) for other contexts, the same in essence: a thicker
-  ring, ten broad teeth, a rounder bulb with its threads cut in. It is embossed on the
+  A **bold Ci** (owner, 2026-11) for other contexts: B in a heavier weight, like a
+  font's bold (the same 14 teeth, narrowing bulb and three slanted threads; a thicker
+  ring, smaller opening, broader base). Corrected from a first try with ten broad
+  teeth and a rounder bulb, which the owner found too far from B. It is embossed on the
   covers (`notebook_front_back.html`): the lower half of the front, under a printed
   label meant to be less cartoony than the first paper label, and the centre of the
   back, with the wordmark along the back's foot. The fine Ci stays for printing (the
