@@ -48,6 +48,12 @@ dropped or a finding turns out wrong, record that here too.
   Tried and dropped: one orange icon among the tiles (4th in the centre column, then
   the bottom row), replaced by the wordmark; steampunk display fonts, in favour of
   the expedition map's lettering.
+  A **bold Ci** (owner, 2026-11) for other contexts, the same in essence: a thicker
+  ring, ten broad teeth, a rounder bulb with its threads cut in. It is embossed on the
+  covers (`notebook_front_back.html`): the lower half of the front, under a printed
+  label meant to be less cartoony than the first paper label, and the centre of the
+  back, with the wordmark along the back's foot. The fine Ci stays for printing (the
+  endpaper, the wordmark's letters).
 - **The test platform (owner, 2026-11):** a new chassis, "Val Brooks Version 3", two
   M5 360° servos, a Technic caster, the Atom Motion and Matrix on top; works much
   better than the previous one, particularly for field behaviour. The owner is
