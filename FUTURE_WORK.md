@@ -33,6 +33,15 @@ dropped or a finding turns out wrong, record that here too.
   Waiting on the owner's second set of photos (a dot-grid page beside white paper;
   the inside cover's interlocking-square pattern) before restyling the opening
   sequence.
+- **Stickers, collected like passport stamps (owner idea, 2026-11; not designed):** the
+  child earns stickers along the expedition (for example one per stop, or per
+  challenge done) and places them where they like: on a sticker page, on the cover,
+  or on ordinary pages where there is room. Thoughts to settle when it is designed:
+  what earns one; whether a sticker can be peeled off and moved; marking the
+  places on each page that are free for stickers (simpler and more predictable than
+  detecting white space); sticker places must travel with the saved notebook (the
+  save file and code); a keyboard way to place them; printable sheets of the same
+  stickers for a real notebook.
 - **Setup cards per stop (2026-11, Vehicle 1 drafted: `web/mockups/guide/v1_setup_cards.html`):**
   the guide explains each screen and the matrix confirms (decision A above). The
   presses are shown as a pale blue touch glow on a black screen, held for as long as
