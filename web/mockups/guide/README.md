@@ -8,6 +8,7 @@ story text and the title are placeholders.
 | file | what it is | state |
 |---|---|---|
 | `opening_sequence.html` | the opening: a lab-notebook cover (title plate, the explorer's name, four sketches of what is inside, "Open the notebook"), then page 1, the expedition (placeholder story, the route of stops), then page 2, Meet Val (stop 0) | first draft (2026-11); the owner is sitting with it |
+| `notebook_cover.html` | the cover reinterpreted from the owner's black leatherette notebook (grain and creases drawn by the browser, rounded fore-edge, elastic band, grey ribbon), in two title styles (A: a cream paper label with the explorer's name; B: the title and a jellyfish pressed into the cover), six colours (black, navy blue, burnt orange, maroon, forest green, deep purple) and an optional band in the cover's colour; "Open" turns the cover to a cream dot-grid page | study (2026-11); the interlocking-square pattern and the colours wait for more photos |
 | `v1_setup_cards.html` | Vehicle 1's setup cards: the one button (short press, long press, hold 2 s, each shown as a pale blue touch glow on Val's black screen for as long as the press lasts), then one card per screen Val shows, in order, with the matrix picture copied from the firmware's icons and colours; a prediction, the "no sensor" box, a note for the adult | liked by the owner (2026-11); animations beyond the touch glow not decided |
 
 The "Learn Val's button" link in the opening points at the published setup cards.

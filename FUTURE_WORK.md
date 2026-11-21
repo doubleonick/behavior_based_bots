@@ -25,6 +25,14 @@ dropped or a finding turns out wrong, record that here too.
   tabs, stamps, handwriting); anything suiting a child's version (pockets, fold-outs,
   tape). Use it for style and layout; draw our own pictures rather than copying a
   book's art or text that is under copyright.
+- **The cover study (2026-11, `web/mockups/guide/notebook_cover.html`):** two title
+  styles (a paper label, or pressed into the cover) in six colours (black, navy
+  blue, burnt orange, maroon, forest green, deep purple), band black or matching.
+  **Keep open: letting the child customise their notebook** (cover colour, label or
+  pressed title, band, their name, perhaps stickers), rather than fixing one look.
+  Waiting on the owner's second set of photos (a dot-grid page beside white paper;
+  the inside cover's interlocking-square pattern) before restyling the opening
+  sequence.
 - **Setup cards per stop (2026-11, Vehicle 1 drafted: `web/mockups/guide/v1_setup_cards.html`):**
   the guide explains each screen and the matrix confirms (decision A above). The
   presses are shown as a pale blue touch glow on a black screen, held for as long as
