@@ -30,9 +30,18 @@ dropped or a finding turns out wrong, record that here too.
   blue, burnt orange, maroon, forest green, deep purple), band black or matching.
   **Keep open: letting the child customise their notebook** (cover colour, label or
   pressed title, band, their name, perhaps stickers), rather than fixing one look.
-  Waiting on the owner's second set of photos (a dot-grid page beside white paper;
-  the inside cover's interlocking-square pattern) before restyling the opening
-  sequence.
+  The owner's photos are saved in `web/reference/notebook/` (the cover, grain, a ruled
+  spread, and a working page: "Val Brooks Version 3", dated and annotated). The
+  opening is restyled after them in `web/mockups/guide/notebook_v2.html` (2026-11):
+  the key pattern inside the cover, cream dot-grid spreads, pages written like the
+  owner's own (handwritten underlined title and date, pencil notes, labelled
+  drawings). Paper colour still judged by eye (no photo beside white paper yet).
+- **The test platform (owner, 2026-11):** a new chassis, "Val Brooks Version 3", two
+  M5 360° servos, a Technic caster, the Atom Motion and Matrix on top; works much
+  better than the previous one, particularly for field behaviour. The owner is
+  updating its CAD (spacing: three rows deep in the middle, nine holes along the
+  bottom, an M12-nut pocket, joins 11 holes long; maybe a plain geometric panel
+  instead of the "C" icon).
 - **Stickers, collected like passport stamps (owner idea, 2026-11; not designed):** the
   child earns stickers along the expedition (for example one per stop, or per
   challenge done) and places them where they like: on a sticker page, on the cover,
