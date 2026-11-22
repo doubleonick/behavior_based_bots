@@ -17,6 +17,13 @@ dropped or a finding turns out wrong, record that here too.
   Open: whether the cover and its four sketches are right; whether Meet Val teaches
   the button itself or hands over to the setup cards; whether Meet Val leads to the
   map or straight to the first stop.
+  *Correction (owner, 2026-11):* the notebook cover had become too grown-up. Think
+  of it as a video game's cover: it should promise a fun game, and the inside cover
+  should expand that promise. The map is the first page after the inside cover, as
+  in a fantasy book, with pictures of the places and creatures to be visited and no
+  path yet. Mock-up: `web/mockups/guide/opening_game.html` (two covers: an
+  adventure picture, or covered in stickers). The map's places and most creatures
+  are placeholders until the creatures are chosen.
 - **A physical notebook as the reference (owner, 2026-11: an approach being explored,
   not a decision):** find a real book to guide the notebook's physical look (cover,
   binding, paper, ruling, wear) and its art and layout (spreads, how text, sketches
