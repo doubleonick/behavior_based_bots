@@ -24,6 +24,61 @@ dropped or a finding turns out wrong, record that here too.
   path yet. Mock-up: `web/mockups/guide/opening_game.html` (two covers: an
   adventure picture, or covered in stickers). The map's places and most creatures
   are placeholders until the creatures are chosen.
+  **The options and notes in the mock-up:**
+  - **Cover A, the adventure picture:** game-box art printed on a plate pasted
+    onto the leather. Val in front at dusk, a glowing light it might chase, jellies in
+    the sea, ants on a twig, moths at the light. The title in adventure lettering
+    (Cinzel Decorative): "[ A ROBOT ADVENTURE ] VAL'S EXPEDITION". The tagline: "Build
+    a robot. Meet the creatures. Explore a living world." The bold Ci small in a
+    corner, like a game publisher's logo.
+  - **Cover B, covered in stickers:** a title sticker, with die-cut stickers of Val,
+    the jellyfish, ant, woodlouse, moth and bee, a scrap of map and a "?" around it. It
+    also promises the sticker collecting (see Stickers below). A child's own
+    notebook could start nearly bare and fill up as they travel.
+  - **The inside cover:** the Ci pattern stays on both endpapers, each with a
+    printed card pasted on.
+    - **Left, "On this journey you will…":**
+      - build Val, a robot that grows ([eleven] robots from one);
+      - meet creatures older than the dinosaurs;
+      - find out how a brain can be made of a few wires;
+      - take on a challenge at every stop;
+      - collect a sticker for every place you reach;
+      - write what you discover in this notebook.
+    - **Right, "This notebook belongs to":** the explorer's name, when the
+      expedition began and "if found, please return to". The wordmark sits at the
+      foot, with "Turn the page for the map."
+  - **The map:** sea on the left page, land on the right, so the world reads from
+    the oldest life to the newest. No path: the route could be drawn in red as the
+    child travels, with each place's sticker added when it is reached. The map
+    shows places, not stops, and one place could host several stops.
+    - **Sea:** the Jelly Shallows, the Worm Flats (flatworms), the Tide Pools (a sea
+      hare).
+    - **Land:** Val's Workshop, the Mossy Log (a woodlouse and a roundworm), Trail
+      Wood (ants), Moth Meadow, the Bee Garden, Frog Pond.
+    - **Around them:** an "Uncharted…" edge in fog, a compass rose, and a "[The
+      Living World]" title scroll.
+  - **Which creatures are decided:**
+    - decided: only the jellies (Vehicle 1);
+    - from the owner's notes: the woodlouse, roundworm and ants;
+    - the classic animal for habituation: the sea hare;
+    - guesses for later stops: the moths, bees and frog.
+
+    All words (title, tagline, promises, place names) are placeholders too.
+
+  **Open decisions:**
+  1. **Which cover:** A, B, or a mix (the picture from the start, stickers added as
+     the child plays)?
+  2. **The promises:** are these the right six?
+  3. **The map:**
+     - Does sea on the left and land on the right work?
+     - Which places belong on it? They follow once the creatures are chosen.
+  4. **Val's picture:** the avatar is the view from above and just behind, so on
+     cover A it reads a bit like a tower. Should the cover get a new render of Val
+     from the front or side?
+
+  Still open from the first draft:
+  5. **Who teaches the button:** Meet Val itself, or the setup cards?
+  6. **Where Meet Val leads:** back to the map, or straight on to Vehicle 1?
 - **A physical notebook as the reference (owner, 2026-11: an approach being explored,
   not a decision):** find a real book to guide the notebook's physical look (cover,
   binding, paper, ruling, wear) and its art and layout (spreads, how text, sketches
@@ -69,6 +124,11 @@ dropped or a finding turns out wrong, record that here too.
   updating its CAD (spacing: three rows deep in the middle, nine holes along the
   bottom, an M12-nut pocket, joins 11 holes long; maybe a plain geometric panel
   instead of the "C" icon).
+  **Colours (owner, 2026-11):** Val Brooks should be available in colours that
+  match the notebook's cover colours (black, navy blue, burnt orange, maroon,
+  forest green, deep purple), so a child's robot and notebook can match. This ties
+  in with letting the child customise their notebook, and with the open question of
+  chassis colours (see Art). Printing filament in those shades has not been checked.
 - **Stickers, collected like passport stamps (owner idea, 2026-11; not designed):** the
   child earns stickers along the expedition (for example one per stop, or per
   challenge done) and places them where they like: on a sticker page, on the cover,
