@@ -1,7 +1,13 @@
 # Web guide: outline (draft for the owner to edit)
 
-Status: **outline only, nothing built.** Tone and frame are still open (see the end).
-Everything here is a proposal to cut, reorder or rewrite.
+Status (updated 2026-11-22): **the guide is not built; mock-ups only**
+(`web/mockups/`). The tone is settled (an expedition, see *Decided since*). The path is
+eleven stops, still tentative (each robot must work on Val before its lesson is
+written). Everything here is a proposal to cut, reorder or rewrite.
+
+This file is the guide's structure: the opening, the shape of every stop, the path,
+the map, and saving progress. The reasons, corrections and dropped ideas behind it
+are in `FUTURE_WORK.md` (*The web guide*), which also lists recent changes at the top.
 
 ---
 
@@ -34,6 +40,30 @@ who decided?).
 
 ---
 
+## The opening (updated 2026-11-22)
+
+In the order a child meets it; mock-up `web/mockups/guide/opening_game.html`.
+
+1. **The cover promises a game,** like a video game's box. Two options: an adventure
+   picture pasted on the notebook's leather (Val in front, the creatures, a light to
+   chase), or a cover covered in stickers of Val and the creatures. The notebook
+   itself is modelled on the owner's real one (dot-grid pages; six cover colours the
+   child may choose; the Ci mark).
+2. **The inside cover expands the promise:** "On this journey you will…" (build a
+   robot that grows, meet the creatures, find out how a brain can be made of a few
+   wires, a challenge at every stop, a sticker for every place, write what you
+   discover), and "This notebook belongs to".
+3. **The map is the first spread,** as in a fantasy book: the places and their
+   creatures, with no path yet; the route is drawn in as the child travels. The
+   owner is drawing the geography (see *The map* below).
+4. **Meet Val** (stop 0), then on to Vehicle 1.
+
+Open: which cover; the promises; who teaches the button (Meet Val, or the setup
+cards); whether Meet Val leads back to the map or straight to Vehicle 1. The full
+list is under *The opening sequence* in `FUTURE_WORK.md`.
+
+---
+
 ## Every chapter has the same shape
 
 | part | for | what it is |
@@ -47,12 +77,47 @@ who decided?).
 | **Wonder** | both | A question about animals or people. No answer given. |
 | **Grown-up notes** | adult | Setup, what's being learned, questions to ask, what usually goes wrong, going further. |
 
+Since then (2026-11): each stop may also end in a **challenge** with that stop's
+robot, and **open-ended play** in a home-made version of where its creatures live;
+the child collects a **sticker** per place, like passport stamps; **setup cards**
+show each screen Val will show (Vehicle 1 drafted). Grown-up notes become the
+stop's page in *The Expedition Handbook*.
+
 Predict-before-try is the core habit. It is the lab-notebook part, and the
 notebook is what gets saved (see *Progress* below).
 
 ---
 
 ## The progression
+
+### The path (tentative, 2026-11-12; updated here 2026-11-22)
+
+| stop | robot | body | firmware |
+|---|---|---|---|
+| 0 | Meet Val | one module, no sensors | exists |
+| 1 | Vehicle 1 | one module, one wheel, one sensor | `Val_Vehicle`, exists; lesson filmed |
+| 2 | Vehicles 2a / 2b | two modules joined, one wheel each | `Val_Vehicle` on each half; confirmed convincing on the robot by the owner |
+| 3 | Vehicles 3a / 3b, ending on 3c (several senses, mixed wires) | as 2 | as 2 |
+| 4 | Habituation | to decide | not built; maybe the same neuron with a slow negative echo |
+| 5 | Vehicle 4 (4a a favourite level, 4b a threshold) | one module; the orbit needs two | `Neuron` in `Val_Vehicle` (branch `expanded_vehicles`); first run on the robot recognisable |
+| 6 | Potential field | one module, two wheels, up to 3 sensors | `Val_Field`, exists |
+| 7 | Vehicle 5 (holding a state: memory) | one module | `Neuron` listening to itself; first run recognisable; its off switch designed, not built |
+| 8 | Subsumption | one module, two wheels, PaHub | `Val_Brooks`, a test bench (hierarchy set in the sketch, not yet on the robot) |
+| 9 | Vehicle 7 (learning by association) | to decide | not built |
+| 10 | Vehicle 6 (selection) | probably a web game | not built |
+
+Vehicles 8 to 14 go in the appendix; a "frontier" of explorations that combine
+ideas may follow stop 10.
+
+**Creatures (decided 2026-11):** each stop shows a living animal from as old a
+lineage as possible; the Handbook names the ancient ancestor. Body plans: no sides
+(radial: jellies, Vehicle 1), then bilateral from Vehicle 2. Decided so far: the
+jellies. Candidates from the owner's notes: the roundworm (dwelling and roaming),
+ants (following a trail), the woodlouse. Floor colour stands for taste and smell
+(chemicals on the ground), not colour vision.
+
+The chapters below were written for the first six stops (2026-10) and are kept as
+they were; stops 4, 5, 7, 9 and 10 have no chapter yet.
 
 Hardware needed changes along the way, so each chapter lists it.
 
@@ -141,10 +206,16 @@ Hardware needed changes along the way, so each chapter lists it.
   which "you" decided?
 - **Hardware:** **one** Matrix + Motion (pick one of the two from chapters 2–3),
   with a PaHub for more sensors than three ports allow.
-- **Firmware:** **not built.** Needs PaHub support and fixed arbitration (both in
-  `FUTURE_WORK.md`).
+- **Firmware:** ~~not built~~ *(stale since 2026-10-23)*: `Val_Brooks` is a test
+  bench with PaHub support and a fixed hierarchy, chosen by editing one line and
+  reflashing. Setting the hierarchy on the robot is mocked up, not built.
 
 ### Where state machines and ANNs could fit
+
+*Settled by the path (2026-11-12):* state enters as Vehicle 5 (a neuron that holds
+its state), before subsumption; learning enters as Vehicle 7 (association), and
+evolution as Vehicle 6 (selection), last. The options below are kept as the
+reasoning.
 
 Two candidate placements for each, to choose between.
 
@@ -205,6 +276,27 @@ homeschool records.
 
 ---
 
+## The map (2026-11-22, being drawn)
+
+The first spread. A first mock-up put the sea on the left page and the land on the
+right (oldest life to newest), with no path. The owner's sketch (2026-11-22) adds a
+river from the mountains, through a lake, to the sea. Notes given on it:
+
+- **The river is the path without being drawn:** the journey goes upstream, from the
+  sea to the source, which is also oldest life to newest.
+- **Bands of country order the stops:** sea, shore, a ridge, grassland, the lake,
+  forest, mountains. The ridge can be a gate (onto land, or from vehicles to fields
+  and layers); the lake a midway hub (fits the potential field); the mountains the
+  end, with "Uncharted" beyond.
+- **Watch:** room for eleven places along the river (bends, a ford, a waterfall,
+  reed beds); Val's Workshop at the river mouth, so the way upstream is clear;
+  nothing important in the spread's fold (the coast or ridge could run along it);
+  the sea's share should match the number of water stops.
+
+The owner will redraw it with these notes.
+
+---
+
 ## Decided since this outline (2026-11)
 
 - **Tone: expedition.** An old travel map (Indiana Jones style) with a red route;
@@ -219,6 +311,12 @@ homeschool records.
   `Lesson.dc.html`).
 
 ## Open questions for the owner
+
+*Status (2026-11-22):* 1 is settled (expedition, with the notebook as the player's
+part); 2 is confirmed (two joined modules give convincing 2a/2b and 3a/3b); 3 is
+answered by `Val_Brooks` (one module, two wheels, PaHub); 4 is settled by the path;
+5 is settled (real living animals, with the ancestor in the Handbook); 6 is open.
+The opening's own open decisions are under *The opening*.
 
 1. **Tone and frame.** Three you like, and they may combine rather than compete:
    - *Stranger in a strange land*: Val is newly arrived and gets its senses in

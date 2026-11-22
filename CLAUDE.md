@@ -153,6 +153,9 @@ Ethology correspond to Braitenberg vehicles (`Val_Vehicle`), potential fields
   host tests check logic only. Report hardware-dependent changes as unverified until
   the owner has run them.
 - Record dropped ideas and corrections in `FUTURE_WORK.md`, not just new plans.
+- **Date what you write in full (YYYY-MM-DD)** in `FUTURE_WORK.md` and `web/OUTLINE.md`,
+  and add a line to *Recent changes* at the top of `FUTURE_WORK.md` (newest first,
+  about two weeks kept), so the owner can see what is new on a small screen.
 
 ---
 

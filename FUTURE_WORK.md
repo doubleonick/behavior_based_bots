@@ -3,6 +3,39 @@
 Ideas and plans, roughly in the order they are likely to happen. When an idea is
 dropped or a finding turns out wrong, record that here too.
 
+**Dates:** from 2026-11-22, new entries and changes carry the full date
+(YYYY-MM-DD). Older entries give the month only; `git log -- FUTURE_WORK.md` has the
+exact day of every change.
+
+## Recent changes
+
+Newest first, about the last two weeks. Each names the entry to search for below.
+
+- **2026-11-22** · *The opening sequence:* rethought as a game (cover promises a
+  game, the inside cover expands it, the map is the first spread with no path); the
+  options and six open decisions recorded. Mock-up `web/mockups/guide/opening_game.html`.
+  `web/OUTLINE.md` brought up to the eleven-stop path, with the opening and the
+  map (the owner's river sketch and notes on it as a path). Dates now in full.
+- **2026-11-22** · *The test platform:* Val Brooks to come in the notebook's colours.
+- **2026-11-21** · *The Ci icon and wordmark:* chosen (version B), with a bold form
+  embossed on the front and back covers.
+- **2026-11-21** · *The cover study*, *A physical notebook as the reference*: the
+  owner's notebook photos saved; the opening restyled after them; child
+  customisation kept open.
+- **2026-11-21** · *Stickers, collected like passport stamps:* the idea.
+- **2026-11-19** · *Ideas for play* (a challenge and open-ended play per stop);
+  *The opening sequence* (first draft); *Setup cards per stop*.
+- **2026-11-19** · *The 5x5 matrix is near its limit*; *Memory's off switch*.
+- **2026-11-19** · *Setting up a wire's nerve cell on Val:* built behind
+  `NEURONS_IN_SETUP`. Firmware grouped into robots, `examples/` and `tools/`. DLight
+  Unit in Val_Vehicle and Val_Field.
+- **2026-11-18** · *The Color Unit as light or colour* (Vehicle and Field); *Floor
+  colour as taste and smell*.
+- **2026-11-17** · *A safety reflex from the IMU:* the second run (Val climbs; bumps
+  register at top speed).
+- **2026-11-12** · *Tentative path: eleven robots*; *Creatures*; *Vehicles 4 and 5:
+  one nerve cell on the wire*.
+
 ## The web guide (`web/`)
 
 - **Ideas for play (owner, 2026-11):** each stop could end in a **challenge** to do
@@ -79,6 +112,9 @@ dropped or a finding turns out wrong, record that here too.
   Still open from the first draft:
   5. **Who teaches the button:** Meet Val itself, or the setup cards?
   6. **Where Meet Val leads:** back to the map, or straight on to Vehicle 1?
+  **2026-11-22:** the owner sketched the map's geography (a river from mountains
+  through a lake to the sea; style and geography only) and will redraw it. Notes
+  on it as a path are in `web/OUTLINE.md`, *The map*.
 - **A physical notebook as the reference (owner, 2026-11: an approach being explored,
   not a decision):** find a real book to guide the notebook's physical look (cover,
   binding, paper, ruling, wear) and its art and layout (spreads, how text, sketches
