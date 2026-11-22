@@ -1,0 +1,240 @@
+/* The notebook style: every colour, font and layout rule the guide uses.
+   A new style is a new copy of this file (and new art in art/<style>/); the pages
+   and the content stay as they are. Layout: one view at a time (the closed notebook,
+   then two-page spreads), on a wooden desk; on a phone a spread's pages stack. */
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@300;400;700&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Cinzel+Decorative:wght@700;900&display=swap");
+
+:root{
+  /* the desk and the book */
+  --wood:#5a3a26; --wood-line:#62402a; --wood-dark:#53361f;
+  --leather:#1d2b4c; --band-a:#050505; --band-b:#1c1c1c; --ribbon:#b9bcc0;
+  /* paper and writing */
+  --paper:#f2ead6; --dot:#a9b3c0; --label:#efe6cf; --label-ink:#2c2a26; --label-rule:#6f6248;
+  --ink:#33251a; --pencil:#5d5148; --pen:#1f5fa8; --route:#b23a1c;
+  /* the endpapers and the maker's mark */
+  --slate:#3b3e45; --maker:#E07A2E;
+  /* the title */
+  --title-ink:#9c3d1a; --title-deep:#1d2a44; --gold:#f2c879;
+  /* buttons and focus */
+  --btn:#E07A2E; --btn-edge:#1d1209; --focus:#ffd27a;
+  /* the button's touch glow (as on the setup cards) */
+  --glow:radial-gradient(circle at 50% 50%, rgba(214,236,255,.95) 0, rgba(176,214,252,.8) 14%, rgba(140,192,246,.5) 32%, rgba(120,176,240,.22) 52%, rgba(110,165,235,.06) 68%, rgba(110,165,235,0) 80%);
+  /* type */
+  --read:"Atkinson Hyperlegible",Verdana,sans-serif;
+  --hand:"Kalam","Comic Sans MS",cursive;
+  --print:"IM Fell English",Georgia,serif;
+  --print-sc:"IM Fell English SC",Georgia,serif;
+  --title:"Cinzel Decorative",Georgia,serif;
+  color-scheme:light;
+}
+/* the six cover colours the explorer can choose: each a named leather, used by the
+   cover and by its swatch */
+:root{--leather-black:#141414;--leather-navy:#1d2b4c;--leather-orange:#a3471b;--leather-maroon:#5c1a25;--leather-green:#1f3d2c;--leather-purple:#3a2152}
+:root[data-cover="black"]{--leather:var(--leather-black)}
+[data-swatch="black"]{background:var(--leather-black)}
+:root[data-cover="navy"]{--leather:var(--leather-navy)}
+[data-swatch="navy"]{background:var(--leather-navy)}
+:root[data-cover="orange"]{--leather:var(--leather-orange)}
+[data-swatch="orange"]{background:var(--leather-orange)}
+:root[data-cover="maroon"]{--leather:var(--leather-maroon)}
+[data-swatch="maroon"]{background:var(--leather-maroon)}
+:root[data-cover="green"]{--leather:var(--leather-green)}
+[data-swatch="green"]{background:var(--leather-green)}
+:root[data-cover="purple"]{--leather:var(--leather-purple)}
+[data-swatch="purple"]{background:var(--leather-purple)}
+
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;color:var(--ink);font:18px/1.5 var(--read);overflow-x:clip;
+  padding-block:26px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:linear-gradient(90deg,rgba(0,0,0,.08),transparent 30%,rgba(0,0,0,.06) 70%,transparent),
+    repeating-linear-gradient(90deg,var(--wood) 0 140px,var(--wood-line) 140px 142px,var(--wood) 142px 260px,var(--wood-dark) 260px 263px),var(--wood)}
+.view{max-width:1040px;margin:0 auto}
+.view[hidden]{display:none}
+button{font:inherit}
+.btn{font:700 1.05rem var(--read);color:#fff;background:var(--btn);border:2px solid var(--btn-edge);border-radius:10px;padding:11px 20px;cursor:pointer;box-shadow:3px 3px 0 var(--btn-edge)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--btn-edge)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+
+/* ================= the closed notebook ================= */
+.closed{display:flex;flex-direction:column;align-items:center;gap:18px}
+.book{position:relative;width:min(360px,84vw);aspect-ratio:13/21}
+.cover{position:absolute;inset:0;border-radius:3px 18px 18px 3px;overflow:hidden;container-type:inline-size;
+  box-shadow:8px 14px 26px rgba(0,0,0,.5),1px 2px 0 rgba(0,0,0,.6);
+  /* leather: the colour, a fine pebbled grain, and two soft pools of light */
+  background:
+    radial-gradient(ellipse 60% 35% at 30% 22%,rgba(255,255,255,.13),transparent 70%),
+    radial-gradient(ellipse 50% 30% at 70% 80%,rgba(255,255,255,.06),transparent 70%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 -.22'/></filter><rect width='240' height='240' filter='url(%23g)' opacity='.13'/></svg>"),
+    var(--leather)}
+.cover::after{content:"";position:absolute;left:4.5%;top:0;bottom:0;width:3px;z-index:6;background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(255,255,255,.07))}
+.band{position:absolute;top:-4px;bottom:-4px;right:11%;width:14px;z-index:7;border-radius:3px;
+  background:repeating-linear-gradient(90deg,var(--band-a) 0 2px,var(--band-b) 2px 3px);box-shadow:1px 0 3px rgba(0,0,0,.6);transition:transform .45s ease,opacity .45s}
+.book.opening .band{transform:translateX(80px);opacity:0}
+.ribbon{position:absolute;bottom:-26px;left:24%;width:10px;height:32px;background:linear-gradient(90deg,#a7aaae,var(--ribbon),#a7aaae);clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%)}
+
+/* a die-cut sticker: a white edge round the picture, and a soft shadow */
+.sticker{position:absolute;display:block;z-index:3;
+  filter:drop-shadow(2.5px 0 0 #fbf8f0) drop-shadow(-2.5px 0 0 #fbf8f0) drop-shadow(0 2.5px 0 #fbf8f0) drop-shadow(0 -2.5px 0 #fbf8f0) drop-shadow(0 2px 2.5px rgba(0,0,0,.5))}
+.sticker img{display:block;width:100%;height:auto}
+.sticker.val{border-radius:50%;background:url(../art/notebook/stickers/val-badge.svg) center/100% no-repeat;aspect-ratio:1}
+.sticker.val img{width:38%;margin:6% auto 0;image-rendering:pixelated}
+/* the title sticker: a cream banner with notched ends */
+.title-sticker{position:absolute;z-index:4;text-align:center;background:var(--label);padding:5cqw 9cqw;
+  clip-path:polygon(0 0,100% 0,95% 50%,100% 100%,0 100%,5% 50%);
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+.title-sticker::before{content:"";position:absolute;inset:3cqw 5cqw;border:1.5px solid var(--title-ink);clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%)}
+.title-sticker .t1{display:block;font:900 9cqw/1 var(--title);color:var(--title-ink)}
+.title-sticker .t2{display:block;font:900 7.6cqw/1.1 var(--title);color:var(--title-deep)}
+.pill{position:absolute;z-index:4;background:var(--title-deep);color:var(--gold);font:4.3cqw var(--print-sc);letter-spacing:.04em;
+  padding:1.6cqw 5cqw;border-radius:99px;white-space:nowrap;filter:drop-shadow(2px 0 0 #fbf8f0) drop-shadow(-2px 0 0 #fbf8f0) drop-shadow(0 2px 0 #fbf8f0) drop-shadow(0 -2px 0 #fbf8f0) drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+/* the adventure picture, as a postcard among the stickers, or as a plate */
+.postcard{position:absolute;z-index:2;background:#fbf8f0;padding:2.4cqw;box-shadow:0 2px 4px rgba(0,0,0,.5)}
+.postcard img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:50% 72%}
+
+/* where each sticker goes, for the mix (stickers led, the picture as a postcard) */
+.cover[data-variant="mix"] .title-sticker{left:7%;top:19%;width:80%;transform:rotate(-4deg)}
+.cover[data-variant="mix"] .pill{left:19%;top:39%;transform:rotate(-3deg)}
+.cover[data-variant="mix"] .postcard{left:9%;top:48%;width:52%;transform:rotate(-6deg)}
+.cover[data-variant="mix"] .s1{left:8%;top:4%;width:21%;transform:rotate(8deg)}
+.cover[data-variant="mix"] .s2{left:63%;top:3%;width:24%;transform:rotate(-10deg)}
+.cover[data-variant="mix"] .s3{left:60%;top:45%;width:27%;transform:rotate(6deg)}
+.cover[data-variant="mix"] .s4{left:64%;top:66%;width:20%;transform:rotate(-6deg)}
+.cover[data-variant="mix"] .s5{left:10%;top:76%;width:20%;transform:rotate(12deg)}
+.cover[data-variant="mix"] .s6{left:36%;top:80%;width:17%;transform:rotate(-8deg)}
+.cover[data-variant="mix"] .s7{left:58%;top:86%;width:24%;transform:rotate(-14deg)}
+.cover[data-variant="mix"] .s8{left:71%;top:35%;width:12%;transform:rotate(9deg)}
+/* the stickers only */
+.cover[data-variant="stickers"] .title-sticker{left:7%;top:22%;width:80%;transform:rotate(-4deg)}
+.cover[data-variant="stickers"] .pill{left:19%;top:44%;transform:rotate(-3deg)}
+.cover[data-variant="stickers"] .s1{left:9%;top:6%;width:24%;transform:rotate(8deg)}
+.cover[data-variant="stickers"] .s2{left:61%;top:4%;width:26%;transform:rotate(-10deg)}
+.cover[data-variant="stickers"] .s3{left:10%;top:52%;width:34%;transform:rotate(6deg)}
+.cover[data-variant="stickers"] .s4{left:58%;top:54%;width:24%;transform:rotate(-6deg)}
+.cover[data-variant="stickers"] .s5{left:34%;top:70%;width:24%;transform:rotate(12deg)}
+.cover[data-variant="stickers"] .s6{left:66%;top:74%;width:20%;transform:rotate(-8deg)}
+.cover[data-variant="stickers"] .s7{left:8%;top:82%;width:28%;transform:rotate(-14deg)}
+.cover[data-variant="stickers"] .s8{left:72%;top:88%;width:12%;transform:rotate(9deg)}
+/* the picture only: a plate pasted on, the title printed on it, the maker's mark in the corner */
+.plate{position:absolute;z-index:2;left:10%;top:6%;width:74%;bottom:10%;background:var(--label);padding:1.6cqw;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.plate .pic{position:relative;height:100%;overflow:hidden;outline:1px solid #c9a14e;outline-offset:-1.6cqw}
+.plate .pic>img:first-child{width:100%;height:100%;object-fit:cover;display:block}
+.plate .val{position:absolute;left:38%;bottom:4%;width:20%;image-rendering:pixelated}
+.plate .words{position:absolute;left:0;right:0;top:6%;text-align:center}
+.plate .kicker{font:3.6cqw var(--print-sc);letter-spacing:.2em;color:#f2dfb5}
+.plate .t1,.plate .t2{display:block;font:900 10cqw/1.05 var(--title);color:var(--gold);-webkit-text-stroke:.5px #3a1f0a;text-shadow:0 2px 3px rgba(0,0,0,.6)}
+.plate .t2{font-size:8.4cqw}
+.plate .tagline{font:italic 4cqw/1.35 var(--print);color:#f6e9cc;margin:2cqw 8cqw 0}
+.maker-mark{position:absolute;z-index:2;right:16%;bottom:2.6%;width:8%;
+  filter:invert(1) opacity(.14) drop-shadow(0 -1px 0 rgba(255,255,255,.4)) drop-shadow(0 1px .5px rgba(0,0,0,.9))}
+
+/* choosing the cover's colour */
+.colours{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;max-width:420px;font:17px var(--hand);color:#f3e6cf}
+.colours span{width:100%;text-align:center}
+.colours button{width:34px;height:34px;border-radius:50%;border:2px solid #f3e6cf;cursor:pointer;padding:0}
+.colours button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--focus)}
+.hint{font:17px var(--hand);color:#f3e6cf;text-align:center;margin:0}
+
+/* ================= the open spreads ================= */
+.spread{display:grid;grid-template-columns:1fr 1fr;filter:drop-shadow(0 12px 18px rgba(0,0,0,.45))}
+.leaf{position:relative;min-height:640px;padding:34px 34px 54px 40px;background-color:var(--paper);
+  background-image:radial-gradient(circle,var(--dot) 1.05px,transparent 1.5px);background-size:18px 18px;background-position:9px 9px}
+.leaf.left{border-radius:16px 2px 2px 16px;box-shadow:inset -22px 0 26px -18px rgba(70,50,20,.45)}
+.leaf.right{border-radius:2px 16px 16px 2px;box-shadow:inset 22px 0 26px -18px rgba(70,50,20,.45)}
+@media (max-width:760px){
+  .spread{grid-template-columns:1fr;gap:10px}
+  .leaf{min-height:0}
+  .leaf.left,.leaf.right{border-radius:6px 16px 16px 6px;box-shadow:inset 22px 0 26px -18px rgba(70,50,20,.45)}
+}
+.pageno{position:absolute;bottom:16px;font:15px var(--hand);color:var(--pencil)}
+.left .pageno{left:26px}.right .pageno{right:26px}
+.turn{position:absolute;bottom:12px;right:56px;font:400 20px var(--hand);color:var(--pen);background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:4px}
+.turn.back{right:auto;left:56px}
+
+/* ================= the endpapers ================= */
+.leaf.endpaper{background:var(--slate) url(../art/notebook/ci-tile.svg) 0 0/60px 64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:30px 24px 96px}
+.printed{position:relative;background:var(--label);color:var(--label-ink);padding:9px;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.6);width:min(100%,400px)}
+.printed .in{border:1px solid var(--label-rule);outline:.5px solid var(--label-rule);outline-offset:3px;padding:18px 20px}
+.printed .kicker{font:14px var(--print-sc);letter-spacing:.18em;color:var(--label-rule);text-align:center}
+.printed h2{font:400 26px/1.2 var(--print);text-align:center;margin:4px 0 14px}
+.promises{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.promises li{display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:center;font:17px/1.35 var(--print)}
+.promises img{width:34px;height:34px;object-fit:contain;justify-self:center}
+.promises img.val{image-rendering:pixelated;height:38px}
+.owner .row{display:flex;align-items:baseline;gap:8px;font:13px var(--print-sc);letter-spacing:.12em;color:var(--label-rule);margin-top:14px}
+.owner .row span{flex:1;border-bottom:1px solid #8d7f62;min-height:1.4em;font:20px var(--hand);letter-spacing:0;color:var(--pen);text-align:center}
+.owner input{display:block;width:100%;margin-top:6px;font:28px var(--hand);color:var(--pen);text-align:center;background:transparent;border:none;border-bottom:1.5px solid #8d7f62;padding:2px 4px}
+.owner input::placeholder{color:#b4a988}
+.endpaper .note{font:italic 19px var(--print);color:#e8dcc0;margin:0;text-align:center}
+.endpaper .turn{color:#f3e6cf}
+.makerband{position:absolute;left:0;right:0;bottom:0;height:72px;background:var(--slate);display:flex;align-items:center;justify-content:center;border-radius:0 0 16px 2px}
+.left .makerband{border-radius:0 0 2px 16px}
+/* "Curious Innovations": the gear as the C, the bulb as the I, scaled to the letters */
+.wordmark{display:inline-flex;align-items:baseline;font:26px/1 var(--print);color:var(--maker);white-space:nowrap}
+.wordmark .c{height:.72em;width:auto;margin-right:-.02em;transform:translateY(.06em)}
+.wordmark .i{height:.66em;width:auto;margin:0 .05em 0 .28em}
+
+/* ================= writing on the pages ================= */
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;font:400 34px/1.1 var(--hand);color:var(--ink);margin:0}
+.head .date{font:400 21px var(--hand)}
+.uline{display:block;width:100%;height:12px;margin:2px 0 6px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 12' preserveAspectRatio='none'><path d='M2 6 C90 9 170 3 250 7 S350 8 398 5' fill='none' stroke='%2333251a' stroke-width='2.2' stroke-linecap='round'/></svg>") 0 0/100% 100% no-repeat}
+.sub{font:400 23px/1.25 var(--hand);color:var(--ink);margin:2px 0 14px}
+.write{font:400 20px/1.5 var(--hand);color:var(--ink);max-width:40ch;margin:0 0 12px}
+.pencilnote{font:300 18px/1.3 var(--hand);color:var(--pencil)}
+.placeholder{border:1.5px dashed #b4a988;background:rgba(255,255,255,.35);padding:10px 12px;font:15px/1.45 var(--read);color:#6b5d44;margin:12px 0;border-radius:4px}
+.fill{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;font:20px var(--hand);color:var(--ink)}
+.fill input{flex:1;min-width:160px;font:22px var(--hand);color:var(--pen);background:transparent;border:none;border-bottom:1.5px dashed var(--pencil);padding:0 4px}
+.slip{margin-top:18px;padding:8px 12px;border-left:3px solid var(--btn);font:14px/1.45 var(--read);color:#5b4a33;background:rgba(255,244,232,.6)}
+/* Val, labelled like a sketch */
+.sketch{position:relative;width:100%;max-width:420px;margin:6px auto 12px;aspect-ratio:1/1}
+.sketch img{position:absolute;left:50%;top:4%;height:92%;transform:translateX(-50%);image-rendering:pixelated}
+.sketch svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sketch .n{position:absolute;font:400 18px/1.15 var(--hand);color:var(--ink)}
+.sketch .n.face{left:0;top:7%}
+.sketch .n.sockets{right:0;top:42%;text-align:right;max-width:30%}
+.sketch .n.wheel{left:0;top:79%}
+
+/* ================= Val's button ================= */
+.presses{display:flex;flex-direction:column;gap:14px;margin:16px 0}
+.press{display:flex;align-items:center;gap:14px}
+.press b{display:block;font:400 23px var(--hand)}
+.press small{display:block;font:17px/1.3 var(--hand);color:var(--pencil)}
+.touch{flex:none;width:78px;height:78px;border-radius:12px;background:#c9ced6;border:2px solid var(--ink);padding:7px}
+.touch b{display:block;width:100%;height:100%;border-radius:6px;background:#0c0c0c;position:relative;overflow:hidden}
+.touch i{position:absolute;inset:0;opacity:0;background:var(--glow)}
+.touch.short i{animation:pressShort 2.2s infinite}
+.touch.long i{animation:pressLong 3s infinite}
+.touch.hold i{animation:pressHold 4s infinite}
+@keyframes pressShort{0%{opacity:0;transform:scale(.7)}3%{opacity:1;transform:scale(1)}11%{opacity:1;transform:scale(1)}14%,100%{opacity:0;transform:scale(1.05)}}
+@keyframes pressLong{0%{opacity:0;transform:scale(.7)}3%{opacity:1;transform:scale(1)}33%{opacity:1;transform:scale(1)}36%,100%{opacity:0;transform:scale(1.05)}}
+@keyframes pressHold{0%{opacity:0;transform:scale(.7)}2%{opacity:1;transform:scale(1)}50%{opacity:1;transform:scale(1)}53%,100%{opacity:0;transform:scale(1.05)}}
+
+/* ================= the map ================= */
+/* on a narrow screen the map keeps a readable size and slides sideways in its frame */
+.mapscroll{overflow-x:auto;border-radius:8px;padding-bottom:6px}
+.slide{display:none;font:17px var(--hand);color:#f3e6cf;text-align:center;margin:0 0 8px}
+@media (max-width:760px){.mapspread{min-width:740px}.slide{display:block}
+  .sketch .n{font-size:15px}.sketch .pencilnote{font-size:14px}}
+.mapspread{position:relative;width:100%;aspect-ratio:26/21;container-type:inline-size;border-radius:8px;
+  background-color:var(--paper);filter:drop-shadow(0 12px 18px rgba(0,0,0,.45))}
+.mapspread>img.geo{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mapspread::after{content:"";position:absolute;left:calc(50% - 4cqw);width:8cqw;top:0;bottom:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(70,50,20,.18) 45%,rgba(70,50,20,.28) 50%,rgba(70,50,20,.18) 55%,transparent)}
+.mapspread svg.route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.route path{fill:none;stroke:var(--route);stroke-width:4;stroke-dasharray:3 9;stroke-linecap:round}
+.maptitle{position:absolute;left:3%;top:3%;font:italic 2.6cqw var(--print);color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:2cqw;padding:.3cqw 2.4cqw}
+.uncharted{position:absolute;right:3%;top:3%;font:italic 2cqw var(--print);color:var(--ink);transform:rotate(8deg)}
+.place{position:absolute;transform:translate(-50%,0);font:italic 1.75cqw/1.1 var(--print);color:var(--ink);white-space:nowrap;
+  background:none;border:none;padding:.2cqw .6cqw;cursor:default;text-align:center}
+.place .creature{position:absolute;pointer-events:none}
+.place .creature.val{image-rendering:pixelated}
+.place.open{cursor:pointer}
+.place.open .name{text-decoration:underline;text-decoration-color:var(--route);text-underline-offset:.3em}
+.place .tag{display:block;font:normal 1.5cqw var(--hand);color:var(--route)}
+.place.next .tag::before{content:"✕ ";font-weight:700}
+.mapnote{font:19px var(--hand);color:#f3e6cf;text-align:center;margin:14px 0 0}
+.maphead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 10px}
+.maphead button{font:400 19px var(--hand);color:#f3e6cf;background:none;border:none;cursor:pointer;text-decoration:underline}
+
+@media (prefers-reduced-motion:reduce){.band{transition:none}.touch i{animation:none!important;opacity:1}}

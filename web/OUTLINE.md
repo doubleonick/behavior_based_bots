@@ -1,7 +1,8 @@
 # Web guide: outline (draft for the owner to edit)
 
-Status (updated 2026-11-22): **the guide is not built; mock-ups only**
-(`web/mockups/`). The tone is settled (an expedition, see *Decided since*). The path is
+Status (updated 2026-11-22): **the guide is started** in `web/guide/`: the cover,
+the inside cover, the map, Meet Val and Val's button, built to the design principle
+below. The rest is mock-ups (`web/mockups/`). The tone is settled (an expedition, see *Decided since*). The path is
 eleven stops, still tentative (each robot must work on Val before its lesson is
 written). Everything here is a proposal to cut, reorder or rewrite.
 
@@ -82,8 +83,13 @@ In the order a child meets it; mock-up `web/mockups/guide/opening_game.html`.
    owner is drawing the geography (see *The map* below).
 4. **Meet Val** (stop 0), then on to Vehicle 1.
 
-Open: which cover; the promises; who teaches the button (Meet Val, or the setup
-cards); whether Meet Val leads back to the map or straight to Vehicle 1. The full
+Decided 2026-11-22 and built in `web/guide/`: the cover is a **mix, leaning on the
+stickers** (the adventure picture as a postcard among them; both pure options kept,
+`?cover=stickers` / `?cover=picture`); the map is drawn from the owner's river
+sketch until the redraw; **the setup cards teach the button** (Meet Val hands over
+to a "Val's button" spread with the touch glow); **Meet Val leads back to the map**,
+where the route to stop 1 is drawn in. Still open: the promises' wording, and all
+story text. The full
 list is under *The opening sequence* in `FUTURE_WORK.md`.
 
 ---

@@ -11,6 +11,11 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-22** · The guide is started in `web/guide/` (cover, inside cover, map,
+  Meet Val, Val's button), built to the design principle. Decided: cover a mix
+  leaning on the stickers (both pure options kept); map from the owner's river
+  sketch until the redraw; the button taught on its own spread; Meet Val leads back
+  to the map. See `web/OUTLINE.md`, *The opening*.
 - **2026-11-22** · `web/OUTLINE.md`, *Design principle:* style kept apart from
   content and art (one shared stylesheet, content as data, art as files).
 - **2026-11-22** · *The opening sequence:* rethought as a game (cover promises a

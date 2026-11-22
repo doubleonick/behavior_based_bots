@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Val's Expedition</title>
+<!-- The style: one stylesheet. A different look is a different stylesheet (and art). -->
+<link rel="stylesheet" href="style/notebook.css">
+</head>
+<body>
+<!-- The pages are empty frames; app.js fills them from content/ and art/.
+     One view at a time; the view is kept in the address (#cover, #inside, #map, #meet-val, #button). -->
+<main>
+  <section class="view" id="cover" aria-label="The notebook's cover"></section>
+  <section class="view" id="inside" aria-label="Inside the cover" hidden></section>
+  <section class="view" id="map" aria-label="The map" hidden></section>
+  <section class="view" id="meet-val" aria-label="Meet Val" hidden></section>
+  <section class="view" id="button" aria-label="Val's button" hidden></section>
+</main>
+<!-- The content (words, places, creatures), then the code that lays it out. -->
+<script src="content/opening.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
