@@ -40,6 +40,30 @@ who decided?).
 
 ---
 
+## Design principle: style kept apart from content and art (2026-11-22)
+
+The notebook look should be replaceable later (another notebook, a comic, a field
+guide) without rebuilding the guide. So the guide is built in three layers that
+change independently:
+
+1. **Style: one shared stylesheet of named values** (colours, fonts, paper, ink,
+   borders, the leather) that every page uses. A new style is a new set of values,
+   plus new rules only where the layout itself differs. Pages never set a colour or
+   font of their own.
+2. **Content: kept as data,** apart from the layout: the stops, creatures, places,
+   promises, story text and labels. Changing the story does not touch the look, and
+   changing the look does not touch the story. Placeholders live here too, marked as
+   placeholders.
+3. **Art: separate image files** (Val, each creature, each place, the Ci, stickers),
+   referred to by name. A new style can swap in new drawings without editing pages.
+
+What carries over and what doesn't: colours and fonts swap in minutes; drawings are
+redrawn, not recoloured; the layout (two-page spreads, cards pasted on pages) only
+suits styles that are also books. The mock-ups in `web/mockups/` do not follow this
+(each is a standalone page with its own copies); the guide itself does.
+
+---
+
 ## The opening (updated 2026-11-22)
 
 In the order a child meets it; mock-up `web/mockups/guide/opening_game.html`.

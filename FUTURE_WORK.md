@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-22** · `web/OUTLINE.md`, *Design principle:* style kept apart from
+  content and art (one shared stylesheet, content as data, art as files).
 - **2026-11-22** · *The opening sequence:* rethought as a game (cover promises a
   game, the inside cover expands it, the map is the first spread with no path); the
   options and six open decisions recorded. Mock-up `web/mockups/guide/opening_game.html`.
