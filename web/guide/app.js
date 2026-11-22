@@ -123,8 +123,7 @@
           <div class="row">${esc(I.begun)} <span id="begun">${esc(saved.begun || '')}</span></div>
           <div class="row">${esc(I.ifFound)} <span></span></div>
         </div></div>
-        <p class="note">${esc(I.turn)}</p>
-        <button class="turn" type="button" data-go="map">${esc(G.nav.turn)} →</button>
+        <button class="btn" type="button" data-go="map">${esc(I.turn)} →</button>
         <div class="makerband">${wordmark()}</div>
       </div>
     </div>`;

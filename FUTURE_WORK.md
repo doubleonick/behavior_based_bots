@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-22** · Fix: the guide's inside cover had no visible way on (its "turn the
+  page" link sat under the maker's band); now a button. `tests/web/clickthrough.js`
+  clicks through the guide as a reader would, to catch this kind of fault.
 - **2026-11-22** · The guide is started in `web/guide/` (cover, inside cover, map,
   Meet Val, Val's button), built to the design principle. Decided: cover a mix
   leaning on the stickers (both pure options kept); map from the owner's river

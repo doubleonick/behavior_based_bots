@@ -33,6 +33,11 @@ linked to.
   cover colour, the prediction on Meet Val, and whether Val has been met. Add
   `?reset` to the address to start again.
 
+## Checking it
+
+`node tests/web/clickthrough.js` (and `... 390` for a phone) clicks from the cover to
+the map and back, as a reader would, and fails if any step can't be clicked.
+
 ## Not yet
 
 Saving that travels between machines; the sticker collecting; the Handbook; stop 1
