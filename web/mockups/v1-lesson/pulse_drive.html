@@ -69,7 +69,7 @@ code{font:14px ui-monospace,Menlo,Consolas,monospace;background:#efe8d6;padding:
   <label class="group"><b>Beats at full light</b> <input type="range" id="fmax" min="0.6" max="3" step="0.1" value="1.6"> <span id="fmaxV"></span></label>
   <label class="group"><b>Speed</b> <input type="range" id="speed" min="1" max="6" step="1" value="2"> <span id="speedV"></span></label>
   <button class="plain" type="button" id="restart">Start again</button>
-  <span style="font-size:15px;color:#3b4660">Run <b id="runs">1</b>: a new run starts by itself once both Vals come to rest.</span>
+  <span style="font-size:15px;color:#3b4660">Run <b id="runs">1</b>: once both Vals have stopped (or reached a wall), a child picks them up and sets them down somewhere new.</span>
 </div>
 
 <div class="notes">
@@ -80,8 +80,9 @@ code{font:14px ui-monospace,Menlo,Consolas,monospace;background:#efe8d6;padding:
     <li>It is only a change in how the speed is sent to the servo (the angle register, over time). The wiring, setup screens and lesson results stay the same.</li>
   </ul></div>
   <div class="note"><h3>What to look for</h3><ul>
-    <li>Do the two Vals spend about the same share of time in the light over several runs? (They should: same rule, same average. With a + wire both end up resting in the dark; with a − wire, in the light.)</li>
+    <li>Do the two Vals spend about the same share of time in the light over several runs (each run, both start in the same place, facing the same way)? (They should: same rule, same average. With a + wire both end up resting in the dark; with a − wire, in the light.)</li>
     <li>Does the pulsing Val read as <i>alive like a jelly</i>, or as stuttering?</li>
+    <li>Neither Val can turn: one wheel and fixed feet go straight, with a slight drift. It stops in the dark (with a + wire) or at a wall, and only a hand sets it down facing somewhere new. The jelly can turn a little: that is where it is more than Vehicle 1.</li>
     <li>Push and glide needs headroom: a beat's peak is about two and a half times the average, so the smooth drive's top speed would have to sit well below the servo's top speed for the two to match. On the robot that means a slower top speed, or beats that can't fully catch up in bright light.</li>
     <li>A real wheel doesn't coast like a bell in water: when the servo eases off, Val slows at once. The "glide" is the servo slowing on purpose.</li>
   </ul></div>
@@ -113,17 +114,25 @@ function measureShape(){let a=0;for(let i=0;i<1000;i++){a+=beatShape((i+0.5)/100
 
 // ===== the creatures =====
 // each run starts where Val moves (in the light with a + wire, in the dark with a − wire)
-function newBody(){return {x:W*(wire>0?0.6+0.3*rnd():0.1+0.3*rnd()),y:H*(0.2+0.6*rnd()),h:rnd()*Math.PI*2,v:0,trail:[],inLight:[],phase:rnd(),beatT:-1};}
+function newBody(){return {stuck:false,drift:0,x:W*(wire>0?0.6+0.3*rnd():0.1+0.3*rnd()),y:H*(0.2+0.6*rnd()),h:rnd()*Math.PI*2,v:0,trail:[],inLight:[],phase:rnd(),beatT:-1};}
 let jelly,smooth,pulse,history,still=0,runs=0;
-function reset(){still=0;runs++;jelly=newBody();smooth=newBody();pulse=newBody();pulse.x=smooth.x;pulse.y=smooth.y;pulse.h=smooth.h;history=[];}
+function reset(){still=0;runs++;jelly=newBody();smooth=newBody();pulse=newBody();
+  // both Vals are set down in the same place, facing the same way, with the same slight drift
+  smooth.drift=gauss()*0.06;pulse.x=smooth.x;pulse.y=smooth.y;pulse.h=smooth.h;pulse.drift=smooth.drift;history=[];}
 
 function feel(b){const L=light(b.x);return wire>0?L:1-L;}
-function walls(b){
-  // a bump turns Val to a new heading, away from the wall
+function walls(b,canTurn){
   let hit=false;
   if(b.x<14){b.x=14;hit=true;} if(b.x>W-14){b.x=W-14;hit=true;}
   if(b.y<14){b.y=14;hit=true;} if(b.y>H-14){b.y=H-14;hit=true;}
-  if(hit){const cx=W/2-b.x,cy=H/2-b.y;b.h=Math.atan2(cy,cx)+(rnd()-0.5)*2.2;}
+  if(!hit){return;}
+  if(canTurn){
+    // the jelly can turn away from the edge (a little, and not always well)
+    const cx=W/2-b.x,cy=H/2-b.y;b.h=Math.atan2(cy,cx)+(rnd()-0.5)*2.2;
+  }else{
+    // Val can't steer: at a wall it just stops there, pushing, until someone picks it up
+    b.stuck=true;
+  }
 }
 function stepVal(b,dt,pulsed){
   const s=feel(b);
@@ -137,8 +146,9 @@ function stepVal(b,dt,pulsed){
       b.beatT+=dt; if(b.beatT>=D){b.beatT=-1;}
     }else{b.v=0;}
   }
-  b.h+=gauss()*0.35*Math.sqrt(dt);    // Val's wobble
-  b.x+=Math.cos(b.h)*b.v*dt; b.y+=Math.sin(b.h)*b.v*dt; walls(b);
+  // no steering: Val keeps its heading; only a slight drift (its feet dragging, the floor)
+  b.h+=b.drift*dt*(b.v/VMAX);
+  b.x+=Math.cos(b.h)*b.v*dt; b.y+=Math.sin(b.h)*b.v*dt; walls(b,false);
 }
 function stepJelly(b,dt){
   // pulse rate follows the light (through the same wire), plus its own slow rhythm in the dark
@@ -149,7 +159,7 @@ function stepJelly(b,dt){
   b.v*=Math.exp(-2.2*dt);                         // the water slows it: glide
   b.h+=gauss()*0.6*Math.sqrt(dt);                 // it turns a little
   const cur=Math.sin(b.y/60+performance.now()/9000)*7;   // a slow current
-  b.x+=Math.cos(b.h)*b.v*dt+cur*dt; b.y+=Math.sin(b.h)*b.v*dt; walls(b);
+  b.x+=Math.cos(b.h)*b.v*dt+cur*dt; b.y+=Math.sin(b.h)*b.v*dt; walls(b,true);
 }
 
 // ===== drawing =====
@@ -210,8 +220,9 @@ function tick(now){
   });
   history.push({t:simT,s:smooth.v,p:pulse.v,L:feel(pulse)});
   // once both Vals have come to rest for a while, start another run (Vehicle 1 stops where it feels nothing)
-  if(feel(smooth)<0.02&&feel(pulse)<0.02){still+=real;}else{still=0;}
-  if(still>4){const keep=[jelly.inLight,smooth.inLight,pulse.inLight];reset();jelly.inLight=keep[0];smooth.inLight=keep[1];pulse.inLight=keep[2];document.getElementById('runs').textContent=runs;}
+  const done=b=>b.stuck||feel(b)<0.02;
+  if(done(smooth)&&done(pulse)){still+=real;}else{still=0;}
+  if(still>3){const keep=[jelly.inLight,smooth.inLight,pulse.inLight];reset();jelly.inLight=keep[0];smooth.inLight=keep[1];pulse.inLight=keep[2];document.getElementById('runs').textContent=runs;}
   while(history.length&&simT-history[0].t>8.2){history.shift();}
   tray(cv.jelly);trail(cv.jelly,jelly,'#2c7f8a');drawJelly(cv.jelly,jelly);
   tray(cv.smooth);trail(cv.smooth,smooth,'#1f5fa8');drawVal(cv.smooth,smooth);

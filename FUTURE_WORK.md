@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-23** · Correction, *Vehicle 1 pulse drive:* the mock-up's Vals no longer
+  turn (Vehicle 1 can't steer); a hand sets them down again.
 - **2026-11-23** · *Vehicle 1 pulse drive (mock-up):* jellies as the imperfect ancient
   version; a pulse drive beside the smooth one, the switch between them not set.
 - **2026-11-23** · `web/OUTLINE.md`, *Creatures: where the decisions stand:* every
@@ -67,6 +69,11 @@ Newest first, about the last two weeks. Each names the entry to search for below
   stuttering; push and glide peaks at about 2.5 times the average, so it needs the
   smooth top speed well under the servo's top speed. A wheel stops when the servo
   eases off; there is no coasting.
+  *Correction (2026-11-23, owner caught it):* the first version gave both Vals a
+  random wobble and turned them away from walls. Vehicle 1 can't steer (one wheel,
+  fixed feet): it goes straight with only a slight drift, stops in the dark (+ wire)
+  or pushes at a wall, and only a hand sets a new heading. The mock-up now does that;
+  only the jelly turns, which is where it is more than Vehicle 1.
 - **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
   a landing page like a lab notebook's cover, with pictures that hint at what will be
   explored; one button opens it into the introduction to the adventure; from there
