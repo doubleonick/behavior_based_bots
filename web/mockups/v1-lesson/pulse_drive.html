@@ -1,0 +1,235 @@
+<title>Vehicle 1 pulse drive</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@400;700&display=swap">
+<style>
+/* Layout: three observation trays side by side (a jelly, Val smooth, Val pulsing) under
+   the same pool of light, then a speed trace and the controls. Single light look on purpose:
+   the notebook's cream paper. */
+:root{--paper:#f4eddc;--ink:#1d2a44;--pencil:#5d5148;--pen:#1f5fa8;--val:#E07A2E;--jelly:#2c7f8a;
+  --smooth:#1f5fa8;--pulse:#c0392b;--rule:#c9bfa6;--read:"Atkinson Hyperlegible",Verdana,sans-serif;--hand:"Kalam","Comic Sans MS",cursive;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:#e6e2d6;color:var(--ink);font:17px/1.5 var(--read);padding-block:22px 44px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font:700 1.45rem var(--read);margin:0 0 4px;text-wrap:balance}
+.lede{margin:0 0 16px;color:#3b4660;max-width:75ch}
+.trays{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.tray{background:var(--paper);border:2px solid var(--ink);border-radius:6px;padding:10px 10px 8px;min-width:0}
+.tray h2{font:700 1.02rem var(--read);margin:0;display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.tray h2 small{font:400 15px var(--hand);color:var(--pencil)}
+.tray canvas{display:block;width:100%;aspect-ratio:16/10;margin-top:6px;border-radius:4px}
+.share{display:flex;align-items:center;gap:8px;font-size:15px;margin-top:6px}
+.bar{flex:1;height:10px;background:#e2d9c3;border-radius:5px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#e9b949}
+.trace{background:var(--paper);border:2px solid var(--ink);border-radius:6px;padding:10px;margin-top:14px}
+.trace h2{font:700 1.02rem var(--read);margin:0 0 4px}
+.trace canvas{display:block;width:100%;height:150px}
+.key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:15px;color:#3b4660}
+.key span::before{content:"";display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:6px;background:currentColor}
+.controls{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;margin:14px 0 0;background:#fff8;border:1.5px solid #9aa3b2;border-radius:6px;padding:10px 14px}
+.group{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.group>b{font-size:15px;margin-right:2px}
+.seg button{font:15px var(--read);color:var(--ink);background:#fff;border:2px solid #9aa3b2;padding:4px 12px;cursor:pointer}
+.seg button:first-of-type{border-radius:999px 0 0 999px}.seg button:last-of-type{border-radius:0 999px 999px 0}
+.seg button+button{margin-left:-2px}
+.seg button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff;position:relative}
+input[type=range]{width:130px;accent-color:var(--ink)}
+button.plain{font:15px var(--read);background:#fff;border:2px solid var(--ink);border-radius:8px;padding:4px 12px;cursor:pointer;color:var(--ink)}
+:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px;margin-top:16px}
+.note{background:#fff8;border:1.5px solid #9aa3b2;border-radius:6px;padding:12px 14px;font-size:15px;color:#2e3a52}
+.note h3{margin:0 0 6px;font-size:1rem}
+.note ul{margin:0;padding-left:18px}.note li{margin:3px 0}
+code{font:14px ui-monospace,Menlo,Consolas,monospace;background:#efe8d6;padding:0 4px}
+</style>
+
+<div class="wrap">
+<h1>Vehicle 1 with a pulse drive</h1>
+<p class="lede">The same tray, the same pool of light, the same wire. On the left, a jelly: the imperfect ancient version, which pulses, drifts and turns a little. In the middle, Val as it drives today: one smooth speed. On the right, Val with a pulse drive: the light sets how <em>often</em> it pushes, not how fast. Both Vals have the same average speed for the same light, so they should end up in the same places.</p>
+
+<div class="trays">
+  <section class="tray"><h2>A jelly <small>pulses, drifts, turns a little</small></h2><canvas id="cJelly" width="640" height="400" role="img" aria-label="A jellyfish pulsing in a tray, half of it lit"></canvas>
+    <div class="share">in the light <span class="bar"><i id="bJelly"></i></span><b id="pJelly">–</b></div></section>
+  <section class="tray"><h2>Val, smooth <small>today's drive</small></h2><canvas id="cSmooth" width="640" height="400" role="img" aria-label="Val driving smoothly in the same tray"></canvas>
+    <div class="share">in the light <span class="bar"><i id="bSmooth"></i></span><b id="pSmooth">–</b></div></section>
+  <section class="tray"><h2>Val, pulse drive <small>pushes in beats</small></h2><canvas id="cPulse" width="640" height="400" role="img" aria-label="Val moving in pulses in the same tray"></canvas>
+    <div class="share">in the light <span class="bar"><i id="bPulse"></i></span><b id="pPulse">–</b></div></section>
+</div>
+
+<div class="trace">
+  <h2>What each Val's wheel is doing (last 8 seconds)</h2>
+  <canvas id="cTrace" width="1040" height="150" aria-label="Wheel speed over time: smooth Val as a line that follows the light, pulsing Val as beats"></canvas>
+  <div class="key"><span style="color:var(--smooth)">smooth Val's wheel speed</span><span style="color:var(--pulse)">pulse Val's wheel speed</span><span style="color:#e0a526">light the pulse Val feels</span></div>
+</div>
+
+<div class="controls">
+  <div class="group seg" role="group" aria-label="Wire"><b>Wire</b>
+    <button type="button" data-wire="1" aria-pressed="true">+ more light, more push</button><button type="button" data-wire="-1" aria-pressed="false">− more light, less push</button></div>
+  <div class="group seg" role="group" aria-label="Pulse shape"><b>Pulse</b>
+    <button type="button" data-shape="glide" aria-pressed="true">push and glide</button><button type="button" data-shape="onoff" aria-pressed="false">on and off</button></div>
+  <label class="group"><b>Beats at full light</b> <input type="range" id="fmax" min="0.6" max="3" step="0.1" value="1.6"> <span id="fmaxV"></span></label>
+  <label class="group"><b>Speed</b> <input type="range" id="speed" min="1" max="6" step="1" value="2"> <span id="speedV"></span></label>
+  <button class="plain" type="button" id="restart">Start again</button>
+  <span style="font-size:15px;color:#3b4660">Run <b id="runs">1</b>: a new run starts by itself once both Vals come to rest.</span>
+</div>
+
+<div class="notes">
+  <div class="note"><h3>How the pulse drive would work on Val (not built)</h3><ul>
+    <li>The wire's strength (0 to 1, as now) sets the <b>beat rate</b>: none in the dark with a + wire, up to the top rate in full light.</li>
+    <li>Each beat is the same push. <b>Push and glide</b> ramps the wheel up fast and lets it run down, like a bell's stroke then coast; <b>on and off</b> runs it at one speed for the beat.</li>
+    <li>Average speed = beat rate × one beat's push, so it matches the smooth drive. At the top rate the beats run together.</li>
+    <li>It is only a change in how the speed is sent to the servo (the angle register, over time). The wiring, setup screens and lesson results stay the same.</li>
+  </ul></div>
+  <div class="note"><h3>What to look for</h3><ul>
+    <li>Do the two Vals spend about the same share of time in the light over several runs? (They should: same rule, same average. With a + wire both end up resting in the dark; with a − wire, in the light.)</li>
+    <li>Does the pulsing Val read as <i>alive like a jelly</i>, or as stuttering?</li>
+    <li>Push and glide needs headroom: a beat's peak is about two and a half times the average, so the smooth drive's top speed would have to sit well below the servo's top speed for the two to match. On the robot that means a slower top speed, or beats that can't fully catch up in bright light.</li>
+    <li>A real wheel doesn't coast like a bell in water: when the servo eases off, Val slows at once. The "glide" is the servo slowing on purpose.</li>
+  </ul></div>
+  <div class="note"><h3>The jelly is the imperfect ancient version</h3><ul>
+    <li>Its pulse rate follows the light, as Val's beats do. It also pulses a little in the dark (jellies have their own rhythm), drifts with the water and turns a little: a real radial animal is not as simple as Vehicle 1.</li>
+    <li>Simulated, not filmed; the numbers are guesses to show the idea.</li>
+  </ul></div>
+</div>
+</div>
+
+<script>
+// ===== the world: a tray with its right half lit, a soft edge =====
+const W=640,H=400;
+function light(x){return 1/(1+Math.exp(-(x-W*0.5)/22));}
+const VAL=new Image(); VAL.src='data:image/png;base64,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';
+let wire=1, shape='glide', fmax=1.6, simSpeed=2;
+const VMAX=70;        // smooth Val's top speed, px/s (the average both Vals reach in full light)
+const rnd=()=>Math.random();
+function gauss(){return Math.sqrt(-2*Math.log(rnd()+1e-9))*Math.cos(2*Math.PI*rnd());}
+
+// one beat's speed over its duration, as a share of time t in [0,1); scaled so one beat moves VMAX/fmax
+function beatShape(t){
+  if(shape==='onoff'){return 1;}
+  // push and glide: a quick rise (first 15%) then an easing run-down
+  return t<0.15 ? t/0.15 : Math.exp(-(t-0.15)*3.2);
+}
+let shapeArea=1;
+function measureShape(){let a=0;for(let i=0;i<1000;i++){a+=beatShape((i+0.5)/1000);}shapeArea=a/1000;}
+
+// ===== the creatures =====
+// each run starts where Val moves (in the light with a + wire, in the dark with a − wire)
+function newBody(){return {x:W*(wire>0?0.6+0.3*rnd():0.1+0.3*rnd()),y:H*(0.2+0.6*rnd()),h:rnd()*Math.PI*2,v:0,trail:[],inLight:[],phase:rnd(),beatT:-1};}
+let jelly,smooth,pulse,history,still=0,runs=0;
+function reset(){still=0;runs++;jelly=newBody();smooth=newBody();pulse=newBody();pulse.x=smooth.x;pulse.y=smooth.y;pulse.h=smooth.h;history=[];}
+
+function feel(b){const L=light(b.x);return wire>0?L:1-L;}
+function walls(b){
+  // a bump turns Val to a new heading, away from the wall
+  let hit=false;
+  if(b.x<14){b.x=14;hit=true;} if(b.x>W-14){b.x=W-14;hit=true;}
+  if(b.y<14){b.y=14;hit=true;} if(b.y>H-14){b.y=H-14;hit=true;}
+  if(hit){const cx=W/2-b.x,cy=H/2-b.y;b.h=Math.atan2(cy,cx)+(rnd()-0.5)*2.2;}
+}
+function stepVal(b,dt,pulsed){
+  const s=feel(b);
+  if(!pulsed){b.v=VMAX*s;}
+  else{
+    // beats: the felt strength sets the beat rate; each beat lasts 1/fmax seconds
+    const f=fmax*s, D=1/fmax;
+    b.phase+=f*dt; if(b.phase>=1){b.phase-=1;b.beatT=0;}   // a new beat starts on time, even if the last is still running down
+    if(b.beatT>=0){
+      b.v=(VMAX/shapeArea)*beatShape(b.beatT/D);   // one beat moves VMAX/fmax, so the average matches
+      b.beatT+=dt; if(b.beatT>=D){b.beatT=-1;}
+    }else{b.v=0;}
+  }
+  b.h+=gauss()*0.35*Math.sqrt(dt);    // Val's wobble
+  b.x+=Math.cos(b.h)*b.v*dt; b.y+=Math.sin(b.h)*b.v*dt; walls(b);
+}
+function stepJelly(b,dt){
+  // pulse rate follows the light (through the same wire), plus its own slow rhythm in the dark
+  const s=feel(b), f=0.25+1.6*s;
+  b.phase+=f*dt;
+  if(b.phase>=1){b.phase-=1;b.v+=46;b.beatT=0;}
+  if(b.beatT>=0){b.beatT+=dt;if(b.beatT>0.35){b.beatT=-1;}}
+  b.v*=Math.exp(-2.2*dt);                         // the water slows it: glide
+  b.h+=gauss()*0.6*Math.sqrt(dt);                 // it turns a little
+  const cur=Math.sin(b.y/60+performance.now()/9000)*7;   // a slow current
+  b.x+=Math.cos(b.h)*b.v*dt+cur*dt; b.y+=Math.sin(b.h)*b.v*dt; walls(b);
+}
+
+// ===== drawing =====
+function tray(ctx){
+  const g=ctx.createLinearGradient(0,0,W,0);
+  for(let i=0;i<=20;i++){const x=i/20, L=light(x*W);g.addColorStop(x,`rgb(${Math.round(70+185*L)},${Math.round(72+170*L)},${Math.round(78+110*L)})`);}
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#1d2a44';ctx.lineWidth=4;ctx.strokeRect(2,2,W-4,H-4);
+}
+function trail(ctx,b,col){
+  ctx.fillStyle=col;
+  for(let i=0;i<b.trail.length;i++){const p=b.trail[i];ctx.globalAlpha=0.08+0.5*i/b.trail.length;ctx.fillRect(p[0]-2,p[1]-2,4,4);}
+  ctx.globalAlpha=1;
+}
+function drawVal(ctx,b){
+  ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.h+Math.PI/2);
+  ctx.imageSmoothingEnabled=false;
+  if(VAL.complete){ctx.drawImage(VAL,-12,-30,24,60);}
+  ctx.restore();
+}
+function drawJelly(ctx,b){
+  // the bell squeezes on each beat
+  const squeeze=b.beatT>=0?Math.sin(Math.PI*b.beatT/0.35):0;
+  ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.h+Math.PI/2);
+  const w=22*(1-0.25*squeeze), h=16*(1+0.15*squeeze);
+  ctx.strokeStyle='#e9fbfb';ctx.lineWidth=2;
+  for(let k=-2;k<=2;k++){ctx.beginPath();ctx.moveTo(k*6,2);ctx.quadraticCurveTo(k*6+5*Math.sin(performance.now()/300+k),18,k*6,30+6*squeeze);ctx.stroke();}
+  ctx.fillStyle='rgba(44,127,138,.85)';ctx.beginPath();ctx.ellipse(0,0,w,h,0,Math.PI,0);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#0f3b40';ctx.stroke();
+  ctx.restore();
+}
+function drawTrace(){
+  const c=document.getElementById('cTrace'),ctx=c.getContext('2d'),w=c.width,h=c.height;
+  ctx.clearRect(0,0,w,h);ctx.strokeStyle='#d8cfb8';ctx.lineWidth=1;
+  for(let i=1;i<4;i++){ctx.beginPath();ctx.moveTo(0,h*i/4);ctx.lineTo(w,h*i/4);ctx.stroke();}
+  const span=8, now=history.length?history[history.length-1].t:0, top=VMAX*2.9;
+  const line=(key,col,scale,width)=>{ctx.strokeStyle=col;ctx.lineWidth=width;ctx.beginPath();
+    history.forEach((p,i)=>{const x=w-(now-p.t)/span*w, y=h-6-(p[key]*scale)/top*(h-12);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();};
+  line('L','#e0a526',top,2);
+  line('s','#1f5fa8',1,2.5);
+  line('p','#c0392b',1,2.5);
+}
+
+// ===== the clock =====
+const cv={jelly:document.getElementById('cJelly').getContext('2d'),smooth:document.getElementById('cSmooth').getContext('2d'),pulse:document.getElementById('cPulse').getContext('2d')};
+let last=performance.now(), simT=0, frame=0;
+function share(b,el,bar){const n=b.inLight.length;if(!n){return;}const p=b.inLight.reduce((a,x)=>a+x,0)/n;document.getElementById(el).textContent=Math.round(p*100)+'%';document.getElementById(bar).style.width=(p*100)+'%';}
+function tick(now){
+  const real=Math.max(0,Math.min(0.05,(now-last)/1000));last=now;   // the first frame can be stamped a little before the start
+  const steps=simSpeed*2, dt=real*simSpeed/steps;
+  for(let i=0;i<steps;i++){
+    stepJelly(jelly,dt);stepVal(smooth,dt,false);stepVal(pulse,dt,true);simT+=dt;
+  }
+  frame++;
+  [jelly,smooth,pulse].forEach(b=>{
+    if(frame%3===0){b.trail.push([b.x,b.y]);if(b.trail.length>260){b.trail.shift();}}
+    b.inLight.push(light(b.x)>0.5?1:0);if(b.inLight.length>60*120){b.inLight.shift();}
+  });
+  history.push({t:simT,s:smooth.v,p:pulse.v,L:feel(pulse)});
+  // once both Vals have come to rest for a while, start another run (Vehicle 1 stops where it feels nothing)
+  if(feel(smooth)<0.02&&feel(pulse)<0.02){still+=real;}else{still=0;}
+  if(still>4){const keep=[jelly.inLight,smooth.inLight,pulse.inLight];reset();jelly.inLight=keep[0];smooth.inLight=keep[1];pulse.inLight=keep[2];document.getElementById('runs').textContent=runs;}
+  while(history.length&&simT-history[0].t>8.2){history.shift();}
+  tray(cv.jelly);trail(cv.jelly,jelly,'#2c7f8a');drawJelly(cv.jelly,jelly);
+  tray(cv.smooth);trail(cv.smooth,smooth,'#1f5fa8');drawVal(cv.smooth,smooth);
+  tray(cv.pulse);trail(cv.pulse,pulse,'#c0392b');drawVal(cv.pulse,pulse);
+  if(frame%10===0){share(jelly,'pJelly','bJelly');share(smooth,'pSmooth','bSmooth');share(pulse,'pPulse','bPulse');}
+  drawTrace();
+  requestAnimationFrame(tick);
+}
+
+// ===== controls =====
+function seg(attr,fn){document.querySelectorAll(`[data-${attr}]`).forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(`[data-${attr}]`).forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset[attr]);});}
+seg('wire',v=>{wire=+v;runs=0;reset();document.getElementById('runs').textContent=runs;});
+seg('shape',v=>{shape=v;measureShape();});
+const fm=document.getElementById('fmax'),sp=document.getElementById('speed');
+function labels(){document.getElementById('fmaxV').textContent=fmax.toFixed(1)+' a second';document.getElementById('speedV').textContent='×'+simSpeed;}
+fm.oninput=()=>{fmax=+fm.value;labels();};
+sp.oninput=()=>{simSpeed=+sp.value;labels();};
+document.getElementById('restart').onclick=()=>{runs=0;reset();document.getElementById('runs').textContent=runs;};
+measureShape();labels();reset();requestAnimationFrame(tick);
+</script>

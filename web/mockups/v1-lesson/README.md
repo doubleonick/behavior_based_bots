@@ -10,6 +10,7 @@ avatar in `cad/render/val_v1_above_rear.png`.
 | board | what it is |
 |---|---|
 | `Lesson.dc.html` | **the working Vehicle 1 lesson**: Watch, What are they doing?, Look inside, Try it (predict, run, check, notebook log). A pinned observation deck shows Val, redrawn from its real tracked run, beside a simulated woodlouse under the same pool of light, both painting where they spent their time |
+| `pulse_drive.html` | (2026-11-23) Vehicle 1 with a pulse drive, simulated: a jelly (the imperfect ancient version), Val smooth and Val pulsing, in the same tray and light, with the wheels' speed traced and the share of time in the light. Pulse shape: push and glide, or on and off. Not built in firmware; the choice of drive is left open |
 | `Cartoon.dc.html` | "Same rule, same trail": the + and − runs side by side with the woodlouse, and a "show the real clip" switch |
 | `Expedition.dc.html` | **the expedition map** (Indiana Jones style): the prologue and a short story scene per stop, the red route, Val's position, "My expedition journal". All story text is placeholders |
 | `Handbook.dc.html` | **the appendix** for helpers and advanced explorers: per stop, what you're finding out, setting up, questions, if something goes wrong, going further. Stop 1 drafted from the lesson's notes; the rest placeholders |

@@ -201,6 +201,12 @@ animals, jellyfish themselves, Brooks, potential fields, associative learning).
 In short: the rules are firm; the only creature fixed to a stop is the jellies at
 Vehicle 1, with an open question of how the robot stands in for them.
 
+**Vehicle 1 as the jellies (owner, 2026-11-23):** the jellies are the imperfect
+ancient version; Vehicle 1 is the jelly principle with steering taken out (one
+feeling, one push, no sides; the world picks the heading). Val gets both a regular
+(smooth) drive and a pulse drive, in which the light sets how often it pushes; which
+one a lesson uses is **not set yet**. Mock-up: `web/mockups/v1-lesson/pulse_drive.html`.
+
 The chapters below were written for the first six stops (2026-10) and are kept as
 they were; stops 4, 5, 7, 9 and 10 have no chapter yet.
 

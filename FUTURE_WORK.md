@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-23** · *Vehicle 1 pulse drive (mock-up):* jellies as the imperfect ancient
+  version; a pulse drive beside the smooth one, the switch between them not set.
 - **2026-11-23** · `web/OUTLINE.md`, *Creatures: where the decisions stand:* every
   creature mentioned for each stop, with how firm it is.
 - **2026-11-22** · Fix: the guide's inside cover had no visible way on (its "turn the
@@ -55,6 +57,16 @@ Newest first, about the last two weeks. Each names the entry to search for below
   play**: Val exploring a home-made version of where that stop's creatures live,
   with stand-in stimulus sources (a lamp for the sun, coloured patches on the floor
   for food or scent, ...). Not designed yet.
+- **Vehicle 1 pulse drive (2026-11-23, mock-up `web/mockups/v1-lesson/pulse_drive.html`;
+  not built).** The jellies stand at Vehicle 1 as the imperfect ancient version, and
+  Vehicle 1 is the jelly principle with steering taken out. Val would have two drives:
+  the regular smooth one, and a pulse drive in which the felt strength sets the beat
+  rate and each beat is the same push (push and glide, or on and off), so the average
+  speed and the lesson's results match. Owner: keep both; **don't set the switch
+  fully yet.** To find out on the robot: whether pulsing reads as alive or as
+  stuttering; push and glide peaks at about 2.5 times the average, so it needs the
+  smooth top speed well under the servo's top speed. A wheel stops when the servo
+  eases off; there is no coasting.
 - **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
   a landing page like a lab notebook's cover, with pictures that hint at what will be
   explored; one button opens it into the introduction to the adventure; from there
