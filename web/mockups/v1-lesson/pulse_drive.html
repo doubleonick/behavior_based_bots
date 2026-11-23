@@ -12,7 +12,11 @@ body{margin:0;background:#e6e2d6;color:var(--ink);font:17px/1.5 var(--read);padd
 .wrap{max-width:1080px;margin:0 auto}
 h1{font:700 1.45rem var(--read);margin:0 0 4px;text-wrap:balance}
 .lede{margin:0 0 16px;color:#3b4660;max-width:75ch}
+.part{font:700 1.15rem var(--read);margin:20px 0 4px}
+.sub{margin:0 0 10px;color:#3b4660;font-size:16px}
+.context{font-size:15px;line-height:1.45;color:#2e3a52;margin:8px 0 0}
 .trays{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.trays.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr))}
 .tray{background:var(--paper);border:2px solid var(--ink);border-radius:6px;padding:10px 10px 8px;min-width:0}
 .tray h2{font:700 1.02rem var(--read);margin:0;display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
 .tray h2 small{font:400 15px var(--hand);color:var(--pencil)}
@@ -44,11 +48,21 @@ code{font:14px ui-monospace,Menlo,Consolas,monospace;background:#efe8d6;padding:
 
 <div class="wrap">
 <h1>Vehicle 1 with a pulse drive</h1>
-<p class="lede">The same tray, the same pool of light, the same wire. On the left, a jelly: the imperfect ancient version, which pulses, drifts and turns a little. In the middle, Val as it drives today: one smooth speed. On the right, Val with a pulse drive: the light sets how <em>often</em> it pushes, not how fast. Both Vals have the same average speed for the same light, so they should end up in the same places.</p>
+<p class="lede">The same tray and the same pool of light throughout. First the jelly, the imperfect ancient version, with each wire. Then Val with the wire you choose: as it drives today (one smooth speed), and with a pulse drive: the light sets how <em>often</em> it pushes, not how fast. Both Vals have the same average speed for the same light, so they should end up in the same places.</p>
 
-<div class="trays">
-  <section class="tray"><h2>A jelly <small>pulses, drifts, turns a little</small></h2><canvas id="cJelly" width="640" height="400" role="img" aria-label="A jellyfish pulsing in a tray, half of it lit"></canvas>
-    <div class="share">time in the light <span class="bar"><i id="bJelly"></i></span><b id="pJelly">–</b></div></section>
+<h2 class="part">The jelly, with each wire</h2>
+<p class="sub">Two jellies swim on all the time, one with each wire. The same rule as Val's, but a real animal: it pulses a little even in the dark, drifts and turns.</p>
+<div class="trays two">
+  <section class="tray"><h2>+ wire <small>more light, more pulsing</small></h2><canvas id="cJellyP" width="640" height="400" role="img" aria-label="A jelly that pulses more in the light, gathering in the shade"></canvas>
+    <div class="share">time in the light <span class="bar"><i id="bJellyP"></i></span><b id="pJellyP">–</b></div>
+    <p class="context"><b>It ends up in the shade.</b> Restless in bright light, calm in the dim, so it hurries out of the light and lingers where it is dim. Many jellies leave the bright water near the surface by day and come up at night (medium confidence for jellies in general). Real ones also steer up and down to do it; this wire is the simplest way to get the same result.</p></section>
+  <section class="tray"><h2>− wire <small>more light, less pulsing</small></h2><canvas id="cJellyM" width="640" height="400" role="img" aria-label="A jelly that pulses less in the light, gathering in the light"></canvas>
+    <div class="share">time in the light <span class="bar"><i id="bJellyM"></i></span><b id="pJellyM">–</b></div>
+    <p class="context"><b>It ends up in the light.</b> Calm in bright light, busy in the dim. Two real cases fit: the upside-down jelly (<i>Cassiopea</i>) carries algae that need sunlight and rests in sunny shallows (its habitat: high confidence; that it gets there this way: not checked); and many jellies swim harder when a shadow falls over them, as a predator's would, which is "darker, more pushing" (medium-high confidence).</p></section>
+</div>
+
+<h2 class="part">Val, with the wire you choose</h2>
+<div class="trays two">
   <section class="tray"><h2>Val, smooth <small>today's drive</small></h2><canvas id="cSmooth" width="640" height="400" role="img" aria-label="Val driving smoothly in the same tray"></canvas>
     <div class="share">stopped <span class="bar"><i id="bSmooth"></i></span><b id="pSmooth">–</b></div></section>
   <section class="tray"><h2>Val, pulse drive <small>pushes in beats</small></h2><canvas id="cPulse" width="640" height="400" role="img" aria-label="Val moving in pulses in the same tray"></canvas>
@@ -62,7 +76,7 @@ code{font:14px ui-monospace,Menlo,Consolas,monospace;background:#efe8d6;padding:
 </div>
 
 <div class="controls">
-  <div class="group seg" role="group" aria-label="Wire"><b>Wire</b>
+  <div class="group seg" role="group" aria-label="Val's wire"><b>Val's wire</b>
     <button type="button" data-wire="1" aria-pressed="true">+ more light, more push</button><button type="button" data-wire="-1" aria-pressed="false">− more light, less push</button></div>
   <div class="group seg" role="group" aria-label="Pulse shape"><b>Pulse</b>
     <button type="button" data-shape="glide" aria-pressed="true">push and glide</button><button type="button" data-shape="onoff" aria-pressed="false">on and off</button></div>
@@ -75,23 +89,25 @@ code{font:14px ui-monospace,Menlo,Consolas,monospace;background:#efe8d6;padding:
 </div>
 
 <div class="notes">
-  <div class="note"><h3>How the pulse drive would work on Val (not built)</h3><ul>
+  <div class="note"><h3>How the pulse drive works on Val (a trial in the firmware)</h3><ul>
+    <li>Set <code>PULSE_DRIVE 1</code> in Val_Vehicle (or Val_Field, Val_Brooks) and upload. <code>PULSE_BEATS_AT_FULL</code> and <code>PULSE_SHAPE</code> (<code>ON_OFF</code> or <code>PUSH_GLIDE</code>) are beside it. Off by default.</li>
     <li>The wire's strength (0 to 1, as now) sets the <b>beat rate</b>: none in the dark with a + wire, up to the top rate in full light.</li>
     <li>Each beat is the same push. <b>Push and glide</b> ramps the wheel up fast and lets it run down, like a bell's stroke then coast; <b>on and off</b> runs it at one speed for the beat.</li>
     <li>Average speed = beat rate × one beat's push, so it matches the smooth drive. At the top rate the beats run together.</li>
     <li>It is only a change in how the speed is sent to the servo (the angle register, over time). The wiring, setup screens and lesson results stay the same.</li>
+    <li>On the robot a beat can't push harder than full, so <b>on and off</b> matches the smooth drive's average and <b>push and glide</b> is slower (about 0.4 of it). This page lets the glide peak higher, to compare the look.</li>
   </ul></div>
   <div class="note"><h3>What to look for</h3><ul>
     <li>Do the two Vals end up in the same place, run after run (each run, both start in the same place, facing the same way)? (They should: same rule, same average. With a + wire both end up resting in the dark; with a − wire, in the light.)</li>
     <li>Does the pulsing Val read as <i>alive like a jelly</i>, or as stuttering?</li>
-    <li>With a + wire, Val (and the jelly) end up in the dark: more light, more push, so they hurry out of the light and slow to a stop where it is dim. It looks like avoiding the light, though nothing in the wiring knows where the light is.</li>
+    <li>With a + wire, Val (like the + jelly) ends up in the dark: more light, more push, so they hurry out of the light and slow to a stop where it is dim. It looks like avoiding the light, though nothing in the wiring knows where the light is.</li>
     <li>Val is set down facing the other half, as a child would in the lesson. With "any way", many runs end with Val stuck against a wall: set down facing it, Val drives into it and keeps pushing, wherever the light is. That is true of the real robot in a walled tray, so the count keeps those runs apart ("wall").</li>
     <li>Neither Val can turn: one wheel and fixed feet go straight, with a slight drift. It stops in the dark (with a + wire) or at a wall, and only a hand sets it down facing somewhere new. The jelly can turn a little: that is where it is more than Vehicle 1.</li>
     <li>Push and glide needs headroom: a beat's peak is about two and a half times the average, so the smooth drive's top speed would have to sit well below the servo's top speed for the two to match. On the robot that means a slower top speed, or beats that can't fully catch up in bright light.</li>
     <li>A real wheel doesn't coast like a bell in water: when the servo eases off, Val slows at once. The "glide" is the servo slowing on purpose.</li>
   </ul></div>
   <div class="note"><h3>The jelly is the imperfect ancient version</h3><ul>
-    <li>It follows the same wire as Val: with + it pulses more in the light, so it hurries through the light and lingers in the dark, and gathers there over time, as Val does. With − it gathers in the light.</li>
+    <li>Each jelly follows one wire, the same rule as Val's: with + it gathers in the dark, with − in the light, by changing only how busy it is, never by aiming.</li>
     <li>Its pulse rate follows the light, as Val's beats do. It also pulses a little in the dark (jellies have their own rhythm), drifts with the water and turns a little: a real radial animal is not as simple as Vehicle 1.</li>
     <li>Simulated, not filmed; the numbers are guesses to show the idea.</li>
   </ul></div>
@@ -122,15 +138,15 @@ function measureShape(){let a=0;for(let i=0;i<1000;i++){a+=beatShape((i+0.5)/100
 // each run starts where Val moves (in the light with a + wire, in the dark with a − wire)
 function newBody(){return {stuck:false,drift:0,x:W*(wire>0?0.6+0.3*rnd():0.1+0.3*rnd()),y:H*(0.2+0.6*rnd()),h:rnd()*Math.PI*2,v:0,trail:[],inLight:[],phase:rnd(),beatT:-1};}
 let ends={smooth:[],pulse:[]};
-let jelly=null,smooth,pulse,history,still=0,runs=0;
+let jellyP=null,jellyM=null,smooth,pulse,history,still=0,runs=0;
 // the jelly is never picked up: it swims on, from anywhere in the tray, until Start again
 function newJelly(){const j=newBody();j.x=W*(0.1+0.8*rnd());return j;}
-function reset(){still=0;runs++;if(!jelly){jelly=newJelly();}smooth=newBody();pulse=newBody();
+function reset(){still=0;runs++;if(!jellyP){jellyP=newJelly();jellyP.wire=1;jellyM=newJelly();jellyM.wire=-1;}smooth=newBody();pulse=newBody();
   // both Vals are set down in the same place, facing the same way, with the same slight drift
   if(setdown==='across'){smooth.h=(wire>0?Math.PI:0)+(rnd()-0.5)*1.2;}   // facing the other half, give or take
   smooth.drift=gauss()*0.06;pulse.x=smooth.x;pulse.y=smooth.y;pulse.h=smooth.h;pulse.drift=smooth.drift;history=[];}
 
-function feel(b){const L=light(b.x);return wire>0?L:1-L;}
+function feel(b){const L=light(b.x);const w=b.wire||wire;return w>0?L:1-L;}
 function walls(b,canTurn){
   let hit=false;
   if(b.x<14){b.x=14;hit=true;} if(b.x>W-14){b.x=W-14;hit=true;}
@@ -215,7 +231,7 @@ function drawTrace(){
 }
 
 // ===== the clock =====
-const cv={jelly:document.getElementById('cJelly').getContext('2d'),smooth:document.getElementById('cSmooth').getContext('2d'),pulse:document.getElementById('cPulse').getContext('2d')};
+const cv={jellyP:document.getElementById('cJellyP').getContext('2d'),jellyM:document.getElementById('cJellyM').getContext('2d'),smooth:document.getElementById('cSmooth').getContext('2d'),pulse:document.getElementById('cPulse').getContext('2d')};
 let last=performance.now(), simT=0, frame=0;
 function endShare(k,el,bar){const e=ends[k],n=e.length;if(!n){return;}const c=w=>e.filter(x=>x===w).length;
   document.getElementById(el).textContent=c('dark')+' dark · '+c('light')+' light · '+c('wall')+' wall';document.getElementById(bar).style.width=(c('light')/n*100)+'%';}
@@ -224,10 +240,10 @@ function tick(now){
   const real=Math.max(0,Math.min(0.05,(now-last)/1000));last=now;   // the first frame can be stamped a little before the start
   const steps=simSpeed*2, dt=real*simSpeed/steps;
   for(let i=0;i<steps;i++){
-    stepJelly(jelly,dt);stepVal(smooth,dt,false);stepVal(pulse,dt,true);simT+=dt;
+    stepJelly(jellyP,dt);stepJelly(jellyM,dt);stepVal(smooth,dt,false);stepVal(pulse,dt,true);simT+=dt;
   }
   frame++;
-  [jelly,smooth,pulse].forEach(b=>{
+  [jellyP,jellyM,smooth,pulse].forEach(b=>{
     if(frame%3===0){b.trail.push([b.x,b.y]);if(b.trail.length>260){b.trail.shift();}}
     b.inLight.push(light(b.x)>0.5?1:0);if(b.inLight.length>60*300){b.inLight.shift();}
   });
@@ -237,10 +253,11 @@ function tick(now){
   if(done(smooth)&&done(pulse)){still+=real;}else{still=0;}
   if(still>3){const how=b=>b.stuck?'wall':(light(b.x)>0.5?'light':'dark');ends.smooth.push(how(smooth));ends.pulse.push(how(pulse));reset();endShare('smooth','pSmooth','bSmooth');endShare('pulse','pPulse','bPulse');document.getElementById('runs').textContent=runs;}
   while(history.length&&simT-history[0].t>8.2){history.shift();}
-  tray(cv.jelly);trail(cv.jelly,jelly,'#2c7f8a');drawJelly(cv.jelly,jelly);
+  tray(cv.jellyP);trail(cv.jellyP,jellyP,'#2c7f8a');drawJelly(cv.jellyP,jellyP);
+  tray(cv.jellyM);trail(cv.jellyM,jellyM,'#2c7f8a');drawJelly(cv.jellyM,jellyM);
   tray(cv.smooth);trail(cv.smooth,smooth,'#1f5fa8');drawVal(cv.smooth,smooth);
   tray(cv.pulse);trail(cv.pulse,pulse,'#c0392b');drawVal(cv.pulse,pulse);
-  if(frame%10===0){share(jelly,'pJelly','bJelly');}
+  if(frame%10===0){share(jellyP,'pJellyP','bJellyP');share(jellyM,'pJellyM','bJellyM');}
   drawTrace();
   requestAnimationFrame(tick);
 }
@@ -248,13 +265,13 @@ function tick(now){
 // ===== controls =====
 function seg(attr,fn){document.querySelectorAll(`[data-${attr}]`).forEach(b=>b.onclick=()=>{
   document.querySelectorAll(`[data-${attr}]`).forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset[attr]);});}
-seg('wire',v=>{wire=+v;runs=0;jelly=null;ends={smooth:[],pulse:[]};['pSmooth','pPulse'].forEach(i=>document.getElementById(i).textContent='–');['bSmooth','bPulse'].forEach(i=>document.getElementById(i).style.width='0');reset();document.getElementById('runs').textContent=runs;});
+seg('wire',v=>{wire=+v;runs=0;ends={smooth:[],pulse:[]};['pSmooth','pPulse'].forEach(i=>document.getElementById(i).textContent='–');['bSmooth','bPulse'].forEach(i=>document.getElementById(i).style.width='0');reset();document.getElementById('runs').textContent=runs;});
 seg('shape',v=>{shape=v;measureShape();});
 seg('setdown',v=>{setdown=v;ends={smooth:[],pulse:[]};['pSmooth','pPulse'].forEach(i=>document.getElementById(i).textContent='–');['bSmooth','bPulse'].forEach(i=>document.getElementById(i).style.width='0');runs=0;reset();});
 const fm=document.getElementById('fmax'),sp=document.getElementById('speed');
 function labels(){document.getElementById('fmaxV').textContent=fmax.toFixed(1)+' a second';document.getElementById('speedV').textContent='×'+simSpeed;}
 fm.oninput=()=>{fmax=+fm.value;labels();};
 sp.oninput=()=>{simSpeed=+sp.value;labels();};
-document.getElementById('restart').onclick=()=>{runs=0;jelly=null;ends={smooth:[],pulse:[]};['pSmooth','pPulse'].forEach(i=>document.getElementById(i).textContent='–');['bSmooth','bPulse'].forEach(i=>document.getElementById(i).style.width='0');reset();document.getElementById('runs').textContent=runs;};
+document.getElementById('restart').onclick=()=>{runs=0;jellyP=null;ends={smooth:[],pulse:[]};['pSmooth','pPulse'].forEach(i=>document.getElementById(i).textContent='–');['bSmooth','bPulse'].forEach(i=>document.getElementById(i).style.width='0');reset();document.getElementById('runs').textContent=runs;};
 measureShape();labels();reset();requestAnimationFrame(tick);
 </script>

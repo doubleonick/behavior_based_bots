@@ -1,0 +1,117 @@
+[  0.00s] Atom Motion found (SDA=G25, SCL=G21)
+[  0.00s] Pulse drive ON: 1.6 beats a second at full, on and off
+[  0.00s] Light Unit assumed on Port A (level on G32)
+[  0.50s] Port A U   200 (0.05 x +1)  | sum +0.00 wait -> servo 90 deg | Talking
+[  1.00s] Port A U   200 (0.05 x +1)  | sum +0.00 wait -> servo 90 deg | Talking
+[  1.50s] Port A U   200 (0.05 x +1)  | sum +0.00 wait -> servo 90 deg | Talking
+[  2.00s] Port A U   200 (0.05 x +1)  | sum +0.00 wait -> servo 90 deg | Talking
+[  2.50s] Port A U   200 (0.05 x +1)  | sum +0.00 wait -> servo 90 deg | Talking
+[  3.00s] Port A U   200 (0.05 x +1)  | sum +0.00 wait -> servo 90 deg | Talking
+[  3.48s] Face: Neutral
+[  3.49s] Full setup: 1 sensor(s)
+   >> t=3.49s setup STARTS
+[ 13.10s] Mount: left
+[ 13.10s]   Port A: Light Unit, weight +1, low 200, high 3800
+   >> t=13.10s setup ends
+[ 13.11s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Happy
+[ 13.11s] Face: Happy
+[ 13.61s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Happy
+[ 14.00s] [ 14.00s] Matrix: spikes
+[ 14.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 146 deg | Spikes
+[ 14.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 179 deg | Spikes
+[ 15.00s] Matrix: face (Angry, during the run)
+[ 15.00s] Face: Angry
+[ 15.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 180 deg | Angry
+[ 15.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 180 deg | Angry
+[ 16.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 180 deg | Angry
+[ 16.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 180 deg | Angry
+[ 17.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 180 deg | Angry
+[ 17.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 180 deg | Angry
+[ 18.00s] [ 18.00s] Matrix: spikes
+[ 18.11s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 180 deg | Spikes
+[ 18.61s] Port A U  3800 (1.00 x +1)  | sum +1.00 BEAT -> servo 180 deg | Spikes
+   >> full light wheel ####################  average 1.00 (regular drive 1.00)
+[ 19.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 180 deg | Spikes
+[ 19.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 180 deg | Spikes
+[ 20.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 92 deg | Spikes
+[ 20.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 175 deg | Spikes
+[ 21.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 103 deg | Spikes
+[ 21.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 146 deg | Spikes
+[ 22.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 179 deg | Spikes
+[ 22.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 92 deg | Spikes
+[ 23.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 175 deg | Spikes
+[ 23.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 103 deg | Spikes
+[ 24.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 146 deg | Spikes
+[ 24.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 179 deg | Spikes
+[ 25.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 92 deg | Spikes
+[ 25.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 175 deg | Spikes
+[ 26.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 103 deg | Spikes
+[ 26.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 146 deg | Spikes
+[ 27.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 179 deg | Spikes
+[ 27.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 92 deg | Spikes
+[ 28.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 175 deg | Spikes
+[ 28.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 103 deg | Spikes
+[ 29.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 146 deg | Spikes
+[ 29.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 179 deg | Spikes
+[ 30.11s] Port A U  2000 (0.50 x +1)  | sum +0.50 wait -> servo 92 deg | Spikes
+[ 30.61s] Port A U  2000 (0.50 x +1)  | sum +0.50 BEAT -> servo 175 deg | Spikes
+   >> half light wheel ..+##--.+##+-.++#+-.-+##-..+##--.+##+-.++#+-.-+##-..+##  average 0.51 (regular drive 0.50)
+[ 31.11s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 103 deg | Spikes
+[ 31.61s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 32.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 32.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 33.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 33.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 34.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 34.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 35.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 35.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 36.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 36.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 37.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 37.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 38.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 38.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 39.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 39.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 40.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 40.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 41.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 41.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 42.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 42.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 43.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 43.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 44.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 44.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 45.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 45.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 46.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 46.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 47.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 47.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 48.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 48.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 49.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 49.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 50.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 50.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 51.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 51.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+[ 52.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 146 deg | Spikes
+[ 52.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 BEAT -> servo 179 deg | Spikes
+[ 53.10s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 92 deg | Spikes
+[ 53.60s] Port A U  1100 (0.25 x +1)  | sum +0.25 wait -> servo 90 deg | Spikes
+   >> a quarter  wheel -+##-........+##+-.......-+##-........+##+-.......-+##-........+##+-.......-+##-........+##+-.......-+##-.....  average 0.26 (regular drive 0.25)
+[ 54.10s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Spikes
+[ 54.60s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Spikes
+[ 55.10s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Spikes
+[ 55.49s] [ 55.49s] Matrix: face
+[ 55.49s] Face: Scared
+[ 55.60s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Scared
+[ 56.10s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Scared
+[ 56.60s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Scared
+[ 57.10s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Scared
+[ 57.60s] Port A U   200 (0.00 x +1)  | sum +0.00 wait -> servo 90 deg | Scared
+   >> dark       wheel ...............  average 0.00 (regular drive 0.00)
+LED frames shown: 1456, checksum 0b79ed5e

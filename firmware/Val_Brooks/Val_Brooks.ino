@@ -40,7 +40,7 @@
     it begins.
 
   Keep all these files together in a folder named Val_Brooks. The shared ones
-  (Face, Static, Canvas, Palette, Icons, MotionServo, Port, I2CBus, Sensor, ColorSensor,
+  (Face, Static, Canvas, Palette, Icons, MotionServo, PulseDrive, Port, I2CBus, Sensor, ColorSensor,
   DistanceSensor, ReflectiveIRSensor, KeySensor, Button)
   are copies of firmware/shared/ - edit them there and run sync_shared.py.
 
@@ -54,6 +54,7 @@
 #include "Face.h"
 #include "Button.h"
 #include "MotionServo.h"
+#include "PulseDrive.h"
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
 #include "ReflectiveIRSensor.h"
@@ -145,6 +146,20 @@ const unsigned long BOTH_WINDOW_MS = 100;   // the other key pressed within this
 BMI270 imu;
 #endif
 
+// The pulse drive (a TRIAL, 2026-11). 0 = the regular drive. 1 = the behaviour in
+// control sets how OFTEN the wheels push. CAUTION: the behaviours here are short timed
+// moves (0.2 s turns, 1 s escapes); with slow beats a short move can fall between two
+// beats and never happen. Try it with a high PULSE_BEATS_AT_FULL, or not at all here.
+#ifndef PULSE_DRIVE
+#define PULSE_DRIVE 0
+#endif
+#ifndef PULSE_BEATS_AT_FULL
+#define PULSE_BEATS_AT_FULL 1.6f      // pushes a second when the strongest wheel asks for full speed
+#endif
+#ifndef PULSE_SHAPE
+#define PULSE_SHAPE PulseDrive::ON_OFF   // ON_OFF (same average speed) or PUSH_GLIDE (gentler, slower)
+#endif
+
 // ---------- Hardware ----------
 CRGB leds[25];
 Face face(leds);
@@ -152,6 +167,7 @@ Layers layers(leds);
 Button button(39);                    // the Matrix screen is the button
 MotionServo leftWheel(1);             // S1
 MotionServo rightWheel(2);            // S2
+PulseDrive pulse;                     // off unless PULSE_DRIVE is 1
 
 // ---------- Sensors on the PaHub ----------
 const int PORT_COUNT = 3;
@@ -874,6 +890,13 @@ void setup() {
   leftWheel.setAllowReverse(true);
   rightWheel.setAllowReverse(true);
   rightWheel.stopNow();
+  pulse.setEnabled(PULSE_DRIVE);
+  pulse.setBeatsAtFull(PULSE_BEATS_AT_FULL);
+  pulse.setShape(PULSE_SHAPE);
+  if (pulse.enabled()) {
+    Serial.printf("Pulse drive ON: %.1f beats a second at full, %s\n", PULSE_BEATS_AT_FULL,
+                  PulseDrive::shapeName(PULSE_SHAPE));
+  }
   beginImu();                         // the IMU shares the Motion's bus
 
   findHub();
@@ -947,8 +970,9 @@ void loop() {
     if (inControl != before) {
       Serial.printf("Control: %s\n", behaviourName(HIERARCHY[inControl]));
     }
-    leftWheel.drive(wheelLeft);
-    rightWheel.drive(wheelRight);
+    pulse.step(max(fabsf(wheelLeft), fabsf(wheelRight)));   // the pulse drive (if on)
+    leftWheel.drive(pulse.apply(wheelLeft));
+    rightWheel.drive(pulse.apply(wheelRight));
     if (showLayers) {
       drawLayers();
     } else if (!matrixDark) {

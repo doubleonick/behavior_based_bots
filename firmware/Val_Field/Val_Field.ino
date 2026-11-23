@@ -26,7 +26,7 @@
             Unit in Port A.
 
   Keep all these files together in a folder named Val_Field. The shared ones
-  (Face, Spikes, Static, Canvas, Palette, Icons, MotionServo, Port, I2CBus, Sensor,
+  (Face, Spikes, Static, Canvas, Palette, Icons, MotionServo, PulseDrive, Port, I2CBus, Sensor,
   ColorSensor, DistanceSensor, DLightSensor, ReflectiveIRSensor, LightUnitSensor, KeySensor, Button)
   are copies of Val/shared/ - edit them there and run sync_shared.py.
 
@@ -65,6 +65,7 @@
 #include "Spikes.h"
 #include "Button.h"
 #include "MotionServo.h"
+#include "PulseDrive.h"
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
 #include "ReflectiveIRSensor.h"
@@ -118,6 +119,19 @@ const float MOVING_SPEED = 0.05f;              // below this a wheel counts as s
 #define ASSUME_KEY_ON_PORT_C 0        // 1 = an M5 Key Unit in Port C
 #endif
 
+// The pulse drive (a TRIAL, 2026-11). 0 = the regular drive. 1 = the field sets how
+// OFTEN the wheels push; during each push both wheels keep the field's left / right
+// balance, so Val heads the same way, only in beats.
+#ifndef PULSE_DRIVE
+#define PULSE_DRIVE 0
+#endif
+#ifndef PULSE_BEATS_AT_FULL
+#define PULSE_BEATS_AT_FULL 1.6f      // pushes a second when the strongest wheel asks for full speed
+#endif
+#ifndef PULSE_SHAPE
+#define PULSE_SHAPE PulseDrive::ON_OFF   // ON_OFF (same average speed) or PUSH_GLIDE (gentler, slower)
+#endif
+
 // ---------- Hardware ----------
 CRGB leds[25];
 Face face(leds);
@@ -125,6 +139,7 @@ Spikes spikes(leds);                  // shown instead of the face while the whe
 Button button(39);                    // the Matrix screen is the button
 MotionServo leftWheel(1);             // S1
 MotionServo rightWheel(2);            // S2
+PulseDrive pulse;                     // off unless PULSE_DRIVE is 1
 
 // ---------- Places a sensor can be, and the sensors that can go in them ----------
 // Places 0-2 are Ports A, B and C. Places 3-8 are the six channels of a PaHub,
@@ -770,6 +785,13 @@ void setup() {
   leftWheel.setAllowReverse(true);    // the field can push the robot backwards
   rightWheel.setAllowReverse(true);
   rightWheel.stopNow();
+  pulse.setEnabled(PULSE_DRIVE);
+  pulse.setBeatsAtFull(PULSE_BEATS_AT_FULL);
+  pulse.setShape(PULSE_SHAPE);
+  if (pulse.enabled()) {
+    Serial.printf("Pulse drive ON: %.1f beats a second at full, %s\n", PULSE_BEATS_AT_FULL,
+                  PulseDrive::shapeName(PULSE_SHAPE));
+  }
 
   field.baseSpeed = BASE_SPEED;
   field.forwardGain = FORWARD_GAIN;
@@ -852,8 +874,9 @@ void loop() {
       field.toWheels(left, right);
     }
     if (!setupMode.active()) {
-      leftWheel.drive(left);
-      rightWheel.drive(right);
+      pulse.step(max(fabsf(left), fabsf(right)));   // the pulse drive (if on) turns speed into beats
+      leftWheel.drive(pulse.apply(left));
+      rightWheel.drive(pulse.apply(right));
     }
 
     updateDisplay(left, right);

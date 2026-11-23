@@ -25,6 +25,7 @@
     Spikes.h / Spikes.cpp                  the wiring's spikes, shown while driving
     Static.h                               white static (into setup, and tuning back in)
     MotionServo.h / MotionServo.cpp        the servo
+    PulseDrive.h / PulseDrive.cpp          the pulse drive (a trial; off unless PULSE_DRIVE is 1)
     Port.h                                 the three Grove ports
     I2CBus.h / I2CBus.cpp                  the sensors' shared I2C bus
     Sensor.h / Sensor.cpp                  parent class for all sensors
@@ -81,6 +82,7 @@
 #include "Spikes.h"
 #include "Button.h"
 #include "MotionServo.h"
+#include "PulseDrive.h"
 #include "ColorSensor.h"
 #include "DistanceSensor.h"
 #include "ReflectiveIRSensor.h"
@@ -172,6 +174,20 @@ const uint8_t LED_BRIGHTNESS = 20;    // keep low: the matrix is very bright and
 #define NEURONS_IN_SETUP 0
 #endif
 
+// The pulse drive (a TRIAL, 2026-11). 0 = the regular drive: the wiring sets the
+// wheel's speed. 1 = the wiring sets how OFTEN the wheel pushes, like a jellyfish's
+// bell pulsing faster or slower; each push is the same. The faces and the end of a
+// run still follow what the wiring asks for, not the beats.
+#ifndef PULSE_DRIVE
+#define PULSE_DRIVE 0
+#endif
+#ifndef PULSE_BEATS_AT_FULL
+#define PULSE_BEATS_AT_FULL 1.6f      // pushes a second when the wiring asks for full speed
+#endif
+#ifndef PULSE_SHAPE
+#define PULSE_SHAPE PulseDrive::ON_OFF   // ON_OFF (same average speed) or PUSH_GLIDE (gentler, slower)
+#endif
+
 const unsigned long UNSURE_AFTER_MS = 30000;   // no activity for this long -> Unsure
 const unsigned long ASLEEP_AFTER_MS = 60000;   // ... and this long in total -> Asleep
 const unsigned long SURPRISE_MS     = 3300;    // how long Val looks surprised at a new sensor
@@ -193,6 +209,7 @@ Face face(leds);
 Spikes spikes(leds);                  // shown instead of the face while the wheel turns
 Button button(39);                    // the Matrix screen is the button
 MotionServo servo(1);                 // servo in S1
+PulseDrive pulse;                     // off unless PULSE_DRIVE is 1
 
 // ---------- Ports and the sensors that can go in them ----------
 // Each port can hold either kind of sensor; whichever answers is used.
@@ -866,6 +883,11 @@ void printStatus(float sum) {
                     s->value(), wires[i].weight);
     }
   }
+  if (pulse.enabled()) {
+    Serial.printf("| sum %+.2f %s -> servo %d deg | %s\n", sum, pulse.inBeat() ? "BEAT" : "wait", servo.angle(),
+                  showingSpikes ? "Spikes" : Face::name(face.expression()));
+    return;
+  }
   Serial.printf("| sum %+.2f -> servo %d deg | %s\n", sum, servo.angle(),
                 showingSpikes ? "Spikes" : Face::name(face.expression()));
 }
@@ -883,6 +905,13 @@ void setup() {
 
   servo.begin();
   servo.setAllowReverse(ALLOW_REVERSE);
+  pulse.setEnabled(PULSE_DRIVE);
+  pulse.setBeatsAtFull(PULSE_BEATS_AT_FULL);
+  pulse.setShape(PULSE_SHAPE);
+  if (pulse.enabled()) {
+    Serial.printf("Pulse drive ON: %.1f beats a second at full, %s\n", PULSE_BEATS_AT_FULL,
+                  PulseDrive::shapeName(PULSE_SHAPE));
+  }
 
   ColorSensor::setHues(MAGENTA_HUE, YELLOW_HUE, CYAN_HUE, HUE_WIDTH);
   setupMode.setNeuronScreens(NEURONS_IN_SETUP);
@@ -956,7 +985,8 @@ void loop() {
     if (greetingDone && !setupMode.active()) {
       sum = sumWires();
       servo.setAllowReverse(reverseAllowed());
-      servo.drive(sum);
+      pulse.step(sum);                 // the pulse drive (if on) turns the speed into beats
+      servo.drive(pulse.apply(sum));
     } else if (!setupMode.active()) {
       servo.drive(0);                  // stay stopped during the greeting
     }

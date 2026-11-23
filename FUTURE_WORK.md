@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-23** · *Vehicle 1 pulse drive:* trial firmware (`PulseDrive`, `PULSE_DRIVE`,
+  off by default) in all three robot sketches; the mock-up's jelly shows + and −
+  with their contexts. Correction: *Cassiopea* fits the − wire, not +.
 - **2026-11-23** · Second correction, *Vehicle 1 pulse drive:* the jelly now gathers
   where the same rule puts it (dark with +); Val counted by where each run stops.
 - **2026-11-23** · Correction, *Vehicle 1 pulse drive:* the mock-up's Vals no longer
@@ -85,6 +88,24 @@ Newest first, about the last two weeks. Each names the entry to search for below
   light). Val is counted by where each run stops (dark, light, or stuck at a wall),
   and is set down facing the other half as in the lesson ("any way" shows that a
   Vehicle 1 set down at random mostly ends pushing a wall).
+  **Trial firmware (built 2026-11-23, not yet run on the robot):**
+  `firmware/shared/PulseDrive` sits between the wiring and `MotionServo.drive()`, in
+  Val_Vehicle, Val_Field and Val_Brooks, behind `PULSE_DRIVE` (0, off: the regular
+  drive) with `PULSE_BEATS_AT_FULL` (1.6) and `PULSE_SHAPE` (`ON_OFF`, or
+  `PUSH_GLIDE`). The strongest wheel's amount sets the beat rate; during a beat every
+  wheel gets its own amount scaled so the strongest pushes at full, so a two-wheel
+  robot keeps its heading. `ON_OFF` matches the regular average (host test
+  `vehicle_pulse`: 1.00, 0.51, 0.26 against 1.00, 0.50, 0.25); `PUSH_GLIDE` is about
+  0.4 of it, since a beat can't push past full. MotionServo's easing softens each beat
+  into a short push and glide. Faces and the end of a run follow what the wiring asks,
+  not the beats. Field and Brooks: compiled and their tests unchanged, but the
+  pulsing itself is tested only on Vehicle; in Brooks, short timed moves can fall
+  between slow beats.
+  The jelly in the mock-up now shows both wires with their contexts: + gathers in the
+  shade (jellies leaving bright surface water by day: medium confidence); − gathers
+  in the light (*Cassiopea* resting in sunny shallows; the shadow reflex).
+  *Correction (2026-11-23):* earlier in conversation *Cassiopea* was given as a +
+  wire example. Lingering in the light is slowing in the light, a − wire.
 - **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
   a landing page like a lab notebook's cover, with pictures that hint at what will be
   explored; one button opens it into the introduction to the adventure; from there
