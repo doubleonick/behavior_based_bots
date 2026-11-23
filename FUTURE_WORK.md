@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-23** · Second correction, *Vehicle 1 pulse drive:* the jelly now gathers
+  where the same rule puts it (dark with +); Val counted by where each run stops.
 - **2026-11-23** · Correction, *Vehicle 1 pulse drive:* the mock-up's Vals no longer
   turn (Vehicle 1 can't steer); a hand sets them down again.
 - **2026-11-23** · *Vehicle 1 pulse drive (mock-up):* jellies as the imperfect ancient
@@ -74,6 +76,15 @@ Newest first, about the last two weeks. Each names the entry to search for below
   fixed feet): it goes straight with only a slight drift, stops in the dark (+ wire)
   or pushes at a wall, and only a hand sets a new heading. The mock-up now does that;
   only the jelly turns, which is where it is more than Vehicle 1.
+  *Second correction (2026-11-23, owner caught it):* the jelly seemed to stay in the
+  light while Val left it, the opposite of the same rule. My simulation caused it:
+  the jelly restarted in the light every few seconds, was aimed back at the tray's
+  middle (the light's edge) at every wall, and a current pushed it across the edge.
+  Now it swims on from anywhere, bounces off walls, drifts along the edge, and
+  gathers where the rule says (+ wire: dark, about 10% of its time in the light; −:
+  light). Val is counted by where each run stops (dark, light, or stuck at a wall),
+  and is set down facing the other half as in the lesson ("any way" shows that a
+  Vehicle 1 set down at random mostly ends pushing a wall).
 - **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
   a landing page like a lab notebook's cover, with pictures that hint at what will be
   explored; one button opens it into the introduction to the adventure; from there
