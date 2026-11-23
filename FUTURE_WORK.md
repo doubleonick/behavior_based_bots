@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-23** · `web/OUTLINE.md`, *Creatures: where the decisions stand:* every
+  creature mentioned for each stop, with how firm it is.
 - **2026-11-22** · Fix: the guide's inside cover had no visible way on (its "turn the
   page" link sat under the maker's band); now a button. `tests/web/clickthrough.js`
   clicks through the guide as a reader would, to catch this kind of fault.

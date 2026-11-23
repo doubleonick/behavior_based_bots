@@ -146,6 +146,61 @@ jellies. Candidates from the owner's notes: the roundworm (dwelling and roaming)
 ants (following a trail), the woodlouse. Floor colour stands for taste and smell
 (chemicals on the ground), not colour vision.
 
+### Creatures: where the decisions stand (2026-11-23)
+
+Rebuilt from the repo, the session's history (mostly 2026-11-10 to 2026-11-12) and the
+readthrough of the owner's sources (2026-11-10; the summaries, synthesis and gaps
+files are kept outside the repo). Creature choices have waited on purpose: the robots
+come first (owner, 2026-11-12).
+
+**The rules (firm, the owner's):**
+1. A living animal per stop, from as old a lineage as possible; the ancient ancestor
+   in the Handbook. Some choices serve both (2026-11-10).
+2. Body plans: radial first (jellies), then bilateral from Vehicle 2, which "opens
+   doors" for more complex nervous systems (2026-11-10).
+3. The robots are a coarse sampling of the tree; the appendix gives the depth
+   (2026-11-11).
+4. Creatures, habitats and the map are chosen after the robots (2026-11-12).
+5. The Seminal Sea is the start. The owner names the places. If the woodlouse is the
+   first creature, woods come down to the sea (2026-11-10).
+6. Floor colour is taste and smell, not vision; the light-based creature ideas are
+   to be revisited with that in mind (2026-11-18).
+
+**Firmness:** *decided* (the owner said so or agreed); *recorded idea* (in
+`FUTURE_WORK.md`, not confirmed); *proposed* (suggested, never answered);
+*superseded*; *placeholder* (only on a mock-up or the guide's map).
+
+| stop | creature(s) | firmness | notes |
+|---|---|---|---|
+| 0 Meet Val | none: chemistry in the early sea; energy before sensing (Lane); a living thing regulating what it lets in (Di Paolo) | place decided (Seminal Sea); no creature proposed | |
+| 1 Vehicle 1 | jellies, as the stage and body plan | decided | Owner: "I don't have a jelly-analog in my robots." Proposed: three roles (jellies the stage; Val V1 the robot, "no sides yet"; the woodlouse the living animal to test). Not confirmed. |
+| 1 | woodlouse | built into the V1 lesson mock-ups; as the stop's creature, unsettled (it is bilateral) | Early mock-ups called stop 1 "The Tide Pools". |
+| 1 | roundworm (*C. elegans*) slowing on food (a − wire on a floor colour); bacteria as the oldest version | recorded idea | biology: high confidence |
+| 2 Vehicles 2a/2b | flatworm (planarian): old bilateral lineage, two eyespots, turns from light ("coward") | proposed (2026-11-10) | |
+| 2 | cockroach (2a), moth (2b) | superseded | |
+| 2–3 | ants following a scent trail with two antennae (floor strip, a Color Unit per module) | recorded idea | trail following high confidence; left/right comparison the whole story: medium |
+| 2 | Kinsbourne (source 04): uncrossed is the invertebrate plan, crossed the chordate, the crossing perhaps a by-product | a framing, not a creature | |
+| 2–3 | crickets turning to song (Webb's robot crickets), if Val gets microphones | proposed (2026-11-23) | |
+| 3 Vehicles 3a/3b/3c | basking turtle or lizard ("love"), bee ("explorer") | proposed, then effectively superseded by the radial/bilateral rework | |
+| 4 Habituation | sea hare (*Aplysia*) | placeholder (map only) | sources: habituation is ancient, even in single cells |
+| 5 Vehicle 4 | none | | |
+| 6 Potential field | desert ants (Wehner): a weighted sum of cues, no central decider | proposed as the best sourced match (2026-11-10) | replaced salmon (a metaphor only); ideas: a literal hill via the IMU, a wolf's long-range scent |
+| 7 Vehicle 5 (memory) | roundworm: lasting dwell / roam states, ended by a change in what it senses | recorded idea (memory's off switch) | rat in a maze, in caves: superseded when memory moved earlier |
+| 8 Subsumption | an early jawless fish (Long's fish robot, source 15: forage underneath, escape on top) | proposed (2026-11-10) | mountain goat earlier (unsourced); Gaveau's two reaching pathways for the Wonder; no Brooks source in the collection |
+| 9 Vehicle 7 (association) | bees learning colours | placeholder (map only) | no source on associative learning |
+| 10 Vehicle 6 (selection) | none | | probably a web game |
+
+Not a stop, decided: gravity is a sense Val has from early on; jellies and comb jellies
+(source 05) steer by gravity organs.
+
+**Holding the rest up:** the corrected synthesis from the owner's terminal session
+(asked for 2026-11-10: four errors, and the stages rebuilt as a real timeline); the
+unbuilt robots (habituation, Vehicles 5, 6, 7); gaps in the sources (kinesis in real
+animals, jellyfish themselves, Brooks, potential fields, associative learning).
+
+In short: the rules are firm; the only creature fixed to a stop is the jellies at
+Vehicle 1, with an open question of how the robot stands in for them.
+
 The chapters below were written for the first six stops (2026-10) and are kept as
 they were; stops 4, 5, 7, 9 and 10 have no chapter yet.
 
