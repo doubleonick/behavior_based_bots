@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-24** · *Vehicle 1 pulse drive:* **accepted** for Vehicle 1 (push and glide).
+  Next: stop 1's notebook page.
 - **2026-11-24** · `cad/vehicles_v31.scad`: the M12 counterweight as a separate,
   movable part (the modular counterweight), under *Vehicle 1 pulse drive*.
 - **2026-11-24** · *Vehicle 1 pulse drive:* the earlier counterweight curves less;
@@ -163,7 +165,11 @@ Newest first, about the last two weeks. Each names the entry to search for below
     hollow no longer cuts the rear end cap (the first request, dropped once the
     placement was chosen). Not yet printed. Like v3's housing, the nut's points touch
     the shell's outside, which OpenSCAD flags as non-manifold.
-  - Accept or reject: pending the owner's decision. For the lesson clips (step 3):
+  - **Accepted (owner, 2026-11-24) for Vehicle 1 at least,** with `PUSH_GLIDE`; the
+    balance will be worked out separately (counterweight, and the composite wheel:
+    a 6 mm M5 tread beside an 8 mm TPU one puts the push about 1 mm off-centre; the
+    TPU tread to be made 6 mm). `PULSE_DRIVE` stays off by default in Val_Vehicle,
+    which also runs Vehicles 2 to 5, until stop 1 is set up (later: per path stage). For the lesson clips (step 3):
     a fixed overhead camera and a fixed lamp, so `track_clip.py` can measure the path.
 - **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
   a landing page like a lab notebook's cover, with pictures that hint at what will be

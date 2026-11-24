@@ -206,6 +206,7 @@ ancient version; Vehicle 1 is the jelly principle with steering taken out (one
 feeling, one push, no sides; the world picks the heading). Val gets both a regular
 (smooth) drive and a pulse drive, in which the light sets how often it pushes; which
 one a lesson uses is **not set yet**. Mock-up: `web/mockups/v1-lesson/pulse_drive.html`.
+**Decided 2026-11-24:** stop 1 uses the pulse drive (push and glide), tested on Val.
 
 The chapters below were written for the first six stops (2026-10) and are kept as
 they were; stops 4, 5, 7, 9 and 10 have no chapter yet.
