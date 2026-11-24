@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-24** · `cad/vehicles_v31.scad`: the M12 counterweight as a separate,
+  movable part (the modular counterweight), under *Vehicle 1 pulse drive*.
 - **2026-11-24** · *Vehicle 1 pulse drive:* the earlier counterweight curves less;
   idea of a modular counterweight to trim the balance.
 - **2026-11-24** · *Vehicle 1 pulse drive:* first run on Val. Works as designed; owner
@@ -152,7 +154,15 @@ Newest first, about the last two weeks. Each names the entry to search for below
   - Follow-up (owner, 2026-11-24): back on an earlier counterweight version the curve
     is less severe, which supports the balance diagnosis. Idea: a **modular
     counterweight** (weight that can be added or moved in steps) to trim Val's
-    balance. Not designed yet.
+    balance. First design (2026-11-24): `cad/vehicles_v31.scad`, from the owner's
+    `vehicles_v3.scad`. The M12 nut housing is its own part, printed separately,
+    pegged by a vertical 1x3 tab either side onto a stacked 1x9 row facing out on the
+    side opposite the servo (which replaces v3's 1x7s facing up and out). It moves
+    hole by hole (`m12_hole`, -2 to 2; 2 = rearmost where both tabs peg in). Not the
+    far rear corner (v3's spot), the configuration that unbalanced Val, so the nut
+    hollow no longer cuts the rear end cap (the first request, dropped once the
+    placement was chosen). Not yet printed. Like v3's housing, the nut's points touch
+    the shell's outside, which OpenSCAD flags as non-manifold.
   - Accept or reject: pending the owner's decision. For the lesson clips (step 3):
     a fixed overhead camera and a fixed lamp, so `track_clip.py` can measure the path.
 - **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
