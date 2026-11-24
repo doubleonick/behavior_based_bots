@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-24** · *Working order:* the owner's next five steps, starting with testing
+  the pulse drive; a test plan for it, filmed so the runs can be traced.
 - **2026-11-23** · *Vehicle 1 pulse drive:* trial firmware (`PulseDrive`, `PULSE_DRIVE`,
   off by default) in all three robot sketches; the mock-up's jelly shows + and −
   with their contexts. Correction: *Cassiopea* fits the − wire, not +.
@@ -59,6 +61,27 @@ Newest first, about the last two weeks. Each names the entry to search for below
 
 ## The web guide (`web/`)
 
+- **Working order (owner, 2026-11-24):**
+  1. Test the pulse drive on Val.
+  2. Accept or reject it.
+  3. Use the recorded behaviour to refine the Val / jellies stop (Vehicle 1).
+  4. Flesh out that stop's notebook page.
+  5. Then either decide the approach for stop 2, or flesh out Val's setup leading
+     into stop 1.
+
+  **Test plan for step 1** (filmed as in *Filming V1 for the tracked cartoon*:
+  overhead phone, plain light floor, the light fixed above, exposure locked, whole
+  run in frame, so `tools/video/track_clip.py` can trace each run):
+  - The same start (a mark on the floor, Val facing the other half) for every take.
+  - Takes, + wire and − wire each: the regular drive (`PULSE_DRIVE 0`); pulse
+    `ON_OFF` at 1.6 beats a second; and, if it looks promising, one slower and one
+    faster rate (about 1 and 2.5) and `PUSH_GLIDE`.
+  - Two or three takes of each, to see the spread.
+  - Note for each: where Val stopped; whether it reads as alive or as stuttering;
+    anything odd (a beat too weak to start the wheel at low light, wobble or slip at
+    each push, the noise).
+  - Accept if it reads as alive and ends where the regular drive ends; reject if it
+    looks like a fault or changes where Val ends up. Either way the clips feed step 3.
 - **Ideas for play (owner, 2026-11):** each stop could end in a **challenge** to do
   with that stop's robot (a fun goal, not just an experiment), and/or **open-ended
   play**: Val exploring a home-made version of where that stop's creatures live,
