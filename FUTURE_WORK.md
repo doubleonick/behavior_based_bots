@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-24** · *Vehicle 1 pulse drive:* first run on Val. Works as designed; owner
+  likes push and glide; Val curves with every drive, regular included (likely the
+  shifted counterweight), so not the pulse's doing. Accept or reject: pending.
 - **2026-11-24** · *Working order:* the owner's next five steps, starting with testing
   the pulse drive; a test plan for it, filmed so the runs can be traced.
 - **2026-11-23** · *Vehicle 1 pulse drive:* trial firmware (`PulseDrive`, `PULSE_DRIVE`,
@@ -129,6 +132,23 @@ Newest first, about the last two weeks. Each names the entry to search for below
   in the light (*Cassiopea* resting in sunny shallows; the shadow reflex).
   *Correction (2026-11-23):* earlier in conversation *Cassiopea* was given as a +
   wire example. Lingering in the light is slowing in the light, a − wire.
+  **First run on Val (owner, 2026-11-24; clips IMG_2187 + wire, IMG_2188 − wire,
+  pulse; IMG_2195, IMG_2196 regular drive; handheld camera and lamp, so judged by eye
+  and by the servo's sound):**
+  - The pulse drive works as designed: the beat rate follows the light in the right
+    direction for each wire; with − and the lamp close, Val is nearly silent; as the
+    lamp is drawn away, pushes about every 1.25 s, then about every 0.6 s, running
+    together, at full strength.
+  - The owner likes `PUSH_GLIDE` (a quick rise, about half a second of push, then a
+    fade). It averages about 0.4 of the regular speed.
+  - Val curves clockwise with `ON_OFF`, `PUSH_GLIDE` **and the regular drive**, so
+    the curve is not caused by the pulse. Owner's diagnosis: the counterweight was
+    shifted back to give a new peg arrangement, unbalancing Val (fits the clips; not
+    yet confirmed by a run with it re-centred). In the − run the curve carried Val
+    out of the beam into darker floor, where it speeds up, so it ran off instead of
+    settling in the light.
+  - Accept or reject: pending the owner's decision. For the lesson clips (step 3):
+    a fixed overhead camera and a fixed lamp, so `track_clip.py` can measure the path.
 - **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
   a landing page like a lab notebook's cover, with pictures that hint at what will be
   explored; one button opens it into the introduction to the adventure; from there
