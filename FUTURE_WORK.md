@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-24** · *Vehicle 1 pulse drive:* the earlier counterweight curves less;
+  idea of a modular counterweight to trim the balance.
 - **2026-11-24** · *Vehicle 1 pulse drive:* first run on Val. Works as designed; owner
   likes push and glide; Val curves with every drive, regular included (likely the
   shifted counterweight), so not the pulse's doing. Accept or reject: pending.
@@ -147,6 +149,10 @@ Newest first, about the last two weeks. Each names the entry to search for below
     yet confirmed by a run with it re-centred). In the − run the curve carried Val
     out of the beam into darker floor, where it speeds up, so it ran off instead of
     settling in the light.
+  - Follow-up (owner, 2026-11-24): back on an earlier counterweight version the curve
+    is less severe, which supports the balance diagnosis. Idea: a **modular
+    counterweight** (weight that can be added or moved in steps) to trim Val's
+    balance. Not designed yet.
   - Accept or reject: pending the owner's decision. For the lesson clips (step 3):
     a fixed overhead camera and a fixed lamp, so `track_clip.py` can measure the path.
 - **The opening sequence (2026-11, first draft: `web/mockups/guide/opening_sequence.html`):**
