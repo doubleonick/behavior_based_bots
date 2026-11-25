@@ -13,6 +13,9 @@
   --ink:#33251a; --pencil:#5d5148; --pen:#1f5fa8; --route:#b23a1c;
   /* the endpapers and the maker's mark */
   --slate:#3b3e45; --maker:#E07A2E;
+  /* the observation windows: dim floor, lit floor, the trail of where time was spent */
+  --tray-dark:#5c6676; --tray-lit:#fff6cf; --tray-trail:#E07A2E; --tray-rim:#33251a;
+  --right:#1F8A4C; --wrong:#C2364A; --hilite:rgba(243,210,122,.75);
   /* the title */
   --title-ink:#9c3d1a; --title-deep:#1d2a44; --gold:#f2c879;
   /* buttons and focus */
@@ -236,5 +239,47 @@ button{font:inherit}
 .mapnote{font:19px var(--hand);color:#f3e6cf;text-align:center;margin:14px 0 0}
 .maphead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 10px}
 .maphead button{font:400 19px var(--hand);color:#f3e6cf;background:none;border:none;cursor:pointer;text-decoration:underline}
+
+/* ================= stop 1 ================= */
+.stepbar{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0}
+.stepbar li{font:400 16px var(--hand);padding:2px 10px;border:2px solid #c4b99d;color:#8a7f66;border-radius:4px}
+.stepbar li.done{border-color:var(--ink);color:var(--ink)}
+.stepbar li.now{border-color:var(--ink);color:var(--ink);background:var(--hilite)}
+.write.pen,.pen{color:var(--pen)}
+.build{font:400 19px/1.45 var(--hand);color:var(--ink);padding-left:22px;margin:4px 0 10px}
+.jellysketch{max-width:330px;aspect-ratio:1.1/1}
+.jellysketch img{height:66%;top:12%;image-rendering:auto}
+.jellysketch .n.bell{right:0;top:0;text-align:right}
+.jellysketch .n.net{left:0;top:34%}
+.jellysketch .n.round{right:0;top:82%;text-align:right}
+/* the round observation windows */
+.window{margin:8px auto 4px;max-width:300px;text-align:center}
+.window canvas{width:100%;height:auto;aspect-ratio:1;display:block}
+.window figcaption{font:13px var(--print-sc);letter-spacing:.12em;color:var(--pencil);margin-top:2px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pair .window{max-width:220px}
+/* choices: written answers to tick */
+.choices{list-style:none;padding:0;margin:10px 0;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.choices.row{flex-direction:row;flex-wrap:wrap}
+.choice,.yesno button{font:400 21px var(--hand);color:var(--ink);background:#fffdf6;border:2px solid var(--ink);border-radius:6px;padding:4px 16px;cursor:pointer;box-shadow:2px 2px 0 rgba(51,37,26,.18)}
+.choice.picked{background:var(--hilite)}
+.choice.tried{border-style:dashed;color:#8a7f66;text-decoration:line-through;background:transparent}
+.choice.spent,.choice:disabled{color:#8a7f66;border-color:#c4b99d;cursor:default;box-shadow:none}
+.choice.picked:disabled{color:var(--ink);border-color:var(--ink);background:var(--hilite)}
+.yesno{display:flex;gap:12px;margin:12px 0}
+/* the wiring, drawn as a sketch */
+.wiring{width:100%;max-width:340px;display:block;margin:8px 0}
+.wiring .part{fill:#fffdf6;stroke:var(--ink);stroke-width:2.5}
+.wiring .hub{fill:var(--ink)}
+.wiring .wire{fill:none;stroke:var(--right);stroke-width:4;stroke-linecap:round}
+.wiring .plus{font:700 30px var(--hand);fill:var(--right);text-anchor:middle}
+.wiring .lbl{font:400 17px var(--hand);fill:var(--ink);text-anchor:middle}
+.jellies img{width:34px;height:34px;vertical-align:middle;margin-right:8px;float:left}
+.jellies p{overflow:hidden}
+.verdict{font:400 22px var(--hand);margin:8px 0 4px}
+.verdict.right{color:var(--right)} .verdict.wrong{color:var(--wrong)}
+.log{width:100%;border-collapse:collapse;font:400 17px var(--hand);color:var(--ink);margin:4px 0 14px}
+.log th{font:12px var(--print-sc);letter-spacing:.08em;color:var(--pencil);text-align:left;border-bottom:1.5px solid var(--pencil);padding:2px 4px}
+.log td{border-bottom:1px dashed #c4b99d;padding:3px 4px;color:var(--pen)}
 
 @media (prefers-reduced-motion:reduce){.band{transition:none}.touch i{animation:none!important;opacity:1}}

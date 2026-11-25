@@ -207,6 +207,11 @@ feeling, one push, no sides; the world picks the heading). Val gets both a regul
 (smooth) drive and a pulse drive, in which the light sets how often it pushes; which
 one a lesson uses is **not set yet**. Mock-up: `web/mockups/v1-lesson/pulse_drive.html`.
 **Decided 2026-11-24:** stop 1 uses the pulse drive (push and glide), tested on Val.
+**Built 2026-11-25** in `web/guide/` (owner's choices): the woodlouse is the living
+cousin a child can watch; the stop is the lesson's four steps as spreads (Watch, What
+are they doing?, Look inside, Try it), after an opening spread with the jellies and
+what to build; Val in the windows is simulated (pulse drive) until real runs, filmed
+from above with Val running straight, replace it.
 
 The chapters below were written for the first six stops (2026-10) and are kept as
 they were; stops 4, 5, 7, 9 and 10 have no chapter yet.

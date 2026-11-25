@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-25** · The guide's stop 1 (Vehicle 1) is built in `web/guide/`: the jellies,
+  then Watch, What are they doing?, Look inside, Try it (see `web/OUTLINE.md`). Val is
+  simulated with the pulse drive until real runs are filmed.
 - **2026-11-24** · *Vehicle 1 pulse drive:* **accepted** for Vehicle 1 (push and glide).
   Next: stop 1's notebook page.
 - **2026-11-24** · `cad/vehicles_v31.scad`: the M12 counterweight as a separate,

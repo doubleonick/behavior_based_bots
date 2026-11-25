@@ -84,12 +84,11 @@ window.GUIDE = {
     // where each stop happens, and the route to it (drawn only once it is unlocked)
     stops: [
       { id: 'meet-val', n: 0, name: 'Meet Val', place: 'workshop' },
-      { id: 'v1', n: 1, name: '[Vehicle 1]', place: 'jelly-shallows',
+      { id: 'v1', n: 1, name: 'Vehicle 1', place: 'jelly-shallows',
         route: [[372, 700], [330, 662], [286, 652], [240, 600], [200, 470], [170, 330], [160, 250]] }
     ],
     startHere: 'Start here',
     nextStop: 'Next: stop 1',
-    comingSoon: '[coming soon]',
     notYet: 'Not yet: the route will reach here.'
   },
 

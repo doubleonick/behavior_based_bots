@@ -9,7 +9,8 @@
   'use strict';
   const G = window.GUIDE;
   const STYLE = 'notebook';
-  const VIEWS = ['cover', 'inside', 'map', 'meet-val', 'button'];
+  // the opening's views, then any pages other files add (stop1.js adds stop 1's)
+  const VIEWS = ['cover', 'inside', 'map', 'meet-val', 'button'].concat(Object.keys(window.GUIDE_PAGES || {}));
   const MAP_W = 1040, MAP_H = 840;
 
   // ---------- small helpers ----------
@@ -159,10 +160,11 @@
         go = ' data-go="meet-val"';
         tag = metVal ? '' : `<span class="tag">${esc(M.startHere)}</span>`;
       } else if (stop && stop.n === 1 && metVal) {
-        cls += ' next';
-        tag = `<span class="tag">${esc(M.nextStop)} ${esc(M.comingSoon)}</span>`;
+        cls += ' next open';
+        go = ' data-go="stop1"';
+        tag = `<span class="tag">${esc(M.nextStop)}</span>`;
       }
-      const label = stop && stop.id === 'meet-val' ? 'button' : 'div';
+      const label = go ? 'button' : 'div';
       return `<${label} class="${cls}"${go}${label === 'button' ? ' type="button"' : ''} style="left:${(p.x * 100 / MAP_W).toFixed(2)}%;top:${(p.y * 100 / MAP_H).toFixed(2)}%">
         ${p.creatures.map(creatureHTML).join('')}<span class="name">${esc(p.name)}</span>${tag}</${label}>`;
     }).join('');
@@ -243,7 +245,8 @@
   }
 
   // ---------- one view at a time ----------
-  const RENDER = { cover: renderCover, inside: renderInside, map: renderMap, 'meet-val': renderMeetVal, button: renderButton };
+  const RENDER = Object.assign({ cover: renderCover, inside: renderInside, map: renderMap, 'meet-val': renderMeetVal, button: renderButton },
+                               window.GUIDE_PAGES || {});
   function show() {
     const id = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'cover';
     RENDER[id]();
@@ -256,6 +259,7 @@
   });
 
   load();
+  window.GuideKit = { esc, art, today, save, saved: () => saved, $ };
   document.documentElement.dataset.cover = coverColour();
   window.addEventListener('hashchange', show);
   show();

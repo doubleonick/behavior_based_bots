@@ -10,12 +10,15 @@ apart, so any one can change without touching the others.
 | layer | where | holds |
 |---|---|---|
 | style | `style/notebook.css` | every colour, font and layout rule (the notebook look). A new look is a new stylesheet. |
-| content | `content/opening.js` | every word, the places on the map, which creatures go where, the stops and the route. `[Square brackets]` mark placeholders. |
+| content | `content/opening.js`, `content/stop1.js` | every word, the places on the map, which creatures go where, the stops and the route. `[Square brackets]` mark placeholders. |
 | art | `art/notebook/` | the notebook look's drawings, one file each: the Ci and its tile, the wordmark's gear and bulb, creatures (ink), stickers, icons, the cover picture, the map. `make_art.py` writes them. |
 | art | `art/val/` | Val's avatar (from `cad/render/`), shared by every look |
-| layout | `index.html`, `app.js` | empty frames, and the code that fills them from the content and art. No words, no colours. |
+| layout | `index.html`, `app.js`, `stop1.js`, `tray.js` | empty frames, and the code that fills them from the content and art (`app.js` the opening; `stop1.js` stop 1's spreads; `tray.js` the round observation windows). No words, no colours. |
 
 ## Pages
+
+Stop 1 (added 2026-11-25): `#stop1` (the jellies, and what to build) → `#watch` → `#describe` → `#look` → `#try`, carried over from the Vehicle 1 lesson mock-up. Val in the windows is simulated with the pulse drive, until real runs filmed from above replace it; the woodlouse is the living cousin. Stop 1 opens from the map once Val has been met.
+
 
 `#cover` → `#inside` → `#map` → `#meet-val` → `#button` → back to `#map`, where the
 route to stop 1 is now drawn in. The view is kept in the address, so any page can be
@@ -40,5 +43,6 @@ the map and back, as a reader would, and fails if any step can't be clicked.
 
 ## Not yet
 
-Saving that travels between machines; the sticker collecting; the Handbook; stop 1
-onward; the story text (all placeholders).
+Saving that travels between machines; the sticker collecting; the Handbook; stop 2
+onward; Vehicle 1's setup cards inside the guide; Val's real runs in the windows; the
+story text (all placeholders).

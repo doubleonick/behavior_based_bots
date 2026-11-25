@@ -9,16 +9,24 @@
 </head>
 <body>
 <!-- The pages are empty frames; app.js fills them from content/ and art/.
-     One view at a time; the view is kept in the address (#cover, #inside, #map, #meet-val, #button). -->
+     One view at a time; the view is kept in the address (#cover, #inside, #map, #meet-val, #button, then stop 1's #stop1, #watch, #describe, #look, #try). -->
 <main>
   <section class="view" id="cover" aria-label="The notebook's cover"></section>
   <section class="view" id="inside" aria-label="Inside the cover" hidden></section>
   <section class="view" id="map" aria-label="The map" hidden></section>
   <section class="view" id="meet-val" aria-label="Meet Val" hidden></section>
   <section class="view" id="button" aria-label="Val's button" hidden></section>
+  <section class="view" id="stop1" aria-label="Stop 1, Vehicle 1" hidden></section>
+  <section class="view" id="watch" aria-label="Stop 1: Watch" hidden></section>
+  <section class="view" id="describe" aria-label="Stop 1: What are they doing?" hidden></section>
+  <section class="view" id="look" aria-label="Stop 1: Look inside" hidden></section>
+  <section class="view" id="try" aria-label="Stop 1: Try it" hidden></section>
 </main>
 <!-- The content (words, places, creatures), then the code that lays it out. -->
 <script src="content/opening.js"></script>
+<script src="content/stop1.js"></script>
+<script src="tray.js"></script>
+<script src="stop1.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
