@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-25** · *The prologue:* notes on the owner's first draft (interest, reading
+  level, accuracy), accepted; the owner is rewriting it as a notebook adventure.
 - **2026-11-25** · Ideas: NFC cards to change Val's settings (*Firmware*); stop 1's
   pairing, jellies with the pulse drive and the woodlouse with the smooth drive, and
   the open question of how the screen and the real Val share the work.
@@ -97,6 +99,22 @@ Newest first, about the last two weeks. Each names the entry to search for below
     each push, the noise).
   - Accept if it reads as alive and ends where the regular drive ends; reject if it
     looks like a fault or changes where Val ends up. Either way the clips feed step 3.
+- **The prologue (owner drafting, 2026-11-25):** a first draft (Earth's crash and the
+  Moon, the soupy oceans, copying molecules and mutations, the first cells; "alive, but
+  not agentic"; agents can communicate, navigate or manipulate) was reviewed and the
+  notes accepted; the owner is rewriting it as a notebook adventure. Notes to keep:
+  - Interest: hook with the crash; give a character and a question early; make the
+    agent definition the quest ("Is Val an agent? Not yet."), with communicate /
+    navigate / manipulate as a checklist the stops can tick off (perhaps stickers).
+  - Understanding: shorter sentences, one idea per paragraph with a sketch; teach 4
+    or 5 words up front (cell, molecule, mutation, alive, agent), the rest later or in
+    the Handbook; define "agentic" in plain words where it appears; drop "we posit".
+  - Accuracy: the impact made the Moon, not the core or the oceans; RNA and DNA are
+    built from nucleotides, not amino acids (amino acids build proteins); RNA likely
+    came first; most mutations change nothing; even the simplest cells sense
+    chemicals and bacteria "run and tumble" to navigate, so "alive but not agentic"
+    fits the very first cells as the notebook's starting line, not settled fact
+    (Di Paolo, in the owner's sources, ties agency to life itself).
 - **Stop 1's creatures and drives (owner, 2026-11-25):** the jellies pulse (pulse
   drive) and the woodlouse shows the smooth drive, each demonstrated with + and −.
   (The guide's stop 1 as built pairs a pulsing Val with the woodlouse: to change.)
