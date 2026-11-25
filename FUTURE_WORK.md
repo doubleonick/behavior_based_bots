@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-25** · Ideas: NFC cards to change Val's settings (*Firmware*); stop 1's
+  pairing, jellies with the pulse drive and the woodlouse with the smooth drive, and
+  the open question of how the screen and the real Val share the work.
 - **2026-11-25** · The guide's stop 1 (Vehicle 1) is built in `web/guide/`: the jellies,
   then Watch, What are they doing?, Look inside, Try it (see `web/OUTLINE.md`). Val is
   simulated with the pulse drive until real runs are filmed.
@@ -94,6 +97,13 @@ Newest first, about the last two weeks. Each names the entry to search for below
     each push, the noise).
   - Accept if it reads as alive and ends where the regular drive ends; reject if it
     looks like a fault or changes where Val ends up. Either way the clips feed step 3.
+- **Stop 1's creatures and drives (owner, 2026-11-25):** the jellies pulse (pulse
+  drive) and the woodlouse shows the smooth drive, each demonstrated with + and −.
+  (The guide's stop 1 as built pairs a pulsing Val with the woodlouse: to change.)
+  Open question (owner): the workflow that makes non-redundant use of the physical
+  robot. Stepping through the investigation on screen and only at some point using
+  the real Val is awkward; a physical notebook can't animate, and not everyone wants
+  one; the guide has two specimen windows (Val recorded, the creature simulated).
 - **Ideas for play (owner, 2026-11):** each stop could end in a **challenge** to do
   with that stop's robot (a fun goal, not just an experiment), and/or **open-ended
   play**: Val exploring a home-made version of where that stop's creatures live,
@@ -458,6 +468,17 @@ A web interface that carries the instructions, with a game/story layer:
   tuned on the robot. Val_Field has spikes too (2026-10): green = pull, red = push, lanes
   ordered left to right by where each sensor points, the bottom row split into the
   two wheels (white forwards, amber backwards); its resting face is Neutral.
+
+- **NFC cards to change Val's settings (idea, owner, 2026-11-25; not designed).** An
+  M5Stack RFID unit (I2C, so Val could find it like other sensors; address and chip ID
+  to confirm) reads cheap 13.56 MHz cards or stickers. A card can't reprogram Val, but
+  it can choose among what the firmware already has: a stop card (Vehicle 1 with the
+  pulse drive, a Vehicle 4 cell and its threshold, a `Val_Brooks` hierarchy) replaces
+  "change a setting, reflash", keeping rule 5. Fits the collectible stickers, and a
+  creature card could make Val behave like that creature (a jelly card: pulse drive;
+  a woodlouse card: smooth drive). Costs: a port while tapping (plug in, tap, unplug,
+  or a PaHub); a reader class and a small card format. First step: a
+  `tools/RFID_Test` sketch.
 
 ## Firmware
 
