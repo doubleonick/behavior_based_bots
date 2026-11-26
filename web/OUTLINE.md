@@ -65,6 +65,32 @@ suits styles that are also books. The mock-ups in `web/mockups/` do not follow t
 
 ---
 
+## Design principles from The Hero's Journal (agreed 2026-11-26)
+
+A gamified fantasy journal (91 days; tasks become quests, a hero moves along a
+journey, colour-in art). Used as a model for coherence, not for its layout or style.
+The owner has a copy; reference photos to come.
+
+1. **One metaphor, used everywhere.** Every element is named in the expedition's
+   terms, and the names are consistent (today the guide mixes stop, chapter, lesson,
+   page, Handbook, notebook). A glossary to agree: still to do.
+2. **Progress shown as a place:** the map, with the route drawn in as the child goes.
+3. **The same shape every stop,** so it becomes a habit: Watch, Describe, Look inside,
+   Try it, and the record.
+4. **Theme, structure and free space in balance:** room on each spread for the
+   child's own notes and drawings.
+5. **The story unfolds with progress:** the prologue sets the quest; each stop adds a
+   page of story.
+6. **Mechanics, not just mood** (the journal's main criticism is that its theme is
+   "vibes"): the game parts must do something. The agent checklist ticks off, the
+   route unlocks stops, stickers are earned for something real, and the log holds
+   the child's real results.
+
+Not borrowed: its customisation (colouring in). The owner's own mechanics for
+customising the notebook are different, and still to be designed.
+
+---
+
 ## The opening (updated 2026-11-22)
 
 In the order a child meets it; mock-up `web/mockups/guide/opening_game.html`.

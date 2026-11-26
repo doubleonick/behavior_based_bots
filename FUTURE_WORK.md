@@ -11,6 +11,10 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-26** · `web/OUTLINE.md`, *Design principles from The Hero's Journal:* six
+  agreed principles (one metaphor, progress as a place, the same shape each stop,
+  free space, a story that unfolds, mechanics not just mood). Photos of the owner's
+  copy to come; customisation is the owner's own.
 - **2026-11-26** · *The prologue:* a proposed third draft with the owner's sketches
   (`web/mockups/guide/prologue_draft3.html`): the cell's "Hi!" as the bridge to Val, and
   an agent checklist as the quest.
