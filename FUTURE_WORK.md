@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-26** · *The prologue:* a proposed third draft with the owner's sketches
+  (`web/mockups/guide/prologue_draft3.html`): the cell's "Hi!" as the bridge to Val, and
+  an agent checklist as the quest.
 - **2026-11-26** · Correction, *The prologue:* what Di Paolo's note says about life and
   agency (self-maintenance, then adaptive regulation); "alive, but not agentic" fits.
 - **2026-11-25** · *The prologue:* notes on the owner's first draft (interest, reading
