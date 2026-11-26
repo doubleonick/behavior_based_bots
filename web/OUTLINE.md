@@ -86,8 +86,9 @@ The owner has a copy; reference photos to come.
    route unlocks stops, stickers are earned for something real, and the log holds
    the child's real results.
 
-Not borrowed: its customisation (colouring in). The owner's own mechanics for
-customising the notebook are different, and still to be designed.
+Not borrowed: its customisation (colouring in). The notebook already has its own:
+the cover colour (superficial), and stickers that mark progress like Pokémon badges
+(owner, 2026-11-26; not fully thought out yet).
 
 ---
 
