@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-26** · Correction, *The prologue:* what Di Paolo's note says about life and
+  agency (self-maintenance, then adaptive regulation); "alive, but not agentic" fits.
 - **2026-11-25** · *The prologue:* notes on the owner's first draft (interest, reading
   level, accuracy), accepted; the owner is rewriting it as a notebook adventure.
 - **2026-11-25** · Ideas: NFC cards to change Val's settings (*Firmware*); stop 1's
@@ -115,6 +117,17 @@ Newest first, about the last two weeks. Each names the entry to search for below
     chemicals and bacteria "run and tumble" to navigate, so "alive but not agentic"
     fits the very first cells as the notebook's starting line, not settled fact
     (Di Paolo, in the owner's sources, ties agency to life itself).
+  *Correction (2026-11-26):* that last point overstated Di Paolo. The owner's note
+  (`notes/19`, from a digital copy, pp. 71-93, not yet confirmed to match the owner's
+  scan, pp. 41-75) separates mere self-maintenance from adaptive regulation, which it
+  calls proto-agency: an organism regulating which flows from its world it is open
+  or closed to, by its own needs (p. 87; bacterial chemotaxis as the example). So
+  "alive, but not agentic" fits a first cell that only kept itself going; agency
+  begins with that regulation. Whether any real early cell lacked it is open. His
+  agent is broader than the draft's (communicate, navigate, manipulate); "navigate"
+  overlaps. A Wonder for the guide: Val acts, but has no needs of its own; does the
+  light matter *to Val*? Only the first part of note 19 was read (its key claims and
+  evidence sections were not).
 - **Stop 1's creatures and drives (owner, 2026-11-25):** the jellies pulse (pulse
   drive) and the woodlouse shows the smooth drive, each demonstrated with + and −.
   (The guide's stop 1 as built pairs a pulsing Val with the woodlouse: to change.)
