@@ -106,6 +106,22 @@ the map, diagrams, the observation windows): ink line + soft wash, or pencil ske
 the owner's style (`web/mockups/guide/val_two_styles.html`). Either way Val's 16-bit
 pixel art leaves the pages (it can stay on Val's own 5x5 face).
 
+**Drawing conventions (agreed 2026-11-27)**, so the owner's hand-drawn art and the
+code-drawn art (Val, creatures, the map) read as one hand; the owner is redrawing
+the prologue sketches with these:
+- **Line:** one pen for everything (a 0.3 or 0.5 mm fineliner); a second, heavier pen
+  only for outer outlines. One confident stroke per edge, no going over it (re-tracing
+  is what makes a drawing sketchy). Close the shapes, so washes and hatching fit.
+- **Shading:** left out of the line drawing; the chosen style adds it (washes, or
+  hatching). If hatching by hand: one direction (45°, top right to bottom left) and
+  one spacing.
+- **Shapes and labels:** a few repeated forms (circles for worlds and cells, rounded
+  rectangles for Val's parts); drawings at a similar size, so line weights match;
+  short labels in the same handwriting, beside the drawing, not inside it.
+- **Paper and capture:** plain or dot-grid paper; a scan or flat photo in even light.
+  The cleaning step (trace to vector, remove specks) and either style can then be
+  added automatically.
+
 ---
 
 ## The opening (updated 2026-11-22)

@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-27** · `web/OUTLINE.md`, *Visual consistency:* drawing conventions for the
+  owner's art (one pen, one stroke per edge, closed shapes, shading left to the
+  style); the owner is redrawing the prologue sketches.
 - **2026-11-26** · `web/OUTLINE.md`, *Visual consistency:* an audit (eight visual
   languages); decided: earned colour, controls as notebook objects; open: ink + wash or
   pencil for all drawings (Val drawn both ways).
