@@ -92,6 +92,22 @@ the cover colour (superficial), and stickers that mark progress like Pokémon ba
 
 ---
 
+## Visual consistency (2026-11-26, in progress)
+
+The guide as built speaks eight visual languages (`web/mockups/guide/visual_audit.png`).
+Decided by the owner:
+- **Earned colour:** the notebook's own drawings stay ink (and pale wash, if chosen);
+  full, bright colour belongs only to what the explorer collects or adds: stickers,
+  the cover, the route.
+- **Controls are notebook objects:** tabs, stamps, paper tags, pencilled boxes to tick;
+  no web-app buttons.
+Open: the one drawing technique for everything in the world (Val, creatures, places,
+the map, diagrams, the observation windows): ink line + soft wash, or pencil sketch in
+the owner's style (`web/mockups/guide/val_two_styles.html`). Either way Val's 16-bit
+pixel art leaves the pages (it can stay on Val's own 5x5 face).
+
+---
+
 ## The opening (updated 2026-11-22)
 
 In the order a child meets it; mock-up `web/mockups/guide/opening_game.html`.

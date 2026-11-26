@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-26** · `web/OUTLINE.md`, *Visual consistency:* an audit (eight visual
+  languages); decided: earned colour, controls as notebook objects; open: ink + wash or
+  pencil for all drawings (Val drawn both ways).
 - **2026-11-26** · `web/OUTLINE.md`, *Design principles from The Hero's Journal:* six
   agreed principles (one metaphor, progress as a place, the same shape each stop,
   free space, a story that unfolds, mechanics not just mood). Photos of the owner's
