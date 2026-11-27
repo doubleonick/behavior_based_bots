@@ -1,5 +1,5 @@
-"""The cover label as a horizontal scroll (owner, 2026-11-27): rolled ends left and
-right; "Val's Expedition!" on top; Val's face in the centre; beside each roller an upright
+"""The cover label as a ribbon scroll (owner, 2026-11-27): a banner whose ends fold back
+into notched tails; "Val's Expedition!" on top; Val's face in the centre; beside each roller an upright
 picture that finishes the frame (left: the sun above the moon, a figure-of-eight between
 them and a moth where the loops cross; right: a tree, a rock and a log, a slalom path
 weaving up between them); along the bottom, the path's creatures, oldest to newest.
@@ -14,22 +14,21 @@ def creature(name, x, y, size, turn=0):
     return f'<g transform="translate({x - size/2} {y - size/2}) rotate({turn} {size/2} {size/2}) scale({size/100})">{body}</g>'
 
 o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">']
-# ---- the scroll: the sheet, then a rolled end at each side ----
-L, R, T, B = 38, W - 38, 22, H - 22
-o.append(f'<path d="M{L} {T} C{W*0.3} {T-6} {W*0.7} {T+6} {R} {T} V{B} C{W*0.7} {B+6} {W*0.3} {B-6} {L} {B}Z" fill="{PAPER}" stroke="{INK}" stroke-width="2"/>')
-o.append(f'<path d="M{L+12} {T+12} C{W*0.3} {T+7} {W*0.7} {T+17} {R-12} {T+12} V{B-12} C{W*0.7} {B-7} {W*0.3} {B-17} {L+12} {B-12}Z" fill="none" stroke="{INK}" stroke-width="0.9"/>')
+# ---- the ribbon scroll: a wide banner whose ends fold back behind it into notched
+# (swallowtail) tails, the folds shaded as the back of the ribbon ----
+L, R, T, B = 52, W - 52, 26, H - 26
+BACK = '#d8caa6'
 for side in (-1, 1):
-    x = L if side < 0 else R                       # where the sheet meets the roll
-    cx = x + side * 4
-    rw = 22
-    rx0 = cx - rw / 2
-    o.append(f'<rect x="{rx0}" y="{T-12}" width="{rw}" height="{B-T+24}" rx="5" fill="{SHADE}" stroke="{INK}" stroke-width="2"/>')
-    # the rolled paper: a few curling lines along the roll, and the spiral at each end
-    for k in (-6, 0, 6):
-        o.append(f'<path d="M{cx+k} {T-4} V{B+4}" stroke="{INK}" stroke-width="0.6" opacity="0.55"/>')
-    for y, d in ((T - 12, 1), (B + 12, -1)):
-        o.append(f'<ellipse cx="{cx}" cy="{y}" rx="{rw/2}" ry="5" fill="{PAPER}" stroke="{INK}" stroke-width="1.6"/>')
-        o.append(f'<path d="M{cx-1} {y} a2 1.4 0 1 1 3 0 a4.5 2.6 0 1 1 -8 0 a7 3.6 0 1 1 13 0" fill="none" stroke="{INK}" stroke-width="0.9"/>')
+    x = L if side < 0 else R                    # the banner's edge, where it folds back
+    ox = x - side * 0                           # the fold line
+    tail = x + side * 40                        # how far the tail reaches out
+    # the tail behind, lower than the banner, with a notch cut in its end
+    o.append(f'<path d="M{x - side*6} {T+30} L{tail} {T+30} L{tail - side*16} {(T+B)/2 + 14} L{tail} {B+12} L{x - side*6} {B+12}Z" '
+             f'fill="{SHADE}" stroke="{INK}" stroke-width="2" stroke-linejoin="round"/>')
+    # the fold: a small triangle of the ribbon's back where it turns under
+    o.append(f'<path d="M{x} {B-2} L{x - side*6} {B+12} L{x - side*6} {B-2}Z" fill="{BACK}" stroke="{INK}" stroke-width="1.6" stroke-linejoin="round"/>')
+o.append(f'<path d="M{L} {T} C{W*0.3} {T-7} {W*0.7} {T+7} {R} {T} L{R} {B-2} C{W*0.7} {B+5} {W*0.3} {B-9} {L} {B-2}Z" fill="{PAPER}" stroke="{INK}" stroke-width="2"/>')
+o.append(f'<path d="M{L+11} {T+11} C{W*0.3} {T+5} {W*0.7} {T+17} {R-11} {T+11} L{R-11} {B-13} C{W*0.7} {B-7} {W*0.3} {B-20} {L+11} {B-13}Z" fill="none" stroke="{INK}" stroke-width="0.9"/>')
 # ---- the title ----
 o.append(f'<text x="{W/2}" y="68" text-anchor="middle" font-family="IM Fell English, Georgia, serif" font-size="36" fill="{INK}">Val’s Expedition!</text>')
 o.append(f'<path d="M222 80 H296 M324 80 H398" stroke="{INK}" stroke-width="1"/><path d="M310 75 l5 5 l-5 5 l-5 -5Z" fill="{INK}"/>')
