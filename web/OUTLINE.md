@@ -73,7 +73,7 @@ The owner has a copy; reference photos to come.
 
 1. **One metaphor, used everywhere.** Every element is named in the expedition's
    terms, and the names are consistent (today the guide mixes stop, chapter, lesson,
-   page, Handbook, notebook). A glossary to agree: still to do.
+   page, Handbook, notebook). A glossary to agree: started 2026-11-27 ("waypoint" for a stop; see *Waypoints*).
 2. **Progress shown as a place:** the map, with the route drawn in as the child goes.
 3. **The same shape every stop,** so it becomes a habit: Watch, Describe, Look inside,
    Try it, and the record.
@@ -214,6 +214,30 @@ lineage as possible; the Handbook names the ancient ancestor. Body plans: no sid
 jellies. Candidates from the owner's notes: the roundworm (dwelling and roaming),
 ants (following a trail), the woodlouse. Floor colour stands for taste and smell
 (chemicals on the ground), not colour vision.
+
+### Waypoints: robots paired with creatures (2026-11-27)
+
+**"Waypoint" is the guide's word for a stop on the expedition** (agreed with the owner,
+2026-11-27; the first entry of the expedition glossary). Older text says "stop".
+As far as the current proposals go; firmness as in the section below.
+
+| # | waypoint | robot (what Val is) | creature(s) | how firm |
+|---|---|---|---|---|
+| 0 | Meet Val | a face only: it can't feel or move | none: the prologue's cell ("alive, but not agentic") | place decided |
+| 1 | Vehicle 1 | one sensor, one wheel, no sides; pulse drive | jellies (pulse drive), the ancient stage; woodlouse (smooth drive), the living cousin; roundworm on a food patch, a floor-colour variant | jellies decided; pulse drive accepted 2026-11-24; pairing of drives decided 2026-11-25 |
+| 2 | Vehicles 2a / 2b | two joined modules, uncrossed / crossed + wires: turns away or towards | flatworm (planarian, the "coward"); ants on a scent trail; crickets to song, if Val gets microphones | proposed / recorded idea / proposed |
+| 3 | Vehicles 3a / 3b / 3c | − wires: slows near and stays (love) or turns away (explorer); 3c mixes senses | ants (trail following); turtle and bee superseded | open |
+| 4 | Habituation | a wire whose response fades with repetition (to design) | sea hare (*Aplysia*) | placeholder |
+| 5 | Vehicle 4 | a nerve cell on the wire: threshold (4b), favourite level (4a) | none yet | open |
+| 6 | Potential field | two wheels, pushes and pulls summed; perhaps a literal hill via the IMU | desert ants (Wehner: a weighted sum of cues) | proposed, best sourced |
+| 7 | Vehicle 5 (memory) | a nerve cell that holds its state; another wire switches it off | roundworm: lasting dwell / roam states | recorded idea |
+| 8 | Subsumption | behaviours in layers (`Val_Brooks`) | an early jawless fish (Long's fish robot) | proposed |
+| 9 | Vehicle 7 (association) | learns to link two sensors | bees learning colours | placeholder; no source |
+| 10 | Vehicle 6 (selection) | probably a web game: wirings copied with mistakes | none yet | open |
+| beyond | the frontier | combined ideas; Vehicles 8 to 14 in the appendix | | |
+
+Gaps: waypoints 3, 5 and 10 have no creature; 4 and 9 only placeholders. The cover
+label's bottom path (cell, jelly, flatworm, ant, fish) follows waypoints 0, 1, 2, 6, 8.
 
 ### Creatures: where the decisions stand (2026-11-23)
 

@@ -11,6 +11,8 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-27** · `web/OUTLINE.md`, *Waypoints:* the eleven waypoints with robots and
+  creatures paired; "waypoint" is now the guide's word for a stop.
 - **2026-11-27** · Cover label (`web/mockups/guide/cover_label_draft.html`): a ribbon scroll
   after the owner's sketch. Draft 4 (more flourish: waving edges, curled folds, long tails)
   was tried and dropped; back to draft 3 (plain folded, notched tails).
