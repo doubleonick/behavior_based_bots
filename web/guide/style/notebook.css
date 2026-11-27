@@ -191,12 +191,12 @@ button{font:inherit}
 .slip{margin-top:18px;padding:8px 12px;border-left:3px solid var(--btn);font:14px/1.45 var(--read);color:#5b4a33;background:rgba(255,244,232,.6)}
 /* Val, labelled like a sketch */
 .sketch{position:relative;width:100%;max-width:420px;margin:6px auto 12px;aspect-ratio:1/1}
-.sketch img{position:absolute;left:50%;top:4%;height:92%;transform:translateX(-50%);image-rendering:pixelated}
+.sketch img{position:absolute;left:50%;top:4%;height:92%;transform:translateX(-50%)}
 .sketch svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .sketch .n{position:absolute;font:400 18px/1.15 var(--hand);color:var(--ink)}
-.sketch .n.face{left:0;top:7%}
-.sketch .n.sockets{right:0;top:42%;text-align:right;max-width:30%}
-.sketch .n.wheel{left:0;top:79%}
+.sketch .n.face{left:0;top:84%}
+.sketch .n.sockets{right:0;top:18%;text-align:right;max-width:30%}
+.sketch .n.wheel{right:0;top:78%;text-align:right}
 
 /* ================= Val's button ================= */
 .presses{display:flex;flex-direction:column;gap:14px;margin:16px 0}
@@ -281,5 +281,29 @@ button{font:inherit}
 .log{width:100%;border-collapse:collapse;font:400 17px var(--hand);color:var(--ink);margin:4px 0 14px}
 .log th{font:12px var(--print-sc);letter-spacing:.08em;color:var(--pencil);text-align:left;border-bottom:1.5px solid var(--pencil);padding:2px 4px}
 .log td{border-bottom:1px dashed #c4b99d;padding:3px 4px;color:var(--pen)}
+
+/* ================= the cover as a field journal ================= */
+.journal-label{position:absolute;z-index:2;left:15%;right:19%;top:10%;background:var(--label);padding:2.2cqw;border-radius:2px;
+  box-shadow:0 1px 2px rgba(0,0,0,.55),0 0 0 .5px rgba(0,0,0,.3);transform:rotate(-.4deg)}
+.journal-label .in{border:1px solid var(--label-rule);outline:.5px solid var(--label-rule);outline-offset:.9cqw;padding:3cqw 3cqw 2.6cqw;text-align:center;color:var(--label-ink)}
+.journal-label .kicker{font:3.6cqw var(--print-sc);letter-spacing:.18em;color:var(--label-rule)}
+.journal-label .vignette{display:block;width:78%;margin:2cqw auto 1cqw}
+.journal-label .title{font:7.2cqw/1.1 var(--print);margin:1cqw 0}
+.journal-label .orn{display:block;width:60%;height:2.4cqw;margin:1cqw auto 3cqw;color:var(--label-rule)}
+.journal-label .who{display:flex;gap:1.6cqw;align-items:baseline;font:3.2cqw var(--print-sc);letter-spacing:.1em;color:var(--label-rule);text-align:left;margin-top:1.6cqw}
+.journal-label .who span{flex:1;border-bottom:1px solid #8d7f62;min-height:1.3em;font:4.4cqw var(--hand);letter-spacing:0;color:var(--pen);text-align:center}
+/* the Ci, pressed into the leather: the leather itself, raised and lit from above */
+.pressed-ci{position:absolute;z-index:2;left:50%;bottom:8%;width:22%;transform:translateX(-50%);
+  filter:invert(1) opacity(.12) drop-shadow(0 -1px 0 rgba(255,255,255,.35)) drop-shadow(0 1px .6px rgba(0,0,0,.9))}
+
+/* ================= the prologue ================= */
+.write.big{font-size:27px;line-height:1.3}
+.write u{text-decoration-color:var(--ink);text-underline-offset:4px}
+.pro-art{display:block;max-width:100%;height:auto;margin:6px auto 14px}
+.pro-art.small{max-width:200px}
+.cellsay{display:flex;align-items:center;gap:14px;margin:4px 0 14px}
+.cellsay .pro-art{flex:0 0 44%;max-width:210px;margin:0}
+.checks{list-style:none;padding:0;margin:6px 0 16px;display:flex;gap:10px 22px;flex-wrap:wrap;font:400 24px var(--hand)}
+.checks li::before{content:"☐ ";font-size:28px}
 
 @media (prefers-reduced-motion:reduce){.band{transition:none}.touch i{animation:none!important;opacity:1}}

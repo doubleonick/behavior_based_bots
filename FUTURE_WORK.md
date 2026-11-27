@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-27** · The guide's opening rebuilt (`web/OUTLINE.md`, *The opening*): a
+  field-journal cover, the prologue between the inside cover and the map, the map as the
+  owner's own drawing, Val drawn in ink from above. Waiting on: the assembly CAD for Val.
 - **2026-11-27** · *The prologue:* the owner's redrawn sketches in draft 3: the collision
   composed from the owner's Earth and plain world (Earth turned so its scar faces the
   impact); Earth after the crash grey with molten orange craters and the starburst;

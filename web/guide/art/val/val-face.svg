@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="54 172 70 64" width="440" height="580">
+<defs><filter id="wash" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5"/><feGaussianBlur stdDeviation="0.6"/></filter><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" seed="5"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.12 0"/><feComposite in2="SourceGraphic" operator="in"/></filter></defs>
+<g filter="url(#wash)" opacity="0.85">
+<path d="M66.16148680669406 176.14153352094704 H110.16148680669406 Q119.16148680669406 176.14153352094704 119.16148680669406 185.14153352094704 V223.14153352094704 Q119.16148680669406 232.14153352094704 110.16148680669406 232.14153352094704 H66.16148680669406 Q57.16148680669405 232.14153352094704 57.16148680669405 223.14153352094704 V185.14153352094704 Q57.16148680669405 176.14153352094704 66.16148680669406 176.14153352094704Z" fill="#c7cacd" fill-opacity="0.72"/>
+<path d="M69.58385653295386 184.33254412350783 H107.58385653295386 Q111.58385653295386 184.33254412350783 111.58385653295386 188.33254412350783 V220.33254412350783 Q111.58385653295386 224.33254412350783 107.58385653295386 224.33254412350783 H69.58385653295386 Q65.58385653295386 224.33254412350783 65.58385653295386 220.33254412350783 V188.33254412350783 Q65.58385653295386 184.33254412350783 69.58385653295386 184.33254412350783Z" fill="#2c3138" fill-opacity="0.72"/>
+</g>
+<rect x="77" y="193.6" width="6" height="5" rx="1" fill="#9fe08a"/>
+<rect x="95" y="193.6" width="6" height="5" rx="1" fill="#9fe08a"/>
+<rect x="77" y="208.8" width="6" height="5" rx="1" fill="#9fe08a"/>
+<rect x="86" y="208.8" width="6" height="5" rx="1" fill="#9fe08a"/>
+<rect x="95" y="208.8" width="6" height="5" rx="1" fill="#9fe08a"/>
+<g fill="none" stroke="#2b2118" stroke-linecap="round" stroke-linejoin="round">
+<path d="M67 176 H111 Q120 176 120 185 V223 Q120 232 111 232 H67 Q58 232 58 223 V185 Q58 176 67 176Z" stroke-width="1.2"/>
+<path d="M70 184 H108 Q112 184 112 188 V220 Q112 224 108 224 H70 Q66 224 66 220 V188 Q66 184 70 184Z" stroke-width="1.2"/>
+</g></svg>

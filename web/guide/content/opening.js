@@ -13,11 +13,14 @@ window.GUIDE = {
     pill: 'build · meet · explore'
   },
 
-  // The cover. "mix" leans on the stickers, with the adventure picture as a postcard
-  // among them; "stickers" and "picture" are the two pure options, kept to choose from.
-  // Try one with ?cover=picture (or stickers, or mix) at the end of the address.
+  // The cover. "journal" (2026-11-27): a field journal, not a game box: a printed
+  // label with a small ink-and-wash picture from the prologue, the Ci pressed into the
+  // leather; bright colour is earned (stickers go on as the explorer travels).
+  // The earlier options are kept: ?cover=mix (or stickers, or picture).
   cover: {
-    variant: 'mix',
+    variant: 'journal',
+    label: { kicker: 'Field notebook', vignette: 'prologue/earth-after.svg',
+             explorer: 'Explorer', begun: 'Begun' },
     // stuck round the title, in this order (the style decides where each one goes)
     stickers: ['ant', 'jelly', 'val', 'woodlouse', 'moth', 'bee', 'map-scrap', 'question'],
     picture: 'cover-picture.svg',
@@ -49,7 +52,7 @@ window.GUIDE = {
     namePlaceholder: 'your name',
     begun: 'Expedition begun',
     ifFound: 'If found, please return to',
-    turn: 'Turn the page for the map'
+    turn: 'Turn the page'
   },
 
   // The map's places, in map coordinates (the map is 1040 wide, 840 high; the fold is
@@ -59,33 +62,21 @@ window.GUIDE = {
     title: '[The Living World]',
     uncharted: 'Uncharted…',
     slide: 'Slide the map to see all of it.',
+    // The owner's own map drawing (2026-11-22), cleaned; places are in its pixels.
+    // More places come when the owner redraws the map with them.
+    drawing: { art: 'map-owner.jpg', w: 917, h: 632,
+               alt: "A hand-drawn map: the sea on the left, a pale shore, a dark ridge, then grassland where a river runs from the mountains, through a lake and forest, down to the sea." },
     places: [
-      { id: 'jelly-shallows', name: 'The Jelly Shallows', x: 150, y: 220,
-        creatures: [['jelly', -36, -40, 60], ['jelly', 24, -20, 42], ['jelly', 60, -60, 30]] },
-      { id: 'worm-flats', name: 'The Worm Flats', x: 170, y: 640,
-        creatures: [['flatworm', -26, -50, 44, -30], ['flatworm', 30, -44, 36, 20]] },
-      { id: 'tide-pools', name: 'The Tide Pools', x: 395, y: 330,
-        creatures: [['seahare', -26, -78, 44]] },
-      { id: 'workshop', name: "Val's Workshop", x: 380, y: 745,
-        creatures: [['val', 40, -70, 44]] },
-      { id: 'falls', name: 'The Falls', x: 560, y: 640, creatures: [] },
-      { id: 'lake', name: 'The Great Lake', x: 705, y: 590,
-        creatures: [['frog', 40, -112, 36]] },
-      { id: 'mossy-log', name: 'The Mossy Log', x: 660, y: 765,
-        creatures: [['woodlouse', -40, -100, 34, 80], ['roundworm', 40, -20, 40]] },
-      { id: 'bee-garden', name: 'The Bee Garden', x: 895, y: 765,
-        creatures: [['bee', 10, -110, 34, -15]] },
-      { id: 'moth-meadow', name: 'Moth Meadow', x: 940, y: 545,
-        creatures: [['moth', -30, -100, 28, -20], ['moth', 24, -110, 24, 15], ['moth', 10, -60, 20, 30]] },
-      { id: 'trail-wood', name: 'Trail Wood', x: 690, y: 365,
-        creatures: [['ant', 50, -40, 22, 90], ['ant', 74, -40, 18, 90], ['ant', 94, -38, 16, 95]] },
-      { id: 'high-peaks', name: 'The High Peaks', x: 830, y: 200, creatures: [] }
+      { id: 'jelly-shallows', name: 'The Jelly Shallows', x: 95, y: 250,
+        creatures: [['jelly', -30, -60, 40], ['jelly', 22, -48, 28]] },
+      { id: 'workshop', name: "Val's Workshop", x: 372, y: 478,
+        creatures: [['val', 0, -52, 40]] }
     ],
     // where each stop happens, and the route to it (drawn only once it is unlocked)
     stops: [
       { id: 'meet-val', n: 0, name: 'Meet Val', place: 'workshop' },
       { id: 'v1', n: 1, name: 'Vehicle 1', place: 'jelly-shallows',
-        route: [[372, 700], [330, 662], [286, 652], [240, 600], [200, 470], [170, 330], [160, 250]] }
+        route: [[350, 440], [300, 432], [250, 390], [205, 340], [160, 300], [120, 280]] }
     ],
     startHere: 'Start here',
     nextStop: 'Next: stop 1',
@@ -103,8 +94,8 @@ window.GUIDE = {
       sockets: ["sockets for Val's senses", '(later)'],
       wheel: ['the wheel', '']
     },
-    valArt: 'val/v1-above-rear.png',
-    valAlt: 'Val seen from above and just behind: a grey box with a face screen, a blue battery at the front and one wheel',
+    valArt: 'val/val-top.svg',
+    valAlt: 'Val seen from above: a black frame with a blue battery, a face screen at the back, and wheels at the sides',
     next: "Next: learn Val's one button.",
     toButton: "Learn Val's button",
     grownUp: '[For the grown-up: before stop 0 the firmware goes on Val once, from a computer, and the battery needs charging. The Handbook has the steps.]'

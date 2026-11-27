@@ -1,4 +1,4 @@
-// Walks the guide from the cover to the map, then through stop 1, by clicks only.
+// Walks the guide from the cover, through the prologue, to the map, then through stop 1, by clicks only.
 // Run: node tests/web/clickthrough.js [width]   (Playwright with Chromium; default 1100, try 390 too)
 // Walk the guide by clicking only, as a reader would; fail if any step can't be clicked.
 const { chromium } = require('playwright');
@@ -12,7 +12,10 @@ const { chromium } = require('playwright');
   await p.goto('file://' + dir + '/index.html?reset'); await p.waitForTimeout(1200);
   const steps = [
     ['cover', '#open'],
-    ['inside', '#inside [data-go="map"]'],
+    ['inside', '#inside [data-go="prologue1"]'],
+    ['prologue1', '#prologue1 [data-go="prologue2"]'],
+    ['prologue2', '#prologue2 [data-go="prologue3"]'],
+    ['prologue3', '#prologue3 [data-go="map"]'],
     ['map', '#map .place.open'],
     ['meet-val', '#meet-val [data-go="button"]'],
     ['button', '#toMap'],

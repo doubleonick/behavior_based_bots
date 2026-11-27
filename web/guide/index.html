@@ -9,10 +9,13 @@
 </head>
 <body>
 <!-- The pages are empty frames; app.js fills them from content/ and art/.
-     One view at a time; the view is kept in the address (#cover, #inside, #map, #meet-val, #button, then stop 1's #stop1, #watch, #describe, #look, #try). -->
+     One view at a time; the view is kept in the address (#cover, #inside, #prologue1 to 3, #map, #meet-val, #button, then stop 1's #stop1, #watch, #describe, #look, #try). -->
 <main>
   <section class="view" id="cover" aria-label="The notebook's cover"></section>
   <section class="view" id="inside" aria-label="Inside the cover" hidden></section>
+  <section class="view" id="prologue1" aria-label="Prologue: the crash" hidden></section>
+  <section class="view" id="prologue2" aria-label="Prologue: the first life" hidden></section>
+  <section class="view" id="prologue3" aria-label="Prologue: the explorer" hidden></section>
   <section class="view" id="map" aria-label="The map" hidden></section>
   <section class="view" id="meet-val" aria-label="Meet Val" hidden></section>
   <section class="view" id="button" aria-label="Val's button" hidden></section>
@@ -24,8 +27,10 @@
 </main>
 <!-- The content (words, places, creatures), then the code that lays it out. -->
 <script src="content/opening.js"></script>
+<script src="content/prologue.js"></script>
 <script src="content/stop1.js"></script>
 <script src="tray.js"></script>
+<script src="prologue.js"></script>
 <script src="stop1.js"></script>
 <script src="app.js"></script>
 </body>

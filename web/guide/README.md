@@ -17,6 +17,15 @@ apart, so any one can change without touching the others.
 
 ## Pages
 
+Since 2026-11-27: `#cover` → `#inside` → `#prologue1` → `#prologue2` → `#prologue3` →
+`#map` → … The cover is a field journal (a printed label with the Earth-and-Moon picture
+from the prologue, the Ci pressed into the leather; stickers are earned later); the
+earlier covers stay available with `?cover=mix`, `stickers` or `picture`. The map is the
+owner's own drawing (`art/notebook/map-owner.jpg`, cleaned: ruled lines removed, pen and
+pencil kept), with places set on it in its own pixels; more places come with the owner's
+redraw. Val everywhere is the ink-and-wash drawing from above (`art/val/val-top.svg`),
+until the owner's redraw from the full assembly CAD.
+
 Stop 1 (added 2026-11-25): `#stop1` (the jellies, and what to build) → `#watch` → `#describe` → `#look` → `#try`, carried over from the Vehicle 1 lesson mock-up. Val in the windows is simulated with the pulse drive, until real runs filmed from above replace it; the woodlouse is the living cousin. Stop 1 opens from the map once Val has been met.
 
 

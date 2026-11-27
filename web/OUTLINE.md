@@ -124,7 +124,17 @@ the prologue sketches with these:
 
 ---
 
-## The opening (updated 2026-11-22)
+## The opening (updated 2026-11-27)
+
+Rebuilt to the design principles (owner, 2026-11-27), in `web/guide/`: the cover was too
+much a video game's box, so it is now a field journal (a printed label with a small
+ink-and-wash picture, the Ci pressed in; bright colour earned later as stickers). The
+map follows the owner's own drawing (and will follow the redraw). The prologue now sits
+between the inside cover and the map: cover → inside cover → prologue (3 spreads) → map
+→ Meet Val. Val is drawn from above in ink and wash until the owner redraws it from the
+full assembly CAD (its wheel is now under the body).
+
+### Earlier notes on the opening (2026-11-22)
 
 In the order a child meets it; mock-up `web/mockups/guide/opening_game.html`.
 

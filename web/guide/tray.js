@@ -122,7 +122,7 @@
       g.save(); g.translate(this.x, this.y); g.rotate(this.h + Math.PI / 2); g.imageSmoothingEnabled = false;
       const im = this.who === 'val' ? this.img.val : this.img.louse;
       if (im && im.complete) {
-        if (this.who === 'val') { g.drawImage(im, -11, -27, 22, 55); } else { g.drawImage(im, -14, -14, 28, 28); }
+        if (this.who === 'val') { g.drawImage(im, -17, -22, 34, 44); } else { g.drawImage(im, -14, -14, 28, 28); }
       }
       g.restore();
       g.restore();

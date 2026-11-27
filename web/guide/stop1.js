@@ -14,7 +14,7 @@
   function trayImages() {
     if (!images) {
       images = { val: new Image(), louse: new Image() };
-      images.val.src = K().art('val/v1-above-rear.png');
+      images.val.src = K().art(window.GUIDE.meetVal.valArt);
       images.louse.src = K().art('creatures/woodlouse.svg');
     }
     return images;
@@ -48,7 +48,7 @@
         <div class="placeholder">${e(T.story)}</div>
         ${T.jellies.map((j) => `<p class="write">${e(j)}</p>`).join('')}
         <button class="turn back" type="button" data-go="map">← ${e(NAV().back)}</button>
-        <span class="pageno">7</span>
+        <span class="pageno">11</span>
       </div>
       <div class="leaf right">
         <div class="sketch jellysketch">
@@ -62,7 +62,7 @@
         <p class="pencilnote">${e(T.pulse)}</p>
         ${slip(T.grownUp)}
         <button class="btn" type="button" data-go="watch">${e(T.next)} →</button>
-        <span class="pageno">8</span>
+        <span class="pageno">12</span>
       </div>
     </div>`;
   };
@@ -77,7 +77,7 @@
         <p class="write">${e(T.text)}</p>
         ${windowHTML('wVal', T.valWindow)}
         <button class="turn back" type="button" data-go="stop1">← ${e(NAV().back)}</button>
-        <span class="pageno">9</span>
+        <span class="pageno">13</span>
       </div>
       <div class="leaf right">
         ${windowHTML('wLouse', T.louseWindow)}
@@ -85,7 +85,7 @@
         <p><button class="btn" type="button" id="playBoth">${e(T.play)}</button></p>
         <div class="placeholder">${e(T.note)}</div>
         <button class="turn" type="button" data-go="describe">${e(T.next)} →</button>
-        <span class="pageno">10</span>
+        <span class="pageno">14</span>
       </div>
     </div>`;
     stopTrays();
@@ -117,14 +117,14 @@
         <p class="write">${e(T.text)}</p>
         <ul class="choices">${buttons}</ul>
         <button class="turn back" type="button" data-go="watch">← ${e(NAV().back)}</button>
-        <span class="pageno">11</span>
+        <span class="pageno">15</span>
       </div>
       <div class="leaf right">
         ${last ? `<p class="write pen"><b>${e(T.picked)} ${e(last.label)}</b></p><p class="write">${e(last.resp)}</p>` : ''}
         ${last && !done ? `<p class="pencilnote">${e(T.tryAgain)}</p>` : ''}
         ${slip(T.grownUp)}
         ${done ? `<button class="btn" type="button" data-go="look">${e(T.next)} →</button>` : ''}
-        <span class="pageno">12</span>
+        <span class="pageno">16</span>
       </div>
     </div>`;
     K().$('describe').querySelectorAll('[data-choice]').forEach((b) => {
@@ -149,7 +149,7 @@
         </svg>
         <p class="yesno"><button type="button" class="choice" data-answer="yes">${e(T.yes)}</button><button type="button" class="choice" data-answer="no">${e(T.no)}</button></p>
         <button class="turn back" type="button" data-go="describe">← ${e(NAV().back)}</button>
-        <span class="pageno">13</span>
+        <span class="pageno">17</span>
       </div>
       <div class="leaf right">
         ${answer ? `<p class="sub">${e(answer === 'yes' ? T.answerYes : T.answerNo)}</p>
@@ -159,7 +159,7 @@
           <p class="write pen"><b>${e(T.moral)}</b></p>
           ${slip(T.grownUp)}
           <button class="btn" type="button" data-go="try">${e(T.next)} →</button>` : ''}
-        <span class="pageno">14</span>
+        <span class="pageno">18</span>
       </div>
     </div>`;
     K().$('look').querySelectorAll('[data-answer]').forEach((b) => {
@@ -186,7 +186,7 @@
           <ul class="choices row">${T.predictions.map((p) => `<li><button type="button" class="choice ${trial.prediction === p ? 'picked' : ''}" data-predict="${e(p)}" ${trial.prediction ? 'disabled' : ''}>${e(p)}</button></li>`).join('')}</ul>` : ''}
         <p class="write pen" id="tryStatus"></p>
         <button class="turn back" type="button" data-go="look">← ${e(NAV().back)}</button>
-        <span class="pageno">15</span>
+        <span class="pageno">19</span>
       </div>
       <div class="leaf right">
         <div class="pair">${windowHTML('tLouse', S().watch.louseWindow)}${windowHTML('tVal', S().watch.valWindow)}</div>
@@ -194,7 +194,7 @@
         <p class="sub">${e(T.notebook)}</p>
         <table class="log"><thead><tr>${T.cols.map((c) => `<th>${e(c)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>
         <button class="btn" type="button" data-go="map">${e(T.toMap)}</button>
-        <span class="pageno">16</span>
+        <span class="pageno">20</span>
       </div>
     </div>`;
     stopTrays();
