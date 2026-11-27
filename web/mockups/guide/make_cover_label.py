@@ -14,37 +14,21 @@ def creature(name, x, y, size, turn=0):
     return f'<g transform="translate({x - size/2} {y - size/2}) rotate({turn} {size/2} {size/2}) scale({size/100})">{body}</g>'
 
 o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">']
-# ---- the ribbon scroll: a banner that waves (its top and bottom edges ripple), each
-# end curling under into a rolled fold, then a long swallowtail tail flowing out behind ----
-L, R, T, B = 60, W - 60, 28, H - 28
+# ---- the ribbon scroll: a wide banner whose ends fold back behind it into notched
+# (swallowtail) tails, the folds shaded as the back of the ribbon ----
+L, R, T, B = 52, W - 52, 26, H - 26
 BACK = '#d8caa6'
-def edge(y, amp, flip):
-    # a gentle wave along the banner's top or bottom
-    return (f'C{L+90} {y - flip*amp} {L+170} {y + flip*amp} {W/2} {y} '
-            f'C{R-170} {y - flip*amp} {R-90} {y + flip*amp} {R} {y}')
 for side in (-1, 1):
-    x = L if side < 0 else R
-    e = x + side * 50                         # the tail's far end
-    # the tail: comes out from behind the fold, sweeps out with a curve, notched end
-    o.append(f'<path d="M{x - side*4} {T+44} C{x + side*16} {T+40} {e - side*8} {T+30} {e} {T+36} '
-             f'C{e - side*10} {(T+B)/2 + 6} {e - side*10} {(T+B)/2 + 6} {e - side*22} {(T+B)/2 + 18} '
-             f'C{e - side*10} {(T+B)/2 + 34} {e - side*4} {B+4} {e + side*6} {B+18} '
-             f'C{e - side*16} {B+24} {x + side*14} {B+20} {x - side*4} {B+14}Z" '
+    x = L if side < 0 else R                    # the banner's edge, where it folds back
+    ox = x - side * 0                           # the fold line
+    tail = x + side * 40                        # how far the tail reaches out
+    # the tail behind, lower than the banner, with a notch cut in its end
+    o.append(f'<path d="M{x - side*6} {T+30} L{tail} {T+30} L{tail - side*16} {(T+B)/2 + 14} L{tail} {B+12} L{x - side*6} {B+12}Z" '
              f'fill="{SHADE}" stroke="{INK}" stroke-width="2" stroke-linejoin="round"/>')
-    # fine lines along the tail, as on an engraved ribbon
-    for k in (0.35, 0.65):
-        y0 = T + 44 + k * (B - T - 30)
-        o.append(f'<path d="M{x + side*6} {y0:.0f} C{x + side*22} {y0 - 6:.0f} {e - side*20} {y0 - 4:.0f} {e - side*28} {y0 + 2:.0f}" '
-                 f'fill="none" stroke="{INK}" stroke-width="0.7" opacity="0.6"/>')
-    # the fold where the banner turns under: a curl at top and bottom
-    for y, d in ((T, 1), (B, -1)):
-        o.append(f'<path d="M{x} {y} C{x + side*14} {y + d*2} {x + side*16} {y + d*16} {x + side*4} {y + d*18} '
-                 f'C{x - side*4} {y + d*19} {x - side*6} {y + d*10} {x} {y + d*8}Z" fill="{BACK}" stroke="{INK}" stroke-width="1.6" stroke-linejoin="round"/>')
-o.append(f'<path d="M{L} {T} {edge(T, 10, 1)} C{R + 10} {(T+B)/2 - 40} {R + 10} {(T+B)/2 + 40} {R} {B} '
-         f'{edge(B, 10, -1).replace(str(W/2), str(W/2))} C{L - 10} {(T+B)/2 + 40} {L - 10} {(T+B)/2 - 40} {L} {T}Z" fill="{PAPER}" stroke="{INK}" stroke-width="2"/>'.replace(
-         f'{edge(B, 10, -1)}', f'C{R-90} {B+10} {R-170} {B-10} {W/2} {B} C{L+170} {B+10} {L+90} {B-10} {L} {B}'))
-o.append(f'<path d="M{L+12} {T+12} C{L+90} {T+2} {L+170} {T+22} {W/2} {T+12} C{R-170} {T+2} {R-90} {T+22} {R-12} {T+12} '
-         f'L{R-12} {B-12} C{R-90} {B-2} {R-170} {B-22} {W/2} {B-12} C{L+170} {B-2} {L+90} {B-22} {L+12} {B-12}Z" fill="none" stroke="{INK}" stroke-width="0.9"/>')
+    # the fold: a small triangle of the ribbon's back where it turns under
+    o.append(f'<path d="M{x} {B-2} L{x - side*6} {B+12} L{x - side*6} {B-2}Z" fill="{BACK}" stroke="{INK}" stroke-width="1.6" stroke-linejoin="round"/>')
+o.append(f'<path d="M{L} {T} C{W*0.3} {T-7} {W*0.7} {T+7} {R} {T} L{R} {B-2} C{W*0.7} {B+5} {W*0.3} {B-9} {L} {B-2}Z" fill="{PAPER}" stroke="{INK}" stroke-width="2"/>')
+o.append(f'<path d="M{L+11} {T+11} C{W*0.3} {T+5} {W*0.7} {T+17} {R-11} {T+11} L{R-11} {B-13} C{W*0.7} {B-7} {W*0.3} {B-20} {L+11} {B-13}Z" fill="none" stroke="{INK}" stroke-width="0.9"/>')
 # ---- the title ----
 o.append(f'<text x="{W/2}" y="68" text-anchor="middle" font-family="IM Fell English, Georgia, serif" font-size="36" fill="{INK}">Val’s Expedition!</text>')
 o.append(f'<path d="M222 80 H296 M324 80 H398" stroke="{INK}" stroke-width="1"/><path d="M310 75 l5 5 l-5 5 l-5 -5Z" fill="{INK}"/>')

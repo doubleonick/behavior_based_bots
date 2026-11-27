@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-27** · Cover label (`web/mockups/guide/cover_label_draft.html`): a ribbon scroll
+  after the owner's sketch. Draft 4 (more flourish: waving edges, curled folds, long tails)
+  was tried and dropped; back to draft 3 (plain folded, notched tails).
 - **2026-11-27** · The guide's opening rebuilt (`web/OUTLINE.md`, *The opening*): a
   field-journal cover, the prologue between the inside cover and the map, the map as the
   owner's own drawing, Val drawn in ink from above. Waiting on: the assembly CAD for Val.
