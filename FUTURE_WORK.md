@@ -11,6 +11,11 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-27** · *The prologue:* the owner's redrawn sketches in draft 3: the collision
+  composed from the owner's Earth and plain world (Earth turned so its scar faces the
+  impact); Earth after the crash grey with molten orange craters and the starburst;
+  the cell with more of the owner's strands copied in. Val waits for the CAD (its
+  wheel is now under the body); the cell's pinch and dimples are left to the owner.
 - **2026-11-27** · `web/OUTLINE.md`, *Visual consistency:* drawing conventions for the
   owner's art (one pen, one stroke per edge, closed shapes, shading left to the
   style); the owner is redrawing the prologue sketches.
