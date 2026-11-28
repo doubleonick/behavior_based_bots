@@ -1,0 +1,324 @@
+<title>Waypoint 1 mock-up</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Kalam:wght@300;400;700&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
+<style>
+/* Layout: waypoint 1 as a notebook, one two-page spread at a time, with paper tabs for
+   its sections along the top and page turns at the bottom. Placeholders are marked
+   with a dashed box. Single look on purpose: the notebook on a wooden desk. */
+:root{--wood:#5a3a26;--paper:#f2ead6;--dot:#a9b3c0;--ink:#33251a;--pencil:#5d5148;--pen:#1f5fa8;
+  --label:#efe6cf;--rule:#6f6248;--hi:rgba(243,210,122,.75);--tab:#e8dcc0;--tab-on:#f2ead6;
+  --tray-dark:#5c6676;--tray-lit:#fff6cf;--trail:#E07A2E;--right:#1F8A4C;--wrong:#C2364A;
+  --read:"Atkinson Hyperlegible",Verdana,sans-serif;--hand:"Kalam","Comic Sans MS",cursive;
+  --print:"IM Fell English",Georgia,serif;--print-sc:"IM Fell English SC",Georgia,serif;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:18px/1.5 var(--read);padding-block:18px 40px;overflow-x:clip;
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));
+  background:repeating-linear-gradient(90deg,var(--wood) 0 140px,#62402a 140px 142px,var(--wood) 142px 260px,#53361f 260px 263px),var(--wood)}
+.wrap{max-width:1060px;margin:0 auto}
+.mockhead{color:#f3e6cf;font:15px var(--read);margin:0 0 10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.mockhead b{font-size:17px}
+/* paper tabs for the sections */
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 -2px;padding-left:16px;position:relative;z-index:1}
+.tabs button{font:400 15px var(--hand);color:var(--ink);background:var(--tab);border:1.5px solid #b9a982;border-bottom:none;border-radius:8px 8px 0 0;padding:3px 10px 4px;cursor:pointer}
+.tabs button[aria-current="true"]{background:var(--tab-on);font-weight:700;padding-bottom:6px;margin-top:-2px}
+.tabs button.done::after{content:" ✓";color:var(--right)}
+/* the spread */
+.spread{display:grid;grid-template-columns:1fr 1fr;filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
+.leaf{position:relative;min-height:600px;padding:30px 32px 58px 38px;background-color:var(--paper);
+  background-image:radial-gradient(circle,var(--dot) 1.05px,transparent 1.5px);background-size:18px 18px;background-position:9px 9px}
+.leaf.l{border-radius:14px 2px 2px 14px;box-shadow:inset -22px 0 26px -18px rgba(70,50,20,.45)}
+.leaf.r{border-radius:2px 14px 14px 2px;box-shadow:inset 22px 0 26px -18px rgba(70,50,20,.45)}
+@media (max-width:780px){.spread{grid-template-columns:1fr;gap:10px}.leaf{min-height:0}.leaf.l,.leaf.r{border-radius:6px 14px 14px 6px}}
+.pageno{position:absolute;bottom:16px;font:15px var(--hand);color:var(--pencil)}
+.l .pageno{left:24px}.r .pageno{right:24px}
+.turn{position:absolute;bottom:12px;font:400 20px var(--hand);color:var(--pen);background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:4px}
+.r .turn{right:52px}.l .turn{left:52px}
+/* writing */
+h2{font:400 34px/1.1 var(--hand);margin:0;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+h2 small{font:400 20px var(--hand)}
+.uline{display:block;height:10px;margin:2px 0 8px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 12' preserveAspectRatio='none'><path d='M2 6 C90 9 170 3 250 7 S350 8 398 5' fill='none' stroke='%2333251a' stroke-width='2.2' stroke-linecap='round'/></svg>") 0 0/100% 100% no-repeat}
+h3{font:400 24px/1.2 var(--hand);margin:12px 0 6px}
+p,li{font:400 19px/1.5 var(--hand)}
+p{margin:0 0 10px}
+.pen{color:var(--pen)}
+.pencil{color:var(--pencil);font-weight:300}
+.big{font-size:25px;line-height:1.3}
+u{text-underline-offset:4px}
+.ph{border:1.5px dashed #b4a988;background:rgba(255,255,255,.4);padding:9px 12px;font:15px/1.45 var(--read);color:#6b5d44;margin:10px 0;border-radius:4px}
+.ph b{color:#5b4a33}
+.slip{margin-top:12px;padding:7px 11px;border-left:3px solid #E07A2E;font:14px/1.45 var(--read);color:#5b4a33;background:rgba(255,244,232,.65)}
+.mystery{border:2px solid var(--ink);border-radius:6px;padding:10px 14px;background:rgba(255,253,246,.6);transform:rotate(-.6deg)}
+.mystery .k{font:13px var(--print-sc);letter-spacing:.14em;color:var(--rule)}
+img.art{display:block;margin:6px auto;max-width:100%;height:auto}
+/* round observation windows */
+.windows{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+figure{margin:0;text-align:center}
+figure canvas{width:100%;max-width:230px;aspect-ratio:1;display:block;margin:0 auto}
+figcaption{font:13px var(--print-sc);letter-spacing:.1em;color:var(--pencil)}
+/* notebook-object controls: a paper tag to press, pencilled boxes to tick */
+.tag{font:400 19px var(--hand);color:var(--ink);background:var(--label);border:1.5px solid var(--rule);border-radius:3px 14px 14px 3px;padding:3px 16px 3px 12px;cursor:pointer;position:relative;box-shadow:1px 2px 0 rgba(51,37,26,.2)}
+.tag::before{content:"";position:absolute;left:-5px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--paper);border:1.5px solid var(--rule)}
+.tag[aria-pressed="true"]{background:var(--hi)}
+.boxes{list-style:none;padding:0;margin:6px 0;display:flex;flex-direction:column;gap:4px}
+.boxes.row{flex-direction:row;flex-wrap:wrap;gap:4px 16px}
+.boxes button{font:400 19px var(--hand);color:var(--ink);background:none;border:none;cursor:pointer;padding:2px 0;text-align:left}
+.boxes button::before{content:"☐ ";font-size:22px}
+.boxes button[aria-pressed="true"]::before{content:"☑ ";color:var(--pen)}
+textarea{width:100%;min-height:92px;font:20px/1.5 var(--hand);color:var(--pen);background:repeating-linear-gradient(transparent 0 29px,#c9bfa6 29px 30px);border:none;border-bottom:1px solid #c9bfa6;resize:vertical;padding:0 4px;line-height:30px}
+/* the trials table */
+table.trials{width:100%;border-collapse:collapse;font:400 17px var(--hand);margin:6px 0 10px}
+.trials th{font:12px var(--print-sc);letter-spacing:.08em;color:var(--pencil);text-align:left;border-bottom:1.5px solid var(--pencil);padding:2px 4px}
+.trials td{border-bottom:1px dashed #c4b99d;padding:5px 4px;vertical-align:top}
+.trials .what{font-weight:700}
+.trials .pick{display:flex;gap:4px;flex-wrap:wrap}
+.trials .pick button{font:400 15px var(--hand);background:none;border:1.2px solid #b9a982;border-radius:12px;padding:0 8px;cursor:pointer;color:var(--ink)}
+.trials .pick button[aria-pressed="true"]{background:var(--hi);border-color:var(--ink)}
+.tally{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tally button{font:400 15px var(--hand);background:none;border:1.2px solid #b9a982;border-radius:4px;padding:0 6px;cursor:pointer;color:var(--ink)}
+.tally .marks{font:400 20px var(--hand);color:var(--pen);letter-spacing:1px;min-width:2.5em}
+/* the evidence chart, drawn as in pencil */
+.chart{display:block;width:100%;height:auto}
+.sticker-spot{width:120px;height:120px;border:2px dashed #b4a988;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font:15px var(--hand);color:var(--pencil);margin:8px auto;padding:10px}
+.sticker-spot.on{border:none;padding:0}
+.sticker-spot img{width:100%;filter:drop-shadow(2px 0 0 #fbf8f0) drop-shadow(-2px 0 0 #fbf8f0) drop-shadow(0 2px 0 #fbf8f0) drop-shadow(0 -2px 0 #fbf8f0) drop-shadow(0 2px 2px rgba(0,0,0,.4))}
+.side{border:2px dashed var(--pen);border-radius:8px;padding:10px 14px;margin:8px 0}
+.side .k{font:13px var(--print-sc);letter-spacing:.14em;color:var(--pen)}
+.note{max-width:1060px;margin:16px auto 0;background:#fff8ef;border-left:4px solid #E07A2E;border-radius:4px;padding:10px 14px;font-size:15px;color:#3a2f24}
+.note li{font:15px/1.45 var(--read)}
+:focus-visible{outline:3px solid #ffd27a;outline-offset:2px}
+</style>
+
+<div class="wrap">
+<div class="mockhead"><b>Waypoint 1: the Jelly Shallows (mock-up)</b><span>Dashed boxes are placeholders. Your answers are kept only until the page reloads.</span></div>
+<nav class="tabs" id="tabs" aria-label="Sections of waypoint 1"></nav>
+<main id="view"></main>
+<div class="note"><b>About this mock-up.</b><ul>
+<li>One spread per natural break: arrival and the mystery, watching, describing, building, two spreads of field trials, the explorer's evidence, looking inside, a side trail, the challenge, and the Creature Report.</li>
+<li>The observation windows are simulated (jellies and Val with the pulse drive, the woodlouse with the smooth drive); real filmed runs of Val replace Val's window later.</li>
+<li>Placeholders: the story, the setup cards inside the guide, the challenge's wording, the woodlouse chamber (to be tried before it goes to children), the sticker rules.</li>
+</ul></div>
+</div>
+
+<script>
+// ===== art (the guide's own files, embedded for the mock-up) =====
+const ART = {"jelly": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzRlM2IyNiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgICA8cGF0aCBkPSJNMTggNTAgUTE4IDE0IDUwIDE0IFE4MiAxNCA4MiA1MCBRNzQgNDUgNjYgNTAgUTU4IDQ1IDUwIDUwIFE0MiA0NSAzNCA1MCBRMjYgNDUgMTggNTBaIiBmaWxsPSIjNGUzYjI2IiBmaWxsLW9wYWNpdHk9Ii4yNSIvPgogICAgICA8cGF0aCBkPSJNMzQgMjYgUTUwIDIwIDY2IDI2IiBvcGFjaXR5PSIuNiIvPgogICAgICA8cGF0aCBkPSJNMjggNTIgcS00IDEwIDIgMTggdC0yIDIwIE00MiA1MiBxNCAxMiAtMiAyMiB0MiAxOCBNNTggNTIgcS00IDEyIDIgMjIgdC0yIDE4IE03MiA1MiBxNCAxMCAtMiAxOCB0MiAyMCIgc3Ryb2tlLXdpZHRoPSIyLjQiLz48L2c+Cjwvc3ZnPgo=", "woodlouse": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIHN0cm9rZT0iIzRlM2IyNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj4KICAgICAgPGVsbGlwc2UgY3g9IjUwIiBjeT0iNTIiIHJ4PSIyMiIgcnk9IjM2IiBmaWxsPSIjNGUzYjI2IiBmaWxsLW9wYWNpdHk9Ii4zIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHBhdGggZD0iTTMwIDMyIFE1MCAyNiA3MCAzMiBNMjggNDIgUTUwIDM2IDcyIDQyIE0yOCA1MiBRNTAgNDYgNzIgNTIgTTI4IDYyIFE1MCA1NiA3MiA2MiBNMzAgNzIgUTUwIDY2IDcwIDcyIE0zNCA4MCBRNTAgNzYgNjYgODAiIHN0cm9rZS13aWR0aD0iMi4yIi8+CiAgICAgIDxwYXRoIGQ9Ik00MiAxOCBRMzQgOCAyNCA2IE01OCAxOCBRNjYgOCA3NiA2IE00NCA4OCBsLTQgOCBNNTYgODggbDQgOCIgc3Ryb2tlLXdpZHRoPSIyLjYiLz48L2c+Cjwvc3ZnPgo=", "valtop": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMCAtMTAgMjIwIDI5MCIgd2lkdGg9IjQ0MCIgaGVpZ2h0PSI1ODAiPgo8ZGVmcz48ZmlsdGVyIGlkPSJ3YXNoIiB4PSItMTAlIiB5PSItMTAlIiB3aWR0aD0iMTIwJSIgaGVpZ2h0PSIxMjAlIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC4wNCIgbnVtT2N0YXZlcz0iMiIgc2VlZD0iMiIgcmVzdWx0PSJuIi8+PGZlRGlzcGxhY2VtZW50TWFwIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9Im4iIHNjYWxlPSI1Ii8+PGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMC42Ii8+PC9maWx0ZXI+PGZpbHRlciBpZD0iZ3JhaW4iPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjkiIHNlZWQ9IjUiLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9IjAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAwIDAgIDAgMCAwIDAuMTIgMCIvPjxmZUNvbXBvc2l0ZSBpbjI9IlNvdXJjZUdyYXBoaWMiIG9wZXJhdG9yPSJpbiIvPjwvZmlsdGVyPjwvZGVmcz4KPGcgZmlsdGVyPSJ1cmwoI3dhc2gpIiBvcGFjaXR5PSIwLjg1Ij4KPHBhdGggZD0iTTE4LjE2MTQ4NjgwNjY5NDA1IDEyMC4xNDE1MzM1MjA5NDcwNSBIMjQuMTYxNDg2ODA2Njk0MDUgUTI5LjE2MTQ4NjgwNjY5NDA1IDEyMC4xNDE1MzM1MjA5NDcwNSAyOS4xNjE0ODY4MDY2OTQwNSAxMjUuMTQxNTMzNTIwOTQ3MDUgVjE4NS4xNDE1MzM1MjA5NDcwNiBRMjkuMTYxNDg2ODA2Njk0MDUgMTkwLjE0MTUzMzUyMDk0NzA2IDI0LjE2MTQ4NjgwNjY5NDA1IDE5MC4xNDE1MzM1MjA5NDcwNiBIMTguMTYxNDg2ODA2Njk0MDUgUTEzLjE2MTQ4NjgwNjY5NDA1MiAxOTAuMTQxNTMzNTIwOTQ3MDYgMTMuMTYxNDg2ODA2Njk0MDUyIDE4NS4xNDE1MzM1MjA5NDcwNiBWMTI1LjE0MTUzMzUyMDk0NzA1IFExMy4xNjE0ODY4MDY2OTQwNTIgMTIwLjE0MTUzMzUyMDk0NzA1IDE4LjE2MTQ4NjgwNjY5NDA1IDEyMC4xNDE1MzM1MjA5NDcwNVoiIGZpbGw9IiMzZjQ2NTIiIGZpbGwtb3BhY2l0eT0iMC43MiIvPgo8cGF0aCBkPSJNMTc0LjU4Mzg1NjUzMjk1Mzg2IDEyMC4zMzI1NDQxMjM1MDc4MiBIMTgwLjU4Mzg1NjUzMjk1Mzg2IFExODUuNTgzODU2NTMyOTUzODYgMTIwLjMzMjU0NDEyMzUwNzgyIDE4NS41ODM4NTY1MzI5NTM4NiAxMjUuMzMyNTQ0MTIzNTA3ODIgVjE4NS4zMzI1NDQxMjM1MDc4MyBRMTg1LjU4Mzg1NjUzMjk1Mzg2IDE5MC4zMzI1NDQxMjM1MDc4MyAxODAuNTgzODU2NTMyOTUzODYgMTkwLjMzMjU0NDEyMzUwNzgzIEgxNzQuNTgzODU2NTMyOTUzODYgUTE2OS41ODM4NTY1MzI5NTM4NiAxOTAuMzMyNTQ0MTIzNTA3ODMgMTY5LjU4Mzg1NjUzMjk1Mzg2IDE4NS4zMzI1NDQxMjM1MDc4MyBWMTI1LjMzMjU0NDEyMzUwNzgyIFExNjkuNTgzODU2NTMyOTUzODYgMTIwLjMzMjU0NDEyMzUwNzgyIDE3NC41ODM4NTY1MzI5NTM4NiAxMjAuMzMyNTQ0MTIzNTA3ODJaIiBmaWxsPSIjM2Y0NjUyIiBmaWxsLW9wYWNpdHk9IjAuNzIiLz4KPHBhdGggZD0iTTM0LjQwMjMwNDk3MzE0NTc3NSA0Mi42MDk2OTIzNDk1Njc0IEgxNjYuNDAyMzA0OTczMTQ1NzYgUTE3Ni40MDIzMDQ5NzMxNDU3NiA0Mi42MDk2OTIzNDk1Njc0IDE3Ni40MDIzMDQ5NzMxNDU3NiA1Mi42MDk2OTIzNDk1Njc0IFYyMzIuNjA5NjkyMzQ5NTY3NCBRMTc2LjQwMjMwNDk3MzE0NTc2IDI0Mi42MDk2OTIzNDk1Njc0IDE2Ni40MDIzMDQ5NzMxNDU3NiAyNDIuNjA5NjkyMzQ5NTY3NCBIMzQuNDAyMzA0OTczMTQ1Nzc1IFEyNC40MDIzMDQ5NzMxNDU3NzUgMjQyLjYwOTY5MjM0OTU2NzQgMjQuNDAyMzA0OTczMTQ1Nzc1IDIzMi42MDk2OTIzNDk1Njc0IFY1Mi42MDk2OTIzNDk1Njc0IFEyNC40MDIzMDQ5NzMxNDU3NzUgNDIuNjA5NjkyMzQ5NTY3NCAzNC40MDIzMDQ5NzMxNDU3NzUgNDIuNjA5NjkyMzQ5NTY3NFoiIGZpbGw9IiM1YjY1NzMiIGZpbGwtb3BhY2l0eT0iMC43MiIvPgo8cGF0aCBkPSJNNDAuNDQyMTM3NTcyOTc1NiA1Ny4wNzk5MDEwNjI3MDg2NyBIMTU2LjQ0MjEzNzU3Mjk3NTU4IFExNjIuNDQyMTM3NTcyOTc1NTggNTcuMDc5OTAxMDYyNzA4NjcgMTYyLjQ0MjEzNzU3Mjk3NTU4IDYzLjA3OTkwMTA2MjcwODY3IFYyMjcuMDc5OTAxMDYyNzA4NjcgUTE2Mi40NDIxMzc1NzI5NzU1OCAyMzMuMDc5OTAxMDYyNzA4NjcgMTU2LjQ0MjEzNzU3Mjk3NTU4IDIzMy4wNzk5MDEwNjI3MDg2NyBINDAuNDQyMTM3NTcyOTc1NiBRMzQuNDQyMTM3NTcyOTc1NiAyMzMuMDc5OTAxMDYyNzA4NjcgMzQuNDQyMTM3NTcyOTc1NiAyMjcuMDc5OTAxMDYyNzA4NjcgVjYzLjA3OTkwMTA2MjcwODY3IFEzNC40NDIxMzc1NzI5NzU2IDU3LjA3OTkwMTA2MjcwODY3IDQwLjQ0MjEzNzU3Mjk3NTYgNTcuMDc5OTAxMDYyNzA4NjdaIiBmaWxsPSIjNmU3ODg2IiBmaWxsLW9wYWNpdHk9IjAuNzIiLz4KPHBhdGggZD0iTTYyLjIyOTkzMjg0NTg0OTYyNSAxOS4xNDk4NTkwNzUzNDk0MyBIMTM2LjIyOTkzMjg0NTg0OTYyIFExMzkuMjI5OTMyODQ1ODQ5NjIgMTkuMTQ5ODU5MDc1MzQ5NDMgMTM5LjIyOTkzMjg0NTg0OTYyIDIyLjE0OTg1OTA3NTM0OTQzIFYyNC4xNDk4NTkwNzUzNDk0MyBRMTM5LjIyOTkzMjg0NTg0OTYyIDI3LjE0OTg1OTA3NTM0OTQzIDEzNi4yMjk5MzI4NDU4NDk2MiAyNy4xNDk4NTkwNzUzNDk0MyBINjIuMjI5OTMyODQ1ODQ5NjI1IFE1OS4yMjk5MzI4NDU4NDk2MjUgMjcuMTQ5ODU5MDc1MzQ5NDMgNTkuMjI5OTMyODQ1ODQ5NjI1IDI0LjE0OTg1OTA3NTM0OTQzIFYyMi4xNDk4NTkwNzUzNDk0MyBRNTkuMjI5OTMyODQ1ODQ5NjI1IDE5LjE0OTg1OTA3NTM0OTQzIDYyLjIyOTkzMjg0NTg0OTYyNSAxOS4xNDk4NTkwNzUzNDk0M1oiIGZpbGw9IiM0YTRmNTciIGZpbGwtb3BhY2l0eT0iMC43MiIvPgo8Y2lyY2xlIGN4PSIxMDEuNTg2MDYzNDczNjMzNDkiIGN5PSIxNS45MDQ4NDMyMjQwNzE4MzMiIHI9IjExIiBmaWxsPSIjM2Y0NjUyIiBmaWxsLW9wYWNpdHk9IjAuNzUiLz4KPHBhdGggZD0iTTEzMS4wNzY2NzY2NDQwNzgwNSAxMzUuOTI0MzMwMjY3ODM3ODYgSDE2OS4wNzY2NzY2NDQwNzgwNSBRMTc1LjA3NjY3NjY0NDA3ODA1IDEzNS45MjQzMzAyNjc4Mzc4NiAxNzUuMDc2Njc2NjQ0MDc4MDUgMTQxLjkyNDMzMDI2NzgzNzg2IFYxNDEuOTI0MzMwMjY3ODM3ODYgUTE3NS4wNzY2NzY2NDQwNzgwNSAxNDcuOTI0MzMwMjY3ODM3ODYgMTY5LjA3NjY3NjY0NDA3ODA1IDE0Ny45MjQzMzAyNjc4Mzc4NiBIMTMxLjA3NjY3NjY0NDA3ODA1IFExMjUuMDc2Njc2NjQ0MDc4MDUgMTQ3LjkyNDMzMDI2NzgzNzg2IDEyNS4wNzY2NzY2NDQwNzgwNSAxNDEuOTI0MzMwMjY3ODM3ODYgVjE0MS45MjQzMzAyNjc4Mzc4NiBRMTI1LjA3NjY3NjY0NDA3ODA1IDEzNS45MjQzMzAyNjc4Mzc4NiAxMzEuMDc2Njc2NjQ0MDc4MDUgMTM1LjkyNDMzMDI2NzgzNzg2WiIgZmlsbD0iI2Y0ZjFlOCIgZmlsbC1vcGFjaXR5PSIwLjcyIi8+CjxwYXRoIGQ9Ik0xMzEuNDQ1MDE4MDQ5NzQxMzIgMTk0Ljg4MTk3MjU1Njg3NTI3IEgxNTEuNDQ1MDE4MDQ5NzQxMzIgUTE1Ni40NDUwMTgwNDk3NDEzMiAxOTQuODgxOTcyNTU2ODc1MjcgMTU2LjQ0NTAxODA0OTc0MTMyIDE5OS44ODE5NzI1NTY4NzUyNyBWMTk5Ljg4MTk3MjU1Njg3NTI3IFExNTYuNDQ1MDE4MDQ5NzQxMzIgMjA0Ljg4MTk3MjU1Njg3NTI3IDE1MS40NDUwMTgwNDk3NDEzMiAyMDQuODgxOTcyNTU2ODc1MjcgSDEzMS40NDUwMTgwNDk3NDEzMiBRMTI2LjQ0NTAxODA0OTc0MTMyIDIwNC44ODE5NzI1NTY4NzUyNyAxMjYuNDQ1MDE4MDQ5NzQxMzIgMTk5Ljg4MTk3MjU1Njg3NTI3IFYxOTkuODgxOTcyNTU2ODc1MjcgUTEyNi40NDUwMTgwNDk3NDEzMiAxOTQuODgxOTcyNTU2ODc1MjcgMTMxLjQ0NTAxODA0OTc0MTMyIDE5NC44ODE5NzI1NTY4NzUyN1oiIGZpbGw9IiNlN2I5M2UiIGZpbGwtb3BhY2l0eT0iMC43MiIvPgo8cGF0aCBkPSJNNjIuNDMxNTU0MTA2NTEyNiA3OS4xNzc3NDQ5ODI4NTg1NiBIMTE2LjQzMTU1NDEwNjUxMjYgUTEyMi40MzE1NTQxMDY1MTI2IDc5LjE3Nzc0NDk4Mjg1ODU2IDEyMi40MzE1NTQxMDY1MTI2IDg1LjE3Nzc0NDk4Mjg1ODU2IFYyMjUuMTc3NzQ0OTgyODU4NTQgUTEyMi40MzE1NTQxMDY1MTI2IDIzMS4xNzc3NDQ5ODI4NTg1NCAxMTYuNDMxNTU0MTA2NTEyNiAyMzEuMTc3NzQ0OTgyODU4NTQgSDYyLjQzMTU1NDEwNjUxMjYgUTU2LjQzMTU1NDEwNjUxMjYgMjMxLjE3Nzc0NDk4Mjg1ODU0IDU2LjQzMTU1NDEwNjUxMjYgMjI1LjE3Nzc0NDk4Mjg1ODU0IFY4NS4xNzc3NDQ5ODI4NTg1NiBRNTYuNDMxNTU0MTA2NTEyNiA3OS4xNzc3NDQ5ODI4NTg1NiA2Mi40MzE1NTQxMDY1MTI2IDc5LjE3Nzc0NDk4Mjg1ODU2WiIgZmlsbD0iI2E5YWRiMyIgZmlsbC1vcGFjaXR5PSIwLjcyIi8+CjxwYXRoIGQ9Ik04Ni4wNzQxNzk4NzMyMjY1NyA4Ni43NzIwMDU5Mzk4NDQ3NyBIOTIuMDc0MTc5ODczMjI2NTcgUTExNC4wNzQxNzk4NzMyMjY1NyA4Ni43NzIwMDU5Mzk4NDQ3NyAxMTQuMDc0MTc5ODczMjI2NTcgMTA4Ljc3MjAwNTkzOTg0NDc3IFYxNDYuNzcyMDA1OTM5ODQ0NzcgUTExNC4wNzQxNzk4NzMyMjY1NyAxNjguNzcyMDA1OTM5ODQ0NzcgOTIuMDc0MTc5ODczMjI2NTcgMTY4Ljc3MjAwNTkzOTg0NDc3IEg4Ni4wNzQxNzk4NzMyMjY1NyBRNjQuMDc0MTc5ODczMjI2NTcgMTY4Ljc3MjAwNTkzOTg0NDc3IDY0LjA3NDE3OTg3MzIyNjU3IDE0Ni43NzIwMDU5Mzk4NDQ3NyBWMTA4Ljc3MjAwNTkzOTg0NDc3IFE2NC4wNzQxNzk4NzMyMjY1NyA4Ni43NzIwMDU5Mzk4NDQ3NyA4Ni4wNzQxNzk4NzMyMjY1NyA4Ni43NzIwMDU5Mzk4NDQ3N1oiIGZpbGw9IiM0Zjg2YzYiIGZpbGwtb3BhY2l0eT0iMC43MiIvPgo8cGF0aCBkPSJNNjcuNTQ4NTE2NzIxMTgyNyAxNzQuNjA0OTAwNjAyMzI2MzggSDExMS41NDg1MTY3MjExODI3IFExMjAuNTQ4NTE2NzIxMTgyNyAxNzQuNjA0OTAwNjAyMzI2MzggMTIwLjU0ODUxNjcyMTE4MjcgMTgzLjYwNDkwMDYwMjMyNjM4IFYyMjEuNjA0OTAwNjAyMzI2MzggUTEyMC41NDg1MTY3MjExODI3IDIzMC42MDQ5MDA2MDIzMjYzOCAxMTEuNTQ4NTE2NzIxMTgyNyAyMzAuNjA0OTAwNjAyMzI2MzggSDY3LjU0ODUxNjcyMTE4MjcgUTU4LjU0ODUxNjcyMTE4MjY5IDIzMC42MDQ5MDA2MDIzMjYzOCA1OC41NDg1MTY3MjExODI2OSAyMjEuNjA0OTAwNjAyMzI2MzggVjE4My42MDQ5MDA2MDIzMjYzOCBRNTguNTQ4NTE2NzIxMTgyNjkgMTc0LjYwNDkwMDYwMjMyNjM4IDY3LjU0ODUxNjcyMTE4MjcgMTc0LjYwNDkwMDYwMjMyNjM4WiIgZmlsbD0iI2M3Y2FjZCIgZmlsbC1vcGFjaXR5PSIwLjcyIi8+CjxwYXRoIGQ9Ik03MC44MjYzMzY3ODgxMTc4MSAxODQuMjkxNTE4NjY1MzgwMiBIMTA4LjgyNjMzNjc4ODExNzgxIFExMTIuODI2MzM2Nzg4MTE3ODEgMTg0LjI5MTUxODY2NTM4MDIgMTEyLjgyNjMzNjc4ODExNzgxIDE4OC4yOTE1MTg2NjUzODAyIFYyMjAuMjkxNTE4NjY1MzgwMiBRMTEyLjgyNjMzNjc4ODExNzgxIDIyNC4yOTE1MTg2NjUzODAyIDEwOC44MjYzMzY3ODgxMTc4MSAyMjQuMjkxNTE4NjY1MzgwMiBINzAuODI2MzM2Nzg4MTE3ODEgUTY2LjgyNjMzNjc4ODExNzgxIDIyNC4yOTE1MTg2NjUzODAyIDY2LjgyNjMzNjc4ODExNzgxIDIyMC4yOTE1MTg2NjUzODAyIFYxODguMjkxNTE4NjY1MzgwMiBRNjYuODI2MzM2Nzg4MTE3ODEgMTg0LjI5MTUxODY2NTM4MDIgNzAuODI2MzM2Nzg4MTE3ODEgMTg0LjI5MTUxODY2NTM4MDJaIiBmaWxsPSIjMmMzMTM4IiBmaWxsLW9wYWNpdHk9IjAuNzIiLz4KPHBhdGggZD0iTTg2IDgyIEM3MCA0MCAyMCA2MCAyNiAxMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2UwOGEzYyIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9IjAuOCIvPgo8cGF0aCBkPSJNOTIgODAgQzExMCAzMCAxOTAgNTAgMTcwIDExOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThjMzZhIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC44Ii8+CjxwYXRoIGQ9Ik0xMTggMTIwIEMxNTAgMTEwIDE2MCAxNjAgMTc2IDE3MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTA4YTNjIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC44Ii8+CjwvZz4KPHJlY3QgeD0iNzciIHk9IjE5My42IiB3aWR0aD0iNiIgaGVpZ2h0PSI1IiByeD0iMSIgZmlsbD0iIzlmZTA4YSIvPgo8cmVjdCB4PSI5NSIgeT0iMTkzLjYiIHdpZHRoPSI2IiBoZWlnaHQ9IjUiIHJ4PSIxIiBmaWxsPSIjOWZlMDhhIi8+CjxyZWN0IHg9Ijc3IiB5PSIyMDguOCIgd2lkdGg9IjYiIGhlaWdodD0iNSIgcng9IjEiIGZpbGw9IiM5ZmUwOGEiLz4KPHJlY3QgeD0iODYiIHk9IjIwOC44IiB3aWR0aD0iNiIgaGVpZ2h0PSI1IiByeD0iMSIgZmlsbD0iIzlmZTA4YSIvPgo8cmVjdCB4PSI5NSIgeT0iMjA4LjgiIHdpZHRoPSI2IiBoZWlnaHQ9IjUiIHJ4PSIxIiBmaWxsPSIjOWZlMDhhIi8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJiMjExOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KPHBhdGggZD0iTTE5IDEyMCBIMjUgUTMwIDEyMCAzMCAxMjUgVjE4NSBRMzAgMTkwIDI1IDE5MCBIMTkgUTE0IDE5MCAxNCAxODUgVjEyNSBRMTQgMTIwIDE5IDEyMFoiIHN0cm9rZS13aWR0aD0iMS43Ii8+CjxwYXRoIGQ9Ik0xNzUgMTIwIEgxODEgUTE4NiAxMjAgMTg2IDEyNSBWMTg1IFExODYgMTkwIDE4MSAxOTAgSDE3NSBRMTcwIDE5MCAxNzAgMTg1IFYxMjUgUTE3MCAxMjAgMTc1IDEyMFoiIHN0cm9rZS13aWR0aD0iMS43Ii8+CjxwYXRoIGQ9Ik0zNCA0NCBIMTY2IFExNzYgNDQgMTc2IDU0IFYyMzQgUTE3NiAyNDQgMTY2IDI0NCBIMzQgUTI0IDI0NCAyNCAyMzQgVjU0IFEyNCA0NCAzNCA0NFoiIHN0cm9rZS13aWR0aD0iMS43Ii8+CjxwYXRoIGQ9Ik00MiA1NiBIMTU4IFExNjQgNTYgMTY0IDYyIFYyMjYgUTE2NCAyMzIgMTU4IDIzMiBINDIgUTM2IDIzMiAzNiAyMjYgVjYyIFEzNiA1NiA0MiA1NloiIHN0cm9rZS13aWR0aD0iMS4yIi8+CjxwYXRoIGQ9Ik02MyAyMCBIMTM3IFExNDAgMjAgMTQwIDIzIFYyNSBRMTQwIDI4IDEzNyAyOCBINjMgUTYwIDI4IDYwIDI1IFYyMyBRNjAgMjAgNjMgMjBaIiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxNiIgcj0iMTEiIHN0cm9rZS13aWR0aD0iMS43Ii8+CjxwYXRoIGQ9Ik0xMzAgMTM2IEgxNjggUTE3NCAxMzYgMTc0IDE0MiBWMTQyIFExNzQgMTQ4IDE2OCAxNDggSDEzMCBRMTI0IDE0OCAxMjQgMTQyIFYxNDIgUTEyNCAxMzYgMTMwIDEzNloiIHN0cm9rZS13aWR0aD0iMS4yIi8+CjxwYXRoIGQ9Ik0xMzEgMTk2IEgxNTEgUTE1NiAxOTYgMTU2IDIwMSBWMjAxIFExNTYgMjA2IDE1MSAyMDYgSDEzMSBRMTI2IDIwNiAxMjYgMjAxIFYyMDEgUTEyNiAxOTYgMTMxIDE5NloiIHN0cm9rZS13aWR0aD0iMS4yIi8+CjxwYXRoIGQ9Ik02MiA3OCBIMTE2IFExMjIgNzggMTIyIDg0IFYyMjQgUTEyMiAyMzAgMTE2IDIzMCBINjIgUTU2IDIzMCA1NiAyMjQgVjg0IFE1NiA3OCA2MiA3OFoiIHN0cm9rZS13aWR0aD0iMS43Ii8+CjxwYXRoIGQ9Ik04NiA4NiBIOTIgUTExNCA4NiAxMTQgMTA4IFYxNDYgUTExNCAxNjggOTIgMTY4IEg4NiBRNjQgMTY4IDY0IDE0NiBWMTA4IFE2NCA4NiA4NiA4NloiIHN0cm9rZS13aWR0aD0iMS43Ii8+CjxwYXRoIGQ9Ik02NyAxNzYgSDExMSBRMTIwIDE3NiAxMjAgMTg1IFYyMjMgUTEyMCAyMzIgMTExIDIzMiBINjcgUTU4IDIzMiA1OCAyMjMgVjE4NSBRNTggMTc2IDY3IDE3NloiIHN0cm9rZS13aWR0aD0iMS4yIi8+CjxwYXRoIGQ9Ik03MCAxODQgSDEwOCBRMTEyIDE4NCAxMTIgMTg4IFYyMjAgUTExMiAyMjQgMTA4IDIyNCBINzAgUTY2IDIyNCA2NiAyMjAgVjE4OCBRNjYgMTg0IDcwIDE4NFoiIHN0cm9rZS13aWR0aD0iMS4yIi8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iNTYiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjY4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMzAiIGN5PSI4MCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iOTIiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjEwNCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iMTE2IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMzAiIGN5PSIxMjgiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjE0MCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iMTUyIiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMzAiIGN5PSIxNjQiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjE3NiIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iMTg4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMzAiIGN5PSIyMDAiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjIxMiIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iMjI0IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTcwIiBjeT0iNTYiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSI2OCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjE3MCIgY3k9IjgwIiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTcwIiBjeT0iOTIiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIxMDQiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIxMTYiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIxMjgiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIxNDAiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIxNTIiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIxNjQiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIxNzYiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIxODgiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIyMDAiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIyMTIiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxNzAiIGN5PSIyMjQiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSI0MiIgY3k9IjUwIiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iNTQiIGN5PSI1MCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjY2IiBjeT0iNTAiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSI3OCIgY3k9IjUwIiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iOTAiIGN5PSI1MCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjEwMiIgY3k9IjUwIiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTE0IiBjeT0iNTAiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSIxMjYiIGN5PSI1MCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjEzOCIgY3k9IjUwIiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTUwIiBjeT0iNTAiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSI0MiIgY3k9IjIzOCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjU0IiBjeT0iMjM4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iNjYiIGN5PSIyMzgiIHI9IjMuMiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSIjZjJlYWQ2IiBmaWxsLW9wYWNpdHk9IjAuNyIvPgo8Y2lyY2xlIGN4PSI3OCIgY3k9IjIzOCIgcj0iMy4yIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9IiNmMmVhZDYiIGZpbGwtb3BhY2l0eT0iMC43Ii8+CjxjaXJjbGUgY3g9IjkwIiBjeT0iMjM4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTAyIiBjeT0iMjM4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTE0IiBjeT0iMjM4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTI2IiBjeT0iMjM4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTM4IiBjeT0iMjM4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTUwIiBjeT0iMjM4IiByPSIzLjIiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2YyZWFkNiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPGNpcmNsZSBjeD0iMTMyIiBjeT0iMTQyIiByPSIyLjYiIHN0cm9rZS13aWR0aD0iMC45Ii8+CjxjaXJjbGUgY3g9IjE0MSIgY3k9IjE0MiIgcj0iMi42IiBzdHJva2Utd2lkdGg9IjAuOSIvPgo8Y2lyY2xlIGN4PSIxNTAiIGN5PSIxNDIiIHI9IjIuNiIgc3Ryb2tlLXdpZHRoPSIwLjkiLz4KPGNpcmNsZSBjeD0iMTU5IiBjeT0iMTQyIiByPSIyLjYiIHN0cm9rZS13aWR0aD0iMC45Ii8+CjxjaXJjbGUgY3g9IjE2OCIgY3k9IjE0MiIgcj0iMi42IiBzdHJva2Utd2lkdGg9IjAuOSIvPgo8cGF0aCBkPSJNODYgODIgQzcwIDQwIDIwIDYwIDI2IDExMCIgc3Ryb2tlLXdpZHRoPSIwLjkiLz4KPHBhdGggZD0iTTkyIDgwIEMxMTAgMzAgMTkwIDUwIDE3MCAxMTgiIHN0cm9rZS13aWR0aD0iMC45Ii8+CjxwYXRoIGQ9Ik0xMTggMTIwIEMxNTAgMTEwIDE2MCAxNjAgMTc2IDE3MCIgc3Ryb2tlLXdpZHRoPSIwLjkiLz4KPHBhdGggZD0iTTE1IDEyNiBoMTQgTTE3MSAxMjYgaDE0IiBzdHJva2Utd2lkdGg9IjAuNyIvPgo8cGF0aCBkPSJNMTUgMTMzIGgxNCBNMTcxIDEzMyBoMTQiIHN0cm9rZS13aWR0aD0iMC43Ii8+CjxwYXRoIGQ9Ik0xNSAxNDAgaDE0IE0xNzEgMTQwIGgxNCIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KPHBhdGggZD0iTTE1IDE0NyBoMTQgTTE3MSAxNDcgaDE0IiBzdHJva2Utd2lkdGg9IjAuNyIvPgo8cGF0aCBkPSJNMTUgMTU0IGgxNCBNMTcxIDE1NCBoMTQiIHN0cm9rZS13aWR0aD0iMC43Ii8+CjxwYXRoIGQ9Ik0xNSAxNjEgaDE0IE0xNzEgMTYxIGgxNCIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KPHBhdGggZD0iTTE1IDE2OCBoMTQgTTE3MSAxNjggaDE0IiBzdHJva2Utd2lkdGg9IjAuNyIvPgo8cGF0aCBkPSJNMTUgMTc1IGgxNCBNMTcxIDE3NSBoMTQiIHN0cm9rZS13aWR0aD0iMC43Ii8+CjxwYXRoIGQ9Ik0xNSAxODIgaDE0IE0xNzEgMTgyIGgxNCIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KPHBhdGggZD0iTTc0IDk2IFYxNTYiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG9wYWNpdHk9IjAuNiIvPgo8L2c+PC9zdmc+", "sticker": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjMmM3ZjhhIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKC43MikiPjxnPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2U5ZmJmYiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgICA8cGF0aCBkPSJNMTggNTAgUTE4IDE0IDUwIDE0IFE4MiAxNCA4MiA1MCBRNzQgNDUgNjYgNTAgUTU4IDQ1IDUwIDUwIFE0MiA0NSAzNCA1MCBRMjYgNDUgMTggNTBaIiBmaWxsPSIjZTlmYmZiIiBmaWxsLW9wYWNpdHk9Ii4yNSIvPgogICAgICA8cGF0aCBkPSJNMzQgMjYgUTUwIDIwIDY2IDI2IiBvcGFjaXR5PSIuNiIvPgogICAgICA8cGF0aCBkPSJNMjggNTIgcS00IDEwIDIgMTggdC0yIDIwIE00MiA1MiBxNCAxMiAtMiAyMiB0MiAxOCBNNTggNTIgcS00IDEyIDIgMjIgdC0yIDE4IE03MiA1MiBxNCAxMCAtMiAxOCB0MiAyMCIgc3Ryb2tlLXdpZHRoPSIyLjQiLz48L2c+PC9nPjwvZz4KPC9zdmc+Cg=="};
+
+// ===== what the explorer has done (this page only) =====
+const S = { pred: {}, tally: {}, words: [], agent: {}, notes: '', report: '', challenge: '', done: {} };
+
+// ===== the observation windows: one creature in a round tray, right half lit =====
+const SIZE = 300, RAD = 140, C = SIZE / 2;
+const imgs = {};
+for (const k of ['jelly', 'woodlouse', 'valtop']) { imgs[k] = new Image(); imgs[k].src = ART[k]; }
+function gauss() { return Math.sqrt(-2 * Math.log(Math.random() + 1e-9)) * Math.cos(2 * Math.PI * Math.random()); }
+class Win {
+  constructor(cv, kind, wire) {
+    this.cv = cv; this.g = cv.getContext('2d'); cv.width = SIZE; cv.height = SIZE;
+    this.kind = kind; this.wire = wire; this.side = 1; this.heat = new Float32Array(625); this.hmax = 1;
+    const css = getComputedStyle(document.documentElement);
+    this.col = { dark: css.getPropertyValue('--tray-dark'), lit: css.getPropertyValue('--tray-lit'), trail: css.getPropertyValue('--trail') };
+    this.place(); this.draw();
+  }
+  light(x) { return 1 / (1 + Math.exp(-(x - C) * this.side / 14)); }
+  feel(x) { const L = this.light(x); return this.wire > 0 ? L : 1 - L; }
+  inside(x, y) { return Math.hypot(x - C, y - C) < RAD - 12; }
+  place() {
+    const a = Math.random() * 6.28, r = (RAD - 30) * Math.sqrt(Math.random());
+    if (this.kind === 'val') {
+      const moves = this.wire > 0 ? this.side : -this.side;
+      this.x = C + moves * (30 + 40 * Math.random()); this.y = C + (Math.random() - .5) * 100;
+      this.h = (moves > 0 ? Math.PI : 0) + (Math.random() - .5);
+    } else { this.x = C + r * Math.cos(a); this.y = C + r * Math.sin(a); this.h = Math.random() * 6.28; }
+    this.v = 0; this.ph = .99; this.beat = -1; this.still = 0; this.stuck = false;
+  }
+  step(dt) {
+    const f = this.feel(this.x);
+    if (this.kind === 'val') {                     // pulse drive: straight, beats with the light
+      this.ph += f * 1.6 * dt; if (this.ph >= 1) { this.ph -= 1; this.beat = 0; }
+      let push = 0; const D = 1 / 1.6;
+      if (this.beat >= 0) { const s = this.beat / D; push = s < .15 ? s / .15 : Math.exp(-(s - .15) * 3.2); this.beat += dt; if (this.beat > D) { this.beat = -1; } }
+      this.v = this.stuck ? 0 : 80 * push;
+      const nx = this.x + Math.cos(this.h) * this.v * dt, ny = this.y + Math.sin(this.h) * this.v * dt;
+      if (this.inside(nx, ny)) { this.x = nx; this.y = ny; } else { this.stuck = true; }
+      if (this.stuck || f < .03) { this.still += dt; } else { this.still = 0; }
+      if (this.still > 2) { this.place(); }
+    } else if (this.kind === 'jelly') {            // pulses with the light (and a little in the dark), drifts, turns a little
+      this.ph += (.25 + 1.6 * f) * dt; if (this.ph >= 1) { this.ph -= 1; this.v += 40; this.beat = 0; }
+      if (this.beat >= 0) { this.beat += dt; if (this.beat > .35) { this.beat = -1; } }
+      this.v *= Math.exp(-2.2 * dt); this.h += gauss() * .6 * Math.sqrt(dt);
+      const nx = this.x + Math.cos(this.h) * this.v * dt, ny = this.y + Math.sin(this.h) * this.v * dt;
+      if (this.inside(nx, ny)) { this.x = nx; this.y = ny; } else { this.h += Math.PI; }
+    } else {                                       // woodlouse: smooth, faster where it feels more
+      this.v = 6 + 90 * f; this.h += gauss() * .8 * Math.sqrt(dt);
+      const nx = this.x + Math.cos(this.h) * this.v * dt, ny = this.y + Math.sin(this.h) * this.v * dt;
+      if (this.inside(nx, ny)) { this.x = nx; this.y = ny; } else { this.h = Math.atan2(C - this.y, C - this.x) + (Math.random() - .5) * 1.6; }
+    }
+    const i = Math.min(24, Math.max(0, Math.floor(this.x / 12))) + 25 * Math.min(24, Math.max(0, Math.floor(this.y / 12)));
+    this.heat[i] += dt; this.hmax = Math.max(this.hmax, this.heat[i]);
+  }
+  draw() {
+    const g = this.g; g.clearRect(0, 0, SIZE, SIZE);
+    g.save(); g.beginPath(); g.arc(C, C, RAD, 0, 6.29); g.clip();
+    g.fillStyle = this.col.dark; g.fillRect(0, 0, SIZE, SIZE);
+    const lg = g.createLinearGradient(C - 24 * this.side, 0, C + 24 * this.side, 0);
+    lg.addColorStop(0, 'rgba(255,246,207,0)'); lg.addColorStop(1, this.col.lit);
+    g.fillStyle = this.col.lit; if (this.side > 0) { g.fillRect(C + 24, 0, SIZE, SIZE); } else { g.fillRect(0, 0, C - 24, SIZE); }
+    g.fillStyle = lg; g.fillRect(C - 24, 0, 48, SIZE);
+    g.fillStyle = this.col.trail;
+    for (let i = 0; i < 625; i++) { if (this.heat[i] > 0) { g.globalAlpha = .12 + .55 * this.heat[i] / this.hmax; g.fillRect((i % 25) * 12 + 2, Math.floor(i / 25) * 12 + 2, 8, 8); } }
+    g.globalAlpha = 1;
+    g.save(); g.translate(this.x, this.y); g.rotate(this.h + Math.PI / 2);
+    if (this.kind === 'val') { g.drawImage(imgs.valtop, -15, -20, 30, 40); }
+    else if (this.kind === 'jelly') { const sq = this.beat >= 0 ? Math.sin(Math.PI * this.beat / .35) : 0; g.scale(1 - .22 * sq, 1 + .12 * sq); g.drawImage(imgs.jelly, -15, -15, 30, 30); }
+    else { g.drawImage(imgs.woodlouse, -13, -13, 26, 26); }
+    g.restore(); g.restore();
+    g.strokeStyle = '#33251a'; g.lineWidth = 5; g.beginPath(); g.arc(C, C, RAD, 0, 6.29); g.stroke();
+  }
+}
+let wins = [], playing = false, last = 0;
+function loop(t) { if (!playing) { return; } const dt = Math.min(.25, (t - last) / 1000); last = t; const n = Math.max(1, Math.ceil(dt * 200)); for (const w of wins) { for (let k = 0; k < n; k++) { w.step(dt / n); } w.draw(); } requestAnimationFrame(loop); }
+function windows(list) { wins = list.map(([id, kind, wire]) => new Win(document.getElementById(id), kind, wire)); }
+function play(btn) { playing = !playing; btn.setAttribute('aria-pressed', playing); btn.textContent = playing ? 'Pause' : 'Play'; if (playing) { last = performance.now(); requestAnimationFrame(loop); } }
+function win(id, cap) { return `<figure><canvas id="${id}" aria-label="${cap}"></canvas><figcaption>${cap}</figcaption></figure>`; }
+
+// ===== the trials =====
+const TRIALS = [
+  { id: 't1', what: '+ wire, lamp on the right', why: 'more light, more pushes' },
+  { id: 't2', what: '− wire, lamp on the right', why: 'more light, fewer pushes' },
+  { id: 't3', what: '+ wire, lamp moved to the left', why: 'does Val follow the dark?' },
+  { id: 't4', what: '+ wire, smooth drive instead of pulses', why: 'like the woodlouse: does it end up anywhere different?' },
+  { id: 't5', what: '+ wire, Val starts in the dark', why: 'what does Val do first?' },
+];
+const WHERE = ['in the dark', 'in the light', 'at the wall'];
+function trialRows(list) {
+  return list.map(t => {
+    const pick = WHERE.map(w => `<button type="button" data-pred="${t.id}" data-v="${w}" aria-pressed="${S.pred[t.id] === w}">${w}</button>`).join('');
+    const tal = WHERE.map(w => { const n = (S.tally[t.id] || {})[w] || 0; return `<span>${w}: <span class="marks">${'|'.repeat(n) || '·'}</span> <button type="button" data-tally="${t.id}" data-v="${w}" aria-label="add a run that stopped ${w}">+1</button></span>`; }).join('');
+    return `<tr><td><span class="what">${t.what}</span><br><span class="pencil">${t.why}</span></td>
+      <td><div class="pick">${pick}</div></td><td><div class="tally">${tal}</div></td></tr>`;
+  }).join('');
+}
+function trialTable(list) {
+  return `<table class="trials"><thead><tr><th>I change</th><th>I predict Val stops</th><th>Where it stopped (3 runs)</th></tr></thead><tbody>${trialRows(list)}</tbody></table>`;
+}
+
+// ===== the evidence chart =====
+function chart() {
+  const W = 420, H = 230, bw = 22, gx = 74;
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="My runs: where Val stopped in each trial">`;
+  s += `<path d="M40 190 H${W - 10} M40 190 V20" stroke="#33251a" stroke-width="2" fill="none"/>`;
+  const colours = { 'in the dark': '#5c6676', 'in the light': '#e9c35a', 'at the wall': '#a89b80' };
+  TRIALS.forEach((t, i) => {
+    WHERE.forEach((w, j) => {
+      const n = (S.tally[t.id] || {})[w] || 0, h = n * 50;
+      const x = 52 + i * gx + j * bw;
+      if (n) { s += `<rect x="${x}" y="${190 - h}" width="${bw - 4}" height="${h}" fill="${colours[w]}" stroke="#33251a" stroke-width="1.3"/>`; }
+    });
+    s += `<text x="${52 + i * gx + 30}" y="210" text-anchor="middle" font-family="Kalam" font-size="15" fill="#33251a">trial ${i + 1}</text>`;
+  });
+  [1, 2, 3].forEach(n => { s += `<text x="30" y="${194 - n * 50}" text-anchor="end" font-family="Kalam" font-size="14" fill="#5d5148">${n}</text>`; });
+  s += `<g font-family="Kalam" font-size="14" fill="#33251a">` + WHERE.map((w, j) => `<rect x="${60 + j * 120}" y="4" width="12" height="12" fill="${colours[w]}" stroke="#33251a"/><text x="${78 + j * 120}" y="15">${w}</text>`).join('') + `</g></svg>`;
+  return s;
+}
+
+// ===== the spreads (natural breaks) =====
+const SPREADS = [
+  { tab: 'Arrive', l: () => `<h2>The Jelly Shallows <small>${new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}</small></h2><span class="uline"></span>
+      <p class="pencil">Waypoint 1</p>
+      <div class="ph"><b>[Story]</b> Arriving at the Jelly Shallows: warm, bright water near the shore. Your words go here.</div>
+      <img class="art" src="${ART.jelly}" alt="A jellyfish" style="width:130px">
+      <p>Jellies have drifted in the sea for more than 500 million years. They have no front and no back, no left and no right.</p>`,
+    r: () => `<div class="mystery"><div class="k">The mystery</div>
+      <p class="big">Val ends up in the dark. But nothing inside Val knows where the dark is.</p><p class="big pen">How?</p></div>
+      <p>By the end of this waypoint you will be able to explain it, with evidence you collect yourself.</p>
+      <h3>You will need</h3><ul><li>Val, with one wheel and a light sensor</li><li>a lamp</li><li>a floor with room to roam</li><li>a pencil</li></ul>` },
+  { tab: 'Watch', l: () => `<h2>Watch</h2><span class="uline"></span>
+      <p>Two jellies in the same pool of light. One <b>pulses more</b> in bright light; the other <b>pulses less</b>.</p>
+      <div class="windows">${win('wJp', 'jelly: more light, more pulses')}${win('wJm', 'jelly: more light, fewer pulses')}</div>
+      <p><button class="tag" type="button" id="playW" aria-pressed="false">Play</button></p>`,
+    r: () => `<p>Watch where each one spends its time: the orange shows it.</p>
+      <div class="windows">${win('wL', 'woodlouse: more light, faster')}</div>
+      <p>The woodlouse is a living cousin: it came long after the jellies, but it still uses their oldest trick. It walks smoothly; it doesn't pulse.</p>
+      <p class="pencil">Where does each one end up? Keep watching for a minute.</p>`,
+    after: () => { windows([['wJp', 'jelly', 1], ['wJm', 'jelly', -1], ['wL', 'woodlouse', 1]]); document.getElementById('playW').onclick = e => play(e.target); } },
+  { tab: 'Describe', l: () => `<h2>What are they doing?</h2><span class="uline"></span>
+      <p>Pick every word that fits what you saw.</p>
+      <ul class="boxes">${['Avoiding the light', 'Loving the dark', 'Scared of the light', 'Curious', 'Hiding'].map(w => `<li><button type="button" data-word="${w}" aria-pressed="${S.words.includes(w)}">${w}</button></li>`).join('')}</ul>
+      <p>Or in your own words:</p><textarea data-text="notes" aria-label="What I think they are doing">${S.notes}</textarea>`,
+    r: () => `<div class="ph"><b>[Responses]</b> A short nudge for each word, as in the lesson mock-up (e.g. "They do rush through the bright part. But do they run away from it, or just through it?").</div>
+      <p class="pencil">Hold on to your words. Later you'll find out what's really going on inside.</p>
+      <div class="slip">[For the grown-up: none of the words is wrong. They describe how it looks from outside. A useful question: "Does it ever turn toward or away from anything?"]</div>` },
+  { tab: 'Build', l: () => `<h2>Build Val</h2><span class="uline"></span>
+      <img class="art" src="${ART.valtop}" alt="Val from above" style="width:170px">
+      <ol><li>One wheel on Val.</li><li>A light sensor, pointing up at the light.</li><li>A lamp fixed above one half of the floor.</li></ol>
+      <p class="pencil">This Val pushes in beats, like a jelly's bell: the more it feels, the more often it pushes.</p>`,
+    r: () => `<h3>Set Val up</h3>
+      <div class="ph"><b>[Setup cards]</b> Each picture Val shows, with the press that answers it (mount, Light, + wire, dark, bright, the check). From the Vehicle 1 setup cards mock-up.</div>
+      <div class="slip">[For the grown-up: Vehicle 1 uses the pulse drive (PULSE_DRIVE 1, PUSH_GLIDE). The Handbook has the steps.]</div>` },
+  { tab: 'Trials 1–2', l: () => `<h2>Field trials</h2><span class="uline"></span>
+      <p>For each trial: <b>predict</b> first, then run Val <b>three times</b> and mark where it stopped each time.</p>
+      <p class="pencil">Start Val in the same spot, facing the other half of the floor.</p>${trialTable(TRIALS.slice(0, 2))}`,
+    r: () => `<h3>What did you notice?</h3><textarea data-text="t12" aria-label="What I noticed in trials 1 and 2">${S.t12 || ''}</textarea>
+      <div class="ph"><b>[Hint, after trial 2]</b> "Did the wire change where Val ended up?"</div>` },
+  { tab: 'Trials 3–5', l: () => `<h2>More trials</h2><span class="uline"></span>${trialTable(TRIALS.slice(2))}`,
+    r: () => `<h3>Clues so far</h3><textarea data-text="clues" aria-label="My clues">${S.clues || ''}</textarea>
+      <p class="pencil">Trial 4 swaps the pulses for a smooth drive, like the woodlouse. Same place?</p>` },
+  { tab: 'Evidence', l: () => `<h2>My evidence</h2><span class="uline"></span>
+      <p>Your runs, drawn as a chart. Each block is one run.</p><div id="chart">${chart()}</div>`,
+    r: () => `<h3>So, where does Val end up?</h3>
+      <ul class="boxes">${['Mostly in the dark (+ wire)', 'Mostly in the light (− wire)', 'Pulses or smooth: the same place', 'It depends where Val starts'].map(w => `<li><button type="button" data-word="${w}" aria-pressed="${S.words.includes(w)}">${w}</button></li>`).join('')}</ul>
+      <p class="pencil">Compare with your predictions. Were you right?</p>` },
+  { tab: 'Look inside', l: () => `<h2>Look inside</h2><span class="uline"></span>
+      <p>Could Val do all that with just <b>one light sensor</b> joined to <b>one wheel</b>?</p>
+      <svg viewBox="0 0 320 110" style="width:100%;max-width:320px" role="img" aria-label="light sensor joined by a plus wire to the wheel"><rect x="10" y="34" width="80" height="44" rx="6" fill="#fffdf6" stroke="#33251a" stroke-width="2.5"/><text x="50" y="98" text-anchor="middle" font-family="Kalam" font-size="16">light sensor</text><path d="M92 56 C150 24 180 88 236 56" fill="none" stroke="#1F8A4C" stroke-width="4"/><text x="160" y="38" text-anchor="middle" font-family="Kalam" font-size="28" fill="#1F8A4C">+</text><circle cx="266" cy="56" r="28" fill="#fffdf6" stroke="#33251a" stroke-width="2.5"/><text x="266" y="102" text-anchor="middle" font-family="Kalam" font-size="16">wheel</text></svg>
+      <p>Where it's bright, Val pushes often and hurries on. Where it's dim, Val hardly pushes, so it stays a long time. Nothing in Val knows where the dark is: it just <b>slows down</b> there.</p>`,
+    r: () => `<p class="big">That trick has a name: <u>kinesis</u>.</p>
+      <p>Changing <b>how much</b> you move, not <b>where</b> you go. The jellies did it first; the woodlouse still does.</p>
+      <p class="pen">Now look back at your word from "What are they doing?". Does it still fit?</p>
+      <div class="slip">[For the grown-up: Braitenberg's point: it's easier to build behaviour than to work out how it's built from watching it.]</div>` },
+  { tab: 'Side trail', l: () => `<div class="side"><div class="k">Side trail (optional)</div><h2>Real woodlice</h2></div>
+      <img class="art" src="${ART.woodlouse}" alt="A woodlouse" style="width:90px">
+      <div class="ph"><b>[Choice chamber]</b> A tray with a dark half and a lit half (or damp and dry), ten woodlice from under a log, and five minutes. Count where they are each minute. Gentle handling, and back where they were found. (To be tried by the owner before it goes to children.)</div>`,
+    r: () => `<h3>Woodlice vs Val</h3><textarea data-text="side" aria-label="What the woodlice did">${S.side || ''}</textarea>
+      <p class="pencil">Did the woodlice end up where Val did?</p>` },
+  { tab: 'Challenge', l: () => `<h2>Challenge</h2><span class="uline"></span>
+      <div class="ph"><b>[Challenge]</b> "Park Val in the shade of a book." Use what your trials showed: which wire, where to start Val, where to put the lamp.</div>
+      <p>How I did it:</p><textarea data-text="challenge" aria-label="How I did the challenge">${S.challenge}</textarea>`,
+    r: () => `<ul class="boxes">${['I did it!', 'It took a few tries', 'I changed the wire', 'I moved the lamp', 'I moved where Val starts'].map(w => `<li><button type="button" data-word="${w}" aria-pressed="${S.words.includes(w)}">${w}</button></li>`).join('')}</ul>` },
+  { tab: 'Creature Report', l: () => `<h2>Creature Report</h2><span class="uline"></span>
+      <p class="pencil">Waypoint 1 · the Jelly Shallows</p>
+      <h3>What I observed</h3>
+      <ul class="boxes">${['Jellies pulse more or less with the light', 'The woodlouse speeds up in the light', 'Val ends up where it moves slowest', 'None of them aims at anything'].map(w => `<li><button type="button" data-word="${w}" aria-pressed="${S.words.includes(w)}">${w}</button></li>`).join('')}</ul>
+      <p>In my own words:</p><textarea data-text="report" aria-label="My creature report">${S.report}</textarea>`,
+    r: () => `<h3>Is it an agent?</h3>
+      <p class="pencil">An agent acts on the world, not just floats along in it. What do you think?</p>
+      ${['Val', 'the jelly', 'the woodlouse'].map(k => `<p><b>Is ${k} an agent?</b></p><ul class="boxes row">${['yes', 'no', 'not sure'].map(v => `<li><button type="button" data-agent="${k}" data-v="${v}" aria-pressed="${S.agent[k] === v}">${v}</button></li>`).join('')}</ul>`).join('')}
+      <p>Why?</p><textarea data-text="why" aria-label="Why I think so">${S.why || ''}</textarea>
+      <div class="sticker-spot ${S.sticker ? 'on' : ''}" id="sticker">${S.sticker ? `<img src="${ART.sticker}" alt="The Jelly Shallows sticker">` : 'Your sticker goes here when the report is done'}</div>
+      <div class="ph"><b>[Sticker rules]</b> What earns it is still to be decided.</div>` },
+];
+
+// ===== showing a spread =====
+let at = 0;
+function show(i) {
+  playing = false; at = i; const sp = SPREADS[i];
+  document.getElementById('tabs').innerHTML = SPREADS.map((s, k) => `<button type="button" data-tab="${k}" aria-current="${k === i}" class="${S.done[k] ? 'done' : ''}">${s.tab}</button>`).join('');
+  document.getElementById('view').innerHTML = `<div class="spread"><section class="leaf l">${sp.l()}
+      ${i > 0 ? `<button class="turn" type="button" data-to="${i - 1}">← back</button>` : ''}<span class="pageno">${i * 2 + 1}</span></section>
+    <section class="leaf r">${sp.r()}
+      ${i < SPREADS.length - 1 ? `<button class="turn" type="button" data-to="${i + 1}">turn the page →</button>` : ''}<span class="pageno">${i * 2 + 2}</span></section></div>`;
+  if (sp.after) { sp.after(); }
+  window.scrollTo(0, 0);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) { return; }
+  if (b.dataset.tab) { show(+b.dataset.tab); return; }
+  if (b.dataset.to) { S.done[at] = true; show(+b.dataset.to); return; }
+  if (b.dataset.pred) { S.pred[b.dataset.pred] = b.dataset.v; show(at); return; }
+  if (b.dataset.tally) { const t = S.tally[b.dataset.tally] = S.tally[b.dataset.tally] || {}; const total = WHERE.reduce((a, w) => a + (t[w] || 0), 0); if (total < 3) { t[b.dataset.v] = (t[b.dataset.v] || 0) + 1; } show(at); return; }
+  if (b.dataset.word) { const w = b.dataset.word; S.words = S.words.includes(w) ? S.words.filter(x => x !== w) : S.words.concat([w]); b.setAttribute('aria-pressed', S.words.includes(w)); return; }
+  if (b.dataset.agent) { S.agent[b.dataset.agent] = b.dataset.v; if (Object.keys(S.agent).length === 3 && (S.report || S.words.length)) { S.sticker = true; } show(at); return; }
+});
+document.addEventListener('input', e => { if (e.target.dataset.text) { S[e.target.dataset.text] = e.target.value; } });
+show(0);
+</script>

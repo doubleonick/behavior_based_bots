@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-28** · Mock-up of waypoint 1 in full (`web/mockups/guide/waypoint1.html`): eleven
+  spreads from arrival to the Creature Report, with placeholders; field trials done on the
+  real Val and recorded on screen.
 - **2026-11-28** · `web/OUTLINE.md`, *Depth at each waypoint:* the principle (depth from
   investigating, not explaining), and a Creature Report ending each waypoint, with "Is
   Val an agent?" asked of Val and of the creatures it imitates.
