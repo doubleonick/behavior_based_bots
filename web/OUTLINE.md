@@ -215,6 +215,30 @@ jellies. Candidates from the owner's notes: the roundworm (dwelling and roaming)
 ants (following a trail), the woodlouse. Floor colour stands for taste and smell
 (chemicals on the ground), not colour vision.
 
+### Depth at each waypoint (principle, owner, 2026-11-28; details not decided)
+
+The waypoints felt too shallow. Depth should come from investigating, not from more
+explaining: not a game woven into a textbook. Explanations arrive after the child has
+seen something and has a question; the text stays short. Ideas to draw on (proposals,
+not decided):
+- a mystery that opens the waypoint, too big for one run;
+- several field trials, each changing one thing (wire, lamp, drive, start, floor),
+  predicted, run and recorded, each adding a clue;
+- the child's own measurements (tallies, timings, hand-drawn charts);
+- a real animal where possible (the woodlouse choice chamber, a classic school
+  experiment), alongside Val;
+- a challenge that needs the understanding to solve (park Val in the shade);
+- optional deeper side trails for keen explorers; later waypoints look back at earlier.
+
+**Each waypoint ends with a Creature Report** (owner, 2026-11-28; after the Octonauts'
+creature reports): what the explorer observed, with options to choose from, and room
+and encouragement for free writing. Then the expedition's question: **"Is Val an
+agent?"** And the same question asked of the creatures Val imitates. The answers can
+differ: a jelly regulates its own life (Di Paolo's sense of agency, see the prologue
+notes) where Val, acting with no needs of its own, may not; and from waypoint to
+waypoint the answers can change, which is the expedition's thread (the checklist:
+navigate, communicate, manipulate).
+
 ### Waypoints: robots paired with creatures (2026-11-27)
 
 **"Waypoint" is the guide's word for a stop on the expedition** (agreed with the owner,

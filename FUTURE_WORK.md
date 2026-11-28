@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-28** · `web/OUTLINE.md`, *Depth at each waypoint:* the principle (depth from
+  investigating, not explaining), and a Creature Report ending each waypoint, with "Is
+  Val an agent?" asked of Val and of the creatures it imitates.
 - **2026-11-28** · *Floor colour as taste and smell:* coloured tape as the first
   approximation of scent trails, ways to give it strength, the LED floor, and Val laying
   its own trails (more powerful with several robots).
