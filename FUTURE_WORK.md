@@ -11,6 +11,9 @@ exact day of every change.
 
 Newest first, about the last two weeks. Each names the entry to search for below.
 
+- **2026-11-28** · *Floor colour as taste and smell:* coloured tape as the first
+  approximation of scent trails, ways to give it strength, the LED floor, and Val laying
+  its own trails (more powerful with several robots).
 - **2026-11-27** · `web/OUTLINE.md`, *Waypoints:* the eleven waypoints with robots and
   creatures paired; "waypoint" is now the guide's word for a stop.
 - **2026-11-27** · Cover label (`web/mockups/guide/cover_label_draft.html`): a ribbon scroll
@@ -607,6 +610,25 @@ A web interface that carries the instructions, with a game/story layer:
     (trail following: high confidence; that the left / right comparison is the
     whole story: medium). Uncrossed + turns off the trail, crossed + turns onto it.
     Needs a Color Unit per module (owner has one so far).
+  - **Coloured tape as the first approximation (owner, 2026-11-28):** the owner has
+    coloured tape, not an LED floor. Line following for a specific colour is a close
+    analogy for a scent trail: the colour is the chemical's identity (food, danger),
+    one wire per colour; with a sensor on each side Val keeps the strip between them,
+    as an ant does with its antennae (mechanically: high confidence with a narrow
+    strip and slow speed); crossings and forks make predict-then-try moments. Tape has
+    no strength, so a scent can't fade with age. Ways to get some back, untested:
+    strips printed fading from full colour to white (the colour reading already
+    scales with saturation); one to three layers of translucent tape or coloured
+    cellophane over white; a strip that narrows; or colour as age (e.g. cyan fresh,
+    yellow old), a game variant only, since it breaks "colour is identity".
+  - **An LED floor (owner's long-term goal):** light from below lets a trail fade over
+    time, so intensity shows its age, as the owner wants.
+  - **Val laying its own scent trails (owner idea, 2026-11-28; not designed):** on an
+    LED floor Val could leave a trail that fades behind it and follow trails left
+    earlier, which is stigmergy: ants coordinating through marks on the ground. Most
+    powerful with more than one robot (one Val follows another's trail; a colony
+    finds the shortest route). Needs a second robot; the owner does not expect one
+    soon, so this belongs with the frontier.
   - With one sensor, a trail can only be followed by swinging and comparing over
     time, as maggots and worms do: that needs memory, so it belongs at or after
     Vehicle 5.
